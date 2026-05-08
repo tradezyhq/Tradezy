@@ -928,13 +928,11 @@ async function submitEmail() {
     formData.append('form-name', 'waitlist');
     formData.append('email', email);
 
-    const response = await fetch('/', {
+    await fetch('/', {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       body: new URLSearchParams(formData).toString()
     });
-
-    if (!response.ok) throw new Error('Submission failed');
 
     // ── SUCCESS ──
     const form = document.getElementById('emailForm');
