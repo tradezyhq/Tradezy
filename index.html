@@ -734,6 +734,7 @@ body, html { background: #060e1c !important; }
 </div>
 
 <script>
+document.addEventListener("DOMContentLoaded", function() {
 // ════════════════════════════════════════
 // PARTICLE CANVAS
 // ════════════════════════════════════════
@@ -913,25 +914,19 @@ async function submitEmail() {
   btn.disabled = true;
 
   try {
-    // API key stored securely in Vercel environment variables
-    // Calls our serverless function at /api/subscribe
-    const response = await fetch('/api/subscribe', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email })
+    // Submit to Mailchimp via JSONP
+    const MC_U = '695d5319cc339a0a3ef8444eed569ae1';
+    const MC_ID = '5207a7c71d';
+    const url = 'https://us22.list-manage.com/subscribe/post-json?u=' + MC_U + '&id=' + MC_ID + '&EMAIL=' + encodeURIComponent(email) + '&c=mailchimpCallback';
+
+    await new Promise((resolve) => {
+      window.mailchimpCallback = function() { resolve(); };
+      const script = document.createElement('script');
+      script.src = url;
+      script.onerror = () => resolve();
+      document.body.appendChild(script);
+      setTimeout(resolve, 5000);
     });
-
-    const data = await response.json();
-
-    // Handle already subscribed
-    if (response.status === 400 && data.title === 'Member Exists') {
-      showToast('👋', 'You\'re already on the list! We\'ll see you July 31st.');
-      btn.textContent = 'Notify Me 🚀';
-      btn.disabled = false;
-      return;
-    }
-
-    if (!response.ok) throw new Error(data.detail || 'Signup failed');
 
     // ── SUCCESS ──
     const form = document.getElementById('emailForm');
@@ -940,23 +935,25 @@ async function submitEmail() {
     const notifs = document.getElementById('notifRow');
 
     form.style.display = 'none';
-    privacy.style.display = 'none';
-    notifs.style.display = 'none';
+    if (privacy) privacy.style.display = 'none';
+    if (notifs) notifs.style.display = 'none';
     success.classList.add('show');
 
     signupCount++;
     renderAvatars();
 
-    showToast('🎉', 'Welcome to the Tradezy waitlist! We\'ll see you July 31st.');
+    showToast('🎉', "Welcome to the Tradezy waitlist! We'll see you July 31st.");
 
     setTimeout(() => {
       const countEl = document.getElementById('signupCount');
-      countEl.style.transform = 'scale(1.2)';
-      countEl.style.color = 'var(--green-l)';
-      setTimeout(() => {
-        countEl.style.transform = '';
-        countEl.style.color = '';
-      }, 400);
+      if (countEl) {
+        countEl.style.transform = 'scale(1.2)';
+        countEl.style.color = 'var(--green-l)';
+        setTimeout(() => {
+          countEl.style.transform = '';
+          countEl.style.color = '';
+        }, 400);
+      }
     }, 500);
 
   } catch (err) {
@@ -1008,6 +1005,8 @@ document.addEventListener('keydown', e => {
     submitEmail();
   }
 });
+
+}); // end DOMContentLoaded
 </script>
 
 </body>
