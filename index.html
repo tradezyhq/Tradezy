@@ -588,6 +588,12 @@ body, html { background: #060e1c !important; }
 </head>
 <body>
 
+<!-- Netlify Form Detection -->
+
+<form name="waitlist" netlify netlify-honeypot="bot-field" hidden>
+  <input type="email" name="email"/>
+</form>
+
 <canvas id="bgCanvas"></canvas>
 
 <div class="mesh"></div>
@@ -908,25 +914,23 @@ async function submitEmail() {
     return;
   }
 
-  // Disable button while submitting
   const btn = document.querySelector('.email-btn');
   btn.textContent = 'Adding you...';
   btn.disabled = true;
 
   try {
-    // Submit to Mailchimp via JSONP
-    const MC_U = '695d5319cc339a0a3ef8444eed569ae1';
-    const MC_ID = '5207a7c71d';
-    const url = 'https://us22.list-manage.com/subscribe/post-json?u=' + MC_U + '&id=' + MC_ID + '&EMAIL=' + encodeURIComponent(email) + '&c=mailchimpCallback';
+    // Submit to Netlify Forms
+    const formData = new FormData();
+    formData.append('form-name', 'waitlist');
+    formData.append('email', email);
 
-    await new Promise((resolve) => {
-      window.mailchimpCallback = function() { resolve(); };
-      const script = document.createElement('script');
-      script.src = url;
-      script.onerror = () => resolve();
-      document.body.appendChild(script);
-      setTimeout(resolve, 5000);
+    const response = await fetch('/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams(formData).toString()
     });
+
+    if (!response.ok) throw new Error('Submission failed');
 
     // ── SUCCESS ──
     const form = document.getElementById('emailForm');
@@ -957,7 +961,7 @@ async function submitEmail() {
     }, 500);
 
   } catch (err) {
-    console.error('Mailchimp error:', err);
+    console.error('Error:', err);
     showToast('⚠️', 'Something went wrong. Please try again.');
     btn.textContent = 'Notify Me 🚀';
     btn.disabled = false;
