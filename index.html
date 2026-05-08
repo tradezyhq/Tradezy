@@ -740,7 +740,6 @@ body, html { background: #060e1c !important; }
 </div>
 
 <script>
-document.addEventListener("DOMContentLoaded", function() {
 // ════════════════════════════════════════
 // PARTICLE CANVAS
 // ════════════════════════════════════════
@@ -831,9 +830,16 @@ function drawFrame() {
 }
 
 window.addEventListener('resize', () => { resize(); });
-resize();
-initParticles();
-drawFrame();
+
+// Wait for DOM before starting canvas
+window.addEventListener('load', function() {
+  resize();
+  initParticles();
+  drawFrame();
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+  renderAvatars();
+});
 
 // ════════════════════════════════════════
 // COUNTDOWN
@@ -877,8 +883,6 @@ function updateCountdown() {
   setUnit('cdSecs', secs);
 }
 
-updateCountdown();
-setInterval(updateCountdown, 1000);
 
 // ════════════════════════════════════════
 // EMAIL SIGNUP
@@ -1009,8 +1013,6 @@ document.addEventListener('keydown', e => {
     submitEmail();
   }
 });
-
-}); // end DOMContentLoaded
 </script>
 
 </body>
