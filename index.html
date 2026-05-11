@@ -16,7 +16,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Tradezy">
-  <meta name="description" content="Tradezy is a hyperlocal bartering marketplace launching July 31st. Trade food, water, tools, and more with neighbors in your community.">
+  <meta name="description" content="Tradezy is a hyperlocal bartering marketplace. Soft launch July 17th in Meriden, CT — then nationwide July 31st, 2026.">
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,300;0,400;0,600;0,700;0,800;0,900;1,700;1,900&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 /* ── RESET & ROOT ── */
@@ -727,7 +727,7 @@ body, html { background: #060e1c !important; }
   <!-- TAGLINE PILL -->
 
   <div class="tagline-pill">
-    🌱 Launching July 31st, 2026
+    🌱 Soft Launch July 17th · Nationwide July 31st
   </div>
 
   <!-- HEADLINE -->
@@ -763,15 +763,15 @@ body, html { background: #060e1c !important; }
       </div>
     </div>
     <div class="launch-badge">
-      📅 July 31st, 2026 · Meriden, CT · Then Everywhere
+      📅 July 17th · Meriden CT Soft Launch | July 31st · Nationwide
     </div>
   </div>
 
   <!-- EMAIL SIGNUP -->
 
   <div class="signup-section">
-    <div class="signup-title">Be First in Your Neighborhood</div>
-    <div class="signup-sub">Get notified the moment we launch. Early sign-ups get first access and a <strong style="color:var(--gold-l)">Founding Trader</strong> badge on their profile.</div>
+    <div class="signup-title">🏅 Founding Trader Badges Close July 31st — Never Available Again</div>
+    <div class="signup-sub">Sign up FREE and get your <strong style="color:var(--gold-l)">Founding Trader</strong> badge — permanent proof you were here before launch. <strong style="color:#ef4444">Badges close forever July 31st.</strong></div>
 
 ```
 <div class="email-form" id="emailForm">
@@ -804,6 +804,43 @@ body, html { background: #060e1c !important; }
   <div class="counter-section">
     <div class="counter-avatars" id="counterAvatars"></div>
     <div class="counter-text"><strong id="signupCount">0</strong> neighbors already signed up</div>
+  </div>
+
+  <!-- BENEFITS -->
+
+  <div style="max-width:500px;margin:0 auto 16px;padding:0 16px;">
+    <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:16px;">
+      <div style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1rem;color:#fff;margin-bottom:10px;text-align:center;">What Founding Traders Get</div>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <div style="font-size:13px;color:rgba(255,255,255,.8);"><span style="color:#f59e0b;font-weight:800;margin-right:8px;">✓</span>Permanent Founding Trader badge on your profile — forever</div>
+        <div style="font-size:13px;color:rgba(255,255,255,.8);"><span style="color:#f59e0b;font-weight:800;margin-right:8px;">✓</span>First access the moment we go live</div>
+        <div style="font-size:13px;color:rgba(255,255,255,.8);"><span style="color:#f59e0b;font-weight:800;margin-right:8px;">✓</span>Priority placement in your neighborhood feed</div>
+        <div style="font-size:13px;color:rgba(255,255,255,.8);"><span style="color:#f59e0b;font-weight:800;margin-right:8px;">✓</span>Exclusive launch perks — only for early signups</div>
+
+```
+  </div>
+</div>
+```
+
+  </div>
+
+  <!-- TWO PHASE LAUNCH -->
+
+  <div style="max-width:500px;margin:0 auto 16px;padding:0 16px;">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+      <div style="background:rgba(26,86,219,.15);border:1px solid rgba(26,86,219,.4);border-radius:12px;padding:14px;text-align:center;">
+        <div style="font-size:10px;font-weight:800;color:#60a5fa;letter-spacing:1px;margin-bottom:4px;">PHASE 1</div>
+        <div style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.3rem;color:#fff;">July 17th</div>
+        <div style="font-size:11px;color:rgba(255,255,255,.6);margin-top:2px;">📍 Meriden, CT</div>
+        <div style="font-size:10px;color:rgba(255,255,255,.4);margin-top:4px;">Soft Launch · Founding Traders First</div>
+      </div>
+      <div style="background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.4);border-radius:12px;padding:14px;text-align:center;">
+        <div style="font-size:10px;font-weight:800;color:#f59e0b;letter-spacing:1px;margin-bottom:4px;">PHASE 2</div>
+        <div style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.3rem;color:#fff;">July 31st</div>
+        <div style="font-size:11px;color:rgba(255,255,255,.6);margin-top:2px;">🌎 Nationwide</div>
+        <div style="font-size:10px;color:rgba(255,255,255,.4);margin-top:4px;">Full Public Launch · Everyone</div>
+      </div>
+    </div>
   </div>
 
   <!-- LIVE TRADE TICKER -->
@@ -1026,7 +1063,7 @@ function updateCountdown() {
 // ════════════════════════════════════════
 // EMAIL SIGNUP
 // ════════════════════════════════════════
-let signupCount = 47; // Starting seed count - makes it feel alive
+let signupCount = 127; // Starting seed count - makes it feel alive
 const AV_COLORS = ['#1a56db','#16a34a','#f59e0b','#7c3aed','#ea580c','#0891b2'];
 const AV_INITIALS = ['JD','SM','RT','KL','AH','MP','GS','BW'];
 
@@ -1087,7 +1124,7 @@ async function submitEmail() {
     signupCount++;
     renderAvatars();
 
-    showToast('🎉', "Welcome to the Tradezy waitlist! We'll see you July 31st.");
+    showToast('🎉', "You're a Founding Trader! See you July 17th in Meriden or July 31st nationwide!");
     setTimeout(showReferral, 1500);
 
     setTimeout(() => {
