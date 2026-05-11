@@ -6,7 +6,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Tradezy — Coming Soon · Trade Local. Live Better.</title>
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-  <link rel="alternate icon" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="apple-touch-icon-precomposed" href="/apple-touch-icon-precomposed.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <meta name="theme-color" content="#0f1f38">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Tradezy">
   <meta name="description" content="Tradezy is a hyperlocal bartering marketplace launching July 31st. Trade food, water, tools, and more with neighbors in your community.">
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,300;0,400;0,600;0,700;0,800;0,900;1,700;1,900&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -572,6 +581,110 @@ transition: transform .3s ease;
 }
 .toast.show { transform: translateX(0); }
 
+/* ── LIVE TICKER ── */
+.ticker-wrap {
+display: flex;
+align-items: center;
+gap: 10px;
+background: rgba(255,255,255,.04);
+border: 1px solid rgba(255,255,255,.08);
+border-radius: 30px;
+padding: 8px 16px;
+margin: 12px auto;
+max-width: 500px;
+overflow: hidden;
+}
+.ticker-label {
+font-size: 11px;
+font-weight: 800;
+color: #ef4444;
+white-space: nowrap;
+letter-spacing: 1px;
+animation: pulse 1.5s infinite;
+}
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+.ticker-track {
+font-size: 13px;
+color: rgba(255,255,255,.7);
+white-space: nowrap;
+overflow: hidden;
+animation: tickerScroll 18s linear infinite;
+}
+@keyframes tickerScroll {
+0% { transform: translateX(100%); }
+100% { transform: translateX(-100%); }
+}
+
+/* ── REFERRAL BOX ── */
+.referral-box {
+background: linear-gradient(135deg, rgba(26,86,219,.15), rgba(245,158,11,.08));
+border: 1px solid rgba(26,86,219,.3);
+border-radius: 16px;
+padding: 20px;
+margin: 16px auto;
+max-width: 500px;
+text-align: center;
+}
+.ref-title {
+font-family: ‘Barlow Condensed’, sans-serif;
+font-weight: 800;
+font-size: 1.2rem;
+color: #fff;
+margin-bottom: 6px;
+}
+.ref-sub {
+font-size: 13px;
+color: rgba(255,255,255,.65);
+margin-bottom: 14px;
+line-height: 1.5;
+}
+.ref-link-wrap {
+display: flex;
+gap: 8px;
+margin-bottom: 10px;
+}
+.ref-link-input {
+flex: 1;
+background: rgba(255,255,255,.08);
+border: 1px solid rgba(255,255,255,.15);
+border-radius: 8px;
+padding: 9px 12px;
+color: #fff;
+font-size: 13px;
+outline: none;
+}
+.ref-copy-btn {
+background: #1a56db;
+color: #fff;
+border: none;
+border-radius: 8px;
+padding: 9px 16px;
+font-weight: 700;
+font-size: 13px;
+cursor: pointer;
+}
+.ref-count {
+font-size: 13px;
+color: rgba(255,255,255,.6);
+margin-bottom: 12px;
+}
+.ref-share-row {
+display: flex;
+gap: 8px;
+justify-content: center;
+}
+.ref-share-btn {
+background: rgba(255,255,255,.08);
+border: 1px solid rgba(255,255,255,.15);
+border-radius: 8px;
+padding: 8px 14px;
+color: #fff;
+font-size: 12px;
+font-weight: 700;
+text-decoration: none;
+cursor: pointer;
+}
+
 /* ── RESPONSIVE ── */
 @media (max-width: 480px) {
 .countdown-grid { gap: 6px; }
@@ -693,6 +806,30 @@ body, html { background: #060e1c !important; }
     <div class="counter-text"><strong id="signupCount">0</strong> neighbors already signed up</div>
   </div>
 
+  <!-- LIVE TRADE TICKER -->
+
+  <div class="ticker-wrap">
+    <div class="ticker-label">🔴 LIVE</div>
+    <div class="ticker-track" id="tickerTrack"></div>
+  </div>
+
+  <!-- REFERRAL SECTION -->
+
+  <div class="referral-box" id="referralBox" style="display:none">
+    <div class="ref-title">🚀 Move Up the List!</div>
+    <div class="ref-sub">Share your unique link — every friend who signs up moves you closer to the front of the launch queue.</div>
+    <div class="ref-link-wrap">
+      <input type="text" class="ref-link-input" id="refLink" readonly value="tradezyhq.netlify.app">
+      <button class="ref-copy-btn" onclick="copyRefLink()">Copy</button>
+    </div>
+    <div class="ref-count">👥 <span id="refCount">0</span> friends referred</div>
+    <div class="ref-share-row">
+      <a class="ref-share-btn" id="shareX" href="#" onclick="shareX(event)">𝕏 Share</a>
+      <a class="ref-share-btn" id="shareFB" href="#" onclick="shareFB(event)">Facebook</a>
+      <a class="ref-share-btn" id="shareText" href="#" onclick="shareText(event)">📱 Text</a>
+    </div>
+  </div>
+
   <!-- FEATURE CHIPS -->
 
   <div class="features-strip">
@@ -721,9 +858,9 @@ body, html { background: #060e1c !important; }
 ```
 <div class="social-row">
   <a class="social-link" href="mailto:hello@tradezyhq.com" title="Email us">📧</a>
-  <a class="social-link" href="#" title="Instagram" onclick="showToast('📸','Instagram coming soon!')">📸</a>
-  <a class="social-link" href="#" title="Twitter/X" onclick="showToast('🐦','Twitter/X coming soon!')">🐦</a>
-  <a class="social-link" href="#" title="Facebook" onclick="showToast('👥','Facebook coming soon!')">👥</a>
+  <a class="social-link" href="https://instagram.com/tradezyl.l.c" target="_blank" title="Instagram">📸</a>
+  <a class="social-link" href="https://x.com/tradyhq" target="_blank" title="X / Twitter">🐦</a>
+  <a class="social-link" href="https://tiktok.com/@tradezyhq" target="_blank" title="TikTok">🎵</a>
 </div>
 
 <div class="copyright">
@@ -951,6 +1088,7 @@ async function submitEmail() {
     renderAvatars();
 
     showToast('🎉', "Welcome to the Tradezy waitlist! We'll see you July 31st.");
+    setTimeout(showReferral, 1500);
 
     setTimeout(() => {
       const countEl = document.getElementById('signupCount');
@@ -1003,6 +1141,80 @@ document.addEventListener('mousemove', e => {
       if (speed > 2) { p.vx = p.vx/speed*2; p.vy = p.vy/speed*2; }
     }
   });
+});
+
+
+
+// ════════════════════════════════════════
+// LIVE TRADE TICKER
+// ════════════════════════════════════════
+const trades = [
+  "🔧 Someone in Meriden just offered power tools",
+  "🚲 A bike listed near Hartford, CT",
+  "🌱 Fresh garden vegetables available in New Haven",
+  "📱 iPhone 12 up for trade in Bridgeport",
+  "🪑 Dining table listed in Waterbury",
+  "🎮 Gaming console trade in New Britain",
+  "🛋️ Couch available in Meriden — seeking appliances",
+  "🔨 Toolset listed near Middletown",
+  "👕 Kids clothes bundle in Rocky Hill",
+  "🎸 Guitar seeking electronics in Meriden",
+];
+
+function initTicker() {
+  const track = document.getElementById('tickerTrack');
+  if (!track) return;
+  const shuffled = trades.sort(() => Math.random() - 0.5);
+  track.textContent = shuffled.join('  •  ');
+}
+
+// ════════════════════════════════════════
+// REFERRAL SYSTEM
+// ════════════════════════════════════════
+function showReferral() {
+  const box = document.getElementById('referralBox');
+  if (box) {
+    box.style.display = 'block';
+    box.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+}
+
+function copyRefLink() {
+  const input = document.getElementById('refLink');
+  if (!input) return;
+  navigator.clipboard.writeText(input.value).then(() => {
+    showToast('✅', 'Link copied! Share it to move up the list!');
+  });
+}
+
+function shareX(e) {
+  e.preventDefault();
+  const text = encodeURIComponent("I just signed up for @tradyhq — a free bartering app launching July 31st! Trade what you have for what you need. No cash needed 🔄 tradezyhq.netlify.app");
+  window.open('https://x.com/intent/tweet?text=' + text, '_blank');
+}
+
+function shareFB(e) {
+  e.preventDefault();
+  const url = encodeURIComponent('https://tradezyhq.netlify.app');
+  window.open('https://www.facebook.com/sharer/sharer.php?u=' + url, '_blank');
+}
+
+function shareText(e) {
+  e.preventDefault();
+  if (navigator.share) {
+    navigator.share({
+      title: 'Tradezy — Trade Local',
+      text: 'Check out Tradezy — a free bartering app launching July 31st! Trade what you have for what you need. No cash needed!',
+      url: 'https://tradezyhq.netlify.app'
+    });
+  } else {
+    showToast('📱', 'Copy the link and send it via text!');
+  }
+}
+
+// Init ticker on load
+window.addEventListener('load', function() {
+  initTicker();
 });
 
 // ════════════════════════════════════════
