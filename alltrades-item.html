@@ -1,0 +1,1255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tradezy — Make a Trade Offer</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Lato:ital,wght@0,300;0,400;0,700;1,300&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy:#0a1628; --navy2:#112240; --blue:#1a56db; --blue-l:#2563eb;
+  --gold:#f59e0b; --gold-l:#fbbf24; --green:#16a34a; --green-l:#22c55e;
+  --red:#dc2626; --orange:#ea580c;
+  --text:#1a1a2e; --muted:#475569; --border:#e2e8f0;
+  --bg:#f1f5f9; --white:#fff; --surface:#f8fafc;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);}
+
+/* NAV */
+.nav{background:var(--navy);padding:11px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;}
+.logo{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.55rem;letter-spacing:-1px;cursor:pointer;}
+.logo .a{color:#fff;}.logo .t{color:var(--blue);}.logo .d{color:var(--gold);}
+.nav-links{display:flex;align-items:center;gap:6px;}
+.nav-btn{padding:7px 14px;border-radius:6px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.9rem;cursor:pointer;border:none;transition:all .15s;}
+.nav-btn.ghost{background:transparent;color:#94a3b8;border:1px solid rgba(255,255,255,.1);}
+.nav-btn.ghost:hover{color:#fff;border-color:rgba(255,255,255,.25);}
+.nav-btn.gold{background:var(--gold);color:var(--navy);}
+.nav-btn.gold:hover{background:var(--gold-l);}
+
+/* BREADCRUMB */
+.breadcrumb{background:var(--white);border-bottom:1px solid var(--border);padding:10px 24px;font-size:12px;color:var(--muted);}
+.breadcrumb a{color:var(--blue);cursor:pointer;font-weight:700;}
+.breadcrumb span{margin:0 6px;color:#cbd5e1;}
+
+/* PAGE */
+.page{max-width:1180px;margin:0 auto;padding:24px 20px;display:grid;grid-template-columns:1fr 400px;gap:24px;align-items:start;}
+
+/* ── ITEM DETAIL LEFT ── */
+.img-gallery{background:var(--white);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px;}
+.main-img{width:100%;height:320px;background:linear-gradient(135deg,#1e293b,#0f172a);display:flex;align-items:center;justify-content:center;font-size:8rem;position:relative;}
+.img-badges{position:absolute;top:12px;left:12px;display:flex;gap:6px;}
+.ibadge{font-size:11px;font-weight:800;padding:3px 9px;border-radius:4px;letter-spacing:.4px;}
+.ibadge.ess{background:var(--green);color:#fff;}
+.ibadge.local{background:var(--blue);color:#fff;}
+.ibadge.hot{background:var(--red);color:#fff;}
+.watch-btn{position:absolute;top:12px;right:12px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#fff;border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center;font-size:1rem;cursor:pointer;transition:all .2s;}
+.watch-btn:hover,.watch-btn.on{background:rgba(239,68,68,.2);border-color:rgba(239,68,68,.5);color:#fca5a5;}
+.thumbs{display:flex;gap:8px;padding:12px;}
+.thumb{width:60px;height:60px;border-radius:8px;background:var(--surface);border:2px solid transparent;display:flex;align-items:center;justify-content:center;font-size:1.6rem;cursor:pointer;transition:all .15s;}
+.thumb:hover,.thumb.active{border-color:var(--blue);}
+
+.detail-card{background:var(--white);border:1px solid var(--border);border-radius:14px;padding:22px;margin-bottom:16px;}
+
+.item-category{font-size:11px;font-weight:700;color:var(--blue);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;}
+.item-title{font-family:'Barlow Condensed',sans-serif;font-size:1.8rem;font-weight:900;line-height:1.1;margin-bottom:10px;letter-spacing:-.3px;}
+.item-meta-row{display:flex;align-items:center;gap:12px;margin-bottom:14px;flex-wrap:wrap;}
+.meta-chip{display:flex;align-items:center;gap:5px;font-size:12px;color:var(--muted);background:var(--surface);border:1px solid var(--border);border-radius:99px;padding:3px 10px;}
+.meta-chip .mc-icon{font-size:.9rem;}
+
+/* Value estimate banner */
+.value-banner{background:linear-gradient(135deg,#1e3a8a,#1d4ed8);border-radius:10px;padding:16px 18px;margin-bottom:14px;display:flex;align-items:center;gap:14px;}
+.vb-icon{font-size:1.8rem;flex-shrink:0;}
+.vb-text .vb-title{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1rem;color:#fff;margin-bottom:2px;}
+.vb-text .vb-desc{font-size:12px;color:#93c5fd;line-height:1.4;}
+.vb-value{text-align:right;flex-shrink:0;}
+.vb-num{font-family:'Barlow Condensed',sans-serif;font-size:1.5rem;font-weight:900;color:var(--gold-l);}
+.vb-label{font-size:10px;color:#60a5fa;text-transform:uppercase;letter-spacing:.5px;}
+
+.vb-sources{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap;}
+.vb-source{font-size:10px;background:rgba(255,255,255,.1);color:#93c5fd;border:1px solid rgba(255,255,255,.15);border-radius:3px;padding:2px 7px;}
+
+.item-desc{font-size:14px;color:var(--muted);line-height:1.7;margin-bottom:16px;}
+
+.wants-box{background:var(--surface);border:1.5px solid var(--border);border-radius:10px;padding:14px 16px;margin-bottom:14px;}
+.wants-title{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.9rem;color:var(--text);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;}
+.wants-text{font-size:13px;color:var(--blue);font-weight:700;}
+.wants-tags{display:flex;gap:5px;flex-wrap:wrap;margin-top:7px;}
+.wants-tag{font-size:11px;background:#eff6ff;color:var(--blue);border:1px solid #bfdbfe;border-radius:99px;padding:2px 9px;font-weight:700;}
+
+/* Seller card */
+.seller-card{background:var(--white);border:1px solid var(--border);border-radius:14px;padding:18px 20px;margin-bottom:16px;}
+.seller-row{display:flex;align-items:center;gap:12px;margin-bottom:12px;}
+.seller-av{width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--navy));color:#fff;font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.1rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.seller-name{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1.05rem;margin-bottom:2px;}
+.seller-since{font-size:11px;color:var(--muted);}
+.seller-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;}
+.ss-item{text-align:center;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:8px 4px;}
+.ss-num{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1rem;color:var(--text);}
+.ss-label{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.3px;}
+
+/* Safety box */
+.safety-box{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;padding:13px 15px;margin-bottom:16px;font-size:12px;color:#166534;display:flex;gap:8px;}
+
+/* ── RIGHT COLUMN ── */
+.offer-panel{background:var(--white);border:1px solid var(--border);border-radius:14px;overflow:hidden;position:sticky;top:72px;}
+
+.op-head{background:linear-gradient(135deg,var(--navy),#1a3a6b);padding:18px 20px;}
+.op-head-title{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.15rem;color:#fff;margin-bottom:2px;}
+.op-head-sub{font-size:12px;color:#64748b;}
+
+.op-body{padding:20px;}
+
+/* Offer type tabs */
+.offer-tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:18px;}
+.otab{border:1.5px solid var(--border);border-radius:8px;padding:10px 4px;text-align:center;cursor:pointer;transition:all .15s;}
+.otab:hover{border-color:var(--blue);}
+.otab.active{border-color:var(--blue);background:#eff6ff;}
+.otab-icon{font-size:1.3rem;margin-bottom:3px;}
+.otab-label{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.8rem;color:var(--muted);}
+.otab.active .otab-label{color:var(--blue);}
+
+/* Your item entry */
+.your-item-box{background:var(--surface);border:1.5px solid var(--border);border-radius:10px;padding:14px;margin-bottom:14px;transition:border-color .15s;}
+.your-item-box:focus-within{border-color:var(--blue);}
+.yib-title{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.88rem;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;}
+
+.field{margin-bottom:12px;}
+.field label{display:block;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px;}
+.field input,.field select,.field textarea{width:100%;border:1.5px solid var(--border);border-radius:7px;padding:9px 12px;font-size:13px;font-family:'Lato',sans-serif;color:var(--text);outline:none;transition:all .15s;background:#fff;}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(26,86,219,.08);}
+
+/* Live value estimator for offer item */
+.estimate-row{background:linear-gradient(135deg,#14532d,#166534);border-radius:8px;padding:11px 13px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;}
+.er-left{font-size:12px;color:#86efac;}
+.er-val{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.2rem;color:var(--gold-l);}
+.er-label{font-size:10px;color:#4ade80;margin-top:1px;}
+
+/* Trade comparison */
+.trade-compare{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:14px;}
+.tc-title{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.85rem;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:10px;}
+.tc-bars{display:flex;align-items:stretch;gap:8px;margin-bottom:8px;}
+.tc-side{flex:1;background:var(--white);border:1px solid var(--border);border-radius:8px;padding:10px;text-align:center;}
+.tc-side.theirs{border-top:3px solid var(--blue);}
+.tc-side.yours{border-top:3px solid var(--gold);}
+.tc-who{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:4px;}
+.tc-amount{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.3rem;}
+.tc-amount.theirs{color:var(--blue);}
+.tc-amount.yours{color:var(--gold);}
+.tc-item-name{font-size:10px;color:var(--muted);margin-top:2px;}
+.tc-arrow{display:flex;align-items:center;justify-content:center;font-size:1.2rem;color:#94a3b8;flex-shrink:0;padding:0 2px;}
+.tc-balance{text-align:center;padding:8px;border-radius:6px;font-size:12px;font-weight:700;}
+.tc-balance.fair{background:#f0fdf4;border:1px solid #bbf7d0;color:var(--green);}
+.tc-balance.you-pay{background:#fffbeb;border:1px solid #fde68a;color:#92400e;}
+.tc-balance.they-pay{background:#eff6ff;border:1px solid #bfdbfe;color:var(--blue);}
+
+/* Cash add-on */
+.cash-toggle-row{display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:var(--surface);border:1.5px solid var(--border);border-radius:8px;cursor:pointer;margin-bottom:8px;transition:all .15s;}
+.cash-toggle-row.on{border-color:var(--gold);background:#fffbeb;}
+.ctr-left{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700;}
+.toggle{width:38px;height:20px;background:#cbd5e1;border-radius:99px;position:relative;transition:background .2s;flex-shrink:0;}
+.toggle.on{background:var(--gold);}
+.toggle::after{content:'';position:absolute;top:2px;left:2px;width:16px;height:16px;background:#fff;border-radius:50%;transition:transform .2s;box-shadow:0 1px 3px rgba(0,0,0,.2);}
+.toggle.on::after{transform:translateX(18px);}
+.cash-input-wrap{display:none;margin-bottom:10px;}
+.cash-input-wrap.show{display:flex;align-items:center;border:1.5px solid #fde68a;border-radius:7px;overflow:hidden;background:#fff;}
+.cash-prefix{padding:9px 11px;background:#fef3c7;font-family:'Barlow Condensed',sans-serif;font-weight:800;color:var(--gold);font-size:1rem;border-right:1px solid #fde68a;}
+.cash-input-wrap input{flex:1;border:none;outline:none;padding:9px 11px;font-size:14px;font-family:'Lato',sans-serif;}
+
+/* Fee breakdown */
+.fee-box{background:linear-gradient(135deg,#1e3a8a 0%,#1e2d6e 100%);border-radius:10px;padding:14px 16px;margin-bottom:14px;}
+.fee-title{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.88rem;color:#93c5fd;text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px;display:flex;align-items:center;gap:6px;}
+.fee-row{display:flex;align-items:center;justify-content:space-between;font-size:12px;margin-bottom:6px;}
+.fee-label{color:#93c5fd;}
+.fee-amount{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.9rem;color:#fff;}
+.fee-divider{height:1px;background:rgba(255,255,255,.1);margin:8px 0;}
+.fee-total-row{display:flex;align-items:center;justify-content:space-between;}
+.fee-total-label{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.95rem;color:#fff;}
+.fee-total-amount{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.1rem;color:var(--gold-l);}
+.fee-note{font-size:10px;color:#60a5fa;margin-top:6px;line-height:1.4;}
+
+/* Message */
+.msg-field textarea{min-height:70px;resize:vertical;}
+
+/* Submit */
+.btn-submit{width:100%;padding:13px;background:var(--gold);color:var(--navy);border:none;border-radius:8px;font-family:'Barlow Condensed',sans-serif;font-size:1.05rem;font-weight:900;letter-spacing:.3px;cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center;gap:7px;}
+.btn-submit:hover{background:var(--gold-l);transform:translateY(-1px);box-shadow:0 4px 16px rgba(245,158,11,.35);}
+.btn-submit:disabled{opacity:.5;cursor:not-allowed;transform:none;}
+.btn-secondary{width:100%;padding:10px;background:transparent;border:1.5px solid var(--border);border-radius:8px;font-family:'Barlow Condensed',sans-serif;font-size:.95rem;font-weight:700;cursor:pointer;color:var(--muted);transition:all .15s;margin-top:7px;}
+.btn-secondary:hover{border-color:#999;color:var(--text);}
+
+/* ── CHECKOUT MODAL ── */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(10,22,40,.85);z-index:500;align-items:center;justify-content:center;padding:20px;}
+.modal-overlay.open{display:flex;}
+.modal{background:var(--white);border-radius:16px;width:100%;max-width:520px;max-height:92vh;overflow-y:auto;animation:slideUp .3s ease;}
+@keyframes slideUp{from{transform:translateY(20px);opacity:0}to{transform:translateY(0);opacity:1}}
+
+.modal-head{background:linear-gradient(135deg,var(--navy),#1a3a6b);padding:20px 24px;display:flex;align-items:center;justify-content:space-between;border-radius:16px 16px 0 0;}
+.modal-head-title{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.2rem;color:#fff;}
+.modal-close{background:rgba(255,255,255,.1);border:none;color:#94a3b8;width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:.95rem;display:flex;align-items:center;justify-content:center;transition:all .15s;}
+.modal-close:hover{background:rgba(255,255,255,.2);color:#fff;}
+.modal-body{padding:24px;}
+
+/* Checkout steps */
+.co-steps{display:flex;gap:0;margin-bottom:22px;}
+.co-step{flex:1;text-align:center;position:relative;}
+.co-step-dot{width:28px;height:28px;border-radius:50%;margin:0 auto 4px;display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:700;font-family:'Barlow Condensed',sans-serif;transition:all .3s;}
+.co-step-dot.done{background:var(--green);color:#fff;}
+.co-step-dot.active{background:var(--blue);color:#fff;box-shadow:0 0 0 3px rgba(26,86,219,.2);}
+.co-step-dot.pending{background:#e2e8f0;color:#94a3b8;}
+.co-step-label{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.3px;font-weight:700;}
+.co-step::after{content:'';position:absolute;top:14px;left:60%;width:80%;height:2px;background:#e2e8f0;z-index:-1;}
+.co-step:last-child::after{display:none;}
+.co-step.done::after{background:var(--green);}
+
+/* Trade summary in modal */
+.trade-summary-box{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:16px;}
+.tsb-title{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.88rem;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:12px;}
+.tsb-trade{display:flex;align-items:center;gap:10px;}
+.tsb-item{flex:1;background:var(--white);border:1px solid var(--border);border-radius:8px;padding:10px;text-align:center;}
+.tsb-item-emoji{font-size:2rem;margin-bottom:4px;}
+.tsb-item-name{font-size:12px;font-weight:700;margin-bottom:2px;}
+.tsb-item-val{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.95rem;}
+.tsb-item-val.theirs{color:var(--blue);}
+.tsb-item-val.yours{color:var(--gold);}
+.tsb-arrow{font-size:1.3rem;color:var(--muted);flex-shrink:0;}
+
+/* Fee breakdown modal */
+.fee-section{margin-bottom:16px;}
+.fee-section-title{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.88rem;text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--border);}
+
+.fee-party{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:13px;margin-bottom:10px;}
+.fp-header{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
+.fp-avatar{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.75rem;color:#fff;}
+.fp-name{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.95rem;}
+.fp-you{color:var(--gold);}
+.fp-them{color:var(--blue);}
+.fp-row{display:flex;justify-content:space-between;font-size:13px;padding:4px 0;border-bottom:1px solid var(--border);}
+.fp-row:last-of-type{border:none;}
+.fp-row-label{color:var(--muted);}
+.fp-row-val{font-weight:700;}
+.fp-total-row{display:flex;justify-content:space-between;padding:8px 10px;border-radius:6px;margin-top:6px;}
+.fp-total-row.you{background:#fffbeb;border:1px solid #fde68a;}
+.fp-total-row.them{background:#eff6ff;border:1px solid #bfdbfe;}
+.fp-total-label{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.9rem;}
+.fp-total-label.you{color:#92400e;}
+.fp-total-label.them{color:var(--blue);}
+.fp-total-amount{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1rem;}
+.fp-total-amount.you{color:var(--gold);}
+.fp-total-amount.them{color:var(--blue);}
+
+.platform-total{background:linear-gradient(135deg,var(--navy),#1a3a6b);border-radius:10px;padding:14px;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between;}
+.pt-left .pt-label{font-size:11px;color:#64748b;text-transform:uppercase;letter-spacing:.5px;margin-bottom:2px;}
+.pt-left .pt-title{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.95rem;color:#fff;}
+.pt-amount{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.4rem;color:var(--gold-l);}
+
+/* Payment method */
+.payment-methods{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;}
+.pay-method{border:1.5px solid var(--border);border-radius:8px;padding:10px;text-align:center;cursor:pointer;transition:all .15s;font-size:12px;font-weight:700;color:var(--muted);}
+.pay-method:hover,.pay-method.active{border-color:var(--blue);color:var(--blue);background:#eff6ff;}
+.pay-method-icon{font-size:1.4rem;display:block;margin-bottom:4px;}
+
+.mfield{margin-bottom:12px;}
+.mfield label{display:block;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px;}
+.mfield input{width:100%;border:1.5px solid var(--border);border-radius:7px;padding:10px 12px;font-size:14px;font-family:'Lato',sans-serif;outline:none;transition:border-color .15s;}
+.mfield input:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(26,86,219,.08);}
+.mfield-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+
+.modal-btn{width:100%;padding:12px;border:none;border-radius:8px;font-family:'Barlow Condensed',sans-serif;font-size:1.05rem;font-weight:900;cursor:pointer;transition:all .15s;margin-bottom:7px;}
+.modal-btn.gold{background:var(--gold);color:var(--navy);}
+.modal-btn.gold:hover{background:var(--gold-l);transform:translateY(-1px);}
+.modal-btn.outline{background:transparent;border:1.5px solid var(--border);color:var(--muted);}
+.modal-btn.outline:hover{border-color:#999;color:var(--text);}
+.modal-btn.green{background:var(--green);color:#fff;}
+.modal-btn.green:hover{background:var(--green-l);}
+
+/* Confetti / success */
+.checkout-success{text-align:center;padding:20px 0;}
+.cs-emoji{font-size:4rem;margin-bottom:14px;animation:popBounce .6s ease;}
+@keyframes popBounce{0%{transform:scale(0)}60%{transform:scale(1.15)}100%{transform:scale(1)}}
+.cs-title{font-family:'Barlow Condensed',sans-serif;font-size:2rem;font-weight:900;margin-bottom:8px;}
+.cs-desc{font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:20px;max-width:320px;margin-left:auto;margin-right:auto;}
+.cs-receipt{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:16px;text-align:left;}
+.cs-receipt-title{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.85rem;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:10px;}
+.cs-receipt-row{display:flex;justify-content:space-between;font-size:12px;padding:4px 0;border-bottom:1px solid var(--border);}
+.cs-receipt-row:last-child{border:none;font-weight:700;font-size:13px;}
+
+/* Offers list */
+.offers-list{background:var(--white);border:1px solid var(--border);border-radius:14px;padding:18px 20px;}
+.ol-title{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1rem;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;}
+.ol-count{background:var(--red);color:#fff;font-size:11px;font-weight:800;padding:2px 7px;border-radius:99px;}
+.offer-item{display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--surface);border:1px solid var(--border);border-radius:8px;margin-bottom:7px;cursor:pointer;transition:all .15s;}
+.offer-item:hover{border-color:var(--blue);transform:translateX(2px);}
+.oi-av{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.85rem;color:#fff;flex-shrink:0;}
+.oi-info{flex:1;min-width:0;}
+.oi-name{font-weight:700;font-size:13px;margin-bottom:1px;}
+.oi-detail{font-size:11px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.oi-right{text-align:right;flex-shrink:0;}
+.oi-val{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.95rem;}
+.oi-time{font-size:10px;color:var(--muted);margin-top:1px;}
+
+/* Toast */
+.toast{position:fixed;bottom:22px;right:22px;background:var(--navy);color:#e2e8f0;border:1px solid #1e3a5f;border-left:4px solid var(--green);border-radius:8px;padding:11px 16px;font-size:13px;z-index:999;display:flex;align-items:center;gap:9px;max-width:290px;box-shadow:0 8px 28px rgba(0,0,0,.25);transform:translateX(120%);transition:transform .3s ease;}
+.toast.show{transform:translateX(0);}
+
+@media(max-width:900px){.page{grid-template-columns:1fr;}.offer-panel{position:static;}}
+@media(max-width:580px){.seller-stats{grid-template-columns:repeat(2,1fr);}.payment-methods{grid-template-columns:1fr;}}
+
+/* ── DARK MODE ── */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --navy:#0a1628;
+    --blue:#3b82f6;
+    --blue-l:#60a5fa;
+    --gold:#fbbf24;
+    --gold-l:#fcd34d;
+    --green:#22c55e;
+    --green-l:#4ade80;
+    --red:#f87171;
+    --orange:#fb923c;
+    --text:#f1f5f9;
+    --muted:#94a3b8;
+    --light:#64748b;
+    --border:rgba(255,255,255,.1);
+    --bg:#0f172a;
+    --white:#1e293b;
+    --surface:#162032;
+    --card:#1e293b;
+  }
+  body { background:#0f172a !important; color:#f1f5f9 !important; }
+  /* Nav always dark - already fine */
+  /* Cards and panels */
+  .card, .panel, .pay-card, .summary-card, .rate-card, .review-card,
+  .profile-card, .rating-overview-card, .dispute-flow, .step-panel,
+  .step-list, .protection-hero ~ .panel, .stat-card, .fund-card,
+  .chart-card, .dq-item, .ai-panel { background:#1e293b !important; border-color:rgba(255,255,255,.08) !important; }
+  /* Text */
+  h1,h2,h3,h4,h5,h6 { color:#f1f5f9 !important; }
+  p, li, span:not(.logo *):not(.badge):not(.chip) { color:#94a3b8; }
+  strong { color:#e2e8f0 !important; }
+  /* Inputs */
+  input, select, textarea {
+    background:#162032 !important;
+    border-color:rgba(255,255,255,.12) !important;
+    color:#f1f5f9 !important;
+  }
+  input::placeholder, textarea::placeholder { color:#334155 !important; }
+  /* Surfaces */
+  .surface, [class*="surface"], [class*="-body"], [class*="-wrap"],
+  .pay-body, .sp-body, .panel-body, .mbody, .dq, .ai-chat,
+  .sum-body, .pc-body { background:#1e293b !important; }
+  /* Borders */
+  [class*="border"], hr { border-color:rgba(255,255,255,.08) !important; }
+  /* Table rows */
+  .trow:hover, .saved-card:hover, .step-item:hover { background:rgba(255,255,255,.05) !important; }
+  /* White backgrounds that need to go dark */
+  .white-bg, .bg-white, [style*="background:#fff"], [style*="background: #fff"],
+  [style*="background:white"], [style*="background: white"] { background:#1e293b !important; }
+  /* Legal pages specific */
+  .doc-header { background:transparent !important; }
+  .doc-title { color:#f1f5f9 !important; }
+  .doc-meta { color:#94a3b8 !important; }
+  .doc-meta strong { color:#e2e8f0 !important; }
+  .toc { background:#1e293b !important; border-color:rgba(255,255,255,.08) !important; }
+  .toc-title { color:#f1f5f9 !important; }
+  .section-title { color:#f1f5f9 !important; border-color:rgba(255,255,255,.08) !important; }
+  .section-num { color:#60a5fa !important; }
+  .section p, .section li { color:#94a3b8 !important; }
+  .section p strong, .section li strong { color:#e2e8f0 !important; }
+  /* Highlight boxes in legal pages — keep light backgrounds with dark text */
+  .hb-blue { background:#1e3a5f !important; border-color:#1d4ed8 !important; border-left-color:#3b82f6 !important; }
+  .hb-yellow { background:#422006 !important; border-color:#92400e !important; border-left-color:#fbbf24 !important; }
+  .hb-red { background:#450a0a !important; border-color:#991b1b !important; border-left-color:#f87171 !important; }
+  .hb-green { background:#052e16 !important; border-color:#166534 !important; border-left-color:#22c55e !important; }
+  .hb-blue .hb-text { color:#93c5fd !important; }
+  .hb-yellow .hb-text { color:#fcd34d !important; }
+  .hb-red .hb-text { color:#fca5a5 !important; }
+  .hb-green .hb-text { color:#86efac !important; }
+  .hb-text strong { color:inherit !important; }
+  /* Tables */
+  .fee-table th, .data-table th { background:#0f172a !important; color:#f1f5f9 !important; }
+  .fee-table td, .data-table td { color:#94a3b8 !important; background:#1e293b !important; }
+  .fee-table tr:nth-child(even) td, .data-table tr:nth-child(even) td { background:#162032 !important; }
+  .fee-table td:first-child, .data-table td:first-child { color:#e2e8f0 !important; }
+  /* Rights grid */
+  .right-card, .badge-card, .pf-card, .stat-card { background:#1e293b !important; border-color:rgba(255,255,255,.08) !important; }
+  .rc-title, .bc-name, .pf-title, .sc-lbl { color:#e2e8f0 !important; }
+  .rc-desc, .bc-desc, .pf-desc { color:#94a3b8 !important; }
+  /* Contact box stays dark - already fine */
+  /* Back buttons */
+  .back-btn { background:#1e3a8a !important; color:#fff !important; }
+  /* Nav links */
+  .nav-links a { color:#94a3b8 !important; }
+  .nav-links a:hover { color:#fff !important; }
+  /* Modal */
+  .modal, .overlay .modal { background:#1e293b !important; border-color:rgba(255,255,255,.1) !important; }
+  .mfield input, .mfield select, .mfield textarea { background:#0f172a !important; }
+  /* Chart bars already colored */
+  /* Star ratings */
+  .star, .mini-star { filter:none !important; }
+  /* OTP inputs */
+  .otp-input { background:#162032 !important; color:#f1f5f9 !important; }
+  .otp-input.filled { background:#052e16 !important; }
+  /* Upload zones */
+  .upload-zone, .upload-side, .ev-slot { background:#162032 !important; border-color:rgba(255,255,255,.1) !important; }
+  /* Step list sidebar */
+  .step-list { background:#1e293b !important; }
+  .step-item { background:transparent !important; }
+  .step-item.completed { background:rgba(22,163,74,.1) !important; }
+  .step-item.active { background:rgba(26,86,219,.1) !important; }
+  .si-title { color:#e2e8f0 !important; }
+  .si-meta { color:#64748b !important; }
+  /* Trust ring text */
+  .trust-num { color:#fff !important; }
+  /* Bypass rows */
+  .bp-msg, .br-msg { background:rgba(124,58,237,.15) !important; }
+  /* Summary card */
+  .sum-row-label { color:#94a3b8 !important; }
+  .sum-row-val { color:#e2e8f0 !important; }
+  /* Payment page */
+  .card-logo-chip { border-color:rgba(255,255,255,.15) !important; }
+  .express-btn.google { background:#1e293b !important; color:#f1f5f9 !important; border-color:rgba(255,255,255,.15) !important; }
+  /* Category cards */
+  .cat-rate, .cbd-item, .metric, .wb-stat, .phs-item { background:rgba(255,255,255,.05) !important; border-color:rgba(255,255,255,.08) !important; }
+  .wb-num, .metric-val, .sc-num { color:#fbbf24 !important; }
+  /* Payout rows */
+  .pay-row, .trow, .ur, .bp-row { border-color:rgba(255,255,255,.06) !important; }
+  /* Scrollbars */
+  ::-webkit-scrollbar { background:#0f172a; }
+  ::-webkit-scrollbar-thumb { background:#334155; border-radius:4px; }
+}
+
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<div class="nav">
+  <a href="alltrades.html" style="text-decoration:none"><div class="logo"><span class="a">Trade</span><span class="t">zy</span><span class="d">.</span></div></a>
+  <div class="nav-links">
+    <button class="nav-btn ghost">💬 Messages <span style="background:var(--red);color:#fff;font-size:10px;padding:1px 5px;border-radius:99px;margin-left:2px">3</span></button>
+    <button class="nav-btn ghost">📋 My Trades</button>
+    <button class="nav-btn gold" onclick="showToast('📦','Going to Post a Listing!')">+ List Item</button>
+  </div>
+</div>
+
+<!-- BREADCRUMB -->
+<div class="breadcrumb">
+  <a>Home</a><span>›</span><a>Food &amp; Water</a><span>›</span> Case of Assorted Canned Goods (24 cans)
+</div>
+
+<!-- PAGE -->
+<div class="page">
+
+  <!-- LEFT: ITEM DETAIL -->
+  <div>
+
+    <!-- Gallery -->
+    <div class="img-gallery">
+      <div class="main-img" id="mainImg">
+        <div class="img-badges">
+          <span class="ibadge ess">ESSENTIAL</span>
+          <span class="ibadge local">LOCAL</span>
+          <span class="ibadge hot">🔥 HOT</span>
+        </div>
+        <div class="watch-btn" id="watchBtn" onclick="toggleWatch()">♡</div>
+        <span id="mainEmoji">🥫</span>
+      </div>
+      <div class="thumbs">
+        <div class="thumb active" onclick="switchImg(this,'🥫')">🥫</div>
+        <div class="thumb" onclick="switchImg(this,'📦')">📦</div>
+        <div class="thumb" onclick="switchImg(this,'🏷️')">🏷️</div>
+        <div class="thumb" onclick="switchImg(this,'📋')">📋</div>
+      </div>
+    </div>
+
+    <!-- Detail -->
+    <div class="detail-card">
+      <div class="item-category">🥫 Food &amp; Water · Essential Category</div>
+      <div class="item-title">Case of Assorted Canned Goods (24 Cans)</div>
+      <div class="item-meta-row">
+        <div class="meta-chip"><span class="mc-icon">✨</span> New / Sealed</div>
+        <div class="meta-chip"><span class="mc-icon">📍</span> 1.4 mi away</div>
+        <div class="meta-chip"><span class="mc-icon">⏰</span> Listed 2h ago</div>
+        <div class="meta-chip"><span class="mc-icon">👁</span> 47 views</div>
+      </div>
+
+      <!-- VALUE ESTIMATE BANNER -->
+      <div class="value-banner">
+        <div class="vb-icon">📊</div>
+        <div class="vb-text">
+          <div class="vb-title">Tradezy Value Estimate</div>
+          <div class="vb-desc">Based on current retail prices, recent local trades, and market demand in your area.</div>
+          <div class="vb-sources">
+            <span class="vb-source">Walmart: $28–$34</span>
+            <span class="vb-source">Local avg: $26</span>
+            <span class="vb-source">Recent trades: $22–$30</span>
+          </div>
+        </div>
+        <div class="vb-value">
+          <div class="vb-num">$26–$32</div>
+          <div class="vb-label">Est. Fair Value</div>
+        </div>
+      </div>
+
+      <div class="item-desc">
+        Mixed case of 24 assorted canned goods — includes corn, green beans, mixed veggies, tomatoes, and chickpeas. All cans are sealed, undamaged, and have 2+ years until expiration. Great for food storage or everyday use. Picked up extra during a bulk sale and happy to trade for other essentials or useful items.
+      </div>
+
+      <div class="wants-box">
+        <div class="wants-title">🤝 Seller is Looking For</div>
+        <div class="wants-text">"Tools, dry goods (rice/flour/beans), garden seeds, or useful household items"</div>
+        <div class="wants-tags">
+          <span class="wants-tag">Tools</span>
+          <span class="wants-tag">Rice / Flour</span>
+          <span class="wants-tag">Garden Seeds</span>
+          <span class="wants-tag">Dry Goods</span>
+          <span class="wants-tag">Household</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Seller -->
+    <div class="seller-card">
+      <div class="seller-row">
+        <div class="seller-av">PR</div>
+        <div>
+          <div class="seller-name">PrepMike</div>
+          <div class="seller-since">📍 Austin, TX · Member since Jan 2026</div>
+        </div>
+        <div style="margin-left:auto">
+          <div style="color:var(--gold);font-size:1rem;margin-bottom:2px">★★★★★</div>
+          <div style="font-size:11px;color:var(--muted);text-align:right">4.9 · 38 trades</div>
+        </div>
+      </div>
+      <div class="seller-stats">
+        <div class="ss-item"><div class="ss-num">38</div><div class="ss-label">Trades</div></div>
+        <div class="ss-item"><div class="ss-num">4.9★</div><div class="ss-label">Rating</div></div>
+        <div class="ss-item"><div class="ss-num">100%</div><div class="ss-label">Response</div></div>
+        <div class="ss-item"><div class="ss-num">&lt;1hr</div><div class="ss-label">Reply Time</div></div>
+      </div>
+    </div>
+
+    <!-- Safety -->
+    <div class="safety-box">
+      <span>🛡️</span>
+      <div><strong>Safety tip:</strong> Always meet in a public place — parking lots, libraries, or police station community lots. Never share your home address. Tradezy never asks for payment outside this platform.</div>
+    </div>
+
+    <!-- Existing offers -->
+    <div class="offers-list">
+      <div class="ol-title">Current Offers <span class="ol-count">9</span></div>
+      <div class="offer-item"><div class="oi-av" style="background:#1a56db">RJ</div><div class="oi-info"><div class="oi-name">RiderJay</div><div class="oi-detail">🔄 DeWalt Drill + 2 Batteries (Like New)</div></div><div class="oi-right"><div class="oi-val" style="color:var(--blue)">~$140</div><div class="oi-time">14m ago</div></div></div>
+      <div class="offer-item"><div class="oi-av" style="background:#16a34a">GS</div><div class="oi-info"><div class="oi-name">GardenSue</div><div class="oi-detail">🔄💵 25lb Rice Bag + $8 cash</div></div><div class="oi-right"><div class="oi-val" style="color:var(--green)">~$30</div><div class="oi-time">31m ago</div></div></div>
+      <div class="offer-item"><div class="oi-av" style="background:#f59e0b">TL</div><div class="oi-info"><div class="oi-name">TechLisa</div><div class="oi-detail">🔄 Craftsman Wrench Set (12pc)</div></div><div class="oi-right"><div class="oi-val" style="color:var(--gold)">~$45</div><div class="oi-time">1h ago</div></div></div>
+    </div>
+
+  </div>
+
+  <!-- RIGHT: OFFER PANEL -->
+  <div class="offer-panel">
+    <div class="op-head">
+      <div class="op-head-title">🤝 Make a Trade Offer</div>
+      <div class="op-head-sub">Seller has 38 completed trades · 4.9★ rating</div>
+    </div>
+    <div class="op-body">
+
+      <!-- Offer type tabs -->
+      <div class="offer-tabs">
+        <div class="otab active" id="tab-trade" onclick="setOfferType('trade')">
+          <div class="otab-icon">🔄</div>
+          <div class="otab-label">Trade Only</div>
+        </div>
+        <div class="otab" id="tab-tc" onclick="setOfferType('tc')">
+          <div class="otab-icon">🔄💵</div>
+          <div class="otab-label">Trade+Cash</div>
+        </div>
+        <div class="otab" id="tab-cash" onclick="setOfferType('cash')">
+          <div class="otab-icon">💵</div>
+          <div class="otab-label">Cash Only</div>
+        </div>
+      </div>
+
+      <!-- YOUR ITEM -->
+      <div class="your-item-box" id="yourItemSection">
+        <div class="yib-title">
+          Your Item to Trade
+          <span style="font-size:10px;color:var(--blue);font-weight:700;cursor:pointer" onclick="showToast('📋','Browse your listings to select one!')">From my listings →</span>
+        </div>
+        <div class="field">
+          <label>What are you offering?</label>
+          <input type="text" id="offerItem" placeholder="e.g. 25lb bag of rice, cordless drill…" oninput="updateEstimate()">
+        </div>
+        <div class="field">
+          <label>Condition</label>
+          <select id="offerCond" onchange="updateEstimate()">
+            <option>New / Sealed</option>
+            <option>Like New</option>
+            <option selected>Good</option>
+            <option>Fair</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Your estimated value ($)</label>
+          <input type="number" id="offerVal" placeholder="0.00" min="0" step="0.01" oninput="updateEstimate();updateFees()">
+        </div>
+
+        <!-- Live value estimate for YOUR item -->
+        <div class="estimate-row" id="yourEstRow" style="display:none">
+          <div class="er-left">
+            <div style="font-weight:700;margin-bottom:1px">📊 Tradezy Estimate</div>
+            <div id="yourEstSource" style="font-size:10px;opacity:.75">Based on market data</div>
+          </div>
+          <div>
+            <div class="er-val" id="yourEstVal">$—</div>
+            <div class="er-label">Fair value range</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TRADE COMPARISON -->
+      <div class="trade-compare" id="compareBox" style="display:none">
+        <div class="tc-title">📊 Trade Value Comparison</div>
+        <div class="tc-bars">
+          <div class="tc-side theirs">
+            <div class="tc-who">Their Item</div>
+            <div class="tc-amount theirs" id="theirAmt">$29</div>
+            <div class="tc-item-name">Canned Goods (24)</div>
+          </div>
+          <div class="tc-arrow">⇄</div>
+          <div class="tc-side yours">
+            <div class="tc-who">Your Item</div>
+            <div class="tc-amount yours" id="yourAmt">$—</div>
+            <div class="tc-item-name" id="yourItemLabel">Your offer</div>
+          </div>
+        </div>
+        <div class="tc-balance" id="tcBalance">Enter your item value to see balance</div>
+      </div>
+
+      <!-- CASH ADD-ON (trade+cash mode) -->
+      <div id="cashSection" style="display:none">
+        <div class="cash-toggle-row on" id="cashToggleRow">
+          <div class="ctr-left">💵 Add cash to balance the trade?</div>
+          <div class="toggle on" id="cashToggle"></div>
+        </div>
+        <div class="cash-input-wrap show" id="cashInputWrap">
+          <span class="cash-prefix">$</span>
+          <input type="number" id="cashAmt" placeholder="Amount you'll add" min="0" oninput="updateFees()">
+        </div>
+      </div>
+
+      <!-- CASH ONLY SECTION -->
+      <div id="cashOnlySection" style="display:none">
+        <div class="field">
+          <label>Your Cash Offer ($)</label>
+          <div style="display:flex;align-items:center;border:1.5px solid var(--border);border-radius:7px;overflow:hidden;background:#fff;">
+            <span style="padding:9px 11px;background:#f1f5f9;font-family:'Barlow Condensed',sans-serif;font-weight:800;color:var(--muted);border-right:1px solid var(--border);">$</span>
+            <input type="number" id="cashOnlyAmt" placeholder="e.g. 28.00" style="flex:1;border:none;outline:none;padding:9px 11px;font-size:14px;font-family:'Lato',sans-serif;" oninput="updateFees()">
+          </div>
+          <div style="font-size:11px;color:var(--muted);margin-top:4px">Seller's estimated value: $26–$32. Fair offers get faster responses.</div>
+        </div>
+      </div>
+
+      <!-- FEE BREAKDOWN -->
+      <div class="fee-box" id="feeBox">
+        <div class="fee-title">🏦 Tradezy Platform Fee</div>
+        <div class="fee-row"><span class="fee-label">Your item value</span><span class="fee-amount" id="feeYourVal">$0.00</span></div>
+        <div class="fee-row"><span class="fee-label">Cash add-on</span><span class="fee-amount" id="feeCash">$0.00</span></div>
+        <div class="fee-row"><span class="fee-label">5% platform fee (you)</span><span class="fee-amount" id="feeYouFee" style="color:var(--gold-l)">$0.00</span></div>
+        <div class="fee-divider"></div>
+        <div class="fee-total-row">
+          <span class="fee-total-label">Your total at checkout</span>
+          <span class="fee-total-amount" id="feeTotalYou">$0.00</span>
+        </div>
+        <div class="fee-note">💡 The seller also pays a 5% fee on their item's value. Both fees support Tradezy — keeping it free to list and browse.</div>
+      </div>
+
+      <!-- MESSAGE -->
+      <div class="field msg-field">
+        <label>Message to Seller (optional)</label>
+        <textarea id="offerMsg" placeholder="Introduce yourself, ask a question, or explain why it's a fair trade…" style="width:100%;border:1.5px solid var(--border);border-radius:7px;padding:9px 12px;font-size:13px;font-family:'Lato',sans-serif;outline:none;resize:vertical;min-height:70px;transition:border-color .15s;" onfocus="this.style.borderColor='var(--blue)'" onblur="this.style.borderColor='var(--border)'"></textarea>
+      </div>
+
+      <button class="btn-submit" onclick="openCheckout()">
+        🤝 Send Trade Offer
+      </button>
+      <button class="btn-secondary" onclick="showToast('💬','Opening chat with PrepMike…')">💬 Message Seller First</button>
+
+    </div>
+  </div>
+
+</div><!-- /page -->
+
+<!-- ══ CHECKOUT MODAL ══ -->
+<div class="modal-overlay" id="checkoutModal">
+  <div class="modal">
+    <div class="modal-head">
+      <div class="modal-head-title" id="modalTitle">🤝 Confirm Your Offer</div>
+      <button class="modal-close" onclick="closeCheckout()">✕</button>
+    </div>
+    <div class="modal-body" id="modalBody">
+      <!-- Rendered by JS -->
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toastEl"><span id="toastIc">✅</span><span id="toastTx">Done!</span></div>
+
+<script>
+// ── STATE ──
+let offerType = 'trade';
+let coStep = 1;
+const THEIR_VALUE = 29; // seller's item est. value
+const THEIR_ITEM = 'Canned Goods (24 cans)';
+const THEIR_NAME = 'PrepMike';
+
+// Value lookup table (simple simulation)
+const VALUE_MAP = {
+  'rice': {min:18,max:26,source:'Walmart avg: $20–$28'},
+  'flour': {min:8,max:14,source:'Grocery avg: $8–$14'},
+  'beans': {min:12,max:18,source:'Bulk avg: $12–$20'},
+  'water': {min:14,max:22,source:'Retail avg: $15–$22'},
+  'drill': {min:80,max:160,source:'Home Depot avg: $90–$180'},
+  'bike': {min:150,max:400,source:'Local sales avg: $180–$420'},
+  'laptop': {min:200,max:600,source:'Used market avg: $220–$650'},
+  'phone': {min:100,max:400,source:'Resale avg: $120–$450'},
+  'tools': {min:40,max:120,source:'Hardware avg: $45–$130'},
+  'guitar': {min:80,max:300,source:'Music store avg: $90–$350'},
+  'seeds': {min:8,max:20,source:'Garden supply avg: $8–$22'},
+  'canned': {min:20,max:35,source:'Grocery avg: $22–$36'},
+  'eggs': {min:6,max:14,source:'Farm market avg: $6–$15'},
+  'corn': {min:4,max:10,source:'Market avg: $5–$12'},
+  'game': {min:20,max:60,source:'GameStop avg: $20–$65'},
+  'tv': {min:80,max:250,source:'Retail avg: $90–$280'},
+};
+
+function getEstimate(text) {
+  if (!text) return null;
+  const lower = text.toLowerCase();
+  for (const [key, val] of Object.entries(VALUE_MAP)) {
+    if (lower.includes(key)) return val;
+  }
+  return null;
+}
+
+// ── OFFER TYPE ──
+function setOfferType(type) {
+  offerType = type;
+  document.querySelectorAll('.otab').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab-' + type).classList.add('active');
+
+  document.getElementById('yourItemSection').style.display = (type === 'cash') ? 'none' : 'block';
+  document.getElementById('cashSection').style.display = (type === 'tc') ? 'block' : 'none';
+  document.getElementById('cashOnlySection').style.display = (type === 'cash') ? 'block' : 'none';
+  updateFees();
+}
+
+// ── ESTIMATE YOUR ITEM ──
+function updateEstimate() {
+  const text = document.getElementById('offerItem').value;
+  const manualVal = parseFloat(document.getElementById('offerVal').value) || 0;
+  const est = getEstimate(text);
+  const row = document.getElementById('yourEstRow');
+
+  if (text.length > 2) {
+    row.style.display = 'flex';
+    if (est) {
+      const mid = Math.round((est.min + est.max) / 2);
+      document.getElementById('yourEstVal').textContent = `$${est.min}–$${est.max}`;
+      document.getElementById('yourEstSource').textContent = est.source;
+      // Auto-suggest value if user hasn't entered one
+      if (!manualVal) document.getElementById('offerVal').placeholder = `Suggested: $${mid}`;
+    } else {
+      document.getElementById('yourEstVal').textContent = 'Type more for estimate';
+      document.getElementById('yourEstSource').textContent = 'Not enough info yet';
+    }
+  } else {
+    row.style.display = 'none';
+  }
+
+  updateComparison();
+  updateFees();
+}
+
+// ── TRADE COMPARISON ──
+function updateComparison() {
+  const yourVal = parseFloat(document.getElementById('offerVal')?.value) || 0;
+  const itemText = document.getElementById('offerItem')?.value || 'Your offer';
+  const compareBox = document.getElementById('compareBox');
+
+  if (yourVal > 0 && offerType !== 'cash') {
+    compareBox.style.display = 'block';
+    document.getElementById('yourAmt').textContent = `$${yourVal.toFixed(0)}`;
+    document.getElementById('yourItemLabel').textContent = itemText.slice(0,22) || 'Your offer';
+    document.getElementById('theirAmt').textContent = `$${THEIR_VALUE}`;
+
+    const diff = THEIR_VALUE - yourVal;
+    const bal = document.getElementById('tcBalance');
+    if (Math.abs(diff) <= 3) {
+      bal.className = 'tc-balance fair';
+      bal.textContent = '✅ Even trade — fair for both sides!';
+    } else if (diff > 0) {
+      bal.className = 'tc-balance you-pay';
+      bal.textContent = `⚖️ Their item is worth ~$${diff.toFixed(0)} more — consider adding cash`;
+    } else {
+      bal.className = 'tc-balance they-pay';
+      bal.textContent = `⚖️ Your item is worth ~$${Math.abs(diff).toFixed(0)} more — great deal for them!`;
+    }
+  } else {
+    compareBox.style.display = 'none';
+  }
+}
+
+// ── FEE CALC ──
+function updateFees() {
+  let yourItemVal = 0;
+  let cashAdd = 0;
+
+  if (offerType === 'trade' || offerType === 'tc') {
+    yourItemVal = parseFloat(document.getElementById('offerVal')?.value) || 0;
+  }
+  if (offerType === 'tc') {
+    cashAdd = parseFloat(document.getElementById('cashAmt')?.value) || 0;
+  }
+  if (offerType === 'cash') {
+    yourItemVal = parseFloat(document.getElementById('cashOnlyAmt')?.value) || 0;
+  }
+
+  const base = yourItemVal + cashAdd;
+  const fee = base * 0.05;
+  const total = base + fee;
+
+  document.getElementById('feeYourVal').textContent = `$${yourItemVal.toFixed(2)}`;
+  document.getElementById('feeCash').textContent = `$${cashAdd.toFixed(2)}`;
+  document.getElementById('feeYouFee').textContent = `$${fee.toFixed(2)}`;
+  document.getElementById('feeTotalYou').textContent = `$${total.toFixed(2)}`;
+}
+
+// ── WATCH ──
+function toggleWatch() {
+  const btn = document.getElementById('watchBtn');
+  btn.classList.toggle('on');
+  btn.textContent = btn.classList.contains('on') ? '♥' : '♡';
+  showToast(btn.classList.contains('on') ? '♥' : '♡', btn.classList.contains('on') ? 'Added to watchlist!' : 'Removed from watchlist');
+}
+
+function switchImg(el, emoji) {
+  document.querySelectorAll('.thumb').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('mainEmoji').textContent = emoji;
+}
+
+// ── CHECKOUT MODAL ──
+function openCheckout() {
+  const item = document.getElementById('offerItem')?.value || '';
+  const val = parseFloat(document.getElementById('offerVal')?.value) || 0;
+  const cashAdd = parseFloat(document.getElementById('cashAmt')?.value) || 0;
+  const cashOnly = parseFloat(document.getElementById('cashOnlyAmt')?.value) || 0;
+  const msg = document.getElementById('offerMsg')?.value || '';
+
+  if (offerType !== 'cash' && !item.trim()) {
+    showToast('⚠️', 'Please describe what you are offering to trade.');
+    return;
+  }
+  if (offerType === 'cash' && !cashOnly) {
+    showToast('⚠️', 'Please enter your cash offer amount.');
+    return;
+  }
+
+  coStep = 1;
+  document.getElementById('checkoutModal').classList.add('open');
+  renderCheckoutStep(1);
+}
+
+function closeCheckout() {
+  document.getElementById('checkoutModal').classList.remove('open');
+  coStep = 1;
+}
+
+function renderCheckoutStep(step) {
+  const modal = document.getElementById('modalBody');
+  const title = document.getElementById('modalTitle');
+
+  // values
+  const yourItem = document.getElementById('offerItem')?.value || 'Cash Offer';
+  const yourVal = offerType === 'cash'
+    ? parseFloat(document.getElementById('cashOnlyAmt')?.value) || 0
+    : parseFloat(document.getElementById('offerVal')?.value) || 0;
+  const cashAdd = parseFloat(document.getElementById('cashAmt')?.value) || 0;
+  const theirFee = THEIR_VALUE * 0.05;
+  const yourBase = yourVal + (offerType === 'tc' ? cashAdd : 0);
+  const yourFee = yourBase * 0.05;
+  const yourTotal = yourBase + yourFee;
+  const theirTotal = THEIR_VALUE + theirFee;
+  const platformTotal = yourFee + theirFee;
+
+  if (step === 1) {
+    title.textContent = '📋 Review Your Offer';
+    modal.innerHTML = `
+      ${stepDots(1)}
+      <div class="trade-summary-box">
+        <div class="tsb-title">Trade Summary</div>
+        <div class="tsb-trade">
+          <div class="tsb-item">
+            <div class="tsb-item-emoji">🥫</div>
+            <div class="tsb-item-name">${THEIR_ITEM}</div>
+            <div class="tsb-item-val theirs">~$${THEIR_VALUE}</div>
+            <div style="font-size:10px;color:var(--muted);margin-top:2px">${THEIR_NAME}</div>
+          </div>
+          <div class="tsb-arrow">⇄</div>
+          <div class="tsb-item">
+            <div class="tsb-item-emoji">${offerType === 'cash' ? '💵' : '📦'}</div>
+            <div class="tsb-item-name">${yourItem || 'Cash'}</div>
+            <div class="tsb-item-val yours">~$${yourVal.toFixed(0)}</div>
+            <div style="font-size:10px;color:var(--muted);margin-top:2px">You</div>
+          </div>
+        </div>
+        ${cashAdd > 0 ? `<div style="background:#fffbeb;border:1px solid #fde68a;border-radius:6px;padding:8px 10px;margin-top:8px;font-size:12px;color:#92400e;text-align:center">💵 You're adding <strong>$${cashAdd.toFixed(2)}</strong> cash to balance the trade</div>` : ''}
+      </div>
+
+      <div class="fee-section">
+        <div class="fee-section-title">💰 Value Estimates &amp; 5% Platform Fees</div>
+        <div class="fee-party">
+          <div class="fp-header">
+            <div class="fp-avatar" style="background:var(--gold)">YO</div>
+            <div class="fp-name fp-you">You</div>
+          </div>
+          <div class="fp-row"><span class="fp-row-label">Item value</span><span class="fp-row-val">$${yourVal.toFixed(2)}</span></div>
+          ${offerType === 'tc' ? `<div class="fp-row"><span class="fp-row-label">Cash add-on</span><span class="fp-row-val">$${cashAdd.toFixed(2)}</span></div>` : ''}
+          <div class="fp-row"><span class="fp-row-label">5% Tradezy fee</span><span class="fp-row-val" style="color:var(--gold)">$${yourFee.toFixed(2)}</span></div>
+          <div class="fp-total-row you">
+            <span class="fp-total-label you">Your total at checkout</span>
+            <span class="fp-total-amount you">$${yourTotal.toFixed(2)}</span>
+          </div>
+        </div>
+        <div class="fee-party">
+          <div class="fp-header">
+            <div class="fp-avatar" style="background:var(--blue)">PM</div>
+            <div class="fp-name fp-them">${THEIR_NAME}</div>
+          </div>
+          <div class="fp-row"><span class="fp-row-label">Their item value</span><span class="fp-row-val">$${THEIR_VALUE.toFixed(2)}</span></div>
+          <div class="fp-row"><span class="fp-row-label">5% Tradezy fee</span><span class="fp-row-val" style="color:var(--blue)">$${theirFee.toFixed(2)}</span></div>
+          <div class="fp-total-row them">
+            <span class="fp-total-label them">${THEIR_NAME}'s total</span>
+            <span class="fp-total-amount them">$${theirTotal.toFixed(2)}</span>
+          </div>
+        </div>
+        <div class="platform-total">
+          <div class="pt-left">
+            <div class="pt-label">Tradezy Platform Receives</div>
+            <div class="pt-title">Combined 5% fees from both traders</div>
+          </div>
+          <div class="pt-amount">$${platformTotal.toFixed(2)}</div>
+        </div>
+      </div>
+
+      <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:12px;font-size:12px;color:#166534;display:flex;gap:7px;margin-bottom:14px">
+        <span>ℹ️</span><div>Fees are only charged when a trade is <strong>accepted and completed</strong>. Sending this offer is free. If declined, you pay nothing.</div>
+      </div>
+
+      <button class="modal-btn gold" onclick="nextCoStep()">Continue to Payment →</button>
+      <button class="modal-btn outline" onclick="closeCheckout()">← Edit Offer</button>`;
+  }
+
+  else if (step === 2) {
+    title.textContent = '📷 Item Photos & Condition';
+    modal.innerHTML = `
+      ${stepDots(2)}
+
+      <div style="background:rgba(26,86,219,.08);border:1px solid rgba(26,86,219,.2);border-left:3px solid var(--blue);border-radius:8px;padding:11px 13px;margin-bottom:14px;font-size:12px;color:#1e3a8a;display:flex;gap:8px">
+        <span>📷</span>
+        <div><strong>3 photos required</strong> — Upload at least 3 photos of your item before submitting your offer. Photos are shown to the other trader before they accept, and automatically saved as dispute evidence if needed.</div>
+      </div>
+
+      <div style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.88rem;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:8px">Your Item Photos <span style="color:var(--red);font-size:.75rem">* at least 3 required</span></div>
+
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px" id="photoGrid">
+        <div class="photo-upload-slot" id="slot0" onclick="handlePhotoSlot(0)" style="aspect-ratio:1;border:2px dashed var(--border);border-radius:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;font-size:1.4rem;color:var(--light)">
+          <span>📷</span><span style="font-size:10px;font-weight:700;margin-top:4px;color:var(--muted)">Front View *</span>
+        </div>
+        <div class="photo-upload-slot" id="slot1" onclick="handlePhotoSlot(1)" style="aspect-ratio:1;border:2px dashed var(--border);border-radius:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;font-size:1.4rem;color:var(--light)">
+          <span>📷</span><span style="font-size:10px;font-weight:700;margin-top:4px;color:var(--muted)">Back View *</span>
+        </div>
+        <div class="photo-upload-slot" id="slot2" onclick="handlePhotoSlot(2)" style="aspect-ratio:1;border:2px dashed var(--border);border-radius:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;font-size:1.4rem;color:var(--light)">
+          <span>📷</span><span style="font-size:10px;font-weight:700;margin-top:4px;color:var(--muted)">Detail / Damage *</span>
+        </div>
+        <div class="photo-upload-slot" id="slot3" onclick="handlePhotoSlot(3)" style="aspect-ratio:1;border:2px dashed var(--border);border-radius:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;font-size:1.4rem;color:var(--light)">
+          <span>+</span><span style="font-size:10px;font-weight:700;margin-top:4px;color:var(--muted)">Extra (optional)</span>
+        </div>
+        <div class="photo-upload-slot" id="slot4" onclick="handlePhotoSlot(4)" style="aspect-ratio:1;border:2px dashed var(--border);border-radius:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;font-size:1.4rem;color:var(--light)">
+          <span>+</span><span style="font-size:10px;font-weight:700;margin-top:4px;color:var(--muted)">Extra (optional)</span>
+        </div>
+        <div class="photo-upload-slot" id="slot5" onclick="handlePhotoSlot(5)" style="aspect-ratio:1;border:2px dashed var(--border);border-radius:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;font-size:1.4rem;color:var(--light)">
+          <span>+</span><span style="font-size:10px;font-weight:700;margin-top:4px;color:var(--muted)">Extra (optional)</span>
+        </div>
+      </div>
+
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px;font-size:12px">
+        <div id="photoCount" style="font-weight:700;color:var(--red)">0 / 3 required photos uploaded</div>
+        <div id="photoCheckmark" style="display:none;font-size:1rem">✅</div>
+      </div>
+
+      <div style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.88rem;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:8px">Item Condition <span style="color:var(--red);font-size:.75rem">* required</span></div>
+
+      <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-bottom:14px" id="conditionGrid">
+        <div class="cond-option" onclick="selectCondition(this,'New')" style="border:1.5px solid var(--border);border-radius:8px;padding:10px 6px;text-align:center;cursor:pointer;transition:all .15s">
+          <div style="font-size:1.1rem;margin-bottom:3px">✨</div>
+          <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.78rem">New</div>
+        </div>
+        <div class="cond-option" onclick="selectCondition(this,'Like New')" style="border:1.5px solid var(--border);border-radius:8px;padding:10px 6px;text-align:center;cursor:pointer;transition:all .15s">
+          <div style="font-size:1.1rem;margin-bottom:3px">⭐</div>
+          <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.78rem">Like New</div>
+        </div>
+        <div class="cond-option" onclick="selectCondition(this,'Good')" style="border:1.5px solid var(--border);border-radius:8px;padding:10px 6px;text-align:center;cursor:pointer;transition:all .15s">
+          <div style="font-size:1.1rem;margin-bottom:3px">👍</div>
+          <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.78rem">Good</div>
+        </div>
+        <div class="cond-option" onclick="selectCondition(this,'Fair')" style="border:1.5px solid var(--border);border-radius:8px;padding:10px 6px;text-align:center;cursor:pointer;transition:all .15s">
+          <div style="font-size:1.1rem;margin-bottom:3px">🙂</div>
+          <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.78rem">Fair</div>
+        </div>
+        <div class="cond-option" onclick="selectCondition(this,'Poor')" style="border:1.5px solid var(--border);border-radius:8px;padding:10px 6px;text-align:center;cursor:pointer;transition:all .15s">
+          <div style="font-size:1.1rem;margin-bottom:3px">⚠️</div>
+          <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.78rem">Poor</div>
+        </div>
+      </div>
+
+      <div style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.88rem;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:6px">Describe Any Issues <span style="font-weight:400;text-transform:none;letter-spacing:0;font-size:11px;color:var(--light)">(optional but recommended)</span></div>
+      <textarea id="conditionNotes" placeholder="Any scratches, missing parts, wear, odors, or anything the other trader should know about…" style="width:100%;border:1.5px solid var(--border);border-radius:8px;padding:10px 12px;font-family:'Lato',sans-serif;font-size:13px;resize:vertical;min-height:70px;outline:none;transition:border-color .15s;background:var(--white);color:var(--text)" onfocus="this.style.borderColor='var(--blue)'" onblur="this.style.borderColor='var(--border)'"></textarea>
+
+      <div style="background:#fffbeb;border:1px solid #fde68a;border-radius:8px;padding:10px 12px;margin-top:10px;font-size:11px;color:#92400e;display:flex;gap:7px">
+        <span>⚖️</span>
+        <div>These photos and your condition rating are <strong>legally binding evidence</strong>. If a dispute is filed about item condition, these records are automatically submitted. Be accurate and honest.</div>
+      </div>
+
+      <button id="photoNextBtn" class="modal-btn gold" style="margin-top:14px;width:100%;opacity:.5;cursor:not-allowed" onclick="validatePhotosAndNext()" disabled>Next: Payment →</button>
+      <button class="modal-btn outline" style="width:100%;margin-top:7px" onclick="prevCoStep()">← Back to Review</button>
+    `;
+    // init photo state
+    window.uploadedPhotos = window.uploadedPhotos || {};
+    window.selectedCondition = window.selectedCondition || null;
+    updatePhotoUI();
+  }
+
+  else if (step === 3) {
+    title.textContent = '💳 Payment Method';
+    modal.innerHTML = `
+      ${stepDots(3)}
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:12px;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center">
+        <div style="font-size:13px;color:var(--muted)">Your total at checkout</div>
+        <div style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.3rem;color:var(--gold)">${'$'+yourTotal.toFixed(2)}</div>
+      </div>
+      <div class="fee-section-title" style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.88rem;text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--border)">Select Payment Method</div>
+      <div class="payment-methods">
+        <div class="pay-method active" onclick="selectPayment(this)"><span class="pay-method-icon">💳</span>Credit / Debit</div>
+        <div class="pay-method" onclick="selectPayment(this)"><span class="pay-method-icon">🏦</span>Bank Transfer</div>
+        <div class="pay-method" onclick="selectPayment(this)"><span class="pay-method-icon">📱</span>Apple Pay</div>
+        <div class="pay-method" onclick="selectPayment(this)"><span class="pay-method-icon">🅿️</span>PayPal</div>
+      </div>
+      <div id="cardForm">
+        <div class="mfield"><label>Card Number</label><input type="text" placeholder="1234 5678 9012 3456" maxlength="19" oninput="fmtCard(this)"></div>
+        <div class="mfield-row">
+          <div class="mfield"><label>Expiry</label><input type="text" placeholder="MM/YY" maxlength="5" oninput="fmtExp(this)"></div>
+          <div class="mfield"><label>CVV</label><input type="text" placeholder="123" maxlength="4"></div>
+        </div>
+        <div class="mfield"><label>Name on Card</label><input type="text" placeholder="Jane Smith"></div>
+      </div>
+      <div style="background:#fffbeb;border:1px solid #fde68a;border-radius:8px;padding:10px 12px;font-size:11px;color:#92400e;margin-bottom:14px;display:flex;gap:6px">
+        <span>🔒</span><span>🚫 <strong>Prohibited items cannot be offered:</strong> No weapons, alcohol, tobacco, drugs, animals, cash, or adult content.<br><br>Your 5% fee is collected <strong>immediately when your offer is accepted</strong> and held in Stripe escrow. The meetup cannot be scheduled until both fees clear. Full refund if declined before meeting.</span>
+      </div>
+      <button class="modal-btn gold" onclick="nextCoStep()">Review &amp; Send Offer →</button>
+      <button class="modal-btn outline" onclick="prevCoStep()">← Back</button>`;
+  }
+
+  else if (step === 4) {
+    title.textContent = '✅ Final Confirmation';
+    modal.innerHTML = `
+      ${stepDots(4)}
+      <div style="text-align:center;margin-bottom:16px">
+        <div style="font-size:2.5rem;margin-bottom:8px">🤝</div>
+        <div style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.2rem;margin-bottom:4px">Ready to send your offer to ${THEIR_NAME}?</div>
+        <div style="font-size:13px;color:var(--muted)">They have 48 hours to accept or decline. <strong>Your 5% fee is collected immediately when they accept</strong> — funds are held in escrow and the meetup is only scheduled after both payments clear.</div>
+      </div>
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:14px">
+        <div style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.85rem;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:10px">Offer Summary</div>
+        ${srRow('Their item',THEIR_ITEM + ' (~$' + THEIR_VALUE + ')')}
+        ${srRow('Your offer', (yourItem||'Cash') + ' (~$' + yourVal.toFixed(0) + ')')}
+        ${cashAdd>0 ? srRow('Cash add-on','$'+cashAdd.toFixed(2)) : ''}
+        ${srRow('Your platform fee (5%)','$' + yourFee.toFixed(2))}
+        ${srRow('Item condition',window.selectedCondition||'Not set')}
+        ${srRow('Photos uploaded',getPhotoCount() + ' photos attached as evidence')}
+        ${srRow('Their platform fee (5%)','$' + theirFee.toFixed(2) + ' (paid by them)')}
+        ${srRow('Your total if accepted','$' + yourTotal.toFixed(2), true)}
+      </div>
+      <button class="modal-btn green" onclick="completeSend()">🚀 Send Offer to ${THEIR_NAME}</button>
+      <button class="modal-btn outline" onclick="prevCoStep()">← Back</button>`;
+  }
+}
+
+function srRow(label, val, bold=false) {
+  return `<div style="display:flex;justify-content:space-between;font-size:13px;padding:5px 0;border-bottom:1px solid var(--border)${bold?';font-weight:700':''}"><span style="color:var(--muted)">${label}</span><span>${val}</span></div>`;
+}
+
+function stepDots(active) {
+  const labels = ['Review','Photos','Payment','Confirm'];
+  return `<div class="co-steps" style="margin-bottom:20px">${labels.map((l,i)=>{
+    const n=i+1;
+    const cls=n<active?'done':n===active?'active':'pending';
+    return `<div class="co-step ${cls}"><div class="co-step-dot ${cls}">${n<active?'✓':n}</div><div class="co-step-label">${l}</div></div>`;
+  }).join('')}</div>`;
+}
+
+function nextCoStep() { coStep++; renderCheckoutStep(coStep); }
+function prevCoStep() { coStep--; renderCheckoutStep(coStep); }
+
+function selectPayment(el) {
+  document.querySelectorAll('.pay-method').forEach(m => m.classList.remove('active'));
+  el.classList.add('active');
+  const isCard = el.textContent.includes('Credit');
+  document.getElementById('cardForm').style.display = isCard ? 'block' : 'none';
+}
+
+function fmtCard(inp) {
+  let v = inp.value.replace(/\D/g,'').slice(0,16);
+  inp.value = v.match(/.{1,4}/g)?.join(' ') || v;
+}
+
+function fmtExp(inp) {
+  let v = inp.value.replace(/\D/g,'').slice(0,4);
+  if (v.length>2) v = v.slice(0,2)+'/'+v.slice(2);
+  inp.value = v;
+}
+
+function completeSend() {
+  const yourVal = offerType === 'cash'
+    ? parseFloat(document.getElementById('cashOnlyAmt')?.value) || 0
+    : parseFloat(document.getElementById('offerVal')?.value) || 0;
+  const cashAdd = parseFloat(document.getElementById('cashAmt')?.value) || 0;
+  const yourBase = yourVal + (offerType === 'tc' ? cashAdd : 0);
+  const yourFee = yourBase * 0.05;
+  const yourTotal = yourBase + yourFee;
+  const theirFee = THEIR_VALUE * 0.05;
+
+  document.getElementById('modalTitle').textContent = '🎉 Offer Sent!';
+  document.getElementById('modalBody').innerHTML = `
+    <div class="checkout-success">
+      <div class="cs-emoji">🎉</div>
+      <div class="cs-title">Offer Sent to ${THEIR_NAME}!</div>
+      <div class="cs-desc">They have 48 hours to accept or decline. If they accept, <strong>both parties' 5% fees are collected immediately into escrow</strong>. The meetup is only scheduled after both payments clear. Full refund if declined.</div>
+      <div class="cs-receipt">
+        <div class="cs-receipt-title">📋 Your Receipt</div>
+        <div class="cs-receipt-row"><span>Their item</span><span>${THEIR_ITEM}</span></div>
+        <div class="cs-receipt-row"><span>Your item / offer</span><span>${document.getElementById('offerItem')?.value || 'Cash'}</span></div>
+        <div class="cs-receipt-row"><span>Your item est. value</span><span>$${yourVal.toFixed(2)}</span></div>
+        <div class="cs-receipt-row"><span>Their item est. value</span><span>$${THEIR_VALUE.toFixed(2)}</span></div>
+        <div class="cs-receipt-row"><span>Your 5% fee</span><span>$${yourFee.toFixed(2)}</span></div>
+        <div class="cs-receipt-row"><span>${THEIR_NAME}'s 5% fee</span><span>$${theirFee.toFixed(2)} (paid by them)</span></div>
+        <div class="cs-receipt-row" style="font-weight:700"><span>Your total if accepted</span><span style="color:var(--gold)">$${yourTotal.toFixed(2)}</span></div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <button class="modal-btn gold" href="alltrades-dashboard.html" onclick="closeCheckout()">📋 View My Trades</button>
+        <button class="modal-btn outline" onclick="closeCheckout()">← Back to Listing</button>
+      </div>
+    </div>`;
+}
+
+// ── TOAST ──
+function showToast(icon, msg) {
+  document.getElementById('toastIc').textContent = icon;
+  document.getElementById('toastTx').textContent = msg;
+  const t = document.getElementById('toastEl');
+  t.classList.add('show');
+  clearTimeout(window._tt);
+  window._tt = setTimeout(() => t.classList.remove('show'), 3500);
+}
+
+// Init
+updateFees();
+
+// ── PHOTO & CONDITION STEP ──
+window.uploadedPhotos = {};
+window.selectedCondition = null;
+window.photoCount = 0;
+
+const PHOTO_EMOJIS = ['🥫','📦','🔧','💻','📱','🎮','🌱','🚲','⛺','🎸'];
+
+function handlePhotoSlot(idx) {
+  // Simulate photo upload - in production connects to Supabase Storage
+  const slot = document.getElementById('slot' + idx);
+  if (!slot) return;
+  const emoji = PHOTO_EMOJIS[Math.floor(Math.random() * PHOTO_EMOJIS.length)];
+  const labels = ['Front View', 'Back View', 'Detail / Damage', 'Extra View', 'Extra View', 'Extra View'];
+  slot.style.border = '2px solid var(--green)';
+  slot.style.background = '#f0fdf4';
+  slot.innerHTML = '<span style="font-size:1.8rem">' + emoji + '</span><span style="font-size:9px;font-weight:700;color:var(--green);margin-top:3px">✅ ' + labels[idx] + '</span>';
+  window.uploadedPhotos[idx] = true;
+  window.photoCount = Object.keys(window.uploadedPhotos).length;
+  updatePhotoUI();
+  if (window.photoCount <= 3) showToast('📷', 'Photo ' + window.photoCount + ' of 3 uploaded!');
+}
+
+function updatePhotoUI() {
+  const count = Object.keys(window.uploadedPhotos || {}).length;
+  const countEl = document.getElementById('photoCount');
+  const checkEl = document.getElementById('photoCheckmark');
+  const nextBtn = document.getElementById('photoNextBtn');
+  const hasCondition = !!window.selectedCondition;
+  const canProceed = count >= 3 && hasCondition;
+
+  if (countEl) {
+    if (count >= 3) {
+      countEl.textContent = count + ' photos uploaded ✓';
+      countEl.style.color = 'var(--green)';
+    } else {
+      countEl.textContent = count + ' / 3 required photos uploaded';
+      countEl.style.color = 'var(--red)';
+    }
+  }
+  if (checkEl) checkEl.style.display = count >= 3 ? 'block' : 'none';
+  if (nextBtn) {
+    nextBtn.disabled = !canProceed;
+    nextBtn.style.opacity = canProceed ? '1' : '.5';
+    nextBtn.style.cursor = canProceed ? 'pointer' : 'not-allowed';
+  }
+}
+
+function selectCondition(el, condition) {
+  document.querySelectorAll('.cond-option').forEach(c => {
+    c.style.borderColor = 'var(--border)';
+    c.style.background = 'transparent';
+  });
+  el.style.borderColor = 'var(--blue)';
+  el.style.background = '#eff6ff';
+  window.selectedCondition = condition;
+  updatePhotoUI();
+  showToast('📋', 'Condition set to: ' + condition);
+}
+
+function validatePhotosAndNext() {
+  const count = Object.keys(window.uploadedPhotos || {}).length;
+  if (count < 3) {
+    showToast('⚠️', 'Please upload at least 3 photos before continuing.');
+    return;
+  }
+  if (!window.selectedCondition) {
+    showToast('⚠️', 'Please select your item condition.');
+    return;
+  }
+  nextCoStep();
+}
+
+// Add condition to offer summary in step 4
+function getConditionBadge() {
+  const c = window.selectedCondition || 'Not set';
+  const colors = { 'New':'var(--green)', 'Like New':'var(--blue)', 'Good':'var(--gold)', 'Fair':'var(--orange)', 'Poor':'var(--red)' };
+  return '<span style="font-weight:700;color:' + (colors[c]||'var(--muted)') + '">' + c + '</span>';
+}
+
+function getPhotoCount() {
+  return Object.keys(window.uploadedPhotos || {}).length;
+}
+
+</script>
+</body>
+</html>

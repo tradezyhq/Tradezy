@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tradezy — Admin Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0a1628;--navy2:#0d1f3c;--navy3:#070f1e;
+  --blue:#1a56db;--blue-l:#3b82f6;--blue-dim:#1e3a8a;
+  --gold:#f59e0b;--gold-l:#fbbf24;
+  --green:#16a34a;--green-l:#22c55e;
+  --red:#dc2626;--red-l:#ef4444;
+  --orange:#ea580c;--purple:#7c3aed;--purple-l:#a78bfa;
+  --teal:#0891b2;
+  --text:#e2e8f0;--dim:#475569;--light:#94a3b8;--lighter:#64748b;
+  --border:rgba(255,255,255,.07);--border2:rgba(255,255,255,.13);
+  --card:#0f2341;--surface:rgba(255,255,255,.04);--surface2:rgba(255,255,255,.07);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Lato',sans-serif;background:var(--navy);color:var(--text);min-height:100vh;display:flex;flex-direction:column;}
+
+/* TOPBAR */
+.topbar{background:rgba(4,10,22,.97);border-bottom:1px solid var(--border);padding:0 20px;height:52px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:300;backdrop-filter:blur(12px);}
+.logo{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.45rem;letter-spacing:-1px;cursor:pointer;}
+.logo .a{color:#fff;}.logo .t{color:var(--blue);}.logo .d{color:var(--gold);}
+.admin-chip{background:rgba(220,38,38,.15);border:1px solid rgba(220,38,38,.3);color:#fca5a5;font-size:9px;font-weight:800;padding:2px 8px;border-radius:3px;letter-spacing:1px;margin-left:8px;}
+.top-right{display:flex;align-items:center;gap:5px;}
+.ti{position:relative;padding:6px 9px;border-radius:6px;cursor:pointer;color:var(--light);font-size:1rem;transition:all .15s;}
+.ti:hover{background:var(--surface2);color:var(--text);}
+.ti .badge{position:absolute;top:3px;right:3px;background:var(--red);color:#fff;font-size:9px;font-weight:800;border-radius:99px;padding:1px 4px;}
+.admin-av{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--red),var(--orange));color:#fff;font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:.78rem;display:flex;align-items:center;justify-content:center;border:2px solid rgba(220,38,38,.4);cursor:pointer;margin-left:4px;}
+
+/* LAYOUT */
+.layout{display:flex;flex:1;min-height:0;}
+
+/* SIDEBAR */
+.sidebar{width:196px;background:var(--navy3);border-right:1px solid var(--border);display:flex;flex-direction:column;flex-shrink:0;position:sticky;top:52px;height:calc(100vh - 52px);overflow-y:auto;}
+.sb-sec{padding:12px 8px 4px;}
+.sb-lbl{font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:1.2px;color:#112030;padding:0 6px;margin-bottom:4px;}
+.ni{display:flex;align-items:center;gap:8px;padding:7px 9px;border-radius:7px;cursor:pointer;transition:all .15s;color:var(--lighter);font-size:12px;font-weight:700;margin-bottom:1px;}
+.ni:hover{background:var(--surface2);color:var(--text);}
+.ni.active{background:rgba(26,86,219,.18);color:#93c5fd;border-left:2px solid var(--blue);}
+.ni.ai-nav.active{background:rgba(124,58,237,.15);color:var(--purple-l);border-left-color:var(--purple);}
+.ni-ic{font-size:.9rem;width:15px;text-align:center;flex-shrink:0;}
+.ni-b{margin-left:auto;font-size:9px;font-weight:800;border-radius:99px;padding:1px 5px;}
+.ni-b.red{background:var(--red);color:#fff;}
+.ni-b.gold{background:var(--gold);color:var(--navy);}
+.ni-b.purple{background:var(--purple);color:#fff;}
+.sb-div{height:1px;background:var(--border);margin:5px 8px;}
+.sb-status{padding:10px 10px;margin-top:auto;margin-bottom:4px;}
+.main{flex:1;overflow-y:auto;padding:20px;}
+
+/* SECTION HEADER */
+.sec-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+.sec-title{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1rem;color:var(--text);}
+.sec-lnk{font-size:12px;color:var(--blue-l);font-weight:700;cursor:pointer;}
+.sec-lnk:hover{text-decoration:underline;}
+
+/* WELCOME BAR */
+.welcome{background:linear-gradient(135deg,#0f2341 0%,#162b50 60%,#0a1e3a 100%);border:1px solid var(--border2);border-radius:14px;padding:20px 24px;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between;position:relative;overflow:hidden;}
+.welcome::before{content:'';position:absolute;top:-60px;right:-40px;width:240px;height:240px;background:radial-gradient(circle,rgba(245,158,11,.07) 0%,transparent 65%);pointer-events:none;}
+.wb-greet{font-size:11px;color:var(--lighter);margin-bottom:3px;text-transform:uppercase;letter-spacing:.5px;font-weight:700;}
+.wb-name{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.6rem;color:#fff;letter-spacing:-.3px;margin-bottom:2px;}
+.wb-sub{font-size:12px;color:var(--lighter);}
+.wb-stats{display:flex;gap:10px;flex-shrink:0;}
+.wb-stat{text-align:center;background:rgba(255,255,255,.05);border:1px solid var(--border2);border-radius:9px;padding:10px 14px;}
+.wb-num{font-family:'Barlow Condensed',sans-serif;font-size:1.3rem;font-weight:900;color:var(--gold-l);}
+.wb-lbl{font-size:9px;color:var(--lighter);text-transform:uppercase;letter-spacing:.5px;margin-top:1px;}
+
+/* ALERT STRIPS */
+.alert-strip{border-radius:9px;padding:10px 14px;margin-bottom:8px;display:flex;align-items:center;gap:9px;font-size:12px;}
+.alert-strip.red{background:rgba(220,38,38,.08);border:1px solid rgba(220,38,38,.2);}
+.alert-strip.gold{background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.2);}
+.alert-strip.green{background:rgba(22,163,74,.08);border:1px solid rgba(22,163,74,.2);}
+.as-txt{flex:1;color:var(--text);}
+.as-btn{padding:4px 10px;border-radius:5px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.75rem;cursor:pointer;border:none;flex-shrink:0;transition:all .15s;}
+.asb-red{background:rgba(220,38,38,.2);border:1px solid rgba(220,38,38,.3);color:#fca5a5;}
+.asb-gold{background:rgba(245,158,11,.15);border:1px solid rgba(245,158,11,.25);color:var(--gold-l);}
+
+/* FUNDS GRID */
+.funds-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px;}
+.fund-card{border-radius:12px;padding:16px 18px;position:relative;overflow:hidden;transition:all .2s;}
+.fund-card:hover{transform:translateY(-2px);}
+.fund-card.avail{background:linear-gradient(135deg,#14532d,#166534);border:1px solid rgba(74,222,128,.2);}
+.fund-card.pend{background:linear-gradient(135deg,#1e3a8a,#1d4ed8);border:1px solid rgba(96,165,250,.2);}
+.fund-card.held{background:linear-gradient(135deg,#7f1d1d,#991b1b);border:1px solid rgba(248,113,113,.2);}
+.fund-card.life{background:linear-gradient(135deg,#78350f,#92400e);border:1px solid rgba(251,191,36,.2);}
+.fund-card::after{content:attr(data-icon);position:absolute;bottom:8px;right:12px;font-size:2rem;opacity:.15;pointer-events:none;}
+.fc-lbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px;opacity:.75;}
+.fc-amt{font-family:'Barlow Condensed',sans-serif;font-size:2rem;font-weight:900;color:#fff;line-height:1;margin-bottom:4px;}
+.fc-sub{font-size:11px;opacity:.6;line-height:1.4;margin-bottom:10px;}
+.wd-btn{width:100%;padding:8px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);color:#fff;border-radius:7px;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.82rem;cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center;gap:5px;}
+.wd-btn:hover{background:rgba(255,255,255,.22);}
+.wd-btn:disabled{opacity:.35;cursor:not-allowed;}
+
+/* STAT CARDS */
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px;}
+.stat-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 16px;transition:all .2s;}
+.stat-card:hover{border-color:var(--border2);}
+.sc-icon{font-size:1.4rem;margin-bottom:6px;}
+.sc-num{font-family:'Barlow Condensed',sans-serif;font-size:1.7rem;font-weight:900;line-height:1;margin-bottom:2px;}
+.sc-lbl{font-size:10px;color:var(--lighter);text-transform:uppercase;letter-spacing:.5px;}
+.sc-chg{font-size:11px;margin-top:3px;font-weight:700;}
+.sc-chg.up{color:var(--green-l);}
+.sc-chg.dn{color:var(--red-l);}
+
+/* CHART */
+.chart-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px;}
+.chart-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+.chart-title{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.9rem;}
+.chart-tabs{display:flex;gap:4px;}
+.ctab{padding:4px 9px;border-radius:5px;font-size:11px;font-weight:700;cursor:pointer;color:var(--lighter);background:transparent;border:1px solid var(--border);}
+.ctab.active{background:var(--blue);color:#fff;border-color:var(--blue);}
+.chart-wrap{display:flex;align-items:flex-end;gap:5px;height:140px;padding:0 2px;}
+.bar-grp{flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:2px;}
+.bar-seg{width:100%;border-radius:2px 2px 0 0;min-height:2px;transition:height .5s ease;}
+.bar-fees{background:linear-gradient(180deg,var(--green-l),var(--green));}
+.bar-tax{background:linear-gradient(180deg,var(--blue-l),var(--blue));}
+.bar-held{background:linear-gradient(180deg,#fca5a5,var(--red));}
+.bar-lbl{font-size:9px;color:var(--lighter);text-align:center;margin-top:3px;}
+.chart-legend{display:flex;gap:12px;margin-top:10px;}
+.cl{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--lighter);}
+.cl-dot{width:8px;height:8px;border-radius:2px;}
+
+/* PANEL */
+.panel{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;}
+.ph{padding:12px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.ph-title{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.88rem;}
+.pb{font-size:9px;font-weight:800;padding:2px 7px;border-radius:3px;letter-spacing:.3px;}
+.pb-red{background:rgba(220,38,38,.2);border:1px solid rgba(220,38,38,.3);color:#fca5a5;}
+.pb-gold{background:rgba(245,158,11,.15);border:1px solid rgba(245,158,11,.3);color:var(--gold-l);}
+.pb-green{background:rgba(22,163,74,.15);border:1px solid rgba(22,163,74,.3);color:var(--green-l);}
+.pb-purple{background:rgba(124,58,237,.15);border:1px solid rgba(124,58,237,.3);color:var(--purple-l);}
+.pb-blue{background:rgba(26,86,219,.15);border:1px solid rgba(26,86,219,.3);color:#93c5fd;}
+.pb{padding:12px 16px;}
+
+/* TABLE ROWS */
+.trow{display:flex;align-items:center;gap:10px;padding:9px 14px;border-bottom:1px solid var(--border);transition:background .15s;cursor:pointer;}
+.trow:last-child{border:none;}
+.trow:hover{background:var(--surface2);}
+.trow-av{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.75rem;color:#fff;flex-shrink:0;}
+.trow-info{flex:1;min-width:0;}
+.trow-name{font-weight:700;font-size:12px;margin-bottom:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.trow-meta{font-size:10px;color:var(--lighter);}
+.trow-rt{text-align:right;flex-shrink:0;}
+.trow-val{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.9rem;}
+.trow-st{font-size:9px;font-weight:800;padding:2px 6px;border-radius:3px;letter-spacing:.3px;display:inline-block;margin-top:2px;}
+.ts-ok{background:rgba(22,163,74,.15);border:1px solid rgba(22,163,74,.3);color:var(--green-l);}
+.ts-pend{background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.25);color:var(--gold-l);}
+.ts-disp{background:rgba(220,38,38,.15);border:1px solid rgba(220,38,38,.3);color:#fca5a5;}
+.ts-byp{background:rgba(124,58,237,.15);border:1px solid rgba(124,58,237,.3);color:var(--purple-l);}
+
+/* BYPASS */
+.bp-row{display:flex;align-items:flex-start;gap:10px;padding:10px 14px;border-bottom:1px solid var(--border);}
+.bp-row:last-child{border:none;}
+.bp-ic{font-size:1rem;flex-shrink:0;margin-top:1px;}
+.bp-info{flex:1;min-width:0;}
+.bp-title{font-weight:700;font-size:12px;margin-bottom:3px;}
+.bp-msg{font-size:11px;color:var(--text);background:rgba(124,58,237,.1);border:1px solid rgba(124,58,237,.2);border-radius:5px;padding:4px 8px;margin-bottom:3px;font-style:italic;}
+.bp-meta{font-size:10px;color:var(--lighter);margin-bottom:5px;}
+.bp-acts{display:flex;gap:5px;}
+.bpb{padding:3px 9px;border-radius:4px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.72rem;cursor:pointer;border:none;transition:all .15s;}
+.bpb-warn{background:rgba(245,158,11,.15);border:1px solid rgba(245,158,11,.3);color:var(--gold-l);}
+.bpb-ban{background:rgba(220,38,38,.15);border:1px solid rgba(220,38,38,.3);color:#fca5a5;}
+.bpb-view{background:var(--surface2);border:1px solid var(--border2);color:var(--light);}
+
+/* AI PANEL */
+.ai-panel{background:linear-gradient(135deg,#0f0a2a,#150e35,#0a1628);border:1px solid rgba(124,58,237,.25);border-radius:12px;overflow:hidden;margin-bottom:18px;}
+.ai-head{background:linear-gradient(90deg,rgba(124,58,237,.2),rgba(26,86,219,.12));border-bottom:1px solid rgba(124,58,237,.2);padding:14px 18px;display:flex;align-items:center;gap:12px;}
+.ai-head-ic{width:36px;height:36px;border-radius:9px;background:rgba(124,58,237,.25);border:1px solid rgba(124,58,237,.4);display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;}
+.ai-head-ttl{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1rem;color:#fff;margin-bottom:1px;}
+.ai-head-sub{font-size:11px;color:var(--purple-l);opacity:.8;}
+.ai-status{margin-left:auto;display:flex;align-items:center;gap:6px;font-size:11px;color:var(--purple-l);}
+.ai-dot{width:7px;height:7px;border-radius:50%;background:var(--green-l);animation:aipulse 1.5s infinite;}
+@keyframes aipulse{0%,100%{opacity:1}50%{opacity:.3}}
+
+/* DISPUTE QUEUE */
+.dq{padding:14px 18px;}
+.dq-item{background:rgba(255,255,255,.03);border:1px solid var(--border2);border-radius:10px;padding:13px;margin-bottom:10px;}
+.dq-item.esc{border-color:rgba(220,38,38,.35);background:rgba(220,38,38,.04);}
+.dq-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:7px;}
+.dq-id{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.82rem;color:var(--lighter);}
+.dq-sev{font-size:9px;font-weight:800;padding:2px 7px;border-radius:3px;letter-spacing:.3px;}
+.sev-lo{background:rgba(22,163,74,.15);border:1px solid rgba(22,163,74,.3);color:var(--green-l);}
+.sev-md{background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.25);color:var(--gold-l);}
+.sev-hi{background:rgba(220,38,38,.15);border:1px solid rgba(220,38,38,.3);color:#fca5a5;}
+.dq-trade{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:700;margin-bottom:6px;}
+.dq-issue{font-size:11px;color:var(--lighter);margin-bottom:8px;}
+.ai-resp{background:rgba(124,58,237,.08);border:1px solid rgba(124,58,237,.2);border-radius:8px;padding:11px 13px;margin-bottom:8px;}
+.ai-resp-lbl{font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:var(--purple-l);margin-bottom:6px;display:flex;align-items:center;gap:4px;}
+.ai-resp-txt{font-size:12px;color:var(--text);line-height:1.6;}
+.ai-conf{display:flex;align-items:center;gap:8px;margin-top:6px;font-size:10px;color:var(--lighter);}
+.ai-conf-track{flex:1;height:4px;background:rgba(255,255,255,.08);border-radius:2px;overflow:hidden;}
+.ai-conf-fill{height:100%;border-radius:2px;background:linear-gradient(90deg,var(--purple),var(--blue-l));}
+.dq-acts{display:flex;gap:6px;}
+.dqa{flex:1;padding:6px;border-radius:6px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.75rem;cursor:pointer;border:none;transition:all .15s;text-align:center;}
+.dqa-ok{background:rgba(22,163,74,.15);border:1px solid rgba(22,163,74,.3);color:var(--green-l);}
+.dqa-ok:hover{background:rgba(22,163,74,.25);}
+.dqa-ov{background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.25);color:var(--gold-l);}
+.dqa-ov:hover{background:rgba(245,158,11,.2);}
+.dqa-esc{background:rgba(220,38,38,.12);border:1px solid rgba(220,38,38,.25);color:#fca5a5;}
+.dqa-esc:hover{background:rgba(220,38,38,.2);}
+.dqa-chat{background:var(--surface2);border:1px solid var(--border2);color:var(--light);}
+
+/* AI CHAT */
+.ai-chat{border-top:1px solid rgba(124,58,237,.2);padding:14px 18px;}
+.ai-chat-ttl{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--purple-l);margin-bottom:10px;}
+.chat-msgs{background:rgba(0,0,0,.2);border:1px solid var(--border);border-radius:9px;padding:12px;min-height:140px;max-height:200px;overflow-y:auto;margin-bottom:10px;display:flex;flex-direction:column;gap:8px;}
+.cm{display:flex;gap:7px;max-width:92%;}
+.cm.user{align-self:flex-end;flex-direction:row-reverse;}
+.cm.ai{align-self:flex-start;}
+.cm-av{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.6rem;font-weight:800;font-family:'Barlow Condensed',sans-serif;flex-shrink:0;margin-top:2px;}
+.cm-av.aiv{background:linear-gradient(135deg,var(--purple),var(--blue-dim));color:#fff;}
+.cm-av.usv{background:linear-gradient(135deg,var(--red),var(--orange));color:#fff;}
+.cm-bub{padding:8px 11px;border-radius:9px;font-size:12px;line-height:1.5;}
+.cm.ai .cm-bub{background:rgba(124,58,237,.15);border:1px solid rgba(124,58,237,.2);color:var(--text);}
+.cm.user .cm-bub{background:rgba(26,86,219,.2);border:1px solid rgba(26,86,219,.3);color:var(--text);}
+.typing{display:flex;align-items:center;gap:4px;padding:8px 11px;background:rgba(124,58,237,.1);border:1px solid rgba(124,58,237,.15);border-radius:9px;width:fit-content;}
+.td{width:5px;height:5px;border-radius:50%;background:var(--purple-l);animation:tbounce .9s infinite;}
+.td:nth-child(2){animation-delay:.15s;}
+.td:nth-child(3){animation-delay:.3s;}
+@keyframes tbounce{0%,100%{transform:translateY(0);opacity:.4}50%{transform:translateY(-4px);opacity:1}}
+.chat-input-row{display:flex;gap:7px;}
+.chat-inp{flex:1;background:rgba(255,255,255,.06);border:1px solid var(--border2);border-radius:7px;padding:9px 12px;color:var(--text);font-family:'Lato',sans-serif;font-size:13px;outline:none;transition:border-color .15s;}
+.chat-inp:focus{border-color:rgba(124,58,237,.4);}
+.chat-inp::placeholder{color:#1e3a5f;}
+.chat-send{background:var(--purple);color:#fff;border:none;border-radius:7px;padding:9px 16px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.88rem;cursor:pointer;transition:all .15s;}
+.chat-send:hover{background:var(--purple-l);}
+
+/* PAYOUT ROWS */
+.pay-row{display:flex;align-items:center;gap:10px;padding:9px 14px;border-bottom:1px solid var(--border);font-size:12px;}
+.pay-row:last-child{border:none;}
+.pay-ic{font-size:1rem;flex-shrink:0;}
+.pay-info{flex:1;}
+.pay-title{font-weight:700;margin-bottom:1px;}
+.pay-meta{font-size:10px;color:var(--lighter);}
+.pay-amt{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.95rem;color:var(--green-l);flex-shrink:0;}
+.pay-st{font-size:9px;font-weight:800;padding:2px 6px;border-radius:3px;flex-shrink:0;}
+.pst-ok{background:rgba(22,163,74,.15);border:1px solid rgba(22,163,74,.3);color:var(--green-l);}
+.pst-proc{background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.25);color:var(--gold-l);}
+
+/* USER ROWS */
+.ur{display:flex;align-items:center;gap:10px;padding:9px 14px;border-bottom:1px solid var(--border);}
+.ur:last-child{border:none;}
+.ur-av{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.7rem;color:#fff;flex-shrink:0;}
+.ur-info{flex:1;min-width:0;}
+.ur-name{font-weight:700;font-size:12px;margin-bottom:1px;}
+.ur-meta{font-size:10px;color:var(--lighter);}
+.ur-badges{display:flex;gap:3px;margin-top:2px;}
+.urb{font-size:9px;font-weight:700;padding:1px 5px;border-radius:2px;}
+.urb-v{background:rgba(22,163,74,.15);color:var(--green-l);}
+.urb-f{background:rgba(220,38,38,.15);color:#fca5a5;}
+.ur-rt{text-align:right;flex-shrink:0;}
+.ur-val{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.9rem;color:var(--gold-l);}
+.ur-acts{display:flex;gap:4px;margin-top:3px;justify-content:flex-end;}
+.urb2{padding:2px 7px;border-radius:4px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.68rem;cursor:pointer;border:none;transition:all .15s;}
+.urb2-view{background:var(--surface2);border:1px solid var(--border2);color:var(--light);}
+.urb2-warn{background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.25);color:var(--gold-l);}
+.urb2-ban{background:rgba(220,38,38,.12);border:1px solid rgba(220,38,38,.25);color:#fca5a5;}
+
+/* METRICS */
+.metrics-row{display:flex;gap:8px;margin-bottom:8px;}
+.metric{flex:1;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:7px;padding:8px 10px;}
+.metric-lbl{font-size:10px;color:var(--lighter);text-transform:uppercase;letter-spacing:.4px;margin-bottom:2px;}
+.metric-val{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.95rem;}
+
+/* INFO BOXES */
+.ib{border-radius:8px;padding:10px 13px;margin-bottom:12px;display:flex;gap:7px;font-size:12px;line-height:1.5;}
+.ib.blue{background:rgba(26,86,219,.1);border:1px solid rgba(26,86,219,.2);color:#93c5fd;}
+.ib.yellow{background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.2);color:var(--gold-l);}
+.ib.green{background:rgba(22,163,74,.1);border:1px solid rgba(22,163,74,.2);color:#86efac;}
+.ib.red{background:rgba(220,38,38,.1);border:1px solid rgba(220,38,38,.2);color:#fca5a5;}
+.ib.purple{background:rgba(124,58,237,.1);border:1px solid rgba(124,58,237,.2);color:var(--purple-l);}
+
+/* TWO/THREE COL */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:18px;}
+.three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:18px;}
+
+/* MODAL */
+.overlay{display:none;position:fixed;inset:0;background:rgba(4,10,22,.88);z-index:500;align-items:center;justify-content:center;padding:20px;}
+.overlay.open{display:flex;}
+.modal{background:#0f2341;border:1px solid var(--border2);border-radius:14px;width:100%;max-width:480px;max-height:90vh;overflow-y:auto;animation:slideUp .25s ease;}
+@keyframes slideUp{from{transform:translateY(14px);opacity:0}to{transform:translateY(0);opacity:1}}
+.mhd{background:linear-gradient(135deg,#0a1628,#1a3a6b);padding:16px 20px;display:flex;align-items:center;justify-content:space-between;border-radius:14px 14px 0 0;border-bottom:1px solid var(--border);}
+.mhd-ttl{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.05rem;color:#fff;}
+.mhd-x{background:rgba(255,255,255,.08);border:none;color:var(--light);width:26px;height:26px;border-radius:50%;cursor:pointer;font-size:.85rem;display:flex;align-items:center;justify-content:center;transition:all .15s;}
+.mhd-x:hover{background:rgba(255,255,255,.16);color:#fff;}
+.mbody{padding:18px;}
+.mfield{margin-bottom:12px;}
+.mfield label{display:block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--lighter);margin-bottom:4px;}
+.mfield input,.mfield select,.mfield textarea{width:100%;background:rgba(255,255,255,.06);border:1.5px solid var(--border2);border-radius:7px;padding:9px 12px;color:var(--text);font-family:'Lato',sans-serif;font-size:13px;outline:none;transition:border-color .15s;resize:vertical;}
+.mfield input:focus,.mfield select:focus,.mfield textarea:focus{border-color:var(--blue);}
+.mfield input::placeholder,.mfield textarea::placeholder{color:#1e3a5f;}
+.mbtn{width:100%;padding:10px;border:none;border-radius:7px;font-family:'Barlow Condensed',sans-serif;font-size:.92rem;font-weight:800;cursor:pointer;transition:all .15s;margin-bottom:7px;}
+.mbtn.green{background:var(--green);color:#fff;}
+.mbtn.green:hover{background:var(--green-l);}
+.mbtn.red{background:var(--red);color:#fff;}
+.mbtn.gold{background:var(--gold);color:var(--navy);}
+.mbtn.purple{background:var(--purple);color:#fff;}
+.mbtn.outline{background:transparent;border:1.5px solid var(--border2);color:var(--light);}
+.mbtn.outline:hover{border-color:rgba(255,255,255,.25);color:var(--text);}
+
+/* SUMMARY ROW */
+.sum-row{display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--border);font-size:12px;}
+.sum-row:last-child{border:none;font-weight:700;font-size:13px;}
+.sum-lbl{color:var(--lighter);}
+
+/* TOAST */
+.toast{position:fixed;bottom:20px;right:20px;background:#0f2341;color:var(--text);border:1px solid var(--border2);border-left:4px solid var(--green);border-radius:8px;padding:10px 16px;font-size:13px;z-index:9999;display:flex;align-items:center;gap:9px;max-width:290px;box-shadow:0 8px 26px rgba(0,0,0,.5);transform:translateX(120%);transition:transform .3s ease;}
+.toast.show{transform:translateX(0);}
+
+@media(max-width:1100px){.funds-grid,.stats-grid{grid-template-columns:1fr 1fr;}.three-col{grid-template-columns:1fr 1fr;}}
+@media(max-width:760px){.sidebar{display:none;}.two-col,.three-col{grid-template-columns:1fr;}.wb-stats{display:none;}}
+
+/* ── DARK MODE ── */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --navy:#0a1628;
+    --blue:#3b82f6;
+    --blue-l:#60a5fa;
+    --gold:#fbbf24;
+    --gold-l:#fcd34d;
+    --green:#22c55e;
+    --green-l:#4ade80;
+    --red:#f87171;
+    --orange:#fb923c;
+    --text:#f1f5f9;
+    --muted:#94a3b8;
+    --light:#64748b;
+    --border:rgba(255,255,255,.1);
+    --bg:#0f172a;
+    --white:#1e293b;
+    --surface:#162032;
+    --card:#1e293b;
+  }
+  body { background:#0f172a !important; color:#f1f5f9 !important; }
+  /* Nav always dark - already fine */
+  /* Cards and panels */
+  .card, .panel, .pay-card, .summary-card, .rate-card, .review-card,
+  .profile-card, .rating-overview-card, .dispute-flow, .step-panel,
+  .step-list, .protection-hero ~ .panel, .stat-card, .fund-card,
+  .chart-card, .dq-item, .ai-panel { background:#1e293b !important; border-color:rgba(255,255,255,.08) !important; }
+  /* Text */
+  h1,h2,h3,h4,h5,h6 { color:#f1f5f9 !important; }
+  p, li, span:not(.logo *):not(.badge):not(.chip) { color:#94a3b8; }
+  strong { color:#e2e8f0 !important; }
+  /* Inputs */
+  input, select, textarea {
+    background:#162032 !important;
+    border-color:rgba(255,255,255,.12) !important;
+    color:#f1f5f9 !important;
+  }
+  input::placeholder, textarea::placeholder { color:#334155 !important; }
+  /* Surfaces */
+  .surface, [class*="surface"], [class*="-body"], [class*="-wrap"],
+  .pay-body, .sp-body, .panel-body, .mbody, .dq, .ai-chat,
+  .sum-body, .pc-body { background:#1e293b !important; }
+  /* Borders */
+  [class*="border"], hr { border-color:rgba(255,255,255,.08) !important; }
+  /* Table rows */
+  .trow:hover, .saved-card:hover, .step-item:hover { background:rgba(255,255,255,.05) !important; }
+  /* White backgrounds that need to go dark */
+  .white-bg, .bg-white, [style*="background:#fff"], [style*="background: #fff"],
+  [style*="background:white"], [style*="background: white"] { background:#1e293b !important; }
+  /* Legal pages specific */
+  .doc-header { background:transparent !important; }
+  .doc-title { color:#f1f5f9 !important; }
+  .doc-meta { color:#94a3b8 !important; }
+  .doc-meta strong { color:#e2e8f0 !important; }
+  .toc { background:#1e293b !important; border-color:rgba(255,255,255,.08) !important; }
+  .toc-title { color:#f1f5f9 !important; }
+  .section-title { color:#f1f5f9 !important; border-color:rgba(255,255,255,.08) !important; }
+  .section-num { color:#60a5fa !important; }
+  .section p, .section li { color:#94a3b8 !important; }
+  .section p strong, .section li strong { color:#e2e8f0 !important; }
+  /* Highlight boxes in legal pages — keep light backgrounds with dark text */
+  .hb-blue { background:#1e3a5f !important; border-color:#1d4ed8 !important; border-left-color:#3b82f6 !important; }
+  .hb-yellow { background:#422006 !important; border-color:#92400e !important; border-left-color:#fbbf24 !important; }
+  .hb-red { background:#450a0a !important; border-color:#991b1b !important; border-left-color:#f87171 !important; }
+  .hb-green { background:#052e16 !important; border-color:#166534 !important; border-left-color:#22c55e !important; }
+  .hb-blue .hb-text { color:#93c5fd !important; }
+  .hb-yellow .hb-text { color:#fcd34d !important; }
+  .hb-red .hb-text { color:#fca5a5 !important; }
+  .hb-green .hb-text { color:#86efac !important; }
+  .hb-text strong { color:inherit !important; }
+  /* Tables */
+  .fee-table th, .data-table th { background:#0f172a !important; color:#f1f5f9 !important; }
+  .fee-table td, .data-table td { color:#94a3b8 !important; background:#1e293b !important; }
+  .fee-table tr:nth-child(even) td, .data-table tr:nth-child(even) td { background:#162032 !important; }
+  .fee-table td:first-child, .data-table td:first-child { color:#e2e8f0 !important; }
+  /* Rights grid */
+  .right-card, .badge-card, .pf-card, .stat-card { background:#1e293b !important; border-color:rgba(255,255,255,.08) !important; }
+  .rc-title, .bc-name, .pf-title, .sc-lbl { color:#e2e8f0 !important; }
+  .rc-desc, .bc-desc, .pf-desc { color:#94a3b8 !important; }
+  /* Contact box stays dark - already fine */
+  /* Back buttons */
+  .back-btn { background:#1e3a8a !important; color:#fff !important; }
+  /* Nav links */
+  .nav-links a { color:#94a3b8 !important; }
+  .nav-links a:hover { color:#fff !important; }
+  /* Modal */
+  .modal, .overlay .modal { background:#1e293b !important; border-color:rgba(255,255,255,.1) !important; }
+  .mfield input, .mfield select, .mfield textarea { background:#0f172a !important; }
+  /* Chart bars already colored */
+  /* Star ratings */
+  .star, .mini-star { filter:none !important; }
+  /* OTP inputs */
+  .otp-input { background:#162032 !important; color:#f1f5f9 !important; }
+  .otp-input.filled { background:#052e16 !important; }
+  /* Upload zones */
+  .upload-zone, .upload-side, .ev-slot { background:#162032 !important; border-color:rgba(255,255,255,.1) !important; }
+  /* Step list sidebar */
+  .step-list { background:#1e293b !important; }
+  .step-item { background:transparent !important; }
+  .step-item.completed { background:rgba(22,163,74,.1) !important; }
+  .step-item.active { background:rgba(26,86,219,.1) !important; }
+  .si-title { color:#e2e8f0 !important; }
+  .si-meta { color:#64748b !important; }
+  /* Trust ring text */
+  .trust-num { color:#fff !important; }
+  /* Bypass rows */
+  .bp-msg, .br-msg { background:rgba(124,58,237,.15) !important; }
+  /* Summary card */
+  .sum-row-label { color:#94a3b8 !important; }
+  .sum-row-val { color:#e2e8f0 !important; }
+  /* Payment page */
+  .card-logo-chip { border-color:rgba(255,255,255,.15) !important; }
+  .express-btn.google { background:#1e293b !important; color:#f1f5f9 !important; border-color:rgba(255,255,255,.15) !important; }
+  /* Category cards */
+  .cat-rate, .cbd-item, .metric, .wb-stat, .phs-item { background:rgba(255,255,255,.05) !important; border-color:rgba(255,255,255,.08) !important; }
+  .wb-num, .metric-val, .sc-num { color:#fbbf24 !important; }
+  /* Payout rows */
+  .pay-row, .trow, .ur, .bp-row { border-color:rgba(255,255,255,.06) !important; }
+  /* Scrollbars */
+  ::-webkit-scrollbar { background:#0f172a; }
+  ::-webkit-scrollbar-thumb { background:#334155; border-radius:4px; }
+}
+
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div style="display:flex;align-items:center;gap:8px">
+    <a href="alltrades.html" style="text-decoration:none"><div class="logo"><span class="a">Trade</span><span class="t">zy</span><span class="d">.</span></div></a>
+    <span class="admin-chip">ADMIN</span>
+  </div>
+  <div style="display:flex;align-items:center;gap:8px">
+    <div style="display:flex;align-items:center;background:var(--surface2);border:1px solid var(--border2);border-radius:7px;overflow:hidden;width:220px">
+      <input type="text" placeholder="Search users, trades, disputes…" style="flex:1;background:transparent;border:none;outline:none;padding:6px 11px;color:var(--text);font-family:'Lato',sans-serif;font-size:12px">
+      <button style="background:var(--blue);border:none;color:#fff;padding:6px 12px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.78rem;cursor:pointer">Go</button>
+    </div>
+  </div>
+  <div class="top-right">
+    <div class="ti" onclick="showToast('🔔','2 new system alerts')">🔔<span class="badge">2</span></div>
+    <div class="ti" onclick="switchView('ai')" title="AI Disputes">🤖<span class="badge" style="background:var(--purple)">3</span></div>
+    <div class="ti" onclick="switchView('bypass')" title="Bypass Monitor">⚑<span class="badge">4</span></div>
+    <div class="admin-av">AD</div>
+  </div>
+</div>
+
+<div class="layout">
+<!-- SIDEBAR -->
+<div class="sidebar">
+  <div class="sb-sec">
+    <div class="sb-lbl">Overview</div>
+    <div class="ni active" id="nav-overview" onclick="switchView('overview')"><span class="ni-ic">🏠</span>Dashboard</div>
+    <div class="ni" id="nav-revenue" onclick="switchView('revenue')"><span class="ni-ic">💰</span>Revenue &amp; Funds</div>
+    <div class="ni" id="nav-trades" onclick="switchView('trades')"><span class="ni-ic">🔄</span>All Trades <span class="ni-b gold">47</span></div>
+  </div>
+  <div class="sb-div"></div>
+  <div class="sb-sec">
+    <div class="sb-lbl">AI + Safety</div>
+    <div class="ni ai-nav" id="nav-ai" onclick="switchView('ai')"><span class="ni-ic">🤖</span>AI Disputes <span class="ni-b purple">3</span></div>
+    <div class="ni" id="nav-bypass" onclick="switchView('bypass')"><span class="ni-ic">⚑</span>Bypass Monitor <span class="ni-b red">4</span></div>
+    <div class="ni" id="nav-disputes" onclick="switchView('disputes')"><span class="ni-ic">⚖️</span>All Disputes</div>
+  </div>
+  <div class="sb-div"></div>
+  <div class="sb-sec">
+    <div class="sb-lbl">Users</div>
+    <div class="ni" id="nav-users" onclick="switchView('users')"><span class="ni-ic">👥</span>All Users</div>
+    <div class="ni" id="nav-verify" onclick="switchView('verify')"><span class="ni-ic">🛡️</span>Verification</div>
+    <div class="ni" id="nav-banned" onclick="switchView('banned')"><span class="ni-ic">🚫</span>Banned Users</div>
+  </div>
+  <div class="sb-div"></div>
+  <div class="sb-sec">
+    <div class="sb-lbl">Platform</div>
+    <div class="ni" id="nav-analytics" onclick="switchView('analytics')"><span class="ni-ic">📊</span>Analytics</div>
+    <div class="ni" id="nav-tax" onclick="switchView('tax')"><span class="ni-ic">🧾</span>Tax Reports</div>
+    <div class="ni" id="nav-settings" onclick="switchView('settings')"><span class="ni-ic">⚙️</span>Settings</div>
+  </div>
+  <div style="padding:10px;margin-top:auto">
+    <div style="background:rgba(22,163,74,.1);border:1px solid rgba(22,163,74,.2);border-radius:8px;padding:10px;font-size:11px;color:#86efac;text-align:center">
+      <div style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.9rem;margin-bottom:3px">Platform Status</div>
+      <div style="display:flex;align-items:center;justify-content:center;gap:5px"><div class="ai-dot"></div>All systems operational</div>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="main" id="mainContent">
+
+<!-- ═══════════════════════════ OVERVIEW ═══════════════════════════ -->
+<div id="view-overview">
+  <div class="welcome">
+    <div>
+      <div class="wb-greet">👋 Good morning, Owner</div>
+      <div class="wb-name">Tradezy Admin Panel</div>
+      <div class="wb-sub">📍 Austin, CT · <span style="color:var(--gold-l);font-weight:700">4 bypass flags · 3 AI disputes need your approval</span></div>
+    </div>
+    <div class="wb-stats">
+      <div class="wb-stat"><div class="wb-num">$847</div><div class="wb-lbl">Available Now</div></div>
+      <div class="wb-stat"><div class="wb-num">1,247</div><div class="wb-lbl">Total Users</div></div>
+      <div class="wb-stat"><div class="wb-num">98.7%</div><div class="wb-lbl">Disputes Resolved</div></div>
+    </div>
+  </div>
+
+  <div class="alert-strip red"><span>🚨</span><div class="as-txt"><strong>4 bypass attempts</strong> detected in the last 24 hours — users sharing contact info off-platform.</div><button class="as-btn asb-red" onclick="switchView('bypass')">Review Now</button></div>
+  <div class="alert-strip gold" style="margin-bottom:16px"><span>🤖</span><div class="as-txt"><strong>3 AI-handled disputes</strong> awaiting your approval before resolutions go to users.</div><button class="as-btn asb-gold" onclick="switchView('ai')">Review AI Decisions</button></div>
+
+  <!-- FUNDS -->
+  <div class="sec-hdr"><div class="sec-title">💰 Your Funds</div><div class="sec-lnk" onclick="switchView('revenue')">Full breakdown →</div></div>
+  <div class="funds-grid">
+    <div class="fund-card avail" data-icon="💵">
+      <div class="fc-lbl" style="color:#86efac">Available to Withdraw</div>
+      <div class="fc-amt">$847.32</div>
+      <div class="fc-sub">Cleared from 94 confirmed trades<br>Sitting in your Stripe balance now</div>
+      <button class="wd-btn" onclick="openModal('withdrawModal')">⬇ Withdraw to Bank</button>
+    </div>
+    <div class="fund-card pend" data-icon="⏳">
+      <div class="fc-lbl" style="color:#93c5fd">Pending — Trades In Progress</div>
+      <div class="fc-amt">$312.80</div>
+      <div class="fc-sub">From 28 active trades not yet<br>confirmed complete by both parties</div>
+      <button class="wd-btn" disabled>🔒 Releases on Trade Confirm</button>
+    </div>
+    <div class="fund-card held" data-icon="🔒">
+      <div class="fc-lbl" style="color:#fca5a5">On Hold — Active Disputes</div>
+      <div class="fc-amt">$89.45</div>
+      <div class="fc-sub">Escrow frozen across 2 open disputes<br>Cannot withdraw until disputes resolved</div>
+      <button class="wd-btn" disabled>⚖️ Frozen by Dispute</button>
+    </div>
+    <div class="fund-card life" data-icon="📈">
+      <div class="fc-lbl" style="color:var(--gold-l)">Total Lifetime Revenue</div>
+      <div class="fc-amt">$2,841</div>
+      <div class="fc-sub">Since May 1, 2026 · 312 trades<br>Average $9.11 per completed trade</div>
+      <button class="wd-btn" onclick="switchView('revenue')">📊 View Full Report</button>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div class="sec-hdr"><div class="sec-title">📊 Platform Stats — Last 30 Days</div><div class="sec-lnk" onclick="switchView('analytics')">Full analytics →</div></div>
+  <div class="stats-grid">
+    <div class="stat-card"><div class="sc-icon">🔄</div><div class="sc-num" style="color:var(--blue-l)">312</div><div class="sc-lbl">Trades Completed</div><div class="sc-chg up">↑ +43 vs last month</div></div>
+    <div class="stat-card"><div class="sc-icon">👥</div><div class="sc-num" style="color:var(--gold-l)">1,247</div><div class="sc-lbl">Total Users</div><div class="sc-chg up">↑ +89 new this month</div></div>
+    <div class="stat-card"><div class="sc-icon">📦</div><div class="sc-num" style="color:var(--green-l)">4,218</div><div class="sc-lbl">Active Listings</div><div class="sc-chg up">↑ +312 this week</div></div>
+    <div class="stat-card"><div class="sc-icon">⭐</div><div class="sc-num" style="color:var(--gold-l)">4.87</div><div class="sc-lbl">Avg Trader Rating</div><div class="sc-chg up">↑ +0.12 vs last month</div></div>
+    <div class="stat-card"><div class="sc-icon">⚖️</div><div class="sc-num" style="color:var(--red-l)">7</div><div class="sc-lbl">Open Disputes</div><div class="sc-chg dn">↑ +2 this week</div></div>
+    <div class="stat-card"><div class="sc-icon">⚑</div><div class="sc-num" style="color:var(--purple-l)">18</div><div class="sc-lbl">Bypass Attempts</div><div class="sc-chg dn">↑ +4 this week</div></div>
+    <div class="stat-card"><div class="sc-icon">🛡️</div><div class="sc-num" style="color:var(--green-l)">847</div><div class="sc-lbl">Verified Traders</div><div class="sc-chg up">↑ +67 this month</div></div>
+    <div class="stat-card"><div class="sc-icon">🚫</div><div class="sc-num" style="color:var(--red-l)">14</div><div class="sc-lbl">Banned Accounts</div><div class="sc-chg">Lifetime total</div></div>
+  </div>
+
+  <div class="two-col">
+    <div>
+      <div class="sec-hdr"><div class="sec-title">📈 Revenue Chart</div></div>
+      <div class="chart-card">
+        <div class="chart-hdr">
+          <div class="chart-title">Monthly Fee Revenue</div>
+          <div class="chart-tabs">
+            <div class="ctab active" onclick="setCtab(this)">30d</div>
+            <div class="ctab" onclick="setCtab(this)">90d</div>
+            <div class="ctab" onclick="setCtab(this)">1yr</div>
+          </div>
+        </div>
+        <div class="chart-wrap" id="revenueChart"></div>
+        <div class="chart-legend">
+          <div class="cl"><div class="cl-dot" style="background:var(--green)"></div>Platform Fees</div>
+          <div class="cl"><div class="cl-dot" style="background:var(--blue)"></div>Tax Collected</div>
+          <div class="cl"><div class="cl-dot" style="background:var(--red)"></div>On Hold</div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="sec-hdr"><div class="sec-title">🔄 Recent Trades</div><div class="sec-lnk" onclick="switchView('trades')">All trades →</div></div>
+      <div class="panel">
+        <div class="trow"><div class="trow-av" style="background:var(--blue)">RJ</div><div class="trow-info"><div class="trow-name">RiderJay ⇄ Jane Doe</div><div class="trow-meta">🥫 Canned Goods ⇄ 🔧 DeWalt Drill · May 6</div></div><div class="trow-rt"><div class="trow-val" style="color:var(--green-l)">$8.45</div><div class="trow-st ts-ok">CONFIRMED</div></div></div>
+        <div class="trow"><div class="trow-av" style="background:var(--green)">GS</div><div class="trow-info"><div class="trow-name">GardenSue ⇄ PrepMike</div><div class="trow-meta">🌱 Seedlings ⇄ 🌾 25lb Flour · May 5</div></div><div class="trow-rt"><div class="trow-val" style="color:var(--green-l)">$2.60</div><div class="trow-st ts-ok">CONFIRMED</div></div></div>
+        <div class="trow"><div class="trow-av" style="background:var(--orange)">TL</div><div class="trow-info"><div class="trow-name">TechLisa ⇄ OutdoorJim</div><div class="trow-meta">💻 Dell Laptop ⇄ 🚲 Trek Bike · May 5</div></div><div class="trow-rt"><div class="trow-val" style="color:var(--gold-l)">$35.00</div><div class="trow-st ts-pend">PENDING</div></div></div>
+        <div class="trow"><div class="trow-av" style="background:var(--red)">OP</div><div class="trow-info"><div class="trow-name">OutdoorPete ⇄ FarmDave</div><div class="trow-meta">⛺ Tent ⇄ 🥕 Produce · May 3</div></div><div class="trow-rt"><div class="trow-val" style="color:var(--red-l)">$6.50</div><div class="trow-st ts-disp">DISPUTED</div></div></div>
+        <div class="trow"><div class="trow-av" style="background:var(--purple)">BB</div><div class="trow-info"><div class="trow-name">BuildBob ⇄ HandyAnn</div><div class="trow-meta">🔧 Tool Set ⇄ 🎸 Guitar · May 4</div></div><div class="trow-rt"><div class="trow-val" style="color:var(--green-l)">$13.75</div><div class="trow-st ts-ok">CONFIRMED</div></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════ REVENUE ═══════════════════════════ -->
+<div id="view-revenue" style="display:none">
+  <div class="sec-hdr"><div class="sec-title">💰 Revenue &amp; Funds — Full Breakdown</div></div>
+  <div class="funds-grid" style="margin-bottom:18px">
+    <div class="fund-card avail" data-icon="💵"><div class="fc-lbl" style="color:#86efac">Available to Withdraw</div><div class="fc-amt">$847.32</div><div class="fc-sub">94 confirmed trades cleared<br>In your Stripe balance now</div><button class="wd-btn" onclick="openModal('withdrawModal')">⬇ Withdraw to Bank</button></div>
+    <div class="fund-card pend" data-icon="⏳"><div class="fc-lbl" style="color:#93c5fd">Pending Confirmation</div><div class="fc-amt">$312.80</div><div class="fc-sub">28 active trades pending<br>both-party confirmation</div><button class="wd-btn" disabled>🔒 Auto-releases on confirm</button></div>
+    <div class="fund-card held" data-icon="🔒"><div class="fc-lbl" style="color:#fca5a5">On Hold — Disputes</div><div class="fc-amt">$89.45</div><div class="fc-sub">2 active disputes, escrow frozen<br>Releases after resolution</div><button class="wd-btn" disabled>⚖️ Frozen by dispute</button></div>
+    <div class="fund-card life" data-icon="📈"><div class="fc-lbl" style="color:var(--gold-l)">Lifetime Revenue</div><div class="fc-amt">$2,841</div><div class="fc-sub">Since May 1, 2026<br>312 trades · Avg $9.11/trade</div><button class="wd-btn" onclick="switchView('tax')">🧾 Tax Report</button></div>
+  </div>
+  <div class="three-col">
+    <div class="panel"><div class="ph"><div class="ph-title">📊 This Month</div><div class="pb pb-green">May 2026</div></div><div class="pb"><div class="metrics-row"><div class="metric"><div class="metric-lbl">Gross Fees</div><div class="metric-val" style="color:var(--green-l)">$312.80</div></div><div class="metric"><div class="metric-lbl">Tax Collected</div><div class="metric-val" style="color:var(--blue-l)">$19.85</div></div></div><div class="metrics-row"><div class="metric"><div class="metric-lbl">Refunded</div><div class="metric-val" style="color:var(--red-l)">$4.30</div></div><div class="metric"><div class="metric-lbl">Net Revenue</div><div class="metric-val" style="color:var(--gold-l)">$308.50</div></div></div><div style="font-size:10px;color:var(--lighter);margin-top:4px">↑ +38% vs April 2026</div></div></div>
+    <div class="panel"><div class="ph"><div class="ph-title">🏦 Stripe Balance</div><div class="pb pb-blue">Live</div></div><div class="pb"><div class="metrics-row"><div class="metric"><div class="metric-lbl">Available</div><div class="metric-val" style="color:var(--green-l)">$847.32</div></div><div class="metric"><div class="metric-lbl">Pending</div><div class="metric-val" style="color:var(--blue-l)">$312.80</div></div></div><div class="metrics-row"><div class="metric"><div class="metric-lbl">Held/Frozen</div><div class="metric-val" style="color:var(--red-l)">$89.45</div></div><div class="metric"><div class="metric-lbl">Total Balance</div><div class="metric-val" style="color:var(--gold-l)">$1,249</div></div></div><div style="font-size:10px;color:var(--lighter);margin-top:4px">Auto payout: Weekly on Fridays</div></div></div>
+    <div class="panel"><div class="ph"><div class="ph-title">🧾 Tax Summary</div><div class="pb pb-gold">YTD</div></div><div class="pb"><div class="metrics-row"><div class="metric"><div class="metric-lbl">CT Tax (6.35%)</div><div class="metric-val" style="color:var(--gold-l)">$59.40</div></div><div class="metric"><div class="metric-lbl">Remitted</div><div class="metric-val" style="color:var(--green-l)">$41.20</div></div></div><div class="metrics-row"><div class="metric"><div class="metric-lbl">Due Q2</div><div class="metric-val" style="color:var(--red-l)">$18.20</div></div><div class="metric"><div class="metric-lbl">Other States</div><div class="metric-val">$0.00</div></div></div><div style="font-size:10px;color:var(--lighter);margin-top:4px">Below nexus threshold all other states</div></div></div>
+  </div>
+  <div class="sec-hdr"><div class="sec-title">📋 Payout History</div><div class="sec-lnk" onclick="openModal('payoutSettingsModal')">⚙️ Payout Settings</div></div>
+  <div class="panel">
+    <div class="pay-row"><span class="pay-ic">✅</span><div class="pay-info"><div class="pay-title">Weekly Payout — May 2, 2026</div><div class="pay-meta">94 trades · Chase Bank ••••4291 · Delivered in 2 business days</div></div><div class="pay-amt">$312.40</div><span class="pay-st pst-ok">PAID</span></div>
+    <div class="pay-row"><span class="pay-ic">✅</span><div class="pay-info"><div class="pay-title">Weekly Payout — Apr 25, 2026</div><div class="pay-meta">71 trades · Chase Bank ••••4291</div></div><div class="pay-amt">$248.60</div><span class="pay-st pst-ok">PAID</span></div>
+    <div class="pay-row"><span class="pay-ic">✅</span><div class="pay-info"><div class="pay-title">Weekly Payout — Apr 18, 2026</div><div class="pay-meta">58 trades · Chase Bank ••••4291</div></div><div class="pay-amt">$196.20</div><span class="pay-st pst-ok">PAID</span></div>
+    <div class="pay-row"><span class="pay-ic">⏳</span><div class="pay-info"><div class="pay-title">Manual Withdrawal — Apr 10, 2026</div><div class="pay-meta">Requested manually · Chase Bank ••••4291</div></div><div class="pay-amt">$89.97</div><span class="pay-st pst-proc">PROCESSING</span></div>
+    <div style="padding:10px 14px;text-align:center"><button class="wd-btn" style="max-width:280px;background:rgba(22,163,74,.15);border-color:rgba(22,163,74,.3);color:var(--green-l)" onclick="openModal('withdrawModal')">⬇ Withdraw Available Balance Now — $847.32</button></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════ AI DISPUTES ═══════════════════════════ -->
+<div id="view-ai" style="display:none">
+  <div class="sec-hdr"><div class="sec-title">🤖 AI Dispute Assistant</div><div style="display:flex;align-items:center;gap:6px;font-size:11px;color:var(--green-l)"><div class="ai-dot"></div>Claude AI Active</div></div>
+  <div class="ib purple"><span>🤖</span><div><strong>How it works:</strong> Claude AI reviews every dispute first — reading chat logs, trade history, and evidence automatically. It suggests a resolution with a confidence score. You approve, override, or escalate. Users get an instant response while the case is reviewed. This handles roughly 80% of disputes without you needing to get involved.</div></div>
+  <div class="ai-panel">
+    <div class="ai-head">
+      <div class="ai-head-ic">🤖</div>
+      <div><div class="ai-head-ttl">Claude AI — Dispute Queue</div><div class="ai-head-sub">3 cases awaiting your approval · AI avg confidence 87%</div></div>
+      <div class="ai-status"><div class="ai-dot"></div>Processing in real-time</div>
+    </div>
+    <div class="dq">
+
+      <div class="dq-item">
+        <div class="dq-hdr"><div class="dq-id">Case #DISP-2847-001 · May 6 · Trade #AT-2847</div><div class="dq-sev sev-md">MEDIUM</div></div>
+        <div class="dq-trade"><span>🥫 Canned Goods (24)</span><span style="color:var(--lighter)">⇄</span><span>🔧 DeWalt Drill Set</span><span style="color:var(--lighter);font-size:11px">· Jane vs RiderJay</span></div>
+        <div class="dq-issue"><strong>Issue:</strong> Jane claims the drill was missing one battery and the charger, which were listed as included.</div>
+        <div class="ai-resp">
+          <div class="ai-resp-lbl">🤖 Claude AI Analysis</div>
+          <div class="ai-resp-txt">I reviewed the listing and chat logs. The listing clearly states "DeWalt Drill + 2 Batteries + Charger." Jane's photo evidence shows only 1 battery present. Based on listing vs delivered item discrepancy, I recommend a partial refund of Jane's $3.50 fee and a formal warning for RiderJay. No ban warranted for a first offense at this severity.</div>
+          <div class="ai-conf"><span>Confidence:</span><div class="ai-conf-track"><div class="ai-conf-fill" style="width:84%"></div></div><span style="font-weight:700;color:var(--purple-l)">84%</span></div>
+        </div>
+        <div class="dq-acts">
+          <button class="dqa dqa-ok" onclick="approveAI(this,'DISP-2847-001')">✓ Approve AI Decision</button>
+          <button class="dqa dqa-ov" onclick="openModal('overrideModal')">✏️ Override</button>
+          <button class="dqa dqa-esc" onclick="showToast('⚖️','Escalated to manual review')">⬆ Escalate</button>
+          <button class="dqa dqa-chat" onclick="scrollToChat()">💬 Ask AI</button>
+        </div>
+      </div>
+
+      <div class="dq-item">
+        <div class="dq-hdr"><div class="dq-id">Case #DISP-2831-001 · May 5 · Trade #AT-2831</div><div class="dq-sev sev-lo">LOW</div></div>
+        <div class="dq-trade"><span>🚲 Trek Bike</span><span style="color:var(--lighter)">⇄</span><span>💻 Dell Laptop</span><span style="color:var(--lighter);font-size:11px">· TechLisa vs OutdoorJim</span></div>
+        <div class="dq-issue"><strong>Issue:</strong> OutdoorJim was 45 minutes late to the meetup without any notice. Trade did happen.</div>
+        <div class="ai-resp">
+          <div class="ai-resp-lbl">🤖 Claude AI Analysis</div>
+          <div class="ai-resp-txt">Trade completed successfully — no financial harm. This is a conduct issue only. I recommend adding a "Meetup Reliability" internal note to OutdoorJim's profile and sending an automated warning message. No refund warranted. If Jim gets 3 similar complaints, escalate to suspension review.</div>
+          <div class="ai-conf"><span>Confidence:</span><div class="ai-conf-track"><div class="ai-conf-fill" style="width:94%"></div></div><span style="font-weight:700;color:var(--purple-l)">94%</span></div>
+        </div>
+        <div class="dq-acts">
+          <button class="dqa dqa-ok" onclick="approveAI(this,'DISP-2831-001')">✓ Approve AI Decision</button>
+          <button class="dqa dqa-ov" onclick="openModal('overrideModal')">✏️ Override</button>
+          <button class="dqa dqa-esc" onclick="showToast('⚖️','Escalated')">⬆ Escalate</button>
+          <button class="dqa dqa-chat" onclick="scrollToChat()">💬 Ask AI</button>
+        </div>
+      </div>
+
+      <div class="dq-item esc">
+        <div class="dq-hdr"><div class="dq-id">Case #DISP-2799-001 · May 3 · Trade #AT-2799 — FRAUD</div><div class="dq-sev sev-hi">HIGH — ESCALATED</div></div>
+        <div class="dq-trade"><span>📱 iPhone 13</span><span style="color:var(--lighter)">⇄</span><span>🎮 PS5 + Games</span><span style="color:var(--lighter);font-size:11px">· ScammerAlex vs GamingKev</span></div>
+        <div class="dq-issue"><strong>Issue:</strong> ScammerAlex sent a non-functional display unit instead of a real iPhone. GamingKev traded a real PS5. Multiple reports on this account.</div>
+        <div class="ai-resp">
+          <div class="ai-resp-lbl">🤖 Claude AI — ESCALATED FOR YOUR REVIEW</div>
+          <div class="ai-resp-txt">This is clear fraud. I am escalating rather than auto-resolving. ScammerAlex has 3 prior bypass attempts and 2 previous disputes in 10 days. I recommend: (1) Full refund of GamingKev's $23.00 fee, (2) Permanent ban of ScammerAlex, (3) Freeze any remaining funds, (4) File a Stripe fraud report. Requires your manual approval due to the permanent ban involved.</div>
+          <div class="ai-conf"><span>Confidence:</span><div class="ai-conf-track"><div class="ai-conf-fill" style="width:97%"></div></div><span style="font-weight:700;color:var(--red-l)">97% — High Confidence Fraud</span></div>
+        </div>
+        <div class="dq-acts">
+          <button class="dqa dqa-ok" onclick="openModal('banModal')">🚫 Approve + Ban User</button>
+          <button class="dqa dqa-ov" onclick="openModal('overrideModal')">✏️ Override</button>
+          <button class="dqa dqa-chat" onclick="scrollToChat()">💬 Ask AI More</button>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="ai-chat" id="aiChatSection">
+      <div class="ai-chat-ttl">💬 Ask Claude AI about any dispute, user, or platform question</div>
+      <div class="chat-msgs" id="chatMsgs">
+        <div class="cm ai"><div class="cm-av aiv">AI</div><div class="cm-bub">Hello! I'm Claude, your Tradezy AI assistant. I've reviewed all 3 open disputes and flagged the iPhone case as high-priority fraud requiring your approval. I'm ready to answer questions about any case, analyze user behavior patterns, or help draft user communications. What would you like to know?</div></div>
+      </div>
+      <div class="chat-input-row">
+        <input type="text" class="chat-inp" id="chatInput" placeholder="Ask about a dispute, user pattern, revenue trend, or anything…" onkeydown="if(event.key==='Enter')sendChat()">
+        <button class="chat-send" onclick="sendChat()">Send</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════ BYPASS ═══════════════════════════ -->
+<div id="view-bypass" style="display:none">
+  <div class="sec-hdr"><div class="sec-title">⚑ Bypass Attempt Monitor</div><div class="sec-lnk">Export log →</div></div>
+  <div class="ib red"><span>🚨</span><div><strong>Platform bypass</strong> is when users share contact info to trade off-platform and skip your 5% fee. The message scanner catches these in real time. Every attempt is logged here.</div></div>
+  <div class="ib" style="background:rgba(220,38,38,.08);border:1px solid rgba(220,38,38,.2);"><span>🚫</span><div><strong>Prohibited Item Detection:</strong> The AI scanner also monitors listings and messages for prohibited items — firearms, alcohol, tobacco, vaping, drugs, live animals, adult content, cash, gift cards, and cryptocurrency. These are flagged and removed automatically with the seller warned or banned depending on severity.</div></div>
+  <div class="three-col">
+    <div class="stat-card"><div class="sc-icon">⚑</div><div class="sc-num" style="color:var(--red-l)">18</div><div class="sc-lbl">Total Attempts (30d)</div><div class="sc-chg dn">↑ +4 this week</div></div>
+    <div class="stat-card"><div class="sc-icon">⚠️</div><div class="sc-num" style="color:var(--orange)">3</div><div class="sc-lbl">Users Warned</div></div>
+    <div class="stat-card"><div class="sc-icon">🚫</div><div class="sc-num" style="color:var(--red-l)">2</div><div class="sc-lbl">Accounts Banned</div></div>
+  </div>
+  <div class="panel">
+    <div class="ph"><div class="ph-title">Recent Bypass Attempts</div><div class="pb pb-red">4 new</div></div>
+    <div class="bp-row"><span class="bp-ic">⚑</span><div class="bp-info"><div class="bp-title">OutdoorPete → FarmDave · 2h ago · 1st offense</div><div class="bp-msg">"Hey text me at 512-555-0149 to arrange the meetup outside the app"</div><div class="bp-meta">📱 Phone number detected · Trade #AT-2891</div><div class="bp-acts"><button class="bpb bpb-warn" onclick="showToast('⚠️','Warning sent to OutdoorPete')">⚠️ Warn User</button><button class="bpb bpb-ban" onclick="openModal('banModal')">🚫 Ban</button><button class="bpb bpb-view">View Chat</button></div></div></div>
+    <div class="bp-row"><span class="bp-ic">⚑</span><div class="bp-info"><div class="bp-title">NewUser99 → GardenSue · 5h ago · 1st offense</div><div class="bp-msg">"Find me on instagram @newuser99 we can work it out there"</div><div class="bp-meta">📱 Social handle detected · Trade #AT-2876</div><div class="bp-acts"><button class="bpb bpb-warn" onclick="showToast('⚠️','Warning sent to NewUser99')">⚠️ Warn User</button><button class="bpb bpb-ban" onclick="openModal('banModal')">🚫 Ban</button><button class="bpb bpb-view">View Chat</button></div></div></div>
+    <div class="bp-row"><span class="bp-ic">🚨</span><div class="bp-info"><div class="bp-title">ScammerAlex → GamingKev · May 3 · 3rd offense</div><div class="bp-msg">"Send me payment on venmo @alexv before we meet"</div><div class="bp-meta">💸 Payment app detected · Trade #AT-2799 · Fraud case open</div><div class="bp-acts"><button class="bpb bpb-ban" onclick="openModal('banModal')" style="background:rgba(220,38,38,.3)">🚫 Ban (Recommended)</button><button class="bpb bpb-view">View Fraud Case</button></div></div></div>
+    <div class="bp-row"><span class="bp-ic">⚑</span><div class="bp-info"><div class="bp-title">QuickSeller → PrepMike · May 5 · 2nd offense</div><div class="bp-msg">"Email me at quickseller@gmail.com to get a better price"</div><div class="bp-meta">📧 Email address detected · Trade #AT-2844</div><div class="bp-acts"><button class="bpb bpb-warn" onclick="showToast('⚠️','Final warning sent to QuickSeller')">⚠️ Final Warning</button><button class="bpb bpb-ban" onclick="openModal('banModal')">🚫 Ban</button><button class="bpb bpb-view">View Chat</button></div></div></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════ USERS ═══════════════════════════ -->
+<div id="view-users" style="display:none">
+  <div class="sec-hdr"><div class="sec-title">👥 All Users</div><div class="sec-lnk" onclick="showToast('📥','Exporting user list…')">Export CSV →</div></div>
+  <div class="stats-grid" style="margin-bottom:14px">
+    <div class="stat-card"><div class="sc-icon">👥</div><div class="sc-num" style="color:var(--blue-l)">1,247</div><div class="sc-lbl">Total Users</div></div>
+    <div class="stat-card"><div class="sc-icon">✅</div><div class="sc-num" style="color:var(--green-l)">847</div><div class="sc-lbl">Verified</div></div>
+    <div class="stat-card"><div class="sc-icon">⚑</div><div class="sc-num" style="color:var(--gold-l)">23</div><div class="sc-lbl">Flagged</div></div>
+    <div class="stat-card"><div class="sc-icon">🚫</div><div class="sc-num" style="color:var(--red-l)">14</div><div class="sc-lbl">Banned</div></div>
+  </div>
+  <div class="panel">
+    <div class="ph"><div class="ph-title">User List</div><div class="pb pb-blue">1,247 total</div></div>
+    <div class="ur"><div class="ur-av" style="background:var(--blue)">JD</div><div class="ur-info"><div class="ur-name">Jane Doe</div><div class="ur-meta">jane@email.com · Austin, CT · 23 trades · 4.9★</div><div class="ur-badges"><span class="urb urb-v">✓ Verified</span></div></div><div class="ur-rt"><div class="ur-val">$312 traded</div><div class="ur-acts"><button class="urb2 urb2-view">View</button><button class="urb2 urb2-warn">Warn</button></div></div></div>
+    <div class="ur"><div class="ur-av" style="background:var(--green)">GS</div><div class="ur-info"><div class="ur-name">GardenSue</div><div class="ur-meta">gsue@email.com · Austin, CT · 18 trades · 4.8★</div><div class="ur-badges"><span class="urb urb-v">✓ Verified</span></div></div><div class="ur-rt"><div class="ur-val">$248 traded</div><div class="ur-acts"><button class="urb2 urb2-view">View</button><button class="urb2 urb2-warn">Warn</button></div></div></div>
+    <div class="ur"><div class="ur-av" style="background:var(--red)">SA</div><div class="ur-info"><div class="ur-name">ScammerAlex</div><div class="ur-meta">scam@fake.com · Unknown · 3 disputes · 1.2★</div><div class="ur-badges"><span class="urb urb-f">⚑ 3 Flags</span><span class="urb" style="background:rgba(220,38,38,.15);color:#fca5a5">Fraud Open</span></div></div><div class="ur-rt"><div class="ur-val" style="color:var(--red-l)">FLAGGED</div><div class="ur-acts"><button class="urb2 urb2-view">View</button><button class="urb2 urb2-ban" onclick="openModal('banModal')">🚫 Ban</button></div></div></div>
+    <div class="ur"><div class="ur-av" style="background:var(--orange)">TL</div><div class="ur-info"><div class="ur-name">TechLisa</div><div class="ur-meta">tlisa@email.com · Austin, CT · 31 trades · 4.9★</div><div class="ur-badges"><span class="urb urb-v">✓ Verified</span></div></div><div class="ur-rt"><div class="ur-val">$890 traded</div><div class="ur-acts"><button class="urb2 urb2-view">View</button><button class="urb2 urb2-warn">Warn</button></div></div></div>
+    <div class="ur"><div class="ur-av" style="background:var(--lighter)">QS</div><div class="ur-info"><div class="ur-name">QuickSeller</div><div class="ur-meta">quick@email.com · Austin, CT · 4 trades · 3.1★</div><div class="ur-badges"><span class="urb urb-f">⚑ 2 Flags</span></div></div><div class="ur-rt"><div class="ur-val" style="color:var(--gold-l)">WARNED ×2</div><div class="ur-acts"><button class="urb2 urb2-view">View</button><button class="urb2 urb2-ban" onclick="openModal('banModal')">🚫 Ban</button></div></div></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════ ANALYTICS ═══════════════════════════ -->
+<div id="view-analytics" style="display:none">
+  <div class="sec-hdr"><div class="sec-title">📊 Platform Analytics</div></div>
+  <div class="stats-grid">
+    <div class="stat-card"><div class="sc-icon">📈</div><div class="sc-num" style="color:var(--green-l)">+38%</div><div class="sc-lbl">Revenue Growth MoM</div></div>
+    <div class="stat-card"><div class="sc-icon">🔄</div><div class="sc-num" style="color:var(--blue-l)">6.7</div><div class="sc-lbl">Avg Trades / User</div></div>
+    <div class="stat-card"><div class="sc-icon">⏱️</div><div class="sc-num" style="color:var(--gold-l)">2.4d</div><div class="sc-lbl">Avg Trade Completion</div></div>
+    <div class="stat-card"><div class="sc-icon">🥫</div><div class="sc-num" style="color:var(--orange)">34%</div><div class="sc-lbl">Food &amp; Water Trades</div></div>
+  </div>
+  <div class="two-col">
+    <div class="panel"><div class="ph"><div class="ph-title">🏆 Top Categories</div></div><div class="pb">
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div style="display:flex;align-items:center;gap:8px;font-size:12px"><span style="width:90px">🥫 Food &amp; Water</span><div style="flex:1;height:6px;background:var(--border);border-radius:3px;overflow:hidden"><div style="height:100%;width:34%;background:var(--green);border-radius:3px"></div></div><span style="color:var(--green-l);font-weight:700;width:30px">34%</span></div>
+        <div style="display:flex;align-items:center;gap:8px;font-size:12px"><span style="width:90px">⚡ Electronics</span><div style="flex:1;height:6px;background:var(--border);border-radius:3px;overflow:hidden"><div style="height:100%;width:22%;background:var(--blue);border-radius:3px"></div></div><span style="color:var(--blue-l);font-weight:700;width:30px">22%</span></div>
+        <div style="display:flex;align-items:center;gap:8px;font-size:12px"><span style="width:90px">🔧 Tools</span><div style="flex:1;height:6px;background:var(--border);border-radius:3px;overflow:hidden"><div style="height:100%;width:18%;background:var(--orange);border-radius:3px"></div></div><span style="color:var(--orange);font-weight:700;width:30px">18%</span></div>
+        <div style="display:flex;align-items:center;gap:8px;font-size:12px"><span style="width:90px">🌱 Garden</span><div style="flex:1;height:6px;background:var(--border);border-radius:3px;overflow:hidden"><div style="height:100%;width:14%;background:var(--green-l);border-radius:3px"></div></div><span style="color:var(--green-l);font-weight:700;width:30px">14%</span></div>
+        <div style="display:flex;align-items:center;gap:8px;font-size:12px"><span style="width:90px">📦 Other</span><div style="flex:1;height:6px;background:var(--border);border-radius:3px;overflow:hidden"><div style="height:100%;width:12%;background:var(--lighter);border-radius:3px"></div></div><span style="color:var(--lighter);font-weight:700;width:30px">12%</span></div>
+      </div>
+    </div></div>
+    <div class="panel"><div class="ph"><div class="ph-title">🤖 AI Dispute Performance</div></div><div class="pb">
+      <div class="metrics-row"><div class="metric"><div class="metric-lbl">AI Auto-Resolved</div><div class="metric-val" style="color:var(--green-l)">79%</div></div><div class="metric"><div class="metric-lbl">Escalated to You</div><div class="metric-val" style="color:var(--gold-l)">21%</div></div></div>
+      <div class="metrics-row"><div class="metric"><div class="metric-lbl">Avg Resolve Time</div><div class="metric-val" style="color:var(--blue-l)">4.2 hrs</div></div><div class="metric"><div class="metric-lbl">User Satisfaction</div><div class="metric-val" style="color:var(--green-l)">91%</div></div></div>
+      <div class="metrics-row"><div class="metric"><div class="metric-lbl">Your Overrides</div><div class="metric-val">5</div></div><div class="metric"><div class="metric-lbl">False Positives</div><div class="metric-val" style="color:var(--red-l)">2</div></div></div>
+    </div></div>
+  </div>
+</div>
+
+<!-- OTHER VIEWS -->
+<div id="view-trades" style="display:none"><div class="sec-hdr"><div class="sec-title">🔄 All Trades</div></div><div class="ib blue"><span>ℹ️</span><div>Full trade table with search, filters, and export. Connects to Supabase at backend integration launch.</div></div></div>
+<div id="view-disputes" style="display:none"><div class="sec-hdr"><div class="sec-title">⚖️ All Disputes</div></div><div class="ib blue"><span>ℹ️</span><div>Full dispute management with status, timeline, evidence, and resolution tools. Connects at backend integration.</div></div></div>
+<div id="view-verify" style="display:none"><div class="sec-hdr"><div class="sec-title">🛡️ Verification Queue</div></div><div class="ib blue"><span>ℹ️</span><div>Review ID verifications flagged by Stripe Identity for manual review. Connects at backend integration.</div></div></div>
+<div id="view-banned" style="display:none"><div class="sec-hdr"><div class="sec-title">🚫 Banned Users</div></div><div class="ib red"><span>🚫</span><div>14 accounts permanently banned. All listings removed, funds frozen, email blocked from re-registering.</div></div></div>
+<div id="view-tax" style="display:none"><div class="sec-hdr"><div class="sec-title">🧾 Tax Reports</div></div><div class="ib yellow"><span>🧾</span><div>CT sales tax collected: $59.40 YTD · $41.20 remitted · $18.20 due Q2. Download reports for your CPA. Stripe Tax handles filing when enabled at backend integration.</div></div></div>
+
+<!-- SETTINGS -->
+<div id="view-settings" style="display:none">
+  <div class="sec-hdr"><div class="sec-title">⚙️ Platform Settings</div></div>
+  <div class="two-col">
+    <div class="panel"><div class="ph"><div class="ph-title">💸 Fee Settings</div></div><div class="pb"><div class="mfield"><label>Platform Fee (%)</label><input type="number" value="5" min="1" max="20"></div><div class="mfield"><label>Minimum Fee ($)</label><input type="number" value="0.50"></div><div class="mfield"><label>Fee Applied To</label><select><option>Both parties (current)</option><option>Seller only</option><option>Buyer only</option></select></div><button class="mbtn green" onclick="showToast('✅','Fee settings saved!')">Save Fee Settings</button></div></div>
+    <div class="panel"><div class="ph"><div class="ph-title">🤖 AI Dispute Settings</div></div><div class="pb"><div class="mfield"><label>AI Auto-Resolve Threshold</label><select><option>80%+ confidence (current)</option><option>90%+ confidence</option><option>Never — always review</option></select></div><div class="mfield"><label>Always Escalate When</label><select><option>Fraud suspected (current)</option><option>Over $100 trade value</option><option>Always escalate everything</option></select></div><button class="mbtn purple" onclick="showToast('🤖','AI settings saved!')">Save AI Settings</button></div></div>
+  </div>
+</div>
+
+</div><!-- /main -->
+</div><!-- /layout -->
+
+<!-- ═══ MODALS ═══ -->
+
+<div class="overlay" id="withdrawModal">
+  <div class="modal">
+    <div class="mhd"><div class="mhd-ttl">⬇ Withdraw to Bank Account</div><button class="mhd-x" onclick="closeModal('withdrawModal')">✕</button></div>
+    <div class="mbody">
+      <div class="ib green"><span>💵</span><div><strong>$847.32 available</strong> to withdraw now. Funds arrive in your bank within 2 business days via Stripe.</div></div>
+      <div class="mfield"><label>Amount to Withdraw ($)</label><input type="number" id="wdAmt" value="847.32" max="847.32" step="0.01" oninput="calcWd()"></div>
+      <div class="mfield"><label>Destination Account</label><select><option>Chase Bank ••••4291 (Default)</option><option>+ Add New Bank Account</option></select></div>
+      <div class="mfield"><label>Payout Speed</label><select id="wdSpeed" onchange="calcWd()"><option value="std">Standard — 2 business days (free)</option><option value="inst">Instant — Same day (+1.5% fee, min $0.50)</option></select></div>
+      <div style="background:rgba(255,255,255,.04);border:1px solid var(--border2);border-radius:8px;padding:12px;margin-bottom:12px">
+        <div class="sum-row"><span class="sum-lbl">Withdrawal amount</span><span id="wdAmtDisplay">$847.32</span></div>
+        <div class="sum-row"><span class="sum-lbl">Stripe fee</span><span id="wdFeeDisplay">$0.00</span></div>
+        <div class="sum-row" style="font-weight:700;font-size:13px;border:none;padding-top:6px"><span>You receive</span><span style="color:var(--green-l)" id="wdReceiveDisplay">$847.32</span></div>
+      </div>
+      <div class="ib yellow"><span>ℹ️</span><div>After withdrawal, remaining available balance: <strong id="wdRemaining">$0.00</strong>. Pending and held funds are unaffected.</div></div>
+      <button class="mbtn green" onclick="processWd()">⬇ Confirm Withdrawal</button>
+      <button class="mbtn outline" onclick="closeModal('withdrawModal')">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="overrideModal">
+  <div class="modal">
+    <div class="mhd"><div class="mhd-ttl">✏️ Override AI Decision</div><button class="mhd-x" onclick="closeModal('overrideModal')">✕</button></div>
+    <div class="mbody">
+      <p style="font-size:13px;color:var(--light);margin-bottom:14px;line-height:1.5">Your decision overrides the AI recommendation and will be sent directly to both traders.</p>
+      <div class="mfield"><label>Your Resolution</label><select><option>Full refund of fees to trader A</option><option>Partial refund — split fees</option><option>No refund — trade stands</option><option>Issue formal warning to user</option><option>Suspend user 7 days</option><option>Permanent ban</option></select></div>
+      <div class="mfield"><label>Message to Both Traders</label><textarea placeholder="Explain your decision…" style="min-height:80px"></textarea></div>
+      <div class="mfield"><label>Internal Note (not shown to users)</label><textarea placeholder="Why are you overriding the AI?" style="min-height:60px"></textarea></div>
+      <button class="mbtn gold" onclick="closeModal('overrideModal');showToast('✅','Your decision saved and sent to both traders.')">✅ Save My Decision</button>
+      <button class="mbtn outline" onclick="closeModal('overrideModal')">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="banModal">
+  <div class="modal">
+    <div class="mhd"><div class="mhd-ttl">🚫 Ban User Account</div><button class="mhd-x" onclick="closeModal('banModal')">✕</button></div>
+    <div class="mbody">
+      <div class="ib red"><span>⚠️</span><div>This action is <strong>permanent</strong>. All listings removed, active trades frozen, email blocked from re-registering. Stripe notified for fraud cases.</div></div>
+      <div class="mfield"><label>Ban Reason</label><select><option>Fraud — fake item / scam</option><option>Repeated platform bypass</option><option>Harassment or threatening messages</option><option>Identity fraud</option><option>Multiple policy violations</option></select></div>
+      <div class="mfield"><label>Handle Open Trades</label><select><option>Freeze escrow — refund all counterparties</option><option>Allow active trades to complete first</option></select></div>
+      <div class="mfield"><label>Internal Notes</label><textarea placeholder="Document the reason for the ban…" style="min-height:70px"></textarea></div>
+      <button class="mbtn red" onclick="closeModal('banModal');showToast('🚫','User banned. All listings removed. Counterparties refunded.')">🚫 Confirm Permanent Ban</button>
+      <button class="mbtn outline" onclick="closeModal('banModal')">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="payoutSettingsModal">
+  <div class="modal">
+    <div class="mhd"><div class="mhd-ttl">⚙️ Payout Settings</div><button class="mhd-x" onclick="closeModal('payoutSettingsModal')">✕</button></div>
+    <div class="mbody">
+      <div class="mfield"><label>Payout Schedule</label><select><option>Weekly — every Friday (recommended)</option><option>Daily — every business day</option><option>Monthly — 1st of month</option><option>Manual — I'll withdraw myself</option></select></div>
+      <div class="mfield"><label>Minimum Payout Amount ($)</label><input type="number" value="10" min="1"></div>
+      <div class="mfield"><label>Bank Account</label><select><option>Chase Bank ••••4291 (Default)</option><option>+ Add New Bank Account via Stripe</option></select></div>
+      <div class="ib blue"><span>ℹ️</span><div>Bank account changes are managed securely through Stripe. You'll be redirected to Stripe's dashboard to update bank details.</div></div>
+      <button class="mbtn green" onclick="closeModal('payoutSettingsModal');showToast('✅','Payout settings saved!')">Save Settings</button>
+      <button class="mbtn outline" onclick="closeModal('payoutSettingsModal');showToast('🏦','Redirecting to Stripe dashboard…')">🏦 Manage Bank in Stripe</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toastEl"><span id="toastIc">✅</span><span id="toastTx"></span></div>
+
+<script>
+// ── CHART ──
+const CHART_DATA=[
+  {l:'Apr 1',f:28,t:1.8,h:5},{l:'Apr 8',f:42,t:2.7,h:0},
+  {l:'Apr 15',f:61,t:3.9,h:8},{l:'Apr 22',f:55,t:3.5,h:0},
+  {l:'Apr 29',f:78,t:5.0,h:12},{l:'May 1',f:89,t:5.7,h:0},
+  {l:'May 6',f:104,t:6.6,h:18}
+];
+function renderChart(){
+  const w=document.getElementById('revenueChart');
+  if(!w)return;
+  const mx=Math.max(...CHART_DATA.map(d=>d.f+d.t+d.h));
+  w.innerHTML=CHART_DATA.map(d=>{
+    const p=v=>((v/mx)*130).toFixed(0);
+    return `<div class="bar-grp">
+      <div style="display:flex;flex-direction:column;justify-content:flex-end;gap:1px;height:130px;width:100%">
+        <div class="bar-seg bar-held" style="height:${p(d.h)}px"></div>
+        <div class="bar-seg bar-tax" style="height:${p(d.t)}px"></div>
+        <div class="bar-seg bar-fees" style="height:${p(d.f)}px"></div>
+      </div>
+      <div class="bar-lbl">${d.l}</div>
+    </div>`;
+  }).join('');
+}
+
+// ── VIEWS ──
+function switchView(v){
+  document.querySelectorAll('[id^="view-"]').forEach(el=>el.style.display='none');
+  const el=document.getElementById('view-'+v);
+  if(el)el.style.display='block';
+  document.querySelectorAll('.ni').forEach(n=>n.classList.remove('active'));
+  const nav=document.getElementById('nav-'+v);
+  if(nav)nav.classList.add('active');
+  if(v==='overview')renderChart();
+  if(v==='revenue')renderChart();
+}
+
+function setCtab(el){
+  document.querySelectorAll('.ctab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  showToast('📊','Chart updated for '+el.textContent+' range');
+}
+
+// ── AI APPROVE ──
+function approveAI(btn,caseId){
+  const item=btn.closest('.dq-item');
+  item.style.opacity='.5';item.style.pointerEvents='none';
+  const lbl=item.querySelector('.ai-resp-lbl');
+  if(lbl){lbl.textContent='✅ Decision Approved — Sent to Traders';}
+  item.querySelector('.ai-resp').style.borderColor='rgba(22,163,74,.4)';
+  item.querySelector('.ai-resp').style.background='rgba(22,163,74,.06)';
+  showToast('✅','AI decision for '+caseId+' approved and sent!');
+}
+
+// ── AI CHAT ──
+const AI_ANSWERS={
+  prohibited:['I have flagged this listing as containing a prohibited item. The following items are never permitted on Tradezy: firearms, ammunition, weapons, alcohol, tobacco, vaping products, prescription medications, illegal drugs, live animals, adult content, stolen goods, counterfeit items, cash, gift cards, cryptocurrency, and hazardous materials. I recommend removing the listing immediately and issuing a formal warning to the user. If this is their second offense for prohibited items I recommend a 7-day suspension. Third offense is a permanent ban.'],
+  default:[
+    'Based on platform data, your dispute rate is 2.2% which is healthy for a marketplace this size. The most common issue is item condition disputes at 41%, followed by no-shows at 28%. I recommend adding a photo-at-meetup requirement to reduce condition disputes significantly.',
+    'Looking at the bypass attempts this week, all 4 involve users in their first 30 days. I recommend adding a stronger onboarding message about why keeping trades on-platform protects them — not just you. Frame it as safety, not as a fee issue.',
+    'Your food and water category is your fastest-growing segment at 34% of all trades. Given the recession context, I would suggest featuring it more prominently on the homepage and potentially adding a Community Essentials badge for specialist traders.',
+    'At your current growth rate of +38% month over month, you will hit $5,000 per month in platform fees by August 2026. The food and water category drives your highest average trade values. One thing to watch: held funds at 10.6% of available is slightly high — resolving the 2 open disputes quickly will free that up.',
+  ],
+  fraud:['The fraud indicators on ScammerAlex: account created 12 days ago with no verification, 3 disputes filed against them in 10 days, all items listed were high-value electronics with photos likely pulled from the internet, and 3 bypass attempts to move conversations off-platform before trades. I recommend immediate ban and filing a Stripe fraud report.'],
+  bypass:['The 4 bypass attempts this week are a 33% increase over last week. The pattern is: users share contact info after the offer is accepted but before meetup confirmation. I recommend adding a pop-up reminder during offer acceptance that explicitly states off-platform contact removes all trade protection.'],
+  revenue:['Your revenue trajectory is strong. The food and water category is your best performing segment. One area to watch: your 5% fee is competitive but once you have 500+ active traders you could consider a small premium tier for power users. Do not add fees before you hit that milestone though — it will hurt growth.'],
+};
+function sendChat(){
+  const inp=document.getElementById('chatInput');
+  const txt=inp.value.trim();
+  if(!txt)return;
+  const msgs=document.getElementById('chatMsgs');
+  msgs.innerHTML+=`<div class="cm user"><div class="cm-av usv">AD</div><div class="cm-bub">${txt}</div></div>`;
+  const tid='t'+Date.now();
+  msgs.innerHTML+=`<div class="cm ai" id="${tid}"><div class="cm-av aiv">AI</div><div class="typing"><div class="td"></div><div class="td"></div><div class="td"></div></div></div>`;
+  msgs.scrollTop=msgs.scrollHeight;
+  inp.value='';
+  const lo=txt.toLowerCase();
+  let resp;
+  if(lo.includes('fraud')||lo.includes('scam'))resp=AI_ANSWERS.fraud[0];
+    else if(lo.includes('gun')||lo.includes('weapon')||lo.includes('alcohol')||lo.includes('tobacco')||lo.includes('drug')||lo.includes('prohibited')||lo.includes('illegal'))resp=AI_ANSWERS.prohibited[0];
+  else if(lo.includes('bypass')||lo.includes('contact'))resp=AI_ANSWERS.bypass[0];
+  else if(lo.includes('revenue')||lo.includes('money')||lo.includes('fund'))resp=AI_ANSWERS.revenue[0];
+  else resp=AI_ANSWERS.default[Math.floor(Math.random()*AI_ANSWERS.default.length)];
+  setTimeout(()=>{
+    const el=document.getElementById(tid);
+    if(el)el.remove();
+    msgs.innerHTML+=`<div class="cm ai"><div class="cm-av aiv">AI</div><div class="cm-bub">${resp}</div></div>`;
+    msgs.scrollTop=msgs.scrollHeight;
+  },1400+Math.random()*800);
+}
+function scrollToChat(){
+  switchView('ai');
+  setTimeout(()=>{
+    const c=document.getElementById('aiChatSection');
+    if(c)c.scrollIntoView({behavior:'smooth'});
+  },150);
+}
+
+// ── WITHDRAW ──
+function calcWd(){
+  const amt=Math.min(parseFloat(document.getElementById('wdAmt').value)||0,847.32);
+  const isInst=document.getElementById('wdSpeed').value==='inst';
+  const fee=isInst?Math.max(amt*0.015,0.50):0;
+  const receive=amt-fee;
+  document.getElementById('wdAmtDisplay').textContent='$'+amt.toFixed(2);
+  document.getElementById('wdFeeDisplay').textContent=fee>0?'$'+fee.toFixed(2):'$0.00 (standard)';
+  document.getElementById('wdReceiveDisplay').textContent='$'+receive.toFixed(2);
+  document.getElementById('wdRemaining').textContent='$'+Math.max(0,847.32-amt).toFixed(2);
+}
+function processWd(){
+  const amt=parseFloat(document.getElementById('wdAmt').value)||847.32;
+  closeModal('withdrawModal');
+  showToast('⬇','$'+amt.toFixed(2)+' withdrawal initiated! Arrives in 2 business days.');
+}
+
+// ── MODAL ──
+function openModal(id){document.getElementById(id).classList.add('open');}
+function closeModal(id){document.getElementById(id).classList.remove('open');}
+document.querySelectorAll('.overlay').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('open');}));
+
+// ── TOAST ──
+function showToast(icon,msg){
+  document.getElementById('toastIc').textContent=icon;
+  document.getElementById('toastTx').textContent=msg;
+  const t=document.getElementById('toastEl');
+  t.classList.add('show');
+  clearTimeout(window._tt);
+  window._tt=setTimeout(()=>t.classList.remove('show'),4000);
+}
+
+// ── INIT ──
+renderChart();
+</script>
+</body>
+</html>

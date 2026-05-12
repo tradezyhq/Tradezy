@@ -1,0 +1,1997 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tradezy — Trade Local. Live Better.</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Lato:ital,wght@0,300;0,400;0,700;1,300&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #0a1628;
+  --navy2: #112240;
+  --blue: #1a56db;
+  --blue-light: #2563eb;
+  --gold: #f59e0b;
+  --gold-light: #fbbf24;
+  --green: #16a34a;
+  --green-light: #22c55e;
+  --red: #dc2626;
+  --text: #1a1a2e;
+  --text-light: #475569;
+  --border: #e2e8f0;
+  --bg: #f8fafc;
+  --white: #ffffff;
+  --tag-bg: #eff6ff;
+  --tag-color: #1d4ed8;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  font-family: 'Lato', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 14px;
+}
+
+a { text-decoration: none; color: inherit; }
+
+/* ─── TOP UTILITY BAR ─── */
+.util-bar {
+  background: var(--navy);
+  color: #cbd5e1;
+  font-size: 12px;
+  padding: 6px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.util-bar a { color: #94a3b8; margin-left: 12px; cursor: pointer; }
+.util-bar a:hover { color: #fff; }
+
+.util-left { display: flex; align-items: center; gap: 6px; }
+.util-right { display: flex; align-items: center; }
+
+.location-pill {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 99px;
+  padding: 3px 10px 3px 8px;
+  cursor: pointer;
+  transition: all 0.15s;
+  font-size: 12px;
+  color: #e2e8f0;
+}
+
+.location-pill:hover { background: rgba(255,255,255,0.14); }
+.location-pill .pin { color: var(--gold); font-size: 11px; }
+
+.radius-select {
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+  font-size: 12px;
+  cursor: pointer;
+  outline: none;
+  margin-left: 10px;
+}
+
+.recession-ticker {
+  background: var(--red);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 10px;
+  border-radius: 3px;
+  letter-spacing: 0.3px;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.8} }
+
+/* ─── MAIN NAV ─── */
+header {
+  background: var(--white);
+  border-bottom: 2px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 200;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+}
+
+.nav-main {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 10px 20px;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.logo {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 900;
+  font-size: 2rem;
+  letter-spacing: -1px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.logo .all { color: var(--navy); }
+.logo .trades { color: var(--blue); }
+.logo .dot { color: var(--gold); font-size: 2.2rem; }
+
+/* Search bar — eBay-style with category dropdown */
+.search-wrap {
+  flex: 1;
+  display: flex;
+  border: 2px solid var(--navy);
+  border-radius: 8px;
+  overflow: hidden;
+  background: #fff;
+  transition: border-color 0.15s;
+  min-width: 0;
+}
+
+.search-wrap:focus-within { border-color: var(--blue); }
+
+.search-cat {
+  background: #f1f5f9;
+  border: none;
+  border-right: 1px solid #cbd5e1;
+  padding: 0 12px;
+  font-size: 13px;
+  color: var(--text);
+  cursor: pointer;
+  outline: none;
+  font-family: 'Lato', sans-serif;
+  flex-shrink: 0;
+  appearance: none;
+  padding-right: 24px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23475569'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+}
+
+.search-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  padding: 10px 14px;
+  font-size: 14px;
+  font-family: 'Lato', sans-serif;
+  color: var(--text);
+  min-width: 0;
+}
+
+.search-input::placeholder { color: #94a3b8; }
+
+.search-btn {
+  background: var(--blue);
+  border: none;
+  color: #fff;
+  padding: 0 22px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: background 0.15s;
+  white-space: nowrap;
+}
+
+.search-btn:hover { background: var(--blue-light); }
+
+.nav-icons {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.nav-icon-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.15s;
+  border: none;
+  background: transparent;
+  position: relative;
+}
+
+.nav-icon-btn:hover { background: #f1f5f9; }
+.nav-icon-btn .icon { font-size: 1.3rem; }
+.nav-icon-btn .label { font-size: 11px; color: var(--text-light); margin-top: 2px; white-space: nowrap; }
+
+.badge {
+  position: absolute;
+  top: 2px; right: 6px;
+  background: var(--red);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  border-radius: 99px;
+  padding: 1px 5px;
+  min-width: 16px;
+  text-align: center;
+}
+
+.btn-list {
+  background: var(--gold);
+  color: var(--navy);
+  border: none;
+  padding: 8px 18px;
+  border-radius: 7px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800;
+  font-size: 1rem;
+  letter-spacing: 0.3px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s;
+  flex-shrink: 0;
+}
+
+.btn-list:hover { background: var(--gold-light); transform: translateY(-1px); }
+
+/* ─── CATEGORY NAV ─── */
+.cat-nav {
+  background: var(--navy);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.cat-nav::-webkit-scrollbar { display: none; }
+
+.cat-nav-inner {
+  display: flex;
+  align-items: center;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.cat-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 10px 14px;
+  color: #cbd5e1;
+  font-size: 13px;
+  font-weight: 400;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: all 0.15s;
+  border-bottom: 3px solid transparent;
+  position: relative;
+}
+
+.cat-nav-item:hover, .cat-nav-item.active {
+  color: #fff;
+  border-bottom-color: var(--gold);
+  background: rgba(255,255,255,0.05);
+}
+
+.cat-nav-item.essential {
+  color: var(--gold-light);
+  font-weight: 700;
+}
+
+.cat-nav-item.essential:hover, .cat-nav-item.essential.active {
+  border-bottom-color: var(--green-light);
+  color: var(--green-light);
+}
+
+.cat-new {
+  background: var(--red);
+  color: #fff;
+  font-size: 9px;
+  font-weight: 800;
+  padding: 1px 5px;
+  border-radius: 3px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  position: absolute;
+  top: 6px;
+  right: 4px;
+}
+
+/* ─── MAIN LAYOUT ─── */
+.page {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 16px 20px;
+}
+
+/* ─── HERO BANNER ─── */
+.hero-banner {
+  display: grid;
+  grid-template-columns: 1fr 280px;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.hero-main {
+  background: linear-gradient(135deg, var(--navy) 0%, #1e3a5f 60%, #0a3060 100%);
+  border-radius: 10px;
+  padding: 36px 40px;
+  position: relative;
+  overflow: hidden;
+  min-height: 240px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.hero-main::before {
+  content: '';
+  position: absolute;
+  top: -80px; right: -60px;
+  width: 340px; height: 340px;
+  background: radial-gradient(circle, rgba(245,158,11,0.18) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.hero-main::after {
+  content: '⇄';
+  position: absolute;
+  right: 40px; bottom: 20px;
+  font-size: 8rem;
+  color: rgba(255,255,255,0.04);
+  font-family: 'Barlow Condensed', sans-serif;
+  pointer-events: none;
+}
+
+.hero-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(245,158,11,0.15);
+  border: 1px solid rgba(245,158,11,0.3);
+  color: var(--gold-light);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 4px 12px;
+  border-radius: 4px;
+  margin-bottom: 14px;
+  width: fit-content;
+}
+
+.hero-main h1 {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: clamp(1.8rem, 3.5vw, 3rem);
+  font-weight: 900;
+  color: #fff;
+  line-height: 1.05;
+  margin-bottom: 10px;
+  letter-spacing: -0.5px;
+}
+
+.hero-main h1 .hl { color: var(--gold-light); }
+
+.hero-sub {
+  color: #94a3b8;
+  font-size: 14px;
+  line-height: 1.5;
+  max-width: 420px;
+  margin-bottom: 20px;
+}
+
+.hero-sub strong { color: #cbd5e1; }
+
+.hero-ctas { display: flex; gap: 10px; flex-wrap: wrap; }
+
+.btn-hero-primary {
+  background: var(--gold);
+  color: var(--navy);
+  border: none;
+  padding: 10px 24px;
+  border-radius: 6px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800;
+  font-size: 1rem;
+  letter-spacing: 0.3px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.btn-hero-primary:hover { background: var(--gold-light); transform: translateY(-1px); }
+
+.btn-hero-secondary {
+  background: transparent;
+  color: #e2e8f0;
+  border: 1px solid rgba(255,255,255,0.25);
+  padding: 10px 24px;
+  border-radius: 6px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.btn-hero-secondary:hover { border-color: rgba(255,255,255,0.5); color: #fff; }
+
+.hero-stats {
+  display: flex;
+  gap: 24px;
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255,255,255,0.08);
+}
+
+.hstat { text-align: left; }
+.hstat-num { font-family: 'Barlow Condensed', sans-serif; font-size: 1.4rem; font-weight: 800; color: var(--gold-light); }
+.hstat-label { font-size: 11px; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; }
+
+/* Side banners */
+.hero-side { display: flex; flex-direction: column; gap: 12px; }
+
+.side-banner {
+  flex: 1;
+  border-radius: 10px;
+  padding: 18px 20px;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.15s;
+}
+
+.side-banner:hover { transform: translateY(-2px); }
+
+.side-banner.essentials {
+  background: linear-gradient(135deg, #14532d, #166534);
+  border: 1px solid rgba(74,222,128,0.2);
+}
+
+.side-banner.essentials::after {
+  content: '🥫';
+  position: absolute;
+  right: 10px; bottom: 5px;
+  font-size: 3.5rem;
+  opacity: 0.25;
+}
+
+.side-banner.local {
+  background: linear-gradient(135deg, #1e3a8a, #1d4ed8);
+  border: 1px solid rgba(96,165,250,0.2);
+}
+
+.side-banner.local::after {
+  content: '📍';
+  position: absolute;
+  right: 10px; bottom: 5px;
+  font-size: 3.5rem;
+  opacity: 0.25;
+}
+
+.sb-tag {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 5px;
+  opacity: 0.75;
+  color: #fff;
+}
+
+.sb-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #fff;
+  line-height: 1.1;
+  margin-bottom: 6px;
+}
+
+.sb-desc { font-size: 12px; color: rgba(255,255,255,0.65); line-height: 1.4; }
+
+.sb-link {
+  display: inline-block;
+  margin-top: 10px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--gold-light);
+  font-family: 'Barlow Condensed', sans-serif;
+  letter-spacing: 0.3px;
+}
+
+/* ─── RECESSION ALERT BANNER ─── */
+.alert-strip {
+  background: linear-gradient(90deg, #7f1d1d, #991b1b, #7f1d1d);
+  border-radius: 8px;
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+  border: 1px solid rgba(248,113,113,0.3);
+}
+
+.alert-icon { font-size: 1.4rem; flex-shrink: 0; }
+
+.alert-text { flex: 1; }
+.alert-title { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 1rem; color: #fca5a5; letter-spacing: 0.3px; }
+.alert-desc { font-size: 12px; color: #fca5a5; opacity: 0.8; margin-top: 2px; }
+
+.alert-cta {
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.2);
+  color: #fff;
+  padding: 7px 16px;
+  border-radius: 5px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s;
+}
+
+.alert-cta:hover { background: rgba(255,255,255,0.18); }
+
+/* ─── SECTION TITLES ─── */
+.section-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.section-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: var(--text);
+  letter-spacing: -0.3px;
+}
+
+.section-title .accent { color: var(--blue); }
+
+.see-all {
+  font-size: 13px;
+  color: var(--blue);
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.see-all:hover { text-decoration: underline; }
+
+/* ─── ESSENTIALS STRIP ─── */
+.essentials-strip {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+.ess-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 10px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.15s;
+  position: relative;
+}
+
+.ess-card:hover { border-color: var(--green); box-shadow: 0 4px 16px rgba(22,163,74,0.12); transform: translateY(-2px); }
+
+.ess-card.featured { border-color: var(--gold); background: #fffbeb; }
+
+.ess-emoji { font-size: 2rem; margin-bottom: 6px; }
+.ess-name { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 0.88rem; color: var(--text); }
+.ess-count { font-size: 11px; color: var(--green); margin-top: 2px; font-weight: 700; }
+
+.ess-hot {
+  position: absolute;
+  top: 6px; right: 6px;
+  background: var(--red);
+  color: #fff;
+  font-size: 9px;
+  font-weight: 800;
+  padding: 1px 5px;
+  border-radius: 3px;
+  letter-spacing: 0.5px;
+}
+
+/* ─── LISTINGS GRID ─── */
+.listings-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+/* item card */
+.item-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.18s;
+  display: flex;
+  flex-direction: column;
+}
+
+.item-card:hover {
+  box-shadow: 0 6px 24px rgba(0,0,0,0.12);
+  transform: translateY(-3px);
+  border-color: #cbd5e1;
+}
+
+.item-img {
+  width: 100%;
+  aspect-ratio: 1;
+  background: #f1f5f9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3.5rem;
+  position: relative;
+}
+
+.item-img-badges {
+  position: absolute;
+  top: 8px; left: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.ibadge {
+  font-size: 10px;
+  font-weight: 800;
+  padding: 2px 7px;
+  border-radius: 3px;
+  letter-spacing: 0.3px;
+  width: fit-content;
+}
+
+.ibadge.local { background: var(--blue); color: #fff; }
+.ibadge.essential { background: var(--green); color: #fff; }
+.ibadge.hot { background: var(--red); color: #fff; }
+.ibadge.cash { background: var(--gold); color: var(--navy); }
+
+.watch-btn {
+  position: absolute;
+  top: 8px; right: 8px;
+  background: rgba(255,255,255,0.9);
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  width: 30px; height: 30px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.watch-btn:hover { background: #fff; border-color: var(--red); color: var(--red); }
+
+.dist-chip {
+  position: absolute;
+  bottom: 8px; left: 8px;
+  background: rgba(10,22,40,0.75);
+  color: #e2e8f0;
+  font-size: 10px;
+  padding: 2px 7px;
+  border-radius: 99px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.item-body { padding: 10px 12px; flex: 1; display: flex; flex-direction: column; }
+
+.item-title {
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--text);
+  line-height: 1.3;
+  margin-bottom: 4px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.item-cond { font-size: 11px; color: var(--text-light); margin-bottom: 5px; }
+
+.item-wants {
+  font-size: 11px;
+  color: var(--blue);
+  font-weight: 700;
+  margin-bottom: 6px;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.item-wants::before { content: 'Wants: '; color: var(--text-light); font-weight: 400; }
+
+.item-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: auto;
+  padding-top: 8px;
+  border-top: 1px solid var(--border);
+}
+
+.item-value {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--text);
+}
+
+.item-offers { font-size: 11px; color: var(--text-light); }
+.item-offers strong { color: var(--blue); font-weight: 700; }
+
+/* ─── LOCAL FEED ─── */
+.local-feed {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.feed-list { display: flex; flex-direction: column; gap: 8px; }
+
+.feed-item {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.feed-item:hover { border-color: var(--blue); box-shadow: 0 2px 12px rgba(26,86,219,0.08); }
+
+.feed-emoji {
+  width: 48px; height: 48px;
+  background: #f1f5f9;
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.8rem;
+  flex-shrink: 0;
+}
+
+.feed-info { flex: 1; min-width: 0; }
+
+.feed-title { font-weight: 700; font-size: 13px; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.feed-meta { font-size: 11px; color: var(--text-light); display: flex; gap: 8px; }
+.feed-meta .dot-sep { color: #cbd5e1; }
+.feed-dist { color: var(--blue); font-weight: 700; }
+
+.feed-right { text-align: right; flex-shrink: 0; }
+.feed-val { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 1rem; }
+.feed-time { font-size: 10px; color: var(--text-light); margin-top: 2px; }
+
+/* Map placeholder */
+.map-box {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+  min-height: 300px;
+}
+
+.map-bg {
+  width: 100%; height: 100%;
+  background:
+    repeating-linear-gradient(0deg, transparent, transparent 39px, #e2e8f0 39px, #e2e8f0 40px),
+    repeating-linear-gradient(90deg, transparent, transparent 39px, #e2e8f0 39px, #e2e8f0 40px),
+    #f8fafc;
+  min-height: 300px;
+  position: relative;
+}
+
+.map-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.map-center-pin {
+  font-size: 2.5rem;
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));
+  animation: bounce 1.5s ease-in-out infinite;
+}
+
+@keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-6px)} }
+
+.map-dots {
+  position: absolute;
+  inset: 0;
+}
+
+.map-dot {
+  position: absolute;
+  width: 32px; height: 32px;
+  background: var(--white);
+  border: 2px solid var(--blue);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.9rem;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  transition: transform 0.15s;
+}
+
+.map-dot:hover { transform: scale(1.2); }
+.map-dot.essential { border-color: var(--green); }
+
+.map-label {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--navy);
+  margin-top: 8px;
+}
+
+.map-sublabel { font-size: 12px; color: var(--text-light); }
+
+.map-header {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.map-title { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 0.95rem; color: var(--text); }
+
+.radius-badge {
+  background: var(--tag-bg);
+  color: var(--tag-color);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 99px;
+  cursor: pointer;
+}
+
+/* ─── HOW IT WORKS ─── */
+.how-it-works {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 24px 28px;
+  margin-bottom: 24px;
+}
+
+.hiw-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 1.3rem;
+  font-weight: 800;
+  margin-bottom: 18px;
+  color: var(--text);
+}
+
+.hiw-steps {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+.hiw-step { text-align: center; }
+
+.hiw-icon {
+  width: 52px; height: 52px;
+  background: var(--tag-bg);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.5rem;
+  margin: 0 auto 10px;
+  border: 2px solid #dbeafe;
+}
+
+.hiw-step-title { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 0.95rem; margin-bottom: 4px; }
+.hiw-step-desc { font-size: 12px; color: var(--text-light); line-height: 1.5; }
+
+.hiw-connector {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 26px;
+  color: #cbd5e1;
+  font-size: 1.4rem;
+}
+
+/* ─── COMMUNITY BANNER ─── */
+.community-banner {
+  background: linear-gradient(135deg, var(--navy) 0%, #0f3460 100%);
+  border-radius: 10px;
+  padding: 28px 36px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  position: relative;
+  overflow: hidden;
+}
+
+.community-banner::after {
+  content: '🤝';
+  position: absolute;
+  right: 180px; top: 50%;
+  transform: translateY(-50%);
+  font-size: 5rem;
+  opacity: 0.08;
+  pointer-events: none;
+}
+
+.cb-left { max-width: 560px; }
+.cb-title { font-family: 'Barlow Condensed', sans-serif; font-size: 1.6rem; font-weight: 900; color: #fff; margin-bottom: 6px; }
+.cb-desc { font-size: 13px; color: #94a3b8; line-height: 1.5; }
+.cb-right { display: flex; gap: 10px; flex-shrink: 0; }
+
+.btn-signup {
+  background: var(--gold);
+  color: var(--navy);
+  border: none;
+  padding: 11px 26px;
+  border-radius: 7px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.btn-signup:hover { background: var(--gold-light); transform: translateY(-1px); }
+
+.btn-learn {
+  background: transparent;
+  color: #e2e8f0;
+  border: 1px solid rgba(255,255,255,0.25);
+  padding: 11px 24px;
+  border-radius: 7px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.btn-learn:hover { border-color: rgba(255,255,255,0.5); }
+
+/* ─── FOOTER ─── */
+footer {
+  background: var(--navy);
+  color: #64748b;
+  padding: 36px 20px 20px;
+}
+
+.footer-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.footer-top {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr 1fr;
+  gap: 32px;
+  margin-bottom: 28px;
+}
+
+.footer-brand .logo { font-size: 1.6rem; margin-bottom: 10px; display: block; }
+.footer-brand p { font-size: 12px; line-height: 1.6; color: #475569; max-width: 240px; }
+
+.footer-col-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: #94a3b8;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.footer-links { display: flex; flex-direction: column; gap: 8px; }
+.footer-links a { font-size: 13px; color: #475569; cursor: pointer; transition: color 0.15s; }
+.footer-links a:hover { color: #94a3b8; }
+
+.footer-bottom {
+  border-top: 1px solid #1e293b;
+  padding-top: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 12px;
+}
+
+.footer-bottom-links { display: flex; gap: 16px; }
+.footer-bottom-links a { color: #475569; cursor: pointer; }
+.footer-bottom-links a:hover { color: #94a3b8; }
+
+/* ─── MODALS ─── */
+.overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(10,22,40,0.75);
+  z-index: 500;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.overlay.open { display: flex; }
+
+.modal {
+  background: var(--white);
+  border-radius: 12px;
+  width: 100%;
+  max-width: 440px;
+  overflow: hidden;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.3);
+  animation: slideUp 0.25s ease;
+}
+
+@keyframes slideUp { from{transform:translateY(20px);opacity:0} to{transform:translateY(0);opacity:1} }
+
+.modal-head {
+  background: var(--navy);
+  padding: 20px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.modal-head-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: #fff;
+}
+
+.modal-close {
+  background: rgba(255,255,255,0.1);
+  border: none;
+  color: #94a3b8;
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1rem;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.15s;
+}
+
+.modal-close:hover { background: rgba(255,255,255,0.2); color: #fff; }
+
+.modal-body { padding: 24px; }
+
+.form-field { margin-bottom: 14px; }
+.form-field label { display: block; font-size: 12px; font-weight: 700; color: var(--text-light); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 5px; }
+
+.form-field input, .form-field select {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 10px 12px;
+  font-size: 14px;
+  font-family: 'Lato', sans-serif;
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.15s;
+  background: var(--white);
+}
+
+.form-field input:focus, .form-field select:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(26,86,219,0.1); }
+
+.loc-detect {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+  font-size: 12px;
+  color: var(--blue);
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.loc-detect:hover { text-decoration: underline; }
+
+.form-divider { text-align: center; color: var(--text-light); font-size: 12px; margin: 14px 0; position: relative; }
+.form-divider::before, .form-divider::after { content:''; position:absolute; top:50%; width:42%; height:1px; background:var(--border); }
+.form-divider::before { left:0; }
+.form-divider::after { right:0; }
+
+.btn-full {
+  width: 100%;
+  padding: 12px;
+  border-radius: 6px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 1rem;
+  font-weight: 800;
+  cursor: pointer;
+  border: none;
+  transition: all 0.15s;
+  letter-spacing: 0.3px;
+}
+
+.btn-full.primary { background: var(--blue); color: #fff; }
+.btn-full.primary:hover { background: var(--blue-light); }
+.btn-full.gold { background: var(--gold); color: var(--navy); }
+.btn-full.gold:hover { background: var(--gold-light); }
+
+.modal-footer-link { text-align: center; font-size: 13px; color: var(--text-light); margin-top: 14px; }
+.modal-footer-link a { color: var(--blue); font-weight: 700; cursor: pointer; }
+
+/* ─── TOAST ─── */
+.toast {
+  position: fixed;
+  bottom: 24px; right: 24px;
+  background: var(--navy);
+  color: #e2e8f0;
+  border: 1px solid #1e3a5f;
+  border-left: 4px solid var(--green);
+  border-radius: 8px;
+  padding: 12px 18px;
+  font-size: 13px;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  max-width: 320px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+  transform: translateX(120%);
+  transition: transform 0.3s ease;
+}
+
+.toast.show { transform: translateX(0); }
+.toast-icon { font-size: 1.2rem; }
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 1100px) {
+  .listings-grid { grid-template-columns: repeat(4, 1fr); }
+  .essentials-strip { grid-template-columns: repeat(4, 1fr); }
+}
+
+@media (max-width: 860px) {
+  .hero-banner { grid-template-columns: 1fr; }
+  .hero-side { flex-direction: row; }
+  .listings-grid { grid-template-columns: repeat(3, 1fr); }
+  .essentials-strip { grid-template-columns: repeat(3, 1fr); }
+  .hiw-steps { grid-template-columns: repeat(2, 1fr); }
+  .footer-top { grid-template-columns: 1fr 1fr; }
+  .local-feed { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 600px) {
+  .listings-grid { grid-template-columns: repeat(2, 1fr); }
+  .essentials-strip { grid-template-columns: repeat(3, 1fr); }
+  .community-banner { flex-direction: column; gap: 16px; }
+  .footer-top { grid-template-columns: 1fr; }
+  .nav-icons { display: none; }
+}
+
+/* ── DARK MODE ── */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --navy:#0a1628;
+    --blue:#3b82f6;
+    --blue-l:#60a5fa;
+    --gold:#fbbf24;
+    --gold-l:#fcd34d;
+    --green:#22c55e;
+    --green-l:#4ade80;
+    --red:#f87171;
+    --orange:#fb923c;
+    --text:#f1f5f9;
+    --muted:#94a3b8;
+    --light:#64748b;
+    --border:rgba(255,255,255,.1);
+    --bg:#0f172a;
+    --white:#1e293b;
+    --surface:#162032;
+    --card:#1e293b;
+  }
+  body { background:#0f172a !important; color:#f1f5f9 !important; }
+  /* Nav always dark - already fine */
+  /* Cards and panels */
+  .card, .panel, .pay-card, .summary-card, .rate-card, .review-card,
+  .profile-card, .rating-overview-card, .dispute-flow, .step-panel,
+  .step-list, .protection-hero ~ .panel, .stat-card, .fund-card,
+  .chart-card, .dq-item, .ai-panel { background:#1e293b !important; border-color:rgba(255,255,255,.08) !important; }
+  /* Text */
+  h1,h2,h3,h4,h5,h6 { color:#f1f5f9 !important; }
+  p, li, span:not(.logo *):not(.badge):not(.chip) { color:#94a3b8; }
+  strong { color:#e2e8f0 !important; }
+  /* Inputs */
+  input, select, textarea {
+    background:#162032 !important;
+    border-color:rgba(255,255,255,.12) !important;
+    color:#f1f5f9 !important;
+  }
+  input::placeholder, textarea::placeholder { color:#334155 !important; }
+  /* Surfaces */
+  .surface, [class*="surface"], [class*="-body"], [class*="-wrap"],
+  .pay-body, .sp-body, .panel-body, .mbody, .dq, .ai-chat,
+  .sum-body, .pc-body { background:#1e293b !important; }
+  /* Borders */
+  [class*="border"], hr { border-color:rgba(255,255,255,.08) !important; }
+  /* Table rows */
+  .trow:hover, .saved-card:hover, .step-item:hover { background:rgba(255,255,255,.05) !important; }
+  /* White backgrounds that need to go dark */
+  .white-bg, .bg-white, [style*="background:#fff"], [style*="background: #fff"],
+  [style*="background:white"], [style*="background: white"] { background:#1e293b !important; }
+  /* Legal pages specific */
+  .doc-header { background:transparent !important; }
+  .doc-title { color:#f1f5f9 !important; }
+  .doc-meta { color:#94a3b8 !important; }
+  .doc-meta strong { color:#e2e8f0 !important; }
+  .toc { background:#1e293b !important; border-color:rgba(255,255,255,.08) !important; }
+  .toc-title { color:#f1f5f9 !important; }
+  .section-title { color:#f1f5f9 !important; border-color:rgba(255,255,255,.08) !important; }
+  .section-num { color:#60a5fa !important; }
+  .section p, .section li { color:#94a3b8 !important; }
+  .section p strong, .section li strong { color:#e2e8f0 !important; }
+  /* Highlight boxes in legal pages — keep light backgrounds with dark text */
+  .hb-blue { background:#1e3a5f !important; border-color:#1d4ed8 !important; border-left-color:#3b82f6 !important; }
+  .hb-yellow { background:#422006 !important; border-color:#92400e !important; border-left-color:#fbbf24 !important; }
+  .hb-red { background:#450a0a !important; border-color:#991b1b !important; border-left-color:#f87171 !important; }
+  .hb-green { background:#052e16 !important; border-color:#166534 !important; border-left-color:#22c55e !important; }
+  .hb-blue .hb-text { color:#93c5fd !important; }
+  .hb-yellow .hb-text { color:#fcd34d !important; }
+  .hb-red .hb-text { color:#fca5a5 !important; }
+  .hb-green .hb-text { color:#86efac !important; }
+  .hb-text strong { color:inherit !important; }
+  /* Tables */
+  .fee-table th, .data-table th { background:#0f172a !important; color:#f1f5f9 !important; }
+  .fee-table td, .data-table td { color:#94a3b8 !important; background:#1e293b !important; }
+  .fee-table tr:nth-child(even) td, .data-table tr:nth-child(even) td { background:#162032 !important; }
+  .fee-table td:first-child, .data-table td:first-child { color:#e2e8f0 !important; }
+  /* Rights grid */
+  .right-card, .badge-card, .pf-card, .stat-card { background:#1e293b !important; border-color:rgba(255,255,255,.08) !important; }
+  .rc-title, .bc-name, .pf-title, .sc-lbl { color:#e2e8f0 !important; }
+  .rc-desc, .bc-desc, .pf-desc { color:#94a3b8 !important; }
+  /* Contact box stays dark - already fine */
+  /* Back buttons */
+  .back-btn { background:#1e3a8a !important; color:#fff !important; }
+  /* Nav links */
+  .nav-links a { color:#94a3b8 !important; }
+  .nav-links a:hover { color:#fff !important; }
+  /* Modal */
+  .modal, .overlay .modal { background:#1e293b !important; border-color:rgba(255,255,255,.1) !important; }
+  .mfield input, .mfield select, .mfield textarea { background:#0f172a !important; }
+  /* Chart bars already colored */
+  /* Star ratings */
+  .star, .mini-star { filter:none !important; }
+  /* OTP inputs */
+  .otp-input { background:#162032 !important; color:#f1f5f9 !important; }
+  .otp-input.filled { background:#052e16 !important; }
+  /* Upload zones */
+  .upload-zone, .upload-side, .ev-slot { background:#162032 !important; border-color:rgba(255,255,255,.1) !important; }
+  /* Step list sidebar */
+  .step-list { background:#1e293b !important; }
+  .step-item { background:transparent !important; }
+  .step-item.completed { background:rgba(22,163,74,.1) !important; }
+  .step-item.active { background:rgba(26,86,219,.1) !important; }
+  .si-title { color:#e2e8f0 !important; }
+  .si-meta { color:#64748b !important; }
+  /* Trust ring text */
+  .trust-num { color:#fff !important; }
+  /* Bypass rows */
+  .bp-msg, .br-msg { background:rgba(124,58,237,.15) !important; }
+  /* Summary card */
+  .sum-row-label { color:#94a3b8 !important; }
+  .sum-row-val { color:#e2e8f0 !important; }
+  /* Payment page */
+  .card-logo-chip { border-color:rgba(255,255,255,.15) !important; }
+  .express-btn.google { background:#1e293b !important; color:#f1f5f9 !important; border-color:rgba(255,255,255,.15) !important; }
+  /* Category cards */
+  .cat-rate, .cbd-item, .metric, .wb-stat, .phs-item { background:rgba(255,255,255,.05) !important; border-color:rgba(255,255,255,.08) !important; }
+  .wb-num, .metric-val, .sc-num { color:#fbbf24 !important; }
+  /* Payout rows */
+  .pay-row, .trow, .ur, .bp-row { border-color:rgba(255,255,255,.06) !important; }
+  /* Scrollbars */
+  ::-webkit-scrollbar { background:#0f172a; }
+  ::-webkit-scrollbar-thumb { background:#334155; border-radius:4px; }
+}
+
+</style>
+</head>
+<body>
+
+<!-- UTILITY BAR -->
+<div class="util-bar">
+  <div class="util-left">
+    <div class="location-pill" onclick="openModal('locationModal')">
+      <span class="pin">📍</span>
+      <span id="locationDisplay">Set your town</span>
+    </div>
+    <select class="radius-select" id="radiusSelect" onchange="updateRadius()">
+      <option value="5">Within 5 mi</option>
+      <option value="10" selected>Within 10 mi</option>
+      <option value="25">Within 25 mi</option>
+      <option value="50">Within 50 mi</option>
+    </select>
+  </div>
+  <div style="display:flex;align-items:center;gap:10px;">
+    <div class="recession-ticker">⚡ Recession Mode: Save by Trading</div>
+  </div>
+  <div class="util-right">
+    <a href="alltrades-auth.html" style="cursor:pointer">Sign In</a>
+    <a href="alltrades-auth.html" style="cursor:pointer">Register</a>
+    <a>Daily Deals</a>
+    <a>Help</a>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header>
+  <div class="nav-main">
+    <div class="logo">
+      <span class="all">Trade</span><span class="trades">zy</span><span class="dot">.</span>
+    </div>
+
+    <div class="search-wrap">
+      <select class="search-cat" id="searchCat">
+        <option>All Categories</option>
+        <option>🥫 Food & Water</option>
+        <option>🌱 Garden & Farm</option>
+        <option>⚡ Electronics</option>
+        <option>🎵 Music</option>
+        <option>🚲 Sports & Outdoors</option>
+        <option>🔧 Tools</option>
+        <option>🎮 Gaming</option>
+        <option>👗 Clothing</option>
+        <option>🪑 Furniture</option>
+        <option>🚗 Vehicles</option>
+        <option>🎨 Art & Crafts</option>
+        <option>📚 Books & Media</option>
+        <option>🏠 Home & Garden</option>
+        <option>💊 Health & Wellness</option>
+        <option>👶 Kids & Baby</option>
+      </select>
+      <input class="search-input" id="searchInput" type="text" placeholder="Search trades near you…" oninput="filterItems()">
+      <button class="search-btn" onclick="filterItems()">Search</button>
+    </div>
+
+    <div class="nav-icons">
+      <button class="nav-icon-btn" onclick="openModal('signInModal')">
+        <span class="icon">👤</span>
+        <span class="label">Account</span>
+      </button>
+      <button class="nav-icon-btn">
+        <span class="icon">💬</span>
+        <span class="label">Messages</span>
+        <span class="badge">3</span>
+      </button>
+      <button class="nav-icon-btn">
+        <span class="icon">♡</span>
+        <span class="label">Watchlist</span>
+      </button>
+      <button class="nav-icon-btn">
+        <span class="icon">📋</span>
+        <span class="label">My Trades</span>
+      </button>
+    </div>
+
+    <button class="btn-list" onclick="openModal('listModal')">+ List Item</button>
+  </div>
+</header>
+
+<!-- CATEGORY NAV -->
+<nav class="cat-nav">
+  <div class="cat-nav-inner">
+    <div class="cat-nav-item active" onclick="setActiveCat(this)">🏠 All</div>
+    <div class="cat-nav-item essential" onclick="setActiveCat(this)">🥫 Food &amp; Water <span class="cat-new">New</span></div>
+    <div class="cat-nav-item essential" onclick="setActiveCat(this)">🌱 Garden &amp; Farm</div>
+    <div class="cat-nav-item" onclick="setActiveCat(this)">⚡ Electronics</div>
+    <div class="cat-nav-item" onclick="setActiveCat(this)">🔧 Tools</div>
+    <div class="cat-nav-item" onclick="setActiveCat(this)">🚲 Sports</div>
+    <div class="cat-nav-item" onclick="setActiveCat(this)">🎵 Music</div>
+    <div class="cat-nav-item" onclick="setActiveCat(this)">🎮 Gaming</div>
+    <div class="cat-nav-item" onclick="setActiveCat(this)">🚗 Vehicles</div>
+    <div class="cat-nav-item" onclick="setActiveCat(this)">👗 Clothing</div>
+    <div class="cat-nav-item" onclick="setActiveCat(this)">🪑 Furniture</div>
+    <div class="cat-nav-item" onclick="setActiveCat(this)">📚 Books</div>
+    <div class="cat-nav-item" onclick="setActiveCat(this)">💊 Health</div>
+    <div class="cat-nav-item" onclick="setActiveCat(this)">🎨 Art</div>
+    <div class="cat-nav-item" onclick="setActiveCat(this)">👶 Kids</div>
+  </div>
+</nav>
+
+<!-- PAGE -->
+<div class="page">
+
+  <!-- HERO BANNER -->
+  <div class="hero-banner">
+    <div class="hero-main">
+      <div class="hero-tag">📍 Hyperlocal Bartering Platform</div>
+      <h1>Trade What You Have<br>for <span class="hl">What You Need</span></h1>
+      <p class="hero-sub">
+        With <strong>gas at $5/gallon</strong> and prices rising, your community is your best asset.
+        Trade goods, food, water, and services with neighbors — no money required.
+      </p>
+      <div class="hero-ctas">
+        <button class="btn-hero-primary" onclick="openModal('signUpModal')">Start Trading Free</button>
+        <button class="btn-hero-secondary" onclick="openModal('locationModal')">📍 Find Trades Near Me</button>
+      </div>
+      <div class="hero-stats">
+        <div class="hstat"><div class="hstat-num">4,200+</div><div class="hstat-label">Local Listings</div></div>
+        <div class="hstat"><div class="hstat-num">1,800+</div><div class="hstat-label">Traders Near You</div></div>
+        <div class="hstat"><div class="hstat-num">12,000+</div><div class="hstat-label">Trades Completed</div></div>
+        <div class="hstat"><div class="hstat-num">$0</div><div class="hstat-label">Listing Fee</div></div>
+      </div>
+    </div>
+
+    <div class="hero-side">
+      <div class="side-banner essentials" onclick="setActiveCatByName('Food')">
+        <div class="sb-tag">🆕 New Category</div>
+        <div class="sb-title">Food &amp; Water Exchange</div>
+        <div class="sb-desc">Trade homegrown produce, canned goods, bottled water &amp; more with your neighbors.</div>
+        <div class="sb-link">Browse Food Trades →</div>
+      </div>
+      <div class="side-banner local" onclick="openModal('locationModal')">
+        <div class="sb-tag">📍 Hyperlocal</div>
+        <div class="sb-title">Trade Within 10 Miles</div>
+        <div class="sb-desc">Save on gas. Meet locally. Set your radius and only see trades you can actually reach.</div>
+        <div class="sb-link">Set My Location →</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RECESSION ALERT -->
+  <div class="alert-strip">
+    <div class="alert-icon">⚠️</div>
+    <div class="alert-text">
+      <div class="alert-title">Recession-Ready Trading — Your Community Has What You Need</div>
+      <div class="alert-desc">Gas up $45% · Groceries up 18% · Trade locally to beat inflation. No cash needed for essentials trades.</div>
+    </div>
+    <button class="alert-cta" onclick="openModal('signUpModal')">Join Free Today</button>
+  </div>
+
+  <!-- ESSENTIALS STRIP -->
+  <div class="section-row">
+    <div class="section-title">🥫 Essential <span class="accent">Categories</span></div>
+    <div class="see-all">See all categories →</div>
+  </div>
+
+  <div class="essentials-strip">
+    <div class="ess-card featured" onclick="toast('🥫','Browsing Food & Water listings near you!')">
+      <div class="ess-hot">HOT</div>
+      <div class="ess-emoji">🥫</div>
+      <div class="ess-name">Canned Goods</div>
+      <div class="ess-count">312 listings</div>
+    </div>
+    <div class="ess-card" onclick="toast('💧','Browsing Water listings near you!')">
+      <div class="ess-emoji">💧</div>
+      <div class="ess-name">Water &amp; Drinks</div>
+      <div class="ess-count">87 listings</div>
+    </div>
+    <div class="ess-card" onclick="toast('🥕','Browsing Fresh Produce near you!')">
+      <div class="ess-emoji">🥕</div>
+      <div class="ess-name">Fresh Produce</div>
+      <div class="ess-count">204 listings</div>
+    </div>
+    <div class="ess-card" onclick="toast('🌾','Browsing Grains & Dry Goods near you!')">
+      <div class="ess-emoji">🌾</div>
+      <div class="ess-name">Grains &amp; Dry Goods</div>
+      <div class="ess-count">145 listings</div>
+    </div>
+    <div class="ess-card" onclick="toast('🌱','Browsing Garden & Seeds near you!')">
+      <div class="ess-emoji">🌱</div>
+      <div class="ess-name">Seeds &amp; Plants</div>
+      <div class="ess-count">178 listings</div>
+    </div>
+    <div class="ess-card" onclick="toast('🔧','Browsing Tools near you!')">
+      <div class="ess-emoji">🔧</div>
+      <div class="ess-name">Tools &amp; Hardware</div>
+      <div class="ess-count">290 listings</div>
+    </div>
+  </div>
+
+  <!-- FEATURED LISTINGS -->
+  <div class="section-row">
+    <div class="section-title">⭐ Featured <span class="accent">Listings Near You</span></div>
+    <div class="see-all">View all listings →</div>
+  </div>
+
+  <div class="listings-grid" id="listingsGrid"></div>
+
+  <!-- LOCAL FEED + MAP -->
+  <div class="section-row">
+    <div class="section-title">📍 <span class="accent">Live Local</span> Feed</div>
+    <div class="see-all">See full map →</div>
+  </div>
+
+  <div class="local-feed">
+    <div class="feed-list" id="feedList"></div>
+
+    <div class="map-box">
+      <div class="map-header">
+        <div class="map-title">📍 Trades Near You</div>
+        <div class="radius-badge" onclick="openModal('locationModal')">10 mi radius ▾</div>
+      </div>
+      <div class="map-bg" style="padding-top:44px">
+        <div class="map-dots" id="mapDots"></div>
+        <div class="map-overlay">
+          <div class="map-center-pin">📍</div>
+          <div class="map-label">Your Town</div>
+          <div class="map-sublabel">Set location to see real trades</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HOW IT WORKS -->
+  <div class="how-it-works">
+    <div class="hiw-title">⚙️ How Tradezy Works</div>
+    <div class="hiw-steps">
+      <div class="hiw-step">
+        <div class="hiw-icon">📍</div>
+        <div class="hiw-step-title">1. Set Your Location</div>
+        <div class="hiw-step-desc">Enter your town or zip code. We show you trades within your chosen radius — save on gas.</div>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:center;padding-top:10px;color:#cbd5e1;font-size:1.5rem;">→</div>
+      <div class="hiw-step">
+        <div class="hiw-icon">📦</div>
+        <div class="hiw-step-title">2. List What You Have</div>
+        <div class="hiw-step-desc">Post items, food, tools, or services. Tell traders what you want in return.</div>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:center;padding-top:10px;color:#cbd5e1;font-size:1.5rem;">→</div>
+      <div class="hiw-step">
+        <div class="hiw-icon">🤝</div>
+        <div class="hiw-step-title">3. Make an Offer</div>
+        <div class="hiw-step-desc">Offer your item, add cash if needed, or bundle multiple things. Negotiate freely.</div>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:center;padding-top:10px;color:#cbd5e1;font-size:1.5rem;">→</div>
+      <div class="hiw-step">
+        <div class="hiw-icon">✅</div>
+        <div class="hiw-step-title">4. Meet &amp; Swap</div>
+        <div class="hiw-step-desc">Agree on a local meetup spot. Complete the trade, rate each other, and build community.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- COMMUNITY BANNER -->
+  <div class="community-banner">
+    <div class="cb-left">
+      <div class="cb-title">Your Neighborhood Has More Than You Think</div>
+      <div class="cb-desc">Tradezy is free to join. No listing fees, no selling fees. Just neighbors helping neighbors get through tough times by trading what they have. Join thousands already trading locally.</div>
+    </div>
+    <div class="cb-right">
+      <button class="btn-signup" onclick="openModal('signUpModal')">Sign Up Free</button>
+      <button class="btn-learn">Learn More</button>
+    </div>
+  </div>
+
+</div><!-- /page -->
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <span class="logo"><span class="all">Trade</span><span class="trades">zy</span><span class="dot">.</span></span>
+        <p>The free, local bartering marketplace. Trade goods, food, water &amp; more with people in your town. Built for real communities in tough times.</p>
+      </div>
+      <div>
+        <div class="footer-col-title">Trade</div>
+        <div class="footer-links">
+          <a>Browse All Listings</a>
+          <a>Food &amp; Water Exchange</a>
+          <a>Tools &amp; Hardware</a>
+          <a>Electronics</a>
+          <a>Post a Listing</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-title">Account</div>
+        <div class="footer-links">
+          <a href="alltrades-auth.html">Sign Up Free</a>
+          <a href="alltrades-auth.html">Sign In</a>
+          <a>My Listings</a>
+          <a>My Offers</a>
+          <a>Trade History</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-title">Help</div>
+        <div class="footer-links">
+          <a>How It Works</a>
+          <a>Safety Tips</a>
+          <a>Community Guidelines</a>
+          <a>Report an Issue</a>
+          <a>Contact Us</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div>© 2026 Tradezy. Free to use. Built for communities.</div>
+      <div class="footer-bottom-links">
+        <a href="alltrades-privacy.html">Privacy Policy</a>
+        <a href="alltrades-terms.html">Terms of Service</a>
+        <a href="alltrades-terms.html#prohibited">🚫 Prohibited Items</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- LOCATION MODAL -->
+<div class="overlay" id="locationModal">
+  <div class="modal">
+    <div class="modal-head">
+      <div class="modal-head-title">📍 Set Your Location</div>
+      <button class="modal-close" onclick="closeModal('locationModal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <p style="font-size:13px;color:var(--text-light);margin-bottom:16px;line-height:1.5">We only show you trades within your chosen distance. No exact address needed — just your town or zip.</p>
+      <div class="form-field">
+        <label>Town, City or Zip Code</label>
+        <input type="text" id="townInput" placeholder="e.g. Austin, TX or 78701">
+        <div class="loc-detect" onclick="detectLocation()">📡 Use my current location</div>
+      </div>
+      <div class="form-field">
+        <label>Search Radius</label>
+        <select id="radiusModal">
+          <option>5 miles — Walk or bike it</option>
+          <option selected>10 miles — Short drive</option>
+          <option>25 miles — Worth the trip</option>
+          <option>50 miles — Regional</option>
+        </select>
+      </div>
+      <button class="btn-full primary" onclick="saveLocation()">Save Location</button>
+    </div>
+  </div>
+</div>
+
+<!-- SIGN IN MODAL -->
+<div class="overlay" id="signInModal">
+  <div class="modal">
+    <div class="modal-head">
+      <div class="modal-head-title">Sign In to Tradezy</div>
+      <button class="modal-close" onclick="closeModal('signInModal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-field">
+        <label>Email Address</label>
+        <input type="email" placeholder="you@email.com">
+      </div>
+      <div class="form-field">
+        <label>Password</label>
+        <input type="password" placeholder="••••••••">
+      </div>
+      <button class="btn-full primary" onclick="fakeSignIn()">Sign In</button>
+      <div class="form-divider">or</div>
+      <button class="btn-full gold" onclick="fakeSignIn()">Continue with Google</button>
+      <div class="modal-footer-link">New here? <a onclick="switchModal('signInModal','signUpModal')">Create a free account →</a></div>
+    </div>
+  </div>
+</div>
+
+<!-- SIGN UP MODAL -->
+<div class="overlay" id="signUpModal">
+  <div class="modal">
+    <div class="modal-head">
+      <div class="modal-head-title">Join Tradezy — It's Free</div>
+      <button class="modal-close" onclick="closeModal('signUpModal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <div class="form-field" style="margin:0">
+          <label>First Name</label>
+          <input type="text" placeholder="Jane">
+        </div>
+        <div class="form-field" style="margin:0">
+          <label>Last Name</label>
+          <input type="text" placeholder="Smith">
+        </div>
+      </div>
+      <div class="form-field" style="margin-top:12px">
+        <label>Email Address</label>
+        <input type="email" placeholder="you@email.com">
+      </div>
+      <div class="form-field">
+        <label>Password</label>
+        <input type="password" placeholder="Create a password">
+      </div>
+      <div class="form-field">
+        <label>Your Town or Zip Code</label>
+        <input type="text" id="signupTown" placeholder="e.g. Austin, TX or 78701">
+        <div class="loc-detect" onclick="detectLocation()">📡 Detect my location</div>
+      </div>
+      <button class="btn-full gold" onclick="fakeSignUp()">Create Free Account</button>
+      <p style="font-size:11px;color:var(--text-light);margin-top:10px;text-align:center;line-height:1.5">By joining you agree to our Terms of Use and Community Guidelines. No credit card needed.</p>
+      <div class="modal-footer-link">Already have an account? <a onclick="switchModal('signUpModal','signInModal')">Sign in →</a></div>
+    </div>
+  </div>
+</div>
+
+<!-- LIST ITEM MODAL -->
+<div class="overlay" id="listModal">
+  <div class="modal" style="max-width:520px">
+    <div class="modal-head">
+      <div class="modal-head-title">📦 List an Item to Trade</div>
+      <button class="modal-close" onclick="closeModal('listModal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-field">
+        <label>Item Title</label>
+        <input type="text" id="listTitle" placeholder="e.g. 50 lbs of Rice, Fender Guitar, DeWalt Drill Set">
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <div class="form-field" style="margin:0">
+          <label>Category</label>
+          <select>
+            <option>🥫 Food & Water</option>
+            <option>🌱 Garden & Farm</option>
+            <option>⚡ Electronics</option>
+            <option>🔧 Tools</option>
+            <option>🎵 Music</option>
+            <option>🚲 Sports</option>
+            <option>🎮 Gaming</option>
+            <option>👗 Clothing</option>
+            <option>🪑 Furniture</option>
+            <option>🚗 Vehicles</option>
+            <option>📚 Books</option>
+            <option>🎨 Art</option>
+            <option>💊 Health</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="form-field" style="margin:0">
+          <label>Condition</label>
+          <select>
+            <option>New / Unused</option>
+            <option>Like New</option>
+            <option>Good</option>
+            <option>Fair</option>
+            <option>For Parts</option>
+            <option>N/A (Food)</option>
+          </select>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px">
+        <div class="form-field" style="margin:0">
+          <label>Est. Value ($)</label>
+          <input type="number" placeholder="0.00">
+        </div>
+        <div class="form-field" style="margin:0">
+          <label>Looking to Trade For</label>
+          <input type="text" placeholder="e.g. Tools, Food, Bike">
+        </div>
+      </div>
+      <div class="form-field" style="margin-top:12px">
+        <label>Accept Cash Add-on?</label>
+        <select>
+          <option>Yes — trade + cash difference OK</option>
+          <option>Trade only — no cash</option>
+          <option>Cash only — selling outright</option>
+        </select>
+      </div>
+      <button class="btn-full gold" style="margin-top:4px" onclick="fakeList()">Post Listing</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">
+  <span class="toast-icon" id="toastIcon">✅</span>
+  <span id="toastMsg">Done!</span>
+</div>
+
+<script>
+// ── DATA ──
+const ITEMS = [
+  { emoji:'🥫', title:'Case of Canned Vegetables (24 cans)', cond:'New', cat:'Food & Water', wants:'Rice, Flour, or Canned Meat', val:'$28', offers:14, dist:'0.8 mi', time:'2m ago', badges:['essential','local'], seller:'GardenSue' },
+  { emoji:'💧', title:'50-Pack Water Bottles (16.9oz)', cond:'New', cat:'Food & Water', wants:'Canned Goods or Dry Goods', val:'$18', offers:9, dist:'1.2 mi', time:'5m ago', badges:['essential','hot'], seller:'PrepMike' },
+  { emoji:'🌽', title:'Fresh Sweet Corn — 2 Dozen Ears', cond:'Fresh', cat:'Food & Water', wants:'Tomatoes, Peppers, or Herbs', val:'$14', offers:6, dist:'2.4 mi', time:'12m ago', badges:['essential','local'], seller:'FarmDave' },
+  { emoji:'💻', title:'Dell Laptop i7 16GB RAM', cond:'Good', cat:'Electronics', wants:'Tools, Bike, or Camera', val:'$480', offers:7, dist:'3.1 mi', time:'18m ago', badges:['local','cash'], seller:'TechLisa' },
+  { emoji:'🔧', title:'Craftsman 200-Piece Tool Set', cond:'Like New', cat:'Tools', wants:'Lawn Equipment or Electronics', val:'$220', offers:5, dist:'4.2 mi', time:'34m ago', badges:['local'], seller:'HandyBob' },
+  { emoji:'🚲', title:'Trek Mountain Bike 27-Speed', cond:'Good', cat:'Sports', wants:'Camping Gear or Kayak', val:'$380', offers:4, dist:'5.6 mi', time:'1h ago', badges:['local'], seller:'RideKen' },
+  { emoji:'🎸', title:'Fender Acoustic Guitar + Case', cond:'Like New', cat:'Music', wants:'Keyboard, PA System, or Amp', val:'$290', offers:8, dist:'2.8 mi', time:'2h ago', badges:['local','cash'], seller:'JamBand' },
+  { emoji:'🌱', title:'Heirloom Tomato Seedlings (12)', cond:'Fresh', cat:'Garden & Farm', wants:'Seeds, Herbs, or Canned Goods', val:'$20', offers:11, dist:'1.7 mi', time:'3h ago', badges:['essential','local','hot'], seller:'GrowGina' },
+  { emoji:'🎮', title:'PlayStation 5 + 4 Games', cond:'Good', cat:'Gaming', wants:'Gaming PC or TV', val:'$460', offers:19, dist:'6.3 mi', time:'4h ago', badges:['hot','cash'], seller:'GamingKev' },
+  { emoji:'🪑', title:'Solid Wood Dining Table (6-seat)', cond:'Good', cat:'Furniture', wants:'Appliances or Outdoor Furniture', val:'$340', offers:3, dist:'7.1 mi', time:'5h ago', badges:['local'], seller:'DecorAmy' },
+];
+
+const FEED_ITEMS = [
+  { emoji:'🥕', title:'5 lbs Fresh Carrots + Potatoes', meta:'Food & Water', dist:'0.4 mi', val:'~$8', time:'Just now', seller:'GardenSue' },
+  { emoji:'⛺', title:'2-Person Camping Tent (never used)', meta:'Sports & Outdoors', dist:'1.1 mi', val:'~$90', time:'3m ago', seller:'OutdoorJim' },
+  { emoji:'🌾', title:'25 lb Bag of White Rice', meta:'Food & Water', dist:'0.9 mi', val:'~$22', time:'7m ago', seller:'PrepMike' },
+  { emoji:'🔨', title:'Dewalt Cordless Drill + 2 Batteries', meta:'Tools', dist:'2.3 mi', val:'~$140', time:'11m ago', seller:'HandyBob' },
+  { emoji:'🥚', title:'Farm Fresh Eggs — 2 Dozen', meta:'Food & Water', dist:'1.8 mi', val:'~$10', time:'15m ago', seller:'ChickenFarm' },
+  { emoji:'📱', title:'iPhone 13 (unlocked, great cond.)', meta:'Electronics', dist:'3.4 mi', val:'~$350', time:'22m ago', seller:'TechLisa' },
+];
+
+const MAP_DOTS_DATA = [
+  { top:'30%', left:'25%', emoji:'🥫', essential:true },
+  { top:'55%', left:'40%', emoji:'🔧', essential:false },
+  { top:'20%', left:'60%', emoji:'💧', essential:true },
+  { top:'65%', left:'70%', emoji:'🚲', essential:false },
+  { top:'45%', left:'80%', emoji:'🌱', essential:true },
+  { top:'75%', left:'30%', emoji:'💻', essential:false },
+  { top:'38%', left:'55%', emoji:'🥕', essential:true },
+];
+
+// ── RENDER ──
+function renderListings() {
+  const grid = document.getElementById('listingsGrid');
+  grid.innerHTML = '';
+  ITEMS.forEach(item => {
+    const badges = item.badges.map(b => {
+      if (b==='local') return `<span class="ibadge local">LOCAL</span>`;
+      if (b==='essential') return `<span class="ibadge essential">ESSENTIAL</span>`;
+      if (b==='hot') return `<span class="ibadge hot">🔥 HOT</span>`;
+      if (b==='cash') return `<span class="ibadge cash">💵 CASH OK</span>`;
+    }).join('');
+    grid.innerHTML += `
+    <div class="item-card" onclick="toast('🤝','Opening: ${item.title.replace(/'/g,"\\'")}')">
+      <div class="item-img">
+        <div class="item-img-badges">${badges}</div>
+        <span>${item.emoji}</span>
+        <div class="watch-btn" onclick="event.stopPropagation();toast('♡','Added to watchlist!')">♡</div>
+        <div class="dist-chip">📍 ${item.dist}</div>
+      </div>
+      <div class="item-body">
+        <div class="item-title">${item.title}</div>
+        <div class="item-cond">${item.cond} · ${item.cat}</div>
+        <div class="item-wants">${item.wants}</div>
+        <div class="item-footer">
+          <div class="item-value">${item.val}</div>
+          <div class="item-offers"><strong>${item.offers}</strong> offers</div>
+        </div>
+      </div>
+    </div>`;
+  });
+}
+
+function renderFeed() {
+  const list = document.getElementById('feedList');
+  list.innerHTML = '';
+  FEED_ITEMS.forEach(item => {
+    list.innerHTML += `
+    <div class="feed-item" onclick="toast('🔎','Opening: ${item.title.replace(/'/g,"\\'")}')">
+      <div class="feed-emoji">${item.emoji}</div>
+      <div class="feed-info">
+        <div class="feed-title">${item.title}</div>
+        <div class="feed-meta">
+          <span>${item.meta}</span>
+          <span class="dot-sep">·</span>
+          <span class="feed-dist">📍 ${item.dist}</span>
+          <span class="dot-sep">·</span>
+          <span>${item.seller}</span>
+        </div>
+      </div>
+      <div class="feed-right">
+        <div class="feed-val">${item.val}</div>
+        <div class="feed-time">${item.time}</div>
+      </div>
+    </div>`;
+  });
+}
+
+function renderMapDots() {
+  const container = document.getElementById('mapDots');
+  container.innerHTML = '';
+  MAP_DOTS_DATA.forEach(d => {
+    container.innerHTML += `<div class="map-dot ${d.essential?'essential':''}" style="top:${d.top};left:${d.left}" onclick="toast('📍','Trade nearby: ${d.emoji}')">${d.emoji}</div>`;
+  });
+}
+
+// ── INTERACTIONS ──
+function setActiveCat(el) {
+  document.querySelectorAll('.cat-nav-item').forEach(i => i.classList.remove('active'));
+  el.classList.add('active');
+}
+
+function setActiveCatByName(name) {
+  document.querySelectorAll('.cat-nav-item').forEach(i => {
+    if (i.textContent.includes(name)) { i.classList.add('active'); }
+    else { i.classList.remove('active'); }
+  });
+}
+
+function filterItems() {
+  const q = document.getElementById('searchInput').value.toLowerCase();
+  const items = document.querySelectorAll('.item-card');
+  items.forEach(card => {
+    const text = card.innerText.toLowerCase();
+    card.style.display = (!q || text.includes(q)) ? '' : 'none';
+  });
+}
+
+function saveLocation() {
+  const town = document.getElementById('townInput').value.trim() || 'Your Town';
+  document.getElementById('locationDisplay').textContent = town;
+  closeModal('locationModal');
+  toast('📍', `Location set to ${town}! Showing trades near you.`);
+}
+
+function detectLocation() {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(pos => {
+      toast('📡', 'Location detected! Showing trades near you.');
+      document.getElementById('locationDisplay').textContent = 'Near You';
+      closeModal('locationModal');
+    }, () => {
+      toast('⚠️', 'Could not detect location. Please enter manually.');
+    });
+  } else {
+    toast('⚠️', 'Geolocation not supported. Please enter your town.');
+  }
+}
+
+function updateRadius() {
+  const val = document.getElementById('radiusSelect').value;
+  toast('📍', `Radius updated to ${val} miles. Refreshing listings…`);
+}
+
+function fakeSignIn() {
+  closeModal('signInModal');
+  toast('👋', 'Welcome back to Tradezy!');
+}
+
+function fakeSignUp() {
+  const town = document.getElementById('signupTown').value.trim();
+  closeModal('signUpModal');
+  toast('🎉', `Welcome to Tradezy${town ? ' in ' + town : ''}! Start trading.`);
+}
+
+function fakeList() {
+  const title = document.getElementById('listTitle').value.trim();
+  closeModal('listModal');
+  toast('🚀', title ? `"${title}" listed!` : 'Listing posted successfully!');
+}
+
+function openModal(id) { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+function switchModal(from, to) {
+  closeModal(from);
+  setTimeout(() => openModal(to), 200);
+}
+
+document.querySelectorAll('.overlay').forEach(o => {
+  o.addEventListener('click', e => { if (e.target === o) o.classList.remove('open'); });
+});
+
+function toast(icon, msg) {
+  const t = document.getElementById('toast');
+  document.getElementById('toastIcon').textContent = icon;
+  document.getElementById('toastMsg').textContent = msg;
+  t.classList.add('show');
+  clearTimeout(window._toastTimer);
+  window._toastTimer = setTimeout(() => t.classList.remove('show'), 3500);
+}
+
+// ── INIT ──
+renderListings();
+renderFeed();
+renderMapDots();
+</script>
+</body>
+</html>

@@ -1,0 +1,1117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tradezy — Trade Protection & Disputes</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy:#0a1628;--navy2:#112240;--blue:#1a56db;--blue-l:#2563eb;
+  --gold:#f59e0b;--gold-l:#fbbf24;--green:#16a34a;--green-l:#22c55e;
+  --red:#dc2626;--red-l:#ef4444;--orange:#ea580c;
+  --text:#1a1a2e;--muted:#475569;--light:#94a3b8;
+  --border:#e2e8f0;--bg:#f0f4f8;--white:#fff;--surface:#f8fafc;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
+
+/* NAV */
+.nav{background:var(--navy);padding:0 24px;height:54px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;}
+.logo{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.5rem;letter-spacing:-1px;cursor:pointer;}
+.logo .a{color:#fff;}.logo .t{color:var(--blue);}.logo .d{color:var(--gold);}
+.nav-right{display:flex;align-items:center;gap:8px;}
+.nav-btn{padding:6px 14px;border-radius:6px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.88rem;cursor:pointer;border:none;transition:all .15s;background:transparent;color:#94a3b8;border:1px solid rgba(255,255,255,.1);}
+.nav-btn:hover{color:#fff;}
+.u-av{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--orange));color:var(--navy);font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:.8rem;display:flex;align-items:center;justify-content:center;cursor:pointer;}
+
+/* PAGE TABS */
+.page-tabs{background:var(--white);border-bottom:1px solid var(--border);}
+.pti{max-width:1100px;margin:0 auto;padding:0 20px;display:flex;}
+.ptab{padding:13px 18px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.9rem;cursor:pointer;border-bottom:3px solid transparent;transition:all .15s;color:var(--muted);}
+.ptab:hover{color:var(--text);}
+.ptab.active{color:var(--blue);border-bottom-color:var(--blue);}
+.ptab-badge{background:var(--red);color:#fff;font-size:9px;font-weight:800;border-radius:99px;padding:1px 5px;margin-left:3px;}
+
+/* PAGE */
+.page{max-width:1100px;margin:0 auto;padding:24px 20px;}
+
+/* ── PROTECTION OVERVIEW ── */
+.protection-hero{background:linear-gradient(135deg,var(--navy) 0%,#1a3a6b 60%,#0f2a50 100%);border-radius:16px;padding:28px 32px;margin-bottom:20px;display:grid;grid-template-columns:1fr auto;gap:24px;align-items:center;position:relative;overflow:hidden;}
+.protection-hero::before{content:'🛡️';position:absolute;right:160px;top:50%;transform:translateY(-50%);font-size:8rem;opacity:.05;pointer-events:none;}
+.ph-tag{display:inline-flex;align-items:center;gap:5px;background:rgba(22,163,74,.15);border:1px solid rgba(22,163,74,.3);color:var(--green-l);font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:4px 11px;border-radius:4px;margin-bottom:12px;width:fit-content;}
+.ph-title{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.8rem;color:#fff;line-height:1.1;margin-bottom:8px;letter-spacing:-.3px;}
+.ph-desc{font-size:13px;color:#64748b;line-height:1.6;max-width:460px;}
+.ph-stats{display:flex;gap:16px;flex-shrink:0;}
+.phs-item{text-align:center;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:14px 18px;}
+.phs-num{font-family:'Barlow Condensed',sans-serif;font-size:1.4rem;font-weight:900;color:var(--gold-l);}
+.phs-label{font-size:10px;color:#475569;text-transform:uppercase;letter-spacing:.5px;margin-top:2px;}
+
+/* Protection features */
+.protection-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:24px;}
+.pf-card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:18px;transition:all .2s;}
+.pf-card:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.08);}
+.pf-icon{width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;margin-bottom:12px;}
+.pf-icon.green{background:#f0fdf4;border:1px solid #bbf7d0;}
+.pf-icon.blue{background:#eff6ff;border:1px solid #bfdbfe;}
+.pf-icon.gold{background:#fffbeb;border:1px solid #fde68a;}
+.pf-icon.red{background:#fef2f2;border:1px solid #fecaca;}
+.pf-title{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.95rem;margin-bottom:5px;}
+.pf-desc{font-size:12px;color:var(--muted);line-height:1.5;}
+
+/* ── ACTIVE TRADES PROTECTION STATUS ── */
+.trades-section{margin-bottom:24px;}
+.section-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+.section-title{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1.05rem;}
+.section-link{font-size:12px;color:var(--blue);font-weight:700;cursor:pointer;}
+
+.protected-trade{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:10px;display:grid;grid-template-columns:1fr auto;gap:16px;align-items:center;transition:all .15s;}
+.protected-trade:hover{border-color:#cbd5e1;}
+.pt-left{}
+.pt-id{font-size:11px;color:var(--muted);font-weight:700;margin-bottom:6px;}
+.pt-items{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+.pt-item{display:flex;align-items:center;gap:5px;font-size:13px;font-weight:700;}
+.pt-arrow{color:var(--muted);}
+.pt-status-row{display:flex;align-items:center;gap:8px;}
+.pt-status{font-size:10px;font-weight:800;padding:2px 8px;border-radius:4px;letter-spacing:.3px;}
+.pts-escrow{background:#f0fdf4;color:#14532d;border:1px solid #bbf7d0;}
+.pts-active{background:#eff6ff;color:#1e3a8a;border:1px solid #bfdbfe;}
+.pts-frozen{background:#fef2f2;color:#991b1b;border:1px solid #fecaca;}
+.pt-escrow-amt{font-size:11px;color:var(--muted);}
+.pt-right{display:flex;flex-direction:column;gap:6px;align-items:flex-end;flex-shrink:0;}
+.pt-action-btn{padding:6px 14px;border-radius:6px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.78rem;cursor:pointer;border:none;transition:all .15s;white-space:nowrap;}
+.ptb-dispute{background:#fef2f2;border:1px solid #fecaca;color:#991b1b;}
+.ptb-dispute:hover{background:#fee2e2;}
+.ptb-confirm{background:var(--green);color:#fff;}
+.ptb-confirm:hover{background:var(--green-l);}
+.ptb-details{background:var(--surface);border:1px solid var(--border);color:var(--muted);}
+.ptb-details:hover{border-color:#999;color:var(--text);}
+
+/* ── DISPUTE FILING FLOW ── */
+.dispute-flow{background:var(--white);border:1px solid var(--border);border-radius:16px;overflow:hidden;}
+.df-head{background:linear-gradient(135deg,#7f1d1d,#991b1b);padding:18px 22px;display:flex;align-items:center;justify-content:space-between;}
+.df-title{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.1rem;color:#fff;}
+.df-sub{font-size:11px;color:rgba(255,255,255,.6);margin-top:1px;}
+.df-body{padding:22px;}
+
+/* Dispute steps */
+.dispute-steps{display:flex;align-items:center;margin-bottom:24px;}
+.ds-item{display:flex;flex-direction:column;align-items:center;flex:1;}
+.ds-dot{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.82rem;transition:all .3s;}
+.ds-dot.active{background:var(--red);color:#fff;box-shadow:0 0 0 3px rgba(220,38,38,.2);}
+.ds-dot.done{background:var(--green);color:#fff;}
+.ds-dot.pending{background:var(--border);color:var(--muted);}
+.ds-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;margin-top:4px;color:var(--muted);text-align:center;}
+.ds-label.active{color:var(--red);}
+.ds-label.done{color:var(--green);}
+.ds-line{flex:1;height:2px;background:var(--border);margin:0 6px;margin-bottom:16px;transition:background .3s;}
+.ds-line.done{background:var(--green);}
+
+/* Step panels */
+.dstep{display:none;animation:fadeIn .3s ease;}
+.dstep.active{display:block;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+/* Issue type selector */
+.issue-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:16px;}
+.issue-option{border:1.5px solid var(--border);border-radius:10px;padding:13px;cursor:pointer;transition:all .15s;}
+.issue-option:hover{border-color:var(--red);}
+.issue-option.selected{border-color:var(--red);background:#fef2f2;}
+.io-icon{font-size:1.5rem;margin-bottom:6px;}
+.io-title{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.9rem;margin-bottom:3px;}
+.io-desc{font-size:11px;color:var(--muted);line-height:1.4;}
+
+/* Evidence upload */
+.evidence-slots{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px;}
+.ev-slot{aspect-ratio:1;border:2px dashed var(--border);border-radius:9px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:all .15s;font-size:1.2rem;color:var(--light);position:relative;overflow:hidden;}
+.ev-slot:hover{border-color:var(--blue);color:var(--blue);background:#f8fbff;}
+.ev-slot.filled{border-style:solid;border-color:var(--border);}
+.ev-slot .ev-label{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.3px;margin-top:3px;}
+.ev-slot img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
+
+/* Timeline */
+.timeline{position:relative;padding-left:24px;}
+.timeline::before{content:'';position:absolute;left:8px;top:0;bottom:0;width:2px;background:var(--border);}
+.tl-item{position:relative;margin-bottom:16px;padding-bottom:16px;border-bottom:1px solid var(--border);}
+.tl-item:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0;}
+.tl-dot{position:absolute;left:-20px;top:3px;width:14px;height:14px;border-radius:50%;border:2px solid var(--border);background:var(--white);display:flex;align-items:center;justify-content:center;font-size:.5rem;}
+.tl-dot.green{border-color:var(--green);background:#f0fdf4;}
+.tl-dot.blue{border-color:var(--blue);background:#eff6ff;}
+.tl-dot.red{border-color:var(--red);background:#fef2f2;}
+.tl-dot.gold{border-color:var(--gold);background:#fffbeb;}
+.tl-dot.pulse{animation:tlPulse 1.5s infinite;}
+@keyframes tlPulse{0%,100%{box-shadow:0 0 0 0 rgba(220,38,38,.3)}50%{box-shadow:0 0 0 5px rgba(220,38,38,0)}}
+.tl-time{font-size:10px;color:var(--light);font-weight:700;margin-bottom:2px;}
+.tl-title{font-weight:700;font-size:13px;margin-bottom:2px;}
+.tl-desc{font-size:12px;color:var(--muted);line-height:1.4;}
+
+/* Resolution options */
+.resolution-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:16px;}
+.res-option{border:1.5px solid var(--border);border-radius:10px;padding:13px;cursor:pointer;transition:all .15s;text-align:center;}
+.res-option:hover{border-color:var(--blue);}
+.res-option.selected{border-color:var(--blue);background:#eff6ff;}
+.ro-icon{font-size:1.5rem;margin-bottom:5px;}
+.ro-title{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.82rem;margin-bottom:3px;}
+.ro-desc{font-size:10px;color:var(--muted);}
+
+/* Field */
+.field{margin-bottom:14px;}
+.field label{display:block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:5px;}
+.field input,.field select,.field textarea{width:100%;border:1.5px solid var(--border);border-radius:8px;padding:10px 13px;font-size:13px;font-family:'Lato',sans-serif;color:var(--text);outline:none;transition:all .15s;background:var(--white);resize:vertical;}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(26,86,219,.07);}
+
+/* Severity slider */
+.severity-wrap{margin-bottom:14px;}
+.severity-wrap label{display:block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:6px;}
+.severity-slider{width:100%;margin-bottom:6px;accent-color:var(--red);}
+.severity-labels{display:flex;justify-content:space-between;font-size:10px;color:var(--muted);}
+
+/* Buttons */
+.btn-row{display:flex;gap:8px;margin-top:16px;}
+.btn{padding:11px 20px;border-radius:8px;font-family:'Barlow Condensed',sans-serif;font-size:.95rem;font-weight:800;cursor:pointer;border:none;transition:all .15s;letter-spacing:.3px;}
+.btn-red{background:var(--red);color:#fff;flex:1;}
+.btn-red:hover{background:var(--red-l);transform:translateY(-1px);}
+.btn-gold{background:var(--gold);color:var(--navy);flex:1;}
+.btn-gold:hover{background:var(--gold-l);transform:translateY(-1px);}
+.btn-outline{background:transparent;border:1.5px solid var(--border);color:var(--muted);}
+.btn-outline:hover{border-color:#999;color:var(--text);}
+.btn-green{background:var(--green);color:#fff;flex:1;}
+.btn-green:hover{background:var(--green-l);}
+.btn:disabled{opacity:.5;cursor:not-allowed;transform:none!important;}
+
+/* Escrow freeze banner */
+.freeze-banner{background:linear-gradient(90deg,#7f1d1d,#991b1b);border-radius:10px;padding:14px 16px;display:flex;align-items:center;gap:11px;margin-bottom:16px;animation:fadeIn .4s ease;}
+.fb-icon{font-size:1.3rem;flex-shrink:0;}
+.fb-text .fb-title{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.95rem;color:#fca5a5;margin-bottom:2px;}
+.fb-text .fb-desc{font-size:11px;color:rgba(252,165,165,.75);line-height:1.4;}
+.fb-amount{text-align:right;flex-shrink:0;}
+.fb-amt-num{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.2rem;color:#fca5a5;}
+.fb-amt-label{font-size:10px;color:rgba(252,165,165,.6);}
+
+/* Info box */
+.info-box{border-radius:9px;padding:12px 14px;margin-bottom:14px;display:flex;gap:8px;font-size:12px;line-height:1.5;}
+.info-box.blue{background:#eff6ff;border:1px solid #bfdbfe;color:#1e3a8a;}
+.info-box.yellow{background:#fffbeb;border:1px solid #fde68a;color:#92400e;}
+.info-box.green{background:#f0fdf4;border:1px solid #bbf7d0;color:#14532d;}
+.info-box.red{background:#fef2f2;border:1px solid #fecaca;color:#991b1b;}
+
+/* Dispute status card */
+.dispute-status-card{background:var(--white);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:12px;}
+.dsc-head{padding:13px 16px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);}
+.dsc-id{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.88rem;color:var(--muted);}
+.dsc-status{font-size:10px;font-weight:800;padding:2px 8px;border-radius:4px;letter-spacing:.3px;}
+.dss-review{background:#fffbeb;color:#92400e;border:1px solid #fde68a;}
+.dss-resolved{background:#f0fdf4;color:#14532d;border:1px solid #bbf7d0;}
+.dss-open{background:#fef2f2;color:#991b1b;border:1px solid #fecaca;}
+.dsc-body{padding:14px 16px;}
+.dsc-trade{display:flex;align-items:center;gap:8px;margin-bottom:10px;font-size:13px;}
+.dsc-issue{font-size:12px;color:var(--muted);margin-bottom:10px;}
+.dsc-timeline{padding-left:0;}
+
+/* Modal */
+.overlay{display:none;position:fixed;inset:0;background:rgba(10,22,40,.8);z-index:500;align-items:center;justify-content:center;padding:20px;}
+.overlay.open{display:flex;}
+.modal{background:var(--white);border-radius:14px;width:100%;max-width:480px;max-height:90vh;overflow-y:auto;animation:slideUp .25s ease;}
+@keyframes slideUp{from{transform:translateY(14px);opacity:0}to{transform:translateY(0);opacity:1}}
+.mhd{background:linear-gradient(135deg,var(--navy),#1a3a6b);padding:16px 20px;display:flex;align-items:center;justify-content:space-between;border-radius:14px 14px 0 0;}
+.mhd-title{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.05rem;color:#fff;}
+.mhd-close{background:rgba(255,255,255,.1);border:none;color:#94a3b8;width:27px;height:27px;border-radius:50%;cursor:pointer;font-size:.85rem;display:flex;align-items:center;justify-content:center;}
+.mhd-close:hover{background:rgba(255,255,255,.2);color:#fff;}
+.mbody{padding:18px;}
+.mbtn{width:100%;padding:10px;border:none;border-radius:7px;font-family:'Barlow Condensed',sans-serif;font-size:.9rem;font-weight:800;cursor:pointer;transition:all .15s;margin-bottom:7px;}
+.mbtn.green{background:var(--green);color:#fff;}
+.mbtn.outline{background:transparent;border:1.5px solid var(--border);color:var(--muted);}
+.mbtn.outline:hover{border-color:#999;color:var(--text);}
+.mbtn.red{background:var(--red);color:#fff;}
+
+/* Success screen */
+.success-screen{display:none;text-align:center;padding:28px 20px;}
+.success-screen.show{display:block;animation:popIn .4s ease;}
+@keyframes popIn{0%{opacity:0;transform:scale(.92)}100%{opacity:1;transform:scale(1)}}
+.ss-emoji{font-size:3.5rem;margin-bottom:12px;}
+.ss-title{font-family:'Barlow Condensed',sans-serif;font-size:1.8rem;font-weight:900;margin-bottom:6px;}
+.ss-desc{font-size:13px;color:var(--muted);line-height:1.6;max-width:360px;margin:0 auto 18px;}
+.case-box{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:13px;margin-bottom:16px;text-align:left;}
+.case-row{display:flex;justify-content:space-between;font-size:12px;padding:4px 0;border-bottom:1px solid var(--border);}
+.case-row:last-child{border:none;font-weight:700;}
+
+/* Toast */
+.toast{position:fixed;bottom:20px;right:20px;background:var(--navy);color:#e2e8f0;border:1px solid #1e3a5f;border-left:4px solid var(--green);border-radius:8px;padding:10px 16px;font-size:13px;z-index:9999;display:flex;align-items:center;gap:9px;max-width:290px;box-shadow:0 8px 26px rgba(0,0,0,.25);transform:translateX(120%);transition:transform .3s ease;}
+.toast.show{transform:translateX(0);}
+
+@media(max-width:760px){.protection-hero{grid-template-columns:1fr;}.ph-stats{display:none;}.protection-grid{grid-template-columns:1fr 1fr;}.issue-grid{grid-template-columns:1fr;}.resolution-grid{grid-template-columns:1fr;}.evidence-slots{grid-template-columns:repeat(3,1fr);}  }
+@media(max-width:480px){.protection-grid{grid-template-columns:1fr;}}
+
+/* ── DARK MODE ── */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --navy:#0a1628;
+    --blue:#3b82f6;
+    --blue-l:#60a5fa;
+    --gold:#fbbf24;
+    --gold-l:#fcd34d;
+    --green:#22c55e;
+    --green-l:#4ade80;
+    --red:#f87171;
+    --orange:#fb923c;
+    --text:#f1f5f9;
+    --muted:#94a3b8;
+    --light:#64748b;
+    --border:rgba(255,255,255,.1);
+    --bg:#0f172a;
+    --white:#1e293b;
+    --surface:#162032;
+    --card:#1e293b;
+  }
+  body { background:#0f172a !important; color:#f1f5f9 !important; }
+  /* Nav always dark - already fine */
+  /* Cards and panels */
+  .card, .panel, .pay-card, .summary-card, .rate-card, .review-card,
+  .profile-card, .rating-overview-card, .dispute-flow, .step-panel,
+  .step-list, .protection-hero ~ .panel, .stat-card, .fund-card,
+  .chart-card, .dq-item, .ai-panel { background:#1e293b !important; border-color:rgba(255,255,255,.08) !important; }
+  /* Text */
+  h1,h2,h3,h4,h5,h6 { color:#f1f5f9 !important; }
+  p, li, span:not(.logo *):not(.badge):not(.chip) { color:#94a3b8; }
+  strong { color:#e2e8f0 !important; }
+  /* Inputs */
+  input, select, textarea {
+    background:#162032 !important;
+    border-color:rgba(255,255,255,.12) !important;
+    color:#f1f5f9 !important;
+  }
+  input::placeholder, textarea::placeholder { color:#334155 !important; }
+  /* Surfaces */
+  .surface, [class*="surface"], [class*="-body"], [class*="-wrap"],
+  .pay-body, .sp-body, .panel-body, .mbody, .dq, .ai-chat,
+  .sum-body, .pc-body { background:#1e293b !important; }
+  /* Borders */
+  [class*="border"], hr { border-color:rgba(255,255,255,.08) !important; }
+  /* Table rows */
+  .trow:hover, .saved-card:hover, .step-item:hover { background:rgba(255,255,255,.05) !important; }
+  /* White backgrounds that need to go dark */
+  .white-bg, .bg-white, [style*="background:#fff"], [style*="background: #fff"],
+  [style*="background:white"], [style*="background: white"] { background:#1e293b !important; }
+  /* Legal pages specific */
+  .doc-header { background:transparent !important; }
+  .doc-title { color:#f1f5f9 !important; }
+  .doc-meta { color:#94a3b8 !important; }
+  .doc-meta strong { color:#e2e8f0 !important; }
+  .toc { background:#1e293b !important; border-color:rgba(255,255,255,.08) !important; }
+  .toc-title { color:#f1f5f9 !important; }
+  .section-title { color:#f1f5f9 !important; border-color:rgba(255,255,255,.08) !important; }
+  .section-num { color:#60a5fa !important; }
+  .section p, .section li { color:#94a3b8 !important; }
+  .section p strong, .section li strong { color:#e2e8f0 !important; }
+  /* Highlight boxes in legal pages — keep light backgrounds with dark text */
+  .hb-blue { background:#1e3a5f !important; border-color:#1d4ed8 !important; border-left-color:#3b82f6 !important; }
+  .hb-yellow { background:#422006 !important; border-color:#92400e !important; border-left-color:#fbbf24 !important; }
+  .hb-red { background:#450a0a !important; border-color:#991b1b !important; border-left-color:#f87171 !important; }
+  .hb-green { background:#052e16 !important; border-color:#166534 !important; border-left-color:#22c55e !important; }
+  .hb-blue .hb-text { color:#93c5fd !important; }
+  .hb-yellow .hb-text { color:#fcd34d !important; }
+  .hb-red .hb-text { color:#fca5a5 !important; }
+  .hb-green .hb-text { color:#86efac !important; }
+  .hb-text strong { color:inherit !important; }
+  /* Tables */
+  .fee-table th, .data-table th { background:#0f172a !important; color:#f1f5f9 !important; }
+  .fee-table td, .data-table td { color:#94a3b8 !important; background:#1e293b !important; }
+  .fee-table tr:nth-child(even) td, .data-table tr:nth-child(even) td { background:#162032 !important; }
+  .fee-table td:first-child, .data-table td:first-child { color:#e2e8f0 !important; }
+  /* Rights grid */
+  .right-card, .badge-card, .pf-card, .stat-card { background:#1e293b !important; border-color:rgba(255,255,255,.08) !important; }
+  .rc-title, .bc-name, .pf-title, .sc-lbl { color:#e2e8f0 !important; }
+  .rc-desc, .bc-desc, .pf-desc { color:#94a3b8 !important; }
+  /* Contact box stays dark - already fine */
+  /* Back buttons */
+  .back-btn { background:#1e3a8a !important; color:#fff !important; }
+  /* Nav links */
+  .nav-links a { color:#94a3b8 !important; }
+  .nav-links a:hover { color:#fff !important; }
+  /* Modal */
+  .modal, .overlay .modal { background:#1e293b !important; border-color:rgba(255,255,255,.1) !important; }
+  .mfield input, .mfield select, .mfield textarea { background:#0f172a !important; }
+  /* Chart bars already colored */
+  /* Star ratings */
+  .star, .mini-star { filter:none !important; }
+  /* OTP inputs */
+  .otp-input { background:#162032 !important; color:#f1f5f9 !important; }
+  .otp-input.filled { background:#052e16 !important; }
+  /* Upload zones */
+  .upload-zone, .upload-side, .ev-slot { background:#162032 !important; border-color:rgba(255,255,255,.1) !important; }
+  /* Step list sidebar */
+  .step-list { background:#1e293b !important; }
+  .step-item { background:transparent !important; }
+  .step-item.completed { background:rgba(22,163,74,.1) !important; }
+  .step-item.active { background:rgba(26,86,219,.1) !important; }
+  .si-title { color:#e2e8f0 !important; }
+  .si-meta { color:#64748b !important; }
+  /* Trust ring text */
+  .trust-num { color:#fff !important; }
+  /* Bypass rows */
+  .bp-msg, .br-msg { background:rgba(124,58,237,.15) !important; }
+  /* Summary card */
+  .sum-row-label { color:#94a3b8 !important; }
+  .sum-row-val { color:#e2e8f0 !important; }
+  /* Payment page */
+  .card-logo-chip { border-color:rgba(255,255,255,.15) !important; }
+  .express-btn.google { background:#1e293b !important; color:#f1f5f9 !important; border-color:rgba(255,255,255,.15) !important; }
+  /* Category cards */
+  .cat-rate, .cbd-item, .metric, .wb-stat, .phs-item { background:rgba(255,255,255,.05) !important; border-color:rgba(255,255,255,.08) !important; }
+  .wb-num, .metric-val, .sc-num { color:#fbbf24 !important; }
+  /* Payout rows */
+  .pay-row, .trow, .ur, .bp-row { border-color:rgba(255,255,255,.06) !important; }
+  /* Scrollbars */
+  ::-webkit-scrollbar { background:#0f172a; }
+  ::-webkit-scrollbar-thumb { background:#334155; border-radius:4px; }
+}
+
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<div class="nav">
+  <a href="alltrades.html" style="text-decoration:none"><div class="logo"><span class="a">Trade</span><span class="t">zy</span><span class="d">.</span></div></a>
+  <div class="nav-right">
+    <button class="nav-btn" onclick="showToast('🏠','Going to dashboard…')">← Dashboard</button>
+    <div class="u-av">JD</div>
+  </div>
+</div>
+
+<!-- TABS -->
+<div class="page-tabs">
+  <div class="pti">
+    <div class="ptab active" onclick="switchTab('overview',this)">🛡️ Protection Overview</div>
+    <div class="ptab" onclick="switchTab('file',this)">📋 File a Dispute</div>
+    <div class="ptab" onclick="switchTab('active',this)">⚖️ My Disputes <span class="ptab-badge">1</span></div>
+    <div class="ptab" onclick="switchTab('resolved',this)">✅ Resolved</div>
+  </div>
+</div>
+
+<div class="page">
+
+  <!-- ══ TAB 1: OVERVIEW ══ -->
+  <div id="tab-overview">
+
+    <div class="protection-hero">
+      <div>
+        <div class="ph-tag">🛡️ Tradezy Protection</div>
+        <div class="ph-title">Every Trade is<br>Protected by Default</div>
+        <div class="ph-desc">Your payment is held in escrow until both parties confirm the trade is complete. If something goes wrong, our team steps in — no trade left unresolved.</div>
+      </div>
+      <div class="ph-stats">
+        <div class="phs-item"><div class="phs-num">98.7%</div><div class="phs-label">Resolved</div></div>
+        <div class="phs-item"><div class="phs-num">24hr</div><div class="phs-label">Response</div></div>
+        <div class="phs-item"><div class="phs-num">$0</div><div class="phs-label">To File</div></div>
+      </div>
+    </div>
+
+    <div class="protection-grid">
+      <div class="pf-card">
+        <div class="pf-icon green">🏦</div>
+        <div class="pf-title">Escrow Protection</div>
+        <div class="pf-desc">Your 5% fee is held by Stripe and only released when both traders confirm the swap is complete. Neither party can touch funds during a dispute.</div>
+      </div>
+      <div class="pf-card">
+        <div class="pf-icon blue">⚖️</div>
+        <div class="pf-title">Neutral Mediation</div>
+        <div class="pf-desc">Our trained dispute team reviews all evidence from both sides and issues a fair ruling within 5 business days. Decisions are binding.</div>
+      </div>
+      <div class="pf-card">
+        <div class="pf-icon gold">📷</div>
+        <div class="pf-title">Evidence Based</div>
+        <div class="pf-desc">Upload photos, screenshots, and messages as evidence. Everything stays on-platform so there's a clear paper trail for every dispute.</div>
+      </div>
+      <div class="pf-card">
+        <div class="pf-icon red">💸</div>
+        <div class="pf-title">Full Refund Option</div>
+        <div class="pf-desc">If a trade is found to be fraudulent or the item was significantly misrepresented, you are eligible for a full refund of your platform fee.</div>
+      </div>
+      <div class="pf-card">
+        <div class="pf-icon green">🚫</div>
+        <div class="pf-title">Scammer Removal</div>
+        <div class="pf-desc">Traders found to be acting in bad faith are permanently banned. Their ratings, listings, and account are removed from Tradezy immediately.</div>
+      </div>
+      <div class="pf-card">
+        <div class="pf-icon blue">🔒</div>
+        <div class="pf-title">On-Platform Only</div>
+        <div class="pf-desc">Protection only applies to trades completed through Tradezy. Off-platform deals are not covered — another reason to keep trades on-platform.</div>
+      </div>
+    </div>
+
+    <!-- Active protected trades -->
+    <div class="trades-section">
+      <div class="section-hdr">
+        <div class="section-title">🔄 Your Protected Trades</div>
+        <div class="section-link" onclick="switchTab('file',document.querySelectorAll('.ptab')[1])">File a Dispute →</div>
+      </div>
+
+      <div class="protected-trade">
+        <div class="pt-left">
+          <div class="pt-id">Trade #AT-2847 · Active since May 6</div>
+          <div class="pt-items">
+            <div class="pt-item">🥫 Canned Goods (24)</div>
+            <div class="pt-arrow">⇄</div>
+            <div class="pt-item">🔧 DeWalt Drill Set</div>
+            <div class="pt-item" style="color:var(--muted);font-weight:400">· with RiderJay</div>
+          </div>
+          <div class="pt-status-row">
+            <span class="pt-status pts-escrow">🏦 ESCROW ACTIVE</span>
+            <span class="pt-escrow-amt">$30.45 held · $147.44 their side</span>
+          </div>
+        </div>
+        <div class="pt-right">
+          <button class="pt-action-btn ptb-confirm" onclick="openModal('confirmModal')">✓ Confirm Complete</button>
+          <button class="pt-action-btn ptb-dispute" onclick="switchTab('file',document.querySelectorAll('.ptab')[1])">⚑ File Dispute</button>
+          <button class="pt-action-btn ptb-details" onclick="showToast('📋','Trade details…')">Details</button>
+        </div>
+      </div>
+
+      <div class="protected-trade">
+        <div class="pt-left">
+          <div class="pt-id">Trade #AT-2831 · Active since May 5</div>
+          <div class="pt-items">
+            <div class="pt-item">🚲 Trek Bike 27-Spd</div>
+            <div class="pt-arrow">⇄</div>
+            <div class="pt-item">💻 Dell Laptop i7</div>
+            <div class="pt-item" style="color:var(--muted);font-weight:400">· with TechLisa</div>
+          </div>
+          <div class="pt-status-row">
+            <span class="pt-status pts-active">🔄 MEETUP PENDING</span>
+            <span class="pt-escrow-amt">$336.00 held · $399.00 their side</span>
+          </div>
+        </div>
+        <div class="pt-right">
+          <button class="pt-action-btn ptb-confirm" onclick="openModal('confirmModal')">✓ Confirm Complete</button>
+          <button class="pt-action-btn ptb-dispute" onclick="switchTab('file',document.querySelectorAll('.ptab')[1])">⚑ File Dispute</button>
+          <button class="pt-action-btn ptb-details" onclick="showToast('📋','Trade details…')">Details</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- What's NOT covered -->
+    <div class="info-box yellow">
+      <span>⚠️</span>
+      <div><strong>What is NOT covered:</strong> Trades arranged outside Tradezy, disputes filed more than 14 days after trade completion, change-of-mind returns, and disputes where contact was made off-platform before the issue arose.</div>
+    </div>
+
+  </div>
+
+  <!-- ══ TAB 2: FILE A DISPUTE ══ -->
+  <div id="tab-file" style="display:none">
+    <div class="dispute-flow" id="disputeFlow">
+      <div class="df-head">
+        <div>
+          <div class="df-title">⚑ File a Dispute</div>
+          <div class="df-sub">Protected · Free to file · Reviewed within 24 hours</div>
+        </div>
+        <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.88rem;color:rgba(255,255,255,.5)" id="disputeStepLabel">Step 1 of 4</div>
+      </div>
+      <div class="df-body">
+
+        <!-- Step indicator -->
+        <div class="dispute-steps" id="disputeSteps">
+          <div class="ds-item"><div class="ds-dot active" id="dd1">1</div><div class="ds-label active">Trade</div></div>
+          <div class="ds-line" id="dl1"></div>
+          <div class="ds-item"><div class="ds-dot pending" id="dd2">2</div><div class="ds-label pending">Issue</div></div>
+          <div class="ds-line" id="dl2"></div>
+          <div class="ds-item"><div class="ds-dot pending" id="dd3">3</div><div class="ds-label pending">Evidence</div></div>
+          <div class="ds-line" id="dl3"></div>
+          <div class="ds-item"><div class="ds-dot pending" id="dd4">4</div><div class="ds-label pending">Review</div></div>
+        </div>
+
+        <!-- STEP 1: SELECT TRADE -->
+        <div class="dstep active" id="dstep1">
+          <div style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1rem;margin-bottom:4px">Which trade is the dispute about?</div>
+          <div style="font-size:12px;color:var(--muted);margin-bottom:14px">Only trades completed through Tradezy are eligible for protection.</div>
+
+          <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:16px">
+            <div class="issue-option" id="tradeOpt1" onclick="selectTrade('tradeOpt1','AT-2847','RiderJay','🥫 Canned Goods ⇄ 🔧 DeWalt Drill Set')">
+              <div style="display:flex;align-items:center;gap:10px">
+                <div style="font-size:1.3rem">🔄</div>
+                <div>
+                  <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.9rem">Trade #AT-2847 · RiderJay</div>
+                  <div style="font-size:11px;color:var(--muted)">🥫 Canned Goods (24) ⇄ 🔧 DeWalt Drill Set · May 6</div>
+                  <div style="margin-top:3px"><span class="pt-status pts-escrow" style="font-size:9px">ESCROW ACTIVE</span></div>
+                </div>
+              </div>
+            </div>
+            <div class="issue-option" id="tradeOpt2" onclick="selectTrade('tradeOpt2','AT-2831','TechLisa','🚲 Trek Bike ⇄ 💻 Dell Laptop')">
+              <div style="display:flex;align-items:center;gap:10px">
+                <div style="font-size:1.3rem">🔄</div>
+                <div>
+                  <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.9rem">Trade #AT-2831 · TechLisa</div>
+                  <div style="font-size:11px;color:var(--muted)">🚲 Trek Bike 27-Spd ⇄ 💻 Dell Laptop i7 · May 5</div>
+                  <div style="margin-top:3px"><span class="pt-status pts-active" style="font-size:9px">MEETUP PENDING</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="info-box blue">
+            <span>ℹ️</span>
+            <div>Filing a dispute will immediately <strong>freeze the escrow</strong> for this trade. Neither party can access the funds until the dispute is resolved. This protects both of you.</div>
+          </div>
+
+          <div class="btn-row">
+            <button class="btn btn-red" id="btnStep1Next" onclick="nextDStep(1)" disabled>Select a Trade to Continue →</button>
+          </div>
+        </div>
+
+        <!-- STEP 2: ISSUE TYPE -->
+        <div class="dstep" id="dstep2">
+          <div style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1rem;margin-bottom:4px">What is the issue?</div>
+          <div style="font-size:12px;color:var(--muted);margin-bottom:14px">Choose the option that best describes the problem.</div>
+
+          <div class="issue-grid">
+            <div class="issue-option" onclick="selectIssue(this,'not_as_described')">
+              <div class="io-icon">📦</div>
+              <div class="io-title">Item Not as Described</div>
+              <div class="io-desc">The item received was different from the listing — wrong condition, missing parts, or inaccurate description.</div>
+            </div>
+            <div class="issue-option" onclick="selectIssue(this,'no_show')">
+              <div class="io-icon">🚫</div>
+              <div class="io-title">Trader Did Not Show Up</div>
+              <div class="io-desc">The other party agreed to a meetup but never arrived or stopped responding.</div>
+            </div>
+            <div class="issue-option" onclick="selectIssue(this,'fraud')">
+              <div class="io-icon">⚠️</div>
+              <div class="io-title">Suspected Fraud / Scam</div>
+              <div class="io-desc">You believe the other trader was intentionally deceptive or attempting to scam you.</div>
+            </div>
+            <div class="issue-option" onclick="selectIssue(this,'damaged')">
+              <div class="io-icon">💔</div>
+              <div class="io-title">Item Damaged During Swap</div>
+              <div class="io-desc">The item was damaged at the time of exchange and was not disclosed beforehand.</div>
+            </div>
+            <div class="issue-option" onclick="selectIssue(this,'wrong_item')">
+              <div class="io-icon">🔄</div>
+              <div class="io-title">Wrong Item Exchanged</div>
+              <div class="io-desc">You received a completely different item than what was agreed upon in the trade.</div>
+            </div>
+            <div class="issue-option" onclick="selectIssue(this,'other')">
+              <div class="io-icon">📝</div>
+              <div class="io-title">Other Issue</div>
+              <div class="io-desc">The problem doesn't fit the categories above — you'll describe it in your own words.</div>
+            </div>
+          </div>
+
+          <div class="severity-wrap">
+            <label>How severe is this issue?</label>
+            <input type="range" class="severity-slider" id="severitySlider" min="1" max="3" value="2" oninput="updateSeverity(this.value)">
+            <div class="severity-labels">
+              <span>Minor inconvenience</span>
+              <span id="severityText" style="font-weight:700;color:var(--red)">Significant issue</span>
+              <span>Serious / fraud</span>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>Describe the problem in detail *</label>
+            <textarea id="issueDesc" rows="4" placeholder="Tell us exactly what happened. Include dates, what was agreed, what actually occurred, and any relevant context…"></textarea>
+          </div>
+
+          <div class="field">
+            <label>What outcome are you looking for?</label>
+            <div class="resolution-grid">
+              <div class="res-option" onclick="selectResolution(this,'refund')">
+                <div class="ro-icon">💸</div>
+                <div class="ro-title">Full Refund</div>
+                <div class="ro-desc">Return of platform fee</div>
+              </div>
+              <div class="res-option" onclick="selectResolution(this,'partial')">
+                <div class="ro-icon">⚖️</div>
+                <div class="ro-title">Partial Resolution</div>
+                <div class="ro-desc">Negotiated settlement</div>
+              </div>
+              <div class="res-option" onclick="selectResolution(this,'ban')">
+                <div class="ro-icon">🚫</div>
+                <div class="ro-title">Remove User</div>
+                <div class="ro-desc">Ban from Tradezy</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="btn-row">
+            <button class="btn btn-outline" onclick="prevDStep(2)">← Back</button>
+            <button class="btn btn-red" id="btnStep2Next" onclick="nextDStep(2)" disabled>Next: Add Evidence →</button>
+          </div>
+        </div>
+
+        <!-- STEP 3: EVIDENCE -->
+        <div class="dstep" id="dstep3">
+          <div style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1rem;margin-bottom:4px">Add Supporting Evidence</div>
+          <div style="font-size:12px;color:var(--muted);margin-bottom:14px">Photos, screenshots, and documents help our team make a fair decision. More evidence = faster resolution.</div>
+
+          <div class="info-box green">
+            <span>✅</span>
+            <div>Your Tradezy messages are <strong>automatically included</strong> as evidence — we always have a full conversation log on file.</div>
+          </div>
+
+          <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:8px">Photos / Screenshots (up to 8)</div>
+          <div class="evidence-slots" id="evidenceSlots">
+            <div class="ev-slot" onclick="addEvidence(this,0)"><span>📷</span><span class="ev-label">Add Photo</span></div>
+            <div class="ev-slot" onclick="addEvidence(this,1)"><span>📸</span><span class="ev-label">Screenshot</span></div>
+            <div class="ev-slot" onclick="addEvidence(this,2)"><span>📄</span><span class="ev-label">Document</span></div>
+            <div class="ev-slot" onclick="addEvidence(this,3)"><span>+</span><span class="ev-label">Add More</span></div>
+          </div>
+
+          <div class="field" style="margin-top:14px">
+            <label>Additional Notes for Investigator (optional)</label>
+            <textarea id="evidenceNotes" rows="3" placeholder="Any other context our team should know? Reference specific messages, dates, or details that support your case…"></textarea>
+          </div>
+
+          <div class="field">
+            <label>Do you have witness contact? (optional)</label>
+            <input type="text" id="witnessContact" placeholder="e.g. A friend who was present at the meetup — name and contact info">
+          </div>
+
+          <div class="info-box yellow">
+            <span>⚠️</span>
+            <div><strong>Important:</strong> Submitting false or fabricated evidence is a violation of our Terms of Service and may result in your account being suspended. Be honest and accurate.</div>
+          </div>
+
+          <div class="btn-row">
+            <button class="btn btn-outline" onclick="prevDStep(3)">← Back</button>
+            <button class="btn btn-red" onclick="nextDStep(3)">Review & Submit →</button>
+          </div>
+        </div>
+
+        <!-- STEP 4: REVIEW & SUBMIT -->
+        <div class="dstep" id="dstep4">
+          <div style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1rem;margin-bottom:14px">Review Your Dispute</div>
+
+          <!-- Escrow freeze warning -->
+          <div class="freeze-banner">
+            <span class="fb-icon">🔒</span>
+            <div class="fb-text">
+              <div class="fb-title">Escrow Will Be Frozen on Submit</div>
+              <div class="fb-desc">Both parties' funds will be held until this dispute is resolved. Neither party can confirm the trade complete during review.</div>
+            </div>
+            <div class="fb-amount">
+              <div class="fb-amt-num" id="frozenAmt">$177.89</div>
+              <div class="fb-amt-label">Total frozen</div>
+            </div>
+          </div>
+
+          <!-- Summary -->
+          <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:14px">
+            <div style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.85rem;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:10px">Dispute Summary</div>
+            <div style="display:flex;flex-direction:column;gap:6px">
+              <div style="display:flex;justify-content:space-between;font-size:13px;padding:4px 0;border-bottom:1px solid var(--border)"><span style="color:var(--muted)">Trade</span><span style="font-weight:700" id="sumTrade">—</span></div>
+              <div style="display:flex;justify-content:space-between;font-size:13px;padding:4px 0;border-bottom:1px solid var(--border)"><span style="color:var(--muted)">Other trader</span><span style="font-weight:700" id="sumTrader">—</span></div>
+              <div style="display:flex;justify-content:space-between;font-size:13px;padding:4px 0;border-bottom:1px solid var(--border)"><span style="color:var(--muted)">Issue type</span><span style="font-weight:700" id="sumIssue">—</span></div>
+              <div style="display:flex;justify-content:space-between;font-size:13px;padding:4px 0;border-bottom:1px solid var(--border)"><span style="color:var(--muted)">Desired outcome</span><span style="font-weight:700" id="sumResolution">—</span></div>
+              <div style="display:flex;justify-content:space-between;font-size:13px;padding:4px 0"><span style="color:var(--muted)">Evidence uploaded</span><span style="font-weight:700;color:var(--green)" id="sumEvidence">0 items (messages included)</span></div>
+            </div>
+          </div>
+
+          <!-- What happens next -->
+          <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:8px">What Happens Next</div>
+          <div class="timeline">
+            <div class="tl-item">
+              <div class="tl-dot green">✓</div>
+              <div class="tl-time">Immediately</div>
+              <div class="tl-title">Escrow frozen & case opened</div>
+              <div class="tl-desc">Funds locked, case number assigned, both parties notified.</div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-dot blue" style="animation:tlPulse 1.5s infinite">→</div>
+              <div class="tl-time">Within 2 hours</div>
+              <div class="tl-title">Other party notified & given 48hrs to respond</div>
+              <div class="tl-desc">RiderJay will receive a notification and can submit their own evidence and statement.</div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-dot gold">⚖</div>
+              <div class="tl-time">Within 5 business days</div>
+              <div class="tl-title">Tradezy team reviews all evidence</div>
+              <div class="tl-desc">Our dispute team reviews both sides and makes a binding decision.</div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-dot green">$</div>
+              <div class="tl-time">After decision</div>
+              <div class="tl-title">Funds released or refunded</div>
+              <div class="tl-desc">Based on the ruling, escrow is released to the appropriate party within 1–2 business days.</div>
+            </div>
+          </div>
+
+          <div class="info-box red" style="margin-top:14px">
+            <span>⚑</span>
+            <div><strong>Note:</strong> Filing a false dispute is a violation of our Terms of Service and may result in account suspension and forfeiture of your escrow funds.</div>
+          </div>
+
+          <div class="btn-row">
+            <button class="btn btn-outline" onclick="prevDStep(4)">← Back</button>
+            <button class="btn btn-red" onclick="submitDispute()">🔒 Submit Dispute &amp; Freeze Escrow</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Success screen -->
+    <div class="success-screen" id="disputeSuccess">
+      <div class="ss-emoji">⚖️</div>
+      <div class="ss-title">Dispute Filed!</div>
+      <div class="ss-desc">Your case has been opened and escrow is frozen. Our team will review within 5 business days. You'll be notified of every update by email and in-app.</div>
+      <div class="case-box">
+        <div style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.85rem;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:9px">📋 Case Details</div>
+        <div class="case-row"><span>Case Number</span><span style="color:var(--blue);font-weight:800">#DISP-2847-001</span></div>
+        <div class="case-row"><span>Trade</span><span id="caseTradeId">—</span></div>
+        <div class="case-row"><span>Filed Against</span><span id="caseTrader">—</span></div>
+        <div class="case-row"><span>Issue</span><span id="caseIssue">—</span></div>
+        <div class="case-row"><span>Escrow Frozen</span><span style="color:var(--red)">$177.89</span></div>
+        <div class="case-row"><span>Expected Resolution</span><span>May 13, 2026</span></div>
+        <div class="case-row"><span>Status</span><span style="color:var(--orange)">🔄 Under Review</span></div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <button class="mbtn" style="background:var(--blue);color:#fff;padding:11px;border:none;border-radius:7px;font-family:'Barlow Condensed',sans-serif;font-size:.92rem;font-weight:800;cursor:pointer" onclick="switchTab('active',document.querySelectorAll('.ptab')[2])">📋 Track My Dispute</button>
+        <button class="mbtn outline" style="width:100%;padding:10px;background:transparent;border:1.5px solid var(--border);border-radius:7px;font-family:'Barlow Condensed',sans-serif;font-size:.9rem;font-weight:800;cursor:pointer;color:var(--muted)" onclick="showToast('🏠','Going to dashboard…')">← Back to Dashboard</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ TAB 3: ACTIVE DISPUTES ══ -->
+  <div id="tab-active" style="display:none">
+    <div style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.3rem;margin-bottom:4px">⚖️ Active Disputes</div>
+    <div style="font-size:13px;color:var(--muted);margin-bottom:16px">Track the progress of open cases. Both parties are notified of every update.</div>
+
+    <div class="dispute-status-card">
+      <div class="dsc-head">
+        <div>
+          <div class="dsc-id">Case #DISP-2847-001 · Filed May 6, 2026</div>
+        </div>
+        <div class="dsc-status dss-review">🔄 UNDER REVIEW</div>
+      </div>
+      <div class="dsc-body">
+        <div class="dsc-trade">
+          <span>🥫 Canned Goods (24)</span><span style="color:var(--muted)">⇄</span><span>🔧 DeWalt Drill Set</span>
+          <span style="color:var(--muted);font-size:11px">· vs RiderJay</span>
+        </div>
+        <div class="dsc-issue"><strong>Issue:</strong> Item not as described — drill missing one battery and charger as listed.</div>
+
+        <div class="freeze-banner" style="margin-bottom:14px">
+          <span class="fb-icon">🔒</span>
+          <div class="fb-text"><div class="fb-title">Escrow Frozen — $177.89 Total</div><div class="fb-desc">Your $30.45 + RiderJay's $147.44 held until resolution.</div></div>
+        </div>
+
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:10px">Case Timeline</div>
+        <div class="timeline">
+          <div class="tl-item">
+            <div class="tl-dot green">✓</div>
+            <div class="tl-time">May 6, 10:32 AM</div>
+            <div class="tl-title">Dispute filed by Jane Doe</div>
+            <div class="tl-desc">Case opened, escrow frozen, both parties notified.</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot green">✓</div>
+            <div class="tl-time">May 6, 10:45 AM</div>
+            <div class="tl-title">RiderJay notified</div>
+            <div class="tl-desc">Other party given 48 hours to submit their statement and evidence.</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot gold">⚖</div>
+            <div class="tl-time">May 7 — Pending</div>
+            <div class="tl-title">RiderJay response deadline</div>
+            <div class="tl-desc">Waiting for other party to respond. If no response, decision defaults in your favor.</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot blue tl-dot" style="animation:tlPulse 1.5s infinite">→</div>
+            <div class="tl-time">By May 13 — Upcoming</div>
+            <div class="tl-title">Tradezy team decision</div>
+            <div class="tl-desc">Our team reviews all evidence and issues a binding ruling.</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot pending" style="border-color:var(--border)">$</div>
+            <div class="tl-time">After decision</div>
+            <div class="tl-title">Funds released</div>
+            <div class="tl-desc">Escrow released to appropriate party within 1–2 business days.</div>
+          </div>
+        </div>
+
+        <div style="display:flex;gap:8px;margin-top:14px">
+          <button class="pt-action-btn ptb-dispute" onclick="showToast('💬','Opening case chat…')">💬 Message Investigator</button>
+          <button class="pt-action-btn ptb-details" onclick="openModal('addEvidenceModal')">📷 Add More Evidence</button>
+          <button class="pt-action-btn" style="background:#f0fdf4;border:1px solid #bbf7d0;color:#14532d;padding:6px 14px;border-radius:6px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.78rem;cursor:pointer" onclick="openModal('withdrawModal')">↩ Withdraw Dispute</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ TAB 4: RESOLVED ══ -->
+  <div id="tab-resolved" style="display:none">
+    <div style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.3rem;margin-bottom:4px">✅ Resolved Disputes</div>
+    <div style="font-size:13px;color:var(--muted);margin-bottom:16px">Closed cases and their outcomes.</div>
+
+    <div class="dispute-status-card">
+      <div class="dsc-head">
+        <div><div class="dsc-id">Case #DISP-2710-001 · Resolved Apr 18, 2026</div></div>
+        <div class="dsc-status dss-resolved">✅ RESOLVED — IN YOUR FAVOR</div>
+      </div>
+      <div class="dsc-body">
+        <div class="dsc-trade"><span>📚 Used Books (8)</span><span style="color:var(--muted)">⇄</span><span>💊 First Aid Kit</span><span style="color:var(--muted);font-size:11px">· vs PrepMike</span></div>
+        <div class="dsc-issue"><strong>Issue:</strong> First aid kit was missing multiple items listed in the description.</div>
+        <div class="info-box green" style="margin-top:10px">
+          <span>✅</span>
+          <div><strong>Resolution:</strong> Tradezy found in your favor. PrepMike's account received a warning. Your $0.90 platform fee was refunded in full. PrepMike's rating was updated to reflect the dispute.</div>
+        </div>
+        <div style="font-size:11px;color:var(--muted);margin-top:8px">Resolved in 3 business days · Case closed Apr 18, 2026</div>
+      </div>
+    </div>
+
+    <div class="dispute-status-card">
+      <div class="dsc-head">
+        <div><div class="dsc-id">Case #DISP-2650-001 · Resolved Mar 30, 2026</div></div>
+        <div class="dsc-status" style="background:#f1f5f9;color:var(--muted);border:1px solid var(--border);font-size:10px;font-weight:800;padding:2px 8px;border-radius:4px">RESOLVED — WITHDRAWN</div>
+      </div>
+      <div class="dsc-body">
+        <div class="dsc-trade"><span>🎮 PS4 + 3 Games</span><span style="color:var(--muted)">⇄</span><span>⛺ Camping Tent</span><span style="color:var(--muted);font-size:11px">· vs BuildBob</span></div>
+        <div class="dsc-issue"><strong>Issue:</strong> Initial concern about item condition — resolved directly with trader after communication.</div>
+        <div class="info-box blue" style="margin-top:10px">
+          <span>ℹ️</span>
+          <div>Dispute withdrawn by Jane after both parties reached a mutual agreement directly through Tradezy messaging. Escrow released, trade confirmed complete.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- MODALS -->
+<div class="overlay" id="confirmModal">
+  <div class="modal">
+    <div class="mhd"><div class="mhd-title">✅ Confirm Trade Complete</div><button class="mhd-close" onclick="closeModal('confirmModal')">✕</button></div>
+    <div class="mbody">
+      <div style="text-align:center;margin-bottom:16px">
+        <div style="font-size:2.5rem;margin-bottom:8px">🤝</div>
+        <div style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.1rem;margin-bottom:5px">Confirm the trade went smoothly?</div>
+        <div style="font-size:13px;color:var(--muted);line-height:1.5">This will release escrow and close the trade. Both parties must confirm.</div>
+      </div>
+      <div class="info-box yellow"><span>💡</span><div>Once you confirm, you <strong>cannot</strong> file a dispute for this trade. Only confirm if you received exactly what was agreed.</div></div>
+      <button class="mbtn green" onclick="closeModal('confirmModal');showToast('🎉','Trade confirmed! Escrow released. Please rate your trader!')">✅ Yes — Trade Was Successful!</button>
+      <button class="mbtn red" onclick="closeModal('confirmModal');switchTab('file',document.querySelectorAll('.ptab')[1])">⚑ Something Went Wrong — File Dispute</button>
+      <button class="mbtn outline" onclick="closeModal('confirmModal')">← Not Yet</button>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="addEvidenceModal">
+  <div class="modal">
+    <div class="mhd"><div class="mhd-title">📷 Add More Evidence</div><button class="mhd-close" onclick="closeModal('addEvidenceModal')">✕</button></div>
+    <div class="mbody">
+      <p style="font-size:13px;color:var(--muted);margin-bottom:14px;line-height:1.5">You can add additional photos or notes to Case #DISP-2847-001 at any time during review.</p>
+      <div class="evidence-slots" style="grid-template-columns:repeat(3,1fr)">
+        <div class="ev-slot" onclick="showToast('📷','Photo upload ready at backend!')"><span>📷</span><span class="ev-label">Photo</span></div>
+        <div class="ev-slot" onclick="showToast('📸','Screenshot upload ready!')"><span>📸</span><span class="ev-label">Screenshot</span></div>
+        <div class="ev-slot" onclick="showToast('📄','Document upload ready!')"><span>📄</span><span class="ev-label">Doc</span></div>
+      </div>
+      <div style="margin-top:12px">
+        <textarea placeholder="Additional notes for the investigator…" style="width:100%;border:1.5px solid var(--border);border-radius:8px;padding:10px 12px;font-family:'Lato',sans-serif;font-size:13px;outline:none;resize:vertical;min-height:80px" onfocus="this.style.borderColor='var(--blue)'" onblur="this.style.borderColor='var(--border)'"></textarea>
+      </div>
+      <button class="mbtn" style="background:var(--blue);color:#fff;margin-top:10px" onclick="closeModal('addEvidenceModal');showToast('✅','Evidence added to your case!')">Submit Additional Evidence</button>
+      <button class="mbtn outline" onclick="closeModal('addEvidenceModal')">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="withdrawModal">
+  <div class="modal">
+    <div class="mhd"><div class="mhd-title">↩ Withdraw Dispute</div><button class="mhd-close" onclick="closeModal('withdrawModal')">✕</button></div>
+    <div class="mbody">
+      <p style="font-size:13px;color:var(--muted);margin-bottom:12px;line-height:1.5">Are you sure you want to withdraw this dispute? This will unfreeze escrow and close the case.</div>
+      <div class="info-box yellow"><span>⚠️</span><div>Only withdraw if you have resolved the issue directly with the other trader. You <strong>cannot</strong> re-open a withdrawn dispute.</div></div>
+      <textarea placeholder="Why are you withdrawing? (optional — helps us improve)" style="width:100%;border:1.5px solid var(--border);border-radius:8px;padding:10px 12px;font-family:'Lato',sans-serif;font-size:13px;outline:none;resize:vertical;min-height:70px;margin:10px 0" onfocus="this.style.borderColor='var(--blue)'" onblur="this.style.borderColor='var(--border)'"></textarea>
+      <button class="mbtn red" onclick="closeModal('withdrawModal');showToast('↩','Dispute withdrawn. Escrow unfrozen. Trade can now be confirmed.')">Withdraw Dispute</button>
+      <button class="mbtn outline" onclick="closeModal('withdrawModal')">Keep Dispute Open</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toastEl"><span id="toastIc">✅</span><span id="toastTx">Done!</span></div>
+
+<script>
+// ── STATE ──
+let dStep = 1;
+let selectedTradeId = null;
+let selectedTrader = null;
+let selectedTradeDesc = null;
+let selectedIssueType = null;
+let selectedResolution = null;
+let evidenceCount = 0;
+let severityLevel = 2;
+
+const issueLabels = {
+  not_as_described: 'Item Not as Described',
+  no_show: 'Trader Did Not Show Up',
+  fraud: 'Suspected Fraud / Scam',
+  damaged: 'Item Damaged During Swap',
+  wrong_item: 'Wrong Item Exchanged',
+  other: 'Other Issue'
+};
+
+const resolutionLabels = {
+  refund: 'Full Refund of Fee',
+  partial: 'Partial Resolution',
+  ban: 'Remove User from Tradezy'
+};
+
+const severityLabels = ['','Minor inconvenience','Significant issue','Serious — possible fraud'];
+
+// ── TAB SWITCHING ──
+function switchTab(tab, el) {
+  ['overview','file','active','resolved'].forEach(t => {
+    const v = document.getElementById('tab-' + t);
+    if (v) v.style.display = 'none';
+  });
+  document.getElementById('tab-' + tab).style.display = 'block';
+  document.querySelectorAll('.ptab').forEach(t => t.classList.remove('active'));
+  if (el) el.classList.add('active');
+}
+
+// ── TRADE SELECTION ──
+function selectTrade(optId, tradeId, trader, desc) {
+  document.querySelectorAll('.issue-option').forEach(o => o.classList.remove('selected'));
+  document.getElementById(optId).classList.add('selected');
+  selectedTradeId = tradeId;
+  selectedTrader = trader;
+  selectedTradeDesc = desc;
+  document.getElementById('btnStep1Next').disabled = false;
+  document.getElementById('btnStep1Next').textContent = 'Continue with Trade #' + tradeId + ' →';
+  // Update frozen amount based on trade
+  const frozenMap = { 'AT-2847': '$177.89', 'AT-2831': '$735.00' };
+  const frozenEl = document.getElementById('frozenAmt');
+  if (frozenEl) frozenEl.textContent = frozenMap[tradeId] || '$177.89';
+}
+
+// ── ISSUE SELECTION ──
+function selectIssue(el, type) {
+  document.querySelectorAll('#dstep2 .issue-option').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedIssueType = type;
+  document.getElementById('btnStep2Next').disabled = false;
+  document.getElementById('btnStep2Next').textContent = 'Next: Add Evidence →';
+}
+
+// ── RESOLUTION SELECTION ──
+function selectResolution(el, type) {
+  document.querySelectorAll('.res-option').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedResolution = type;
+}
+
+// ── SEVERITY ──
+function updateSeverity(val) {
+  severityLevel = parseInt(val);
+  const el = document.getElementById('severityText');
+  if (el) el.textContent = severityLabels[severityLevel] || '';
+}
+
+// ── EVIDENCE ──
+function addEvidence(slot, idx) {
+  evidenceCount++;
+  slot.innerHTML = `<span style="font-size:1.5rem">${['📷','📸','📄','🖼️'][idx % 4]}</span><span class="ev-label" style="color:var(--green)">Added ✓</span>`;
+  slot.classList.add('filled');
+  slot.style.borderColor = 'var(--green)';
+  const sumEv = document.getElementById('sumEvidence');
+  if (sumEv) sumEv.textContent = evidenceCount + ' item(s) + messages included';
+  showToast('📷', 'Evidence added! (Photo upload connects at backend)');
+}
+
+// ── STEP NAVIGATION ──
+function nextDStep(from) {
+  if (from === 2) {
+    const desc = document.getElementById('issueDesc')?.value.trim();
+    if (!desc) { showToast('⚠️', 'Please describe the issue before continuing.'); return; }
+    if (!selectedResolution) { showToast('⚠️', 'Please select your desired outcome.'); return; }
+  }
+
+  // Update review summary
+  if (from === 3) {
+    const st = document.getElementById('sumTrade'); if (st) st.textContent = '#' + selectedTradeId;
+    const str = document.getElementById('sumTrader'); if (str) str.textContent = selectedTrader;
+    const si = document.getElementById('sumIssue'); if (si) si.textContent = issueLabels[selectedIssueType] || '—';
+    const sr = document.getElementById('sumResolution'); if (sr) sr.textContent = resolutionLabels[selectedResolution] || '—';
+    const se = document.getElementById('sumEvidence'); if (se) se.textContent = evidenceCount + ' item(s) + messages included';
+  }
+
+  hideDStep(from);
+  dStep = from + 1;
+  showDStep(dStep);
+  updateDStepUI(dStep);
+}
+
+function prevDStep(from) {
+  hideDStep(from);
+  dStep = from - 1;
+  showDStep(dStep);
+  updateDStepUI(dStep);
+}
+
+function hideDStep(n) {
+  const el = document.getElementById('dstep' + n);
+  if (el) { el.classList.remove('active'); }
+}
+
+function showDStep(n) {
+  const el = document.getElementById('dstep' + n);
+  if (el) el.classList.add('active');
+}
+
+function updateDStepUI(active) {
+  const lbl = document.getElementById('disputeStepLabel');
+  if (lbl) lbl.textContent = 'Step ' + active + ' of 4';
+
+  for (let i = 1; i <= 4; i++) {
+    const dot = document.getElementById('dd' + i);
+    if (!dot) continue;
+    dot.className = 'ds-dot ' + (i < active ? 'done' : i === active ? 'active' : 'pending');
+    dot.textContent = i < active ? '✓' : i;
+    const lbl = dot.parentElement.querySelector('.ds-label');
+    if (lbl) lbl.className = 'ds-label ' + (i < active ? 'done' : i === active ? 'active' : 'pending');
+    if (i < 4) {
+      const line = document.getElementById('dl' + i);
+      if (line) line.classList.toggle('done', i < active);
+    }
+  }
+}
+
+// ── SUBMIT ──
+function submitDispute() {
+  const btn = event.target;
+  btn.textContent = '⏳ Filing dispute…';
+  btn.disabled = true;
+
+  setTimeout(() => {
+    // Hide flow, show success
+    document.getElementById('disputeFlow').style.display = 'none';
+    const success = document.getElementById('disputeSuccess');
+    success.classList.add('show');
+
+    // Fill case details
+    const ct = document.getElementById('caseTradeId'); if (ct) ct.textContent = '#' + (selectedTradeId || 'AT-2847');
+    const ctr = document.getElementById('caseTrader'); if (ctr) ctr.textContent = selectedTrader || 'RiderJay';
+    const ci = document.getElementById('caseIssue'); if (ci) ci.textContent = issueLabels[selectedIssueType] || 'Item Not as Described';
+
+    showToast('⚖️', 'Dispute filed! Case #DISP-2847-001 opened. Escrow frozen.');
+  }, 1600);
+}
+
+// ── MODAL ──
+function openModal(id) { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+document.querySelectorAll('.overlay').forEach(o => o.addEventListener('click', e => { if (e.target === o) o.classList.remove('open'); }));
+
+// ── TOAST ──
+function showToast(icon, msg) {
+  document.getElementById('toastIc').textContent = icon;
+  document.getElementById('toastTx').textContent = msg;
+  const t = document.getElementById('toastEl');
+  t.classList.add('show');
+  clearTimeout(window._tt);
+  window._tt = setTimeout(() => t.classList.remove('show'), 3800);
+}
+</script>
+<div style="text-align:center;padding:24px 16px;font-size:12px;color:#64748b;border-top:1px solid #e2e8f0;margin-top:32px">Tradezy LLC · Connecticut, USA · <a href="mailto:disputes@tradezyhq.com" style="color:#1a56db">disputes@tradezyhq.com</a> · <a href="mailto:support@tradezyhq.com" style="color:#1a56db">support@tradezyhq.com</a></div>
+</body>
+</html>

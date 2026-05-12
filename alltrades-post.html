@@ -1,0 +1,1218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tradezy — Post a Listing</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Lato:ital,wght@0,300;0,400;0,700;1,300&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy:#0a1628; --navy2:#112240; --blue:#1a56db; --blue-light:#2563eb;
+  --gold:#f59e0b; --gold-light:#fbbf24; --green:#16a34a; --green-light:#22c55e;
+  --red:#dc2626; --text:#1a1a2e; --text-light:#475569; --border:#e2e8f0;
+  --bg:#f1f5f9; --white:#ffffff; --surface:#f8fafc;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
+
+.topbar{background:var(--navy);padding:12px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+.logo{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.6rem;letter-spacing:-1px;cursor:pointer;}
+.logo .all{color:#fff;}.logo .trades{color:var(--blue);}.logo .dot{color:var(--gold);}
+.topbar-center{font-family:'Barlow Condensed',sans-serif;font-size:1rem;font-weight:700;color:#94a3b8;}
+.topbar-right{display:flex;align-items:center;gap:14px;}
+.topbar-link{color:#94a3b8;font-size:13px;cursor:pointer;transition:color .15s;}
+.topbar-link:hover{color:#fff;}
+
+.progress-wrap{background:var(--navy2);padding:10px 24px;display:flex;align-items:center;gap:16px;}
+.step-pills{display:flex;gap:6px;}
+.step-pill{font-family:'Barlow Condensed',sans-serif;font-size:.75rem;font-weight:700;padding:3px 10px;border-radius:99px;letter-spacing:.3px;border:1px solid transparent;transition:all .2s;}
+.step-pill.done{background:rgba(22,163,74,.2);border-color:rgba(22,163,74,.4);color:var(--green-light);}
+.step-pill.active{background:rgba(245,158,11,.2);border-color:rgba(245,158,11,.4);color:var(--gold-light);}
+.step-pill.pending{background:rgba(255,255,255,.05);border-color:rgba(255,255,255,.1);color:#475569;}
+.progress-bar{flex:1;height:4px;background:rgba(255,255,255,.1);border-radius:2px;overflow:hidden;}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold-light));border-radius:2px;transition:width .4s ease;width:0%;}
+.progress-label{font-family:'Barlow Condensed',sans-serif;font-size:.85rem;font-weight:700;color:var(--gold-light);white-space:nowrap;min-width:80px;text-align:right;}
+
+.main{max-width:1100px;margin:0 auto;padding:28px 20px;display:grid;grid-template-columns:1fr 340px;gap:24px;align-items:start;}
+
+.form-card{background:var(--white);border:1px solid var(--border);border-radius:14px;overflow:hidden;transition:opacity .2s,transform .2s;}
+.card-head{background:linear-gradient(135deg,var(--navy),#1a3a6b);padding:18px 22px;display:flex;align-items:center;gap:12px;}
+.card-head-icon{width:38px;height:38px;background:rgba(245,158,11,.2);border:1px solid rgba(245,158,11,.3);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;}
+.ch-title{font-family:'Barlow Condensed',sans-serif;font-size:1.05rem;font-weight:800;color:#fff;margin-bottom:2px;}
+.ch-sub{font-size:12px;color:#64748b;}
+.card-body{padding:22px;}
+
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* Photos */
+.photo-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px;}
+.photo-slot{aspect-ratio:1;border:2px dashed var(--border);border-radius:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;position:relative;background:var(--surface);overflow:hidden;}
+.photo-slot:hover{border-color:var(--blue);background:#eff6ff;}
+.photo-slot.main-slot{border-color:var(--gold);background:#fffbeb;}
+.photo-slot.main-slot:hover{border-color:var(--gold-light);}
+.slot-icon{font-size:1.4rem;margin-bottom:3px;}
+.slot-label{font-size:10px;font-weight:700;color:var(--text-light);text-transform:uppercase;letter-spacing:.3px;}
+.main-slot .slot-label{color:var(--gold);}
+.photo-preview{position:absolute;inset:0;object-fit:cover;width:100%;height:100%;}
+.remove-btn{position:absolute;top:4px;right:4px;background:rgba(220,38,38,.9);color:#fff;border:none;border-radius:50%;width:20px;height:20px;font-size:.65rem;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:2;}
+.main-badge{position:absolute;bottom:4px;left:4px;background:var(--gold);color:var(--navy);font-size:9px;font-weight:800;padding:2px 6px;border-radius:3px;display:none;}
+.main-slot .main-badge{display:block;}
+
+/* Fields */
+.field{margin-bottom:15px;}
+.field-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:5px;}
+.field-top label{font-size:11px;font-weight:700;color:var(--text-light);text-transform:uppercase;letter-spacing:.5px;}
+.char-count{font-size:11px;color:#94a3b8;}
+.field input,.field select,.field textarea{width:100%;border:1.5px solid var(--border);border-radius:8px;padding:10px 13px;font-size:14px;font-family:'Lato',sans-serif;color:var(--text);outline:none;transition:all .15s;background:var(--white);resize:vertical;}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(26,86,219,.08);}
+.field-hint{font-size:11px;color:#94a3b8;margin-top:4px;}
+.field-error{font-size:11px;color:var(--red);margin-top:4px;display:none;}
+.field-row-2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+
+.ai-badge{display:inline-flex;align-items:center;gap:4px;background:#eff6ff;border:1px solid #bfdbfe;color:var(--blue);font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;cursor:pointer;transition:all .15s;letter-spacing:.3px;}
+.ai-badge:hover{background:#dbeafe;}
+
+/* Category pills */
+.cat-pills{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px;}
+.cat-pill{padding:5px 12px;border:1.5px solid var(--border);border-radius:99px;font-size:12px;font-weight:700;cursor:pointer;transition:all .15s;color:var(--text-light);}
+.cat-pill:hover{border-color:var(--blue);color:var(--blue);background:#eff6ff;}
+.cat-pill.active{border-color:var(--blue);color:var(--blue);background:#eff6ff;}
+.cat-pill.essential{border-color:#86efac;color:var(--green);}
+.cat-pill.essential.active{background:#f0fdf4;}
+
+/* Condition */
+.cond-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;}
+.cond-btn{border:1.5px solid var(--border);border-radius:8px;padding:8px 4px;text-align:center;cursor:pointer;transition:all .15s;font-size:11px;font-weight:700;color:var(--text-light);}
+.cond-btn:hover,.cond-btn.active{border-color:var(--blue);color:var(--blue);background:#eff6ff;}
+.cond-icon{font-size:1.1rem;display:block;margin-bottom:3px;}
+
+/* Trade prefs */
+.pref-row{display:flex;align-items:center;justify-content:space-between;padding:11px 13px;background:var(--surface);border:1.5px solid var(--border);border-radius:8px;cursor:pointer;transition:all .15s;margin-bottom:8px;}
+.pref-row.on{border-color:var(--green);background:#f0fdf4;}
+.pref-left{display:flex;align-items:center;gap:10px;}
+.pref-icon{font-size:1.1rem;}
+.pref-title{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.93rem;}
+.pref-row.on .pref-title{color:var(--green);}
+.pref-desc{font-size:11px;color:var(--text-light);margin-top:1px;}
+.toggle{width:40px;height:22px;background:#cbd5e1;border-radius:99px;position:relative;transition:background .2s;flex-shrink:0;}
+.toggle.on{background:var(--green);}
+.toggle::after{content:'';position:absolute;top:3px;left:3px;width:16px;height:16px;background:#fff;border-radius:50%;transition:transform .2s;box-shadow:0 1px 3px rgba(0,0,0,.2);}
+.toggle.on::after{transform:translateX(18px);}
+
+.cash-box{display:none;margin-top:4px;margin-bottom:8px;padding:12px;background:#fffbeb;border:1px solid #fde68a;border-radius:8px;}
+.cash-box.show{display:block;}
+.cash-wrap{display:flex;align-items:center;border:1.5px solid #fde68a;border-radius:8px;overflow:hidden;background:#fff;}
+.cash-prefix{padding:9px 12px;background:#fef3c7;border-right:1px solid #fde68a;font-family:'Barlow Condensed',sans-serif;font-weight:800;color:var(--gold);font-size:1rem;}
+.cash-wrap input{flex:1;border:none;outline:none;padding:9px 12px;font-size:14px;font-family:'Lato',sans-serif;}
+
+/* Tags */
+.tags-wrap{border:1.5px solid var(--border);border-radius:8px;padding:7px 10px;display:flex;flex-wrap:wrap;gap:5px;min-height:44px;cursor:text;transition:border-color .15s;background:#fff;}
+.tags-wrap:focus-within{border-color:var(--blue);box-shadow:0 0 0 3px rgba(26,86,219,.08);}
+.tag-chip{display:flex;align-items:center;gap:4px;background:#eff6ff;border:1px solid #bfdbfe;color:var(--blue);font-size:12px;font-weight:700;padding:2px 8px;border-radius:99px;}
+.tag-del{cursor:pointer;color:#93c5fd;font-size:.8rem;}
+.tag-del:hover{color:var(--red);}
+.tags-input{border:none;outline:none;font-size:13px;font-family:'Lato',sans-serif;flex:1;min-width:80px;background:transparent;}
+
+/* Divider */
+.divider{display:flex;align-items:center;gap:10px;margin:18px 0 14px;}
+.divider-line{flex:1;height:1px;background:var(--border);}
+.divider-text{font-family:'Barlow Condensed',sans-serif;font-size:.78rem;font-weight:800;color:var(--text-light);text-transform:uppercase;letter-spacing:.5px;white-space:nowrap;}
+
+/* Buttons */
+.btn-row{display:flex;gap:10px;margin-top:4px;}
+.btn{padding:12px 18px;border-radius:8px;font-family:'Barlow Condensed',sans-serif;font-size:1rem;font-weight:800;letter-spacing:.3px;cursor:pointer;border:none;transition:all .15s;display:flex;align-items:center;justify-content:center;gap:6px;}
+.btn-gold{background:var(--gold);color:var(--navy);flex:1;}
+.btn-gold:hover{background:var(--gold-light);transform:translateY(-1px);box-shadow:0 4px 16px rgba(245,158,11,.3);}
+.btn-outline{background:transparent;border:1.5px solid var(--border);color:var(--text-light);}
+.btn-outline:hover{border-color:#999;color:var(--text);}
+.btn-blue{background:var(--blue);color:#fff;}
+.btn-blue:hover{background:var(--blue-light);transform:translateY(-1px);}
+.btn:disabled{opacity:.5;cursor:not-allowed;transform:none!important;}
+
+/* Preview */
+.preview-sticky{position:sticky;top:80px;display:flex;flex-direction:column;gap:14px;}
+.preview-card{background:var(--white);border:1px solid var(--border);border-radius:14px;overflow:hidden;}
+.prev-head{background:linear-gradient(135deg,#14532d,#166534);padding:13px 16px;}
+.prev-head-title{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.92rem;color:#fff;}
+.prev-head-sub{font-size:11px;color:rgba(255,255,255,.5);}
+.prev-img{width:100%;height:160px;background:linear-gradient(135deg,#f1f5f9,#e2e8f0);display:flex;align-items:center;justify-content:center;font-size:3.5rem;position:relative;overflow:hidden;}
+.prev-img-real{width:100%;height:100%;object-fit:cover;display:none;}
+.prev-badges{position:absolute;top:7px;left:7px;display:flex;gap:4px;flex-wrap:wrap;}
+.pbadge{font-size:10px;font-weight:800;padding:2px 6px;border-radius:3px;letter-spacing:.3px;}
+.pbadge.local{background:var(--blue);color:#fff;}
+.pbadge.ess{background:var(--green);color:#fff;}
+.pbadge.cash{background:var(--gold);color:var(--navy);}
+.prev-dist{position:absolute;bottom:7px;left:7px;background:rgba(10,22,40,.75);color:#e2e8f0;font-size:10px;padding:2px 7px;border-radius:99px;}
+.prev-body{padding:12px 14px;}
+.prev-seller{display:flex;align-items:center;gap:6px;margin-bottom:7px;}
+.prev-av{width:20px;height:20px;border-radius:50%;background:var(--gold);color:var(--navy);font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.6rem;display:flex;align-items:center;justify-content:center;}
+.prev-seller-name{font-size:12px;color:var(--text-light);}
+.prev-stars{margin-left:auto;color:var(--gold);font-size:11px;}
+.prev-title{font-weight:700;font-size:13px;line-height:1.3;margin-bottom:3px;color:#94a3b8;min-height:18px;}
+.prev-title.filled{color:var(--text);}
+.prev-cond{font-size:11px;color:var(--text-light);margin-bottom:5px;}
+.prev-wants{font-size:11px;color:var(--blue);font-weight:700;margin-bottom:7px;min-height:14px;}
+.prev-footer{display:flex;align-items:center;justify-content:space-between;padding-top:7px;border-top:1px solid var(--border);}
+.prev-val{font-family:'Barlow Condensed',sans-serif;font-size:1.1rem;font-weight:800;}
+.prev-offers{font-size:11px;color:var(--text-light);}
+
+/* Tips */
+.tips-card{background:var(--white);border:1px solid var(--border);border-radius:14px;overflow:hidden;}
+.tips-head{background:linear-gradient(135deg,#1e3a8a,#1d4ed8);padding:13px 16px;}
+.tips-head-title{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.92rem;color:#fff;}
+.tips-body{padding:13px 15px;}
+.tip{display:flex;gap:7px;margin-bottom:9px;font-size:12px;color:var(--text-light);line-height:1.4;}
+.tip-ic{flex-shrink:0;font-size:.9rem;margin-top:1px;}
+
+/* Review */
+.review-row{display:flex;gap:10px;padding:10px 12px;background:var(--surface);border:1px solid var(--border);border-radius:8px;font-size:13px;margin-bottom:8px;}
+.rr-icon{flex-shrink:0;}
+.rr-label{color:var(--text-light);min-width:110px;flex-shrink:0;}
+.rr-val{font-weight:500;}
+
+/* Success */
+.success-wrap{display:none;text-align:center;padding:32px 20px;}
+.success-wrap.show{display:block;animation:fadeIn .4s ease;}
+.suc-emoji{font-size:3.5rem;margin-bottom:12px;}
+.suc-title{font-family:'Barlow Condensed',sans-serif;font-size:1.8rem;font-weight:900;margin-bottom:7px;}
+.suc-desc{font-size:13px;color:var(--text-light);margin-bottom:20px;line-height:1.6;max-width:320px;margin-left:auto;margin-right:auto;}
+.suc-preview{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:13px;margin-bottom:16px;display:flex;gap:10px;align-items:center;text-align:left;}
+.suc-img{width:56px;height:56px;background:#e2e8f0;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1.8rem;flex-shrink:0;overflow:hidden;}
+.suc-item-title{font-weight:700;font-size:14px;margin-bottom:2px;}
+.suc-item-meta{font-size:12px;color:var(--text-light);}
+.suc-actions{display:flex;flex-direction:column;gap:8px;}
+
+/* Toast */
+.toast{position:fixed;bottom:22px;right:22px;background:var(--navy);color:#e2e8f0;border:1px solid #1e3a5f;border-left:4px solid var(--green);border-radius:8px;padding:11px 16px;font-size:13px;z-index:999;display:flex;align-items:center;gap:9px;max-width:290px;box-shadow:0 8px 28px rgba(0,0,0,.25);transform:translateX(120%);transition:transform .3s ease;}
+.toast.show{transform:translateX(0);}
+
+@media(max-width:900px){.main{grid-template-columns:1fr;}.preview-sticky{position:static;}.step-pills{display:none;}}
+@media(max-width:580px){.photo-grid{grid-template-columns:repeat(2,1fr);}.cond-grid{grid-template-columns:repeat(3,1fr);}.field-row-2{grid-template-columns:1fr;}.card-body{padding:15px;}}
+
+/* ── DARK MODE ── */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --navy:#0a1628;
+    --blue:#3b82f6;
+    --blue-l:#60a5fa;
+    --gold:#fbbf24;
+    --gold-l:#fcd34d;
+    --green:#22c55e;
+    --green-l:#4ade80;
+    --red:#f87171;
+    --orange:#fb923c;
+    --text:#f1f5f9;
+    --muted:#94a3b8;
+    --light:#64748b;
+    --border:rgba(255,255,255,.1);
+    --bg:#0f172a;
+    --white:#1e293b;
+    --surface:#162032;
+    --card:#1e293b;
+  }
+  body { background:#0f172a !important; color:#f1f5f9 !important; }
+  /* Nav always dark - already fine */
+  /* Cards and panels */
+  .card, .panel, .pay-card, .summary-card, .rate-card, .review-card,
+  .profile-card, .rating-overview-card, .dispute-flow, .step-panel,
+  .step-list, .protection-hero ~ .panel, .stat-card, .fund-card,
+  .chart-card, .dq-item, .ai-panel { background:#1e293b !important; border-color:rgba(255,255,255,.08) !important; }
+  /* Text */
+  h1,h2,h3,h4,h5,h6 { color:#f1f5f9 !important; }
+  p, li, span:not(.logo *):not(.badge):not(.chip) { color:#94a3b8; }
+  strong { color:#e2e8f0 !important; }
+  /* Inputs */
+  input, select, textarea {
+    background:#162032 !important;
+    border-color:rgba(255,255,255,.12) !important;
+    color:#f1f5f9 !important;
+  }
+  input::placeholder, textarea::placeholder { color:#334155 !important; }
+  /* Surfaces */
+  .surface, [class*="surface"], [class*="-body"], [class*="-wrap"],
+  .pay-body, .sp-body, .panel-body, .mbody, .dq, .ai-chat,
+  .sum-body, .pc-body { background:#1e293b !important; }
+  /* Borders */
+  [class*="border"], hr { border-color:rgba(255,255,255,.08) !important; }
+  /* Table rows */
+  .trow:hover, .saved-card:hover, .step-item:hover { background:rgba(255,255,255,.05) !important; }
+  /* White backgrounds that need to go dark */
+  .white-bg, .bg-white, [style*="background:#fff"], [style*="background: #fff"],
+  [style*="background:white"], [style*="background: white"] { background:#1e293b !important; }
+  /* Legal pages specific */
+  .doc-header { background:transparent !important; }
+  .doc-title { color:#f1f5f9 !important; }
+  .doc-meta { color:#94a3b8 !important; }
+  .doc-meta strong { color:#e2e8f0 !important; }
+  .toc { background:#1e293b !important; border-color:rgba(255,255,255,.08) !important; }
+  .toc-title { color:#f1f5f9 !important; }
+  .section-title { color:#f1f5f9 !important; border-color:rgba(255,255,255,.08) !important; }
+  .section-num { color:#60a5fa !important; }
+  .section p, .section li { color:#94a3b8 !important; }
+  .section p strong, .section li strong { color:#e2e8f0 !important; }
+  /* Highlight boxes in legal pages — keep light backgrounds with dark text */
+  .hb-blue { background:#1e3a5f !important; border-color:#1d4ed8 !important; border-left-color:#3b82f6 !important; }
+  .hb-yellow { background:#422006 !important; border-color:#92400e !important; border-left-color:#fbbf24 !important; }
+  .hb-red { background:#450a0a !important; border-color:#991b1b !important; border-left-color:#f87171 !important; }
+  .hb-green { background:#052e16 !important; border-color:#166534 !important; border-left-color:#22c55e !important; }
+  .hb-blue .hb-text { color:#93c5fd !important; }
+  .hb-yellow .hb-text { color:#fcd34d !important; }
+  .hb-red .hb-text { color:#fca5a5 !important; }
+  .hb-green .hb-text { color:#86efac !important; }
+  .hb-text strong { color:inherit !important; }
+  /* Tables */
+  .fee-table th, .data-table th { background:#0f172a !important; color:#f1f5f9 !important; }
+  .fee-table td, .data-table td { color:#94a3b8 !important; background:#1e293b !important; }
+  .fee-table tr:nth-child(even) td, .data-table tr:nth-child(even) td { background:#162032 !important; }
+  .fee-table td:first-child, .data-table td:first-child { color:#e2e8f0 !important; }
+  /* Rights grid */
+  .right-card, .badge-card, .pf-card, .stat-card { background:#1e293b !important; border-color:rgba(255,255,255,.08) !important; }
+  .rc-title, .bc-name, .pf-title, .sc-lbl { color:#e2e8f0 !important; }
+  .rc-desc, .bc-desc, .pf-desc { color:#94a3b8 !important; }
+  /* Contact box stays dark - already fine */
+  /* Back buttons */
+  .back-btn { background:#1e3a8a !important; color:#fff !important; }
+  /* Nav links */
+  .nav-links a { color:#94a3b8 !important; }
+  .nav-links a:hover { color:#fff !important; }
+  /* Modal */
+  .modal, .overlay .modal { background:#1e293b !important; border-color:rgba(255,255,255,.1) !important; }
+  .mfield input, .mfield select, .mfield textarea { background:#0f172a !important; }
+  /* Chart bars already colored */
+  /* Star ratings */
+  .star, .mini-star { filter:none !important; }
+  /* OTP inputs */
+  .otp-input { background:#162032 !important; color:#f1f5f9 !important; }
+  .otp-input.filled { background:#052e16 !important; }
+  /* Upload zones */
+  .upload-zone, .upload-side, .ev-slot { background:#162032 !important; border-color:rgba(255,255,255,.1) !important; }
+  /* Step list sidebar */
+  .step-list { background:#1e293b !important; }
+  .step-item { background:transparent !important; }
+  .step-item.completed { background:rgba(22,163,74,.1) !important; }
+  .step-item.active { background:rgba(26,86,219,.1) !important; }
+  .si-title { color:#e2e8f0 !important; }
+  .si-meta { color:#64748b !important; }
+  /* Trust ring text */
+  .trust-num { color:#fff !important; }
+  /* Bypass rows */
+  .bp-msg, .br-msg { background:rgba(124,58,237,.15) !important; }
+  /* Summary card */
+  .sum-row-label { color:#94a3b8 !important; }
+  .sum-row-val { color:#e2e8f0 !important; }
+  /* Payment page */
+  .card-logo-chip { border-color:rgba(255,255,255,.15) !important; }
+  .express-btn.google { background:#1e293b !important; color:#f1f5f9 !important; border-color:rgba(255,255,255,.15) !important; }
+  /* Category cards */
+  .cat-rate, .cbd-item, .metric, .wb-stat, .phs-item { background:rgba(255,255,255,.05) !important; border-color:rgba(255,255,255,.08) !important; }
+  .wb-num, .metric-val, .sc-num { color:#fbbf24 !important; }
+  /* Payout rows */
+  .pay-row, .trow, .ur, .bp-row { border-color:rgba(255,255,255,.06) !important; }
+  /* Scrollbars */
+  ::-webkit-scrollbar { background:#0f172a; }
+  ::-webkit-scrollbar-thumb { background:#334155; border-radius:4px; }
+}
+
+</style>
+<script>
+/**
+ * TRADEZY CONTENT SCREENING ENGINE
+ * Based on Operating Agreement Section 1.6 — Prohibited Items
+ * 
+ * HOW IT WORKS:
+ * 1. Every listing title + description is scanned before going live
+ * 2. Every message is scanned before being sent
+ * 3. Violations are flagged with severity level
+ * 4. Auto-actions taken based on severity
+ * 5. All flags logged to admin panel
+ * 
+ * SEVERITY LEVELS:
+ * - CRITICAL: Immediate ban (drugs, weapons, adult content, animals)
+ * - HIGH: Listing blocked + warning (alcohol, tobacco, crypto, cash)
+ * - MEDIUM: Message blocked + warning (bypass attempts)
+ * - LOW: Flag for review (edge cases)
+ */
+
+const TradezyScan = (() => {
+
+  // ── PROHIBITED KEYWORDS BY CATEGORY ──
+  const BANNED = {
+
+    WEAPONS: {
+      severity: 'CRITICAL',
+      action: 'BAN',
+      message: 'Your listing has been removed. Weapons and dangerous items are strictly prohibited on Tradezy. Your account has been flagged for review.',
+      keywords: [
+        'gun', 'guns', 'firearm', 'rifle', 'pistol', 'handgun', 'shotgun', 'revolver',
+        'ammo', 'ammunition', 'bullets', 'ar-15', 'ak-47', 'glock', 'smith & wesson',
+        'explosive', 'bomb', 'grenade', 'taser', 'stun gun', 'brass knuckles',
+        'switchblade', 'gravity knife', 'ballistic knife', 'throwing stars',
+        'silencer', 'suppressor', 'trigger', 'magazine clip', 'hollow point',
+        'brass knuckle', 'nunchucks', 'pepper spray', 'mace spray',
+        'weapon', 'weapons', 'tactical knife', 'combat knife', 'military knife',
+      ]
+    },
+
+    DRUGS: {
+      severity: 'CRITICAL',
+      action: 'BAN_AND_REPORT',
+      message: 'Your listing has been removed and your account has been permanently banned. Drug-related items are strictly prohibited on Tradezy and may be reported to law enforcement.',
+      keywords: [
+        'weed', 'marijuana', 'cannabis', 'thc', 'cbd oil', 'edibles', 'hash', 'hashish',
+        'cocaine', 'coke', 'crack', 'heroin', 'meth', 'methamphetamine', 'crystal meth',
+        'fentanyl', 'oxycontin', 'percocet', 'xanax', 'adderall', 'ritalin',
+        'mdma', 'ecstasy', 'molly', 'lsd', 'acid', 'shrooms', 'mushrooms',
+        'drug', 'drugs', 'narcotics', 'prescription pills', 'painkillers',
+        'bong', 'pipe', 'rolling papers', 'dab rig', 'vape cartridge', 'cart',
+        'dispensary', 'plug', '420', 'dank', 'loud', 'kush', 'sativa', 'indica',
+      ]
+    },
+
+    ALCOHOL: {
+      severity: 'CRITICAL',
+      action: 'BAN',
+      message: 'Your listing has been removed. Alcohol is strictly prohibited on Tradezy.',
+      keywords: [
+        'beer', 'wine', 'whiskey', 'vodka', 'rum', 'tequila', 'gin', 'bourbon',
+        'scotch', 'brandy', 'champagne', 'spirits', 'liquor', 'alcohol',
+        'six pack', 'case of beer', 'bottle of wine', 'craft beer', 'hard cider',
+        'hard seltzer', 'white claw', 'truly', 'breweries', 'winery',
+        'alcoholic', 'booze', 'hooch', 'moonshine',
+      ]
+    },
+
+    TOBACCO: {
+      severity: 'CRITICAL',
+      action: 'BAN',
+      message: 'Your listing has been removed. Tobacco and nicotine products are strictly prohibited on Tradezy.',
+      keywords: [
+        'cigarette', 'cigarettes', 'cigars', 'cigar', 'tobacco', 'nicotine',
+        'vape', 'vaping', 'e-cigarette', 'juul', 'pod', 'nic', 'dip', 'chew',
+        'chewing tobacco', 'snuff', 'marlboro', 'newport', 'camel cigarettes',
+        'vape pen', 'vape juice', 'e-juice', 'nicotine patch', 'nicotine gum',
+      ]
+    },
+
+    ANIMALS: {
+      severity: 'CRITICAL',
+      action: 'BAN',
+      message: 'Your listing has been removed. Live animals of any kind are strictly prohibited on Tradezy.',
+      keywords: [
+        'puppy', 'puppies', 'kitten', 'kittens', 'dog for trade', 'cat for trade',
+        'live animal', 'live animals', 'pet for trade', 'pets for trade',
+        'rabbit', 'hamster', 'guinea pig', 'parrot', 'bird for trade',
+        'reptile', 'snake', 'lizard', 'exotic animal', 'livestock',
+        'chicken', 'rooster', 'goat for trade', 'pig for trade',
+        'fish for trade', 'aquarium fish',
+      ]
+    },
+
+    ADULT: {
+      severity: 'CRITICAL',
+      action: 'BAN',
+      message: 'Your listing has been removed and your account has been permanently banned. Adult content is strictly prohibited on Tradezy.',
+      keywords: [
+        'porn', 'pornography', 'xxx', 'adult content', 'adult toy', 'sex toy',
+        'dildo', 'vibrator', 'explicit', 'nsfw', 'onlyfans', 'nude', 'nudes',
+        'adult dvd', 'adult film', 'escort', 'prostitution',
+      ]
+    },
+
+    CASH_CRYPTO: {
+      severity: 'HIGH',
+      action: 'WARN_AND_REMOVE',
+      message: 'Your listing has been removed. Cash, cryptocurrency, and gift cards cannot be listed as trade items on Tradezy. Platform fees are processed through Stripe only.',
+      keywords: [
+        'bitcoin', 'btc', 'ethereum', 'eth', 'crypto', 'cryptocurrency', 'nft',
+        'dogecoin', 'litecoin', 'binance', 'coinbase', 'wallet address',
+        'gift card', 'gift cards', 'amazon gift card', 'visa gift card',
+        'cash trade', 'cash only', 'physical cash', 'dollar bills',
+        'money order', 'western union', 'moneygram',
+      ]
+    },
+
+    BYPASS: {
+      severity: 'MEDIUM',
+      action: 'BLOCK_MESSAGE',
+      message: 'Your message was blocked. Sharing contact information or payment methods outside of Tradezy violates our Terms of Service. This is your warning.',
+      patterns: [
+        // Phone numbers
+        /\b\d{3}[-.\s]?\d{3}[-.\s]?\d{4}\b/,
+        /\(\d{3}\)\s?\d{3}[-.\s]\d{4}/,
+        // Emails
+        /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/,
+        // Payment apps
+        /\b(venmo|cashapp|cash app|zelle|paypal|apple pay|google pay|chime)\b/i,
+        // Social handles
+        /\b(instagram|facebook|snapchat|whatsapp|telegram|signal|kik)\b/i,
+        /[@]\w{2,}/,
+        // Bypass phrases
+        /\b(text me|call me|dm me|message me|find me on|hit me up|reach me|contact me outside|off app|off platform|outside the app)\b/i,
+      ]
+    }
+  };
+
+  // ── SCAN A LISTING ──
+  function scanListing(title, description) {
+    const text = `${title} ${description}`.toLowerCase();
+    const results = [];
+
+    for (const [category, config] of Object.entries(BANNED)) {
+      if (category === 'BYPASS') continue; // bypass is for messages only
+
+      const keywords = config.keywords || [];
+      const found = keywords.filter(kw => text.includes(kw.toLowerCase()));
+
+      if (found.length > 0) {
+        results.push({
+          category,
+          severity: config.severity,
+          action: config.action,
+          message: config.message,
+          matched: found,
+          timestamp: new Date().toISOString()
+        });
+      }
+    }
+
+    // Return worst severity first
+    results.sort((a, b) => {
+      const order = { CRITICAL: 0, HIGH: 1, MEDIUM: 2, LOW: 3 };
+      return order[a.severity] - order[b.severity];
+    });
+
+    return {
+      flagged: results.length > 0,
+      violations: results,
+      canPost: results.filter(r => r.severity === 'CRITICAL' || r.severity === 'HIGH').length === 0
+    };
+  }
+
+  // ── SCAN A MESSAGE ──
+  function scanMessage(text) {
+    const results = [];
+    const bypass = BANNED.BYPASS;
+
+    // Check keyword patterns
+    for (const pattern of bypass.patterns) {
+      if (pattern.test(text)) {
+        results.push({
+          category: 'BYPASS',
+          severity: bypass.severity,
+          action: bypass.action,
+          message: bypass.message,
+          matched: text.match(pattern)?.[0] || 'pattern match',
+          timestamp: new Date().toISOString()
+        });
+        break; // one bypass flag is enough
+      }
+    }
+
+    // Also check listing banned items in messages
+    const textLower = text.toLowerCase();
+    for (const [category, config] of Object.entries(BANNED)) {
+      if (category === 'BYPASS') continue;
+      const keywords = config.keywords || [];
+      const found = keywords.filter(kw => textLower.includes(kw.toLowerCase()));
+      if (found.length > 0) {
+        results.push({
+          category,
+          severity: config.severity,
+          action: config.action,
+          message: config.message,
+          matched: found,
+          timestamp: new Date().toISOString()
+        });
+      }
+    }
+
+    return {
+      flagged: results.length > 0,
+      violations: results,
+      canSend: results.filter(r => r.severity === 'CRITICAL' || r.severity === 'HIGH' || r.severity === 'MEDIUM').length === 0
+    };
+  }
+
+  // ── GET USER ACTION ──
+  // Returns what should happen to the user based on violation
+  function getUserAction(violation) {
+    switch (violation.action) {
+      case 'BAN_AND_REPORT':
+        return { ban: true, report: true, warn: false, removeListng: true };
+      case 'BAN':
+        return { ban: true, report: false, warn: false, removeListing: true };
+      case 'WARN_AND_REMOVE':
+        return { ban: false, report: false, warn: true, removeListing: true };
+      case 'BLOCK_MESSAGE':
+        return { ban: false, report: false, warn: true, removeListing: false };
+      default:
+        return { ban: false, report: false, warn: true, removeListing: false };
+    }
+  }
+
+  // ── FORMAT FLAG FOR ADMIN ──
+  function formatAdminFlag(violation, context) {
+    return {
+      id: `FLAG-${Date.now()}`,
+      category: violation.category,
+      severity: violation.severity,
+      action: violation.action,
+      matched: violation.matched,
+      context: context, // listing title or message snippet
+      timestamp: violation.timestamp,
+      requiresReview: violation.severity === 'CRITICAL',
+      autoActioned: violation.severity !== 'CRITICAL' // admin must approve critical bans
+    };
+  }
+
+  // ── USER-FACING WARNING MESSAGES ──
+  const USER_MESSAGES = {
+    LISTING_BLOCKED: (category) => `
+      ⚠️ Your listing was not posted.
+      
+      Tradezy does not allow listings in the "${category}" category.
+      This is a violation of our Terms of Service (Section 3 — Prohibited Items).
+      
+      Repeated violations will result in permanent account suspension.
+      
+      Questions? Contact support@tradezyhq.com
+    `,
+    MESSAGE_BLOCKED: `
+      ⚠️ Your message was not sent.
+      
+      Sharing contact information or payment methods outside of Tradezy 
+      is a violation of our Terms of Service.
+      
+      This is your warning. Further attempts may result in account suspension.
+    `,
+    ACCOUNT_BANNED: `
+      🚫 Your account has been permanently banned.
+      
+      Your account was found to be in violation of Tradezy's Terms of Service.
+      All active listings have been removed and any pending trades have been cancelled.
+      
+      To appeal this decision, contact support@tradezyhq.com with subject line "Ban Appeal".
+      
+      — Tradezy Trust & Safety Team
+    `
+  };
+
+  // Public API
+  return {
+    scanListing,
+    scanMessage,
+    getUserAction,
+    formatAdminFlag,
+    USER_MESSAGES,
+    BANNED
+  };
+
+})();
+
+// TradezyScan available globally in browser
+
+</script>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="logo" onclick="window.location.href='alltrades.html'"><span class="all">Trade</span><span class="trades">zy</span><span class="dot">.</span></div>
+  <div class="topbar-center">📦 Post a Listing</div>
+  <div class="topbar-right">
+    <span class="topbar-link" onclick="saveDraft()">💾 Save Draft</span>
+    <span class="topbar-link" onclick="window.location.href='alltrades.html'">✕ Cancel</span>
+  </div>
+</div>
+
+<div class="progress-wrap">
+  <div class="step-pills">
+    <div class="step-pill active" id="pill1">1 · Photos</div>
+    <div class="step-pill pending" id="pill2">2 · Details</div>
+    <div class="step-pill pending" id="pill3">3 · Trade Terms</div>
+    <div class="step-pill pending" id="pill4">4 · Review</div>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" id="pFill"></div></div>
+  <div class="progress-label" id="pLabel">Step 1 of 4</div>
+</div>
+
+<div class="main">
+  <div>
+
+    <!-- STEP 1: PHOTOS -->
+    <div class="form-card" id="card1">
+      <div class="card-head">
+        <div class="card-head-icon">📷</div>
+        <div><div class="ch-title">Add Photos <span style="color:var(--red);font-size:.8rem">* Min. 3 required</span></div><div class="ch-sub">At least 3 photos required — front, back, and detail. First photo is your cover.</div></div>
+      </div>
+      <div class="card-body">
+        <div class="photo-grid" id="photoGrid"></div>
+        <input type="file" id="fileInput" accept="image/*" multiple style="display:none" onchange="handleFiles(this)">
+        <div style="background:#fffbeb;border:1px solid #fde68a;border-radius:8px;padding:11px 13px;font-size:12px;color:#92400e;display:flex;gap:7px;margin-bottom:14px;">
+          <span>💡</span><span><strong>Required: 3 photos minimum.</strong> Upload front view, back view, and a detail/damage shot. Natural light works best — show all angles and include any damage so traders trust you.</span>
+        </div>
+        <div class="btn-row">
+          <button class="btn btn-outline" onclick="document.getElementById('fileInput').click()">📷 Upload Photos</button>
+          <button class="btn btn-gold" onclick="goNext(1)" id="nextBtn1">Next: Details →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 2: DETAILS -->
+    <div class="form-card" id="card2" style="display:none">
+      <div class="card-head">
+        <div class="card-head-icon">📝</div>
+        <div><div class="ch-title">Item Details</div><div class="ch-sub">Be specific — better details get better offers</div></div>
+      </div>
+      <div class="card-body">
+
+        <div class="field">
+          <div class="field-top">
+            <label>Item Title *</label>
+            <span class="ai-badge" onclick="aiTitle()">✨ Suggest</span>
+          </div>
+          <input type="text" id="fTitle" placeholder="e.g. Trek 27-Speed Mountain Bike, Like New" maxlength="80" oninput="livePreview();countChar(this,'cTitle',80)">
+          <div style="display:flex;justify-content:space-between;margin-top:3px">
+            <div class="field-hint">Include brand, model, size or quantity</div>
+            <span class="char-count"><span id="cTitle">0</span>/80</span>
+          </div>
+          <div class="field-error" id="eTit">Please add a title.</div>
+        </div>
+
+        <div class="field">
+          <label style="font-size:11px;font-weight:700;color:var(--text-light);text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:6px">Category *</label>
+          <div style="background:#fef2f2;border:1px solid #fecaca;border-left:4px solid #dc2626;border-radius:9px;padding:11px 13px;margin-bottom:12px;font-size:12px;color:#991b1b">
+            <strong>🚫 Prohibited — Never List:</strong> Firearms, weapons, alcohol, tobacco, vaping, drugs, prescription meds, live animals, adult content, stolen/counterfeit goods, cash, gift cards, cryptocurrency, or hazardous materials. Violations = permanent ban. <a href="alltrades-terms.html" target="_blank" style="color:#1a56db;font-weight:700">See full list →</a>
+          </div>
+          <div class="cat-pills" id="catPills">
+            <div class="cat-pill essential active" onclick="pickCat(this,'Food & Water')">🥫 Food &amp; Water</div>
+            <div class="cat-pill essential" onclick="pickCat(this,'Garden')">🌱 Garden</div>
+            <div class="cat-pill" onclick="pickCat(this,'Electronics')">⚡ Electronics</div>
+            <div class="cat-pill" onclick="pickCat(this,'Tools')">🔧 Tools</div>
+            <div class="cat-pill" onclick="pickCat(this,'Sports')">🚲 Sports</div>
+            <div class="cat-pill" onclick="pickCat(this,'Music')">🎵 Music</div>
+            <div class="cat-pill" onclick="pickCat(this,'Gaming')">🎮 Gaming</div>
+            <div class="cat-pill" onclick="pickCat(this,'Clothing')">👗 Clothing</div>
+            <div class="cat-pill" onclick="pickCat(this,'Furniture')">🪑 Furniture</div>
+            <div class="cat-pill" onclick="pickCat(this,'Vehicles')">🚗 Vehicles</div>
+            <div class="cat-pill" onclick="pickCat(this,'Books')">📚 Books</div>
+            <div class="cat-pill" onclick="pickCat(this,'Health')">💊 Health</div>
+            <div class="cat-pill" onclick="pickCat(this,'Art')">🎨 Art</div>
+            <div class="cat-pill" onclick="pickCat(this,'Kids')">👶 Kids</div>
+            <div class="cat-pill" onclick="pickCat(this,'Other')">📦 Other</div>
+          </div>
+          <div class="field-error" id="eCat">Please select a category.</div>
+        </div>
+
+        <div class="divider"><div class="divider-line"></div><div class="divider-text">Condition &amp; Value</div><div class="divider-line"></div></div>
+
+        <div class="field">
+          <label style="font-size:11px;font-weight:700;color:var(--text-light);text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:7px">Condition *</label>
+          <div class="cond-grid">
+            <div class="cond-btn" onclick="pickCond(this,'New')"><span class="cond-icon">✨</span>New</div>
+            <div class="cond-btn active" onclick="pickCond(this,'Like New')"><span class="cond-icon">⭐</span>Like New</div>
+            <div class="cond-btn" onclick="pickCond(this,'Good')"><span class="cond-icon">👍</span>Good</div>
+            <div class="cond-btn" onclick="pickCond(this,'Fair')"><span class="cond-icon">👌</span>Fair</div>
+            <div class="cond-btn" onclick="pickCond(this,'Parts')"><span class="cond-icon">🔩</span>Parts</div>
+          </div>
+          <div class="field-hint" style="margin-top:5px">For sealed food/water, select "New"</div>
+        </div>
+
+        <div class="field-row-2">
+          <div class="field">
+            <div class="field-top"><label>Est. Value ($)</label></div>
+            <input type="number" id="fVal" placeholder="0.00" min="0" step="0.01" oninput="livePreview()">
+            <div class="field-hint">Be honest — overpriced = ignored</div>
+          </div>
+          <div class="field">
+            <div class="field-top"><label>Quantity</label></div>
+            <input type="number" id="fQty" placeholder="1" min="1" value="1">
+            <div class="field-hint">How many are you offering?</div>
+          </div>
+        </div>
+
+        <div class="field">
+          <div class="field-top">
+            <label>Description *</label>
+            <span class="char-count"><span id="cDesc">0</span>/500</span>
+          </div>
+          <textarea id="fDesc" rows="4" placeholder="Describe your item — brand, age, any flaws, what's included, why you're trading it. More detail = more trust." maxlength="500" oninput="countChar(this,'cDesc',500)"></textarea>
+          <div class="field-error" id="eDesc">Please add a description.</div>
+        </div>
+
+        <div class="field">
+          <div class="field-top">
+            <label>Search Tags</label>
+            <span class="ai-badge" onclick="aiTags()">✨ Suggest Tags</span>
+          </div>
+          <div class="tags-wrap" id="tagsWrap" onclick="document.getElementById('tagIn').focus()">
+            <input type="text" class="tags-input" id="tagIn" placeholder="Type a tag, press Enter…" onkeydown="tagKey(event)">
+          </div>
+          <div class="field-hint">e.g. bike, trek, outdoor, fitness — helps people find you</div>
+        </div>
+
+        <div class="btn-row">
+          <button class="btn btn-outline" onclick="goPrev(2)">← Back</button>
+          <button class="btn btn-gold" onclick="goNext(2)">Trade Terms →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 3: TRADE TERMS -->
+    <div class="form-card" id="card3" style="display:none">
+      <div class="card-head">
+        <div class="card-head-icon">🤝</div>
+        <div><div class="ch-title">Trade Terms</div><div class="ch-sub">What do you want? What offers will you accept?</div></div>
+      </div>
+      <div class="card-body">
+
+        <div class="field">
+          <div class="field-top">
+            <label>What Are You Looking For? *</label>
+            <span class="ai-badge" onclick="aiWants()">✨ Ideas</span>
+          </div>
+          <input type="text" id="fWants" placeholder="e.g. Tools, Canned food, Laptop, Bike parts…" oninput="livePreview()" maxlength="100">
+          <div class="field-hint">Be specific — better matches come from clear requests</div>
+          <div class="field-error" id="eWants">Please tell traders what you want.</div>
+        </div>
+
+        <div class="divider"><div class="divider-line"></div><div class="divider-text">Offer Types You'll Accept</div><div class="divider-line"></div></div>
+
+        <div class="pref-row on" id="pr-trade" onclick="togglePref('trade')">
+          <div class="pref-left"><div class="pref-icon">🔄</div><div><div class="pref-title">Trade Only</div><div class="pref-desc">Item-for-item, no money involved</div></div></div>
+          <div class="toggle on" id="tgl-trade"></div>
+        </div>
+        <div class="pref-row on" id="pr-tc" onclick="togglePref('tc')">
+          <div class="pref-left"><div class="pref-icon">🔄💵</div><div><div class="pref-title">Trade + Cash Top-Up</div><div class="pref-desc">Item plus cash to balance value difference</div></div></div>
+          <div class="toggle on" id="tgl-tc"></div>
+        </div>
+        <div class="pref-row" id="pr-cash" onclick="togglePref('cash')">
+          <div class="pref-left"><div class="pref-icon">💵</div><div><div class="pref-title">Cash Offers</div><div class="pref-desc">Accept outright cash purchase</div></div></div>
+          <div class="toggle" id="tgl-cash"></div>
+        </div>
+        <div class="pref-row" id="pr-bundle" onclick="togglePref('bundle')">
+          <div class="pref-left"><div class="pref-icon">📦</div><div><div class="pref-title">Bundle Offers</div><div class="pref-desc">Multiple items bundled as one offer</div></div></div>
+          <div class="toggle" id="tgl-bundle"></div>
+        </div>
+
+        <div class="cash-box" id="cashBox">
+          <div style="font-size:12px;font-weight:700;color:#92400e;margin-bottom:7px">💵 Minimum Cash Offer (optional)</div>
+          <div class="cash-wrap">
+            <span class="cash-prefix">$</span>
+            <input type="number" id="fMinCash" placeholder="Leave blank to accept any amount" min="0">
+          </div>
+          <div style="font-size:11px;color:#a16207;margin-top:5px">Set a minimum to avoid lowball offers.</div>
+        </div>
+
+        <div class="divider"><div class="divider-line"></div><div class="divider-text">Meetup Preferences</div><div class="divider-line"></div></div>
+
+        <div class="field-row-2">
+          <div class="field">
+            <div class="field-top"><label>Meetup Style</label></div>
+            <select id="fMeetup">
+              <option value="public">Public place only (safest)</option>
+              <option value="curb">Curbside pickup</option>
+              <option value="flex">Either works</option>
+            </select>
+          </div>
+          <div class="field">
+            <div class="field-top"><label>Availability</label></div>
+            <select id="fAvail">
+              <option>Weekends only</option>
+              <option>Weekdays only</option>
+              <option selected>Flexible — anytime</option>
+              <option>Evenings only</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field">
+          <div class="field-top"><label>General Area (no exact address)</label></div>
+          <input type="text" id="fArea" placeholder="e.g. North Meriden, Near downtown, Westside">
+          <div class="field-hint">Keep it general — protect your privacy.</div>
+        </div>
+
+        <div class="btn-row">
+          <button class="btn btn-outline" onclick="goPrev(3)">← Back</button>
+          <button class="btn btn-gold" onclick="goNext(3)">Review Listing →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 4: REVIEW -->
+    <div class="form-card" id="card4" style="display:none">
+      <div class="card-head">
+        <div class="card-head-icon" id="head4Icon">✅</div>
+        <div><div class="ch-title" id="head4Title">Review &amp; Publish</div><div class="ch-sub" id="head4Sub">Everything look good? Go live instantly.</div></div>
+      </div>
+      <div class="card-body">
+        <div id="reviewRows"></div>
+        <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:13px;font-size:12px;color:#166534;margin:14px 0;display:flex;gap:7px;">
+          <span>🛡️</span><div><strong>Safety reminder:</strong> Always meet in public — parking lots, libraries, or police stations. Never share your home address. Trust your gut.</div>
+        </div>
+        <div id="reviewBtns" class="btn-row" style="flex-direction:column">
+          <button class="btn btn-gold" style="font-size:1.05rem;padding:14px" onclick="publish()">🚀 Publish — Go Live Now!</button>
+          <button class="btn btn-outline" onclick="goPrev(4)">← Edit Listing</button>
+          <button class="btn btn-outline" style="color:var(--blue);border-color:#bfdbfe" onclick="saveDraft()">💾 Save as Draft</button>
+        </div>
+        <div class="success-wrap" id="successWrap">
+          <div class="suc-emoji">🎉</div>
+          <div class="suc-title">You're Live!</div>
+          <div class="suc-desc">Your listing is now visible to traders near you. You'll be notified when someone makes an offer.</div>
+          <div class="suc-preview">
+            <div class="suc-img" id="sucImg">📦</div>
+            <div><div class="suc-item-title" id="sucTitle">Your Item</div><div class="suc-item-meta" id="sucMeta">Just listed · 0 offers</div></div>
+          </div>
+          <div class="suc-actions">
+            <button class="btn btn-gold" href="alltrades-dashboard.html">📋 View My Dashboard</button>
+            <button class="btn btn-blue" onclick="resetAll()">📦 Post Another Item</button>
+            <button class="btn btn-outline" onclick="window.location.href='alltrades.html'">🏠 Back to Homepage</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- PREVIEW + TIPS -->
+  <div class="preview-sticky">
+    <div class="preview-card">
+      <div class="prev-head">
+        <div class="prev-head-title">👁 Live Preview</div>
+        <div class="prev-head-sub">How your listing will look to traders</div>
+      </div>
+      <div class="prev-img" id="prevImg">
+        <img class="prev-img-real" id="prevImgReal">
+        <span id="prevPlaceholder">📦</span>
+        <div class="prev-badges" id="prevBadges"><span class="pbadge local">LOCAL</span></div>
+        <div class="prev-dist">📍 Near You</div>
+      </div>
+      <div class="prev-body">
+        <div class="prev-seller">
+          <div class="prev-av">YO</div>
+          <div class="prev-seller-name">You</div>
+          <div class="prev-stars">★★★★★</div>
+        </div>
+        <div class="prev-title" id="prevTitle">Your item title will appear here…</div>
+        <div class="prev-cond" id="prevCond">Like New · Food &amp; Water</div>
+        <div class="prev-wants" id="prevWants">Wants: tell us what you need</div>
+        <div class="prev-footer">
+          <div class="prev-val" id="prevVal">$—</div>
+          <div class="prev-offers">0 offers</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tips-card">
+      <div class="tips-head"><div class="tips-head-title">💡 Tips for More Offers</div></div>
+      <div class="tips-body">
+        <div class="tip"><span class="tip-ic">📸</span><span><strong>5+ photos</strong> get 60% more offers than 1.</span></div>
+        <div class="tip"><span class="tip-ic">✍️</span><span><strong>Specific titles</strong> rank higher in search.</span></div>
+        <div class="tip"><span class="tip-ic">💰</span><span><strong>Fair pricing</strong> builds trust and gets more bids.</span></div>
+        <div class="tip"><span class="tip-ic">🤝</span><span><strong>Enable all offer types</strong> for max responses.</span></div>
+        <div class="tip"><span class="tip-ic">📍</span><span>Flexible meetup area = more potential traders.</span></div>
+        <div class="tip"><span class="tip-ic">🥫</span><span>Food &amp; water listings are <strong>trending hot</strong> right now!</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toastEl"><span id="toastIc">✅</span><span id="toastTx">Done!</span></div>
+
+<script>
+// State
+let step = 1;
+let photos = [];
+let tags = [];
+let cat = 'Food & Water';
+let cond = 'Like New';
+let prefs = {trade:true,tc:true,cash:false,bundle:false};
+
+// ── PHOTOS ──
+function renderGrid(){
+  const g = document.getElementById('photoGrid');
+  g.innerHTML='';
+  for(let i=0;i<8;i++){
+    const main=i===0, p=photos[i];
+    g.innerHTML+=`<div class="photo-slot${main?' main-slot':''}" onclick="slotClick(${i})" id="sl${i}">
+      ${p?`<img class="photo-preview" src="${p}"><button class="remove-btn" onclick="event.stopPropagation();rmPhoto(${i})">✕</button>`:`<span class="slot-icon">${main?'📷':'+'}</span><span class="slot-label">${main?'Cover':'Photo '+(i+1)}</span>`}
+      <div class="main-badge">COVER</div></div>`;
+  }
+}
+
+let targetSlot=0;
+function slotClick(i){targetSlot=i;document.getElementById('fileInput').click();}
+function handleFiles(inp){
+  Array.from(inp.files).forEach((f,idx)=>{
+    const si=targetSlot+idx; if(si>=8)return;
+    const r=new FileReader();
+    r.onload=e=>{
+      photos[si]=e.target.result; renderGrid();
+      if(si===0){const im=document.getElementById('prevImgReal');im.src=e.target.result;im.style.display='block';document.getElementById('prevPlaceholder').style.display='none';}
+      toast('📷',`Photo ${si+1} added!`);
+    };
+    r.readAsDataURL(f);
+  });
+  inp.value='';
+}
+function rmPhoto(i){photos[i]=null;photos=photos.filter(Boolean);renderGrid();if(i===0){document.getElementById('prevImgReal').style.display='none';document.getElementById('prevPlaceholder').style.display='';}}
+
+// ── CATEGORY & CONDITION ──
+function pickCat(el,c){
+  document.querySelectorAll('.cat-pill').forEach(p=>p.classList.remove('active'));
+  el.classList.add('active'); cat=c; livePreview();
+  const ess=['Food & Water','Garden'].includes(c);
+  document.getElementById('prevBadges').innerHTML=`<span class="pbadge local">LOCAL</span>${ess?'<span class="pbadge ess">ESSENTIAL</span>':''}`;
+}
+function pickCond(el,c){document.querySelectorAll('.cond-btn').forEach(b=>b.classList.remove('active'));el.classList.add('active');cond=c;livePreview();}
+
+// ── TRADE PREFS ──
+function togglePref(k){
+  prefs[k]=!prefs[k];
+  document.getElementById('tgl-'+k).classList.toggle('on',prefs[k]);
+  document.getElementById('pr-'+k).classList.toggle('on',prefs[k]);
+  if(k==='cash')document.getElementById('cashBox').classList.toggle('show',prefs[k]);
+  livePreview();
+}
+
+// ── TAGS ──
+function tagKey(e){
+  if(e.key==='Enter'||e.key===','){
+    e.preventDefault();
+    const v=e.target.value.trim().replace(/,/g,'');
+    if(v&&!tags.includes(v)&&tags.length<10){tags.push(v);renderTags();}
+    e.target.value='';
+  }
+  if(e.key==='Backspace'&&!e.target.value&&tags.length){tags.pop();renderTags();}
+}
+function renderTags(){
+  const w=document.getElementById('tagsWrap'),inp=document.getElementById('tagIn');
+  w.innerHTML='';
+  tags.forEach((t,i)=>{const c=document.createElement('div');c.className='tag-chip';c.innerHTML=`${t}<span class="tag-del" onclick="delTag(${i})">✕</span>`;w.appendChild(c);});
+  w.appendChild(inp);
+}
+function delTag(i){tags.splice(i,1);renderTags();}
+
+// ── LIVE PREVIEW ──
+function livePreview(){
+  const t=document.getElementById('fTitle')?.value||'',v=document.getElementById('fVal')?.value||'',w=document.getElementById('fWants')?.value||'';
+  const pt=document.getElementById('prevTitle');
+  pt.textContent=t||'Your item title will appear here…';
+  pt.classList.toggle('filled',!!t);
+  document.getElementById('prevCond').textContent=`${cond} · ${cat}`;
+  document.getElementById('prevVal').textContent=v?`$${parseFloat(v).toLocaleString()}`:'$—';
+  document.getElementById('prevWants').textContent=w?`Wants: ${w}`:'Wants: tell us what you need';
+  // badges
+  const ess=['Food & Water','Garden'].includes(cat);
+  const cashOk=prefs.cash||prefs.tc;
+  document.getElementById('prevBadges').innerHTML=`<span class="pbadge local">LOCAL</span>${ess?'<span class="pbadge ess">ESSENTIAL</span>':''}${cashOk?'<span class="pbadge cash">💵 CASH OK</span>':''}`;
+}
+
+// ── CHAR COUNT ──
+function countChar(el,id,max){
+  const c=document.getElementById(id); c.textContent=el.value.length;
+  c.style.color=el.value.length>=max?'var(--red)':el.value.length>max*.85?'var(--gold)':'#94a3b8';
+}
+
+// ── AI HELPERS ──
+function aiTitle(){
+  const pool={'Food & Water':['50-Pack Water Bottles (16.9 oz), Sealed','Case of Mixed Canned Veggies (24 cans)','25 lb Bag White Rice, Brand New Sealed','Farm Fresh Eggs — 3 Dozen, Heirloom Chickens'],'Electronics':['Dell Laptop i7 16GB RAM, Good Condition','iPhone 13 128GB Unlocked, Excellent','Sony A7III Camera + 2 Lenses Bundle'],'Tools':['DeWalt 20V Cordless Drill + 2 Batteries','Craftsman 200-Piece Tool Set, Like New'],'default':['Trek 27-Speed Mountain Bike, Good Condition','Fender Acoustic Guitar + Hard Case','PlayStation 5 + 4 Games Bundle']};
+  const list=pool[cat]||pool.default;
+  const t=list[Math.floor(Math.random()*list.length)];
+  document.getElementById('fTitle').value=t;
+  countChar(document.getElementById('fTitle'),'cTitle',80);
+  livePreview();
+  toast('✨','Title suggested — edit it to match your item!');
+}
+
+function aiTags(){
+  const map={'Food & Water':['food','canned','essential','survival','pantry'],'Electronics':['tech','electronics','gadget','device'],'Tools':['tools','diy','hardware','workshop'],'Sports':['outdoor','fitness','sport','exercise'],'Music':['music','instrument','acoustic','band']};
+  (map[cat]||['trade','local','swap','barter']).forEach(t=>{if(!tags.includes(t)&&tags.length<10)tags.push(t);});
+  renderTags();
+  toast('✨','Tags added — remove any that don\'t fit!');
+}
+
+function aiWants(){
+  const map={'Food & Water':['Canned goods, rice, flour, or garden seeds'],'Electronics':['Tools, camping gear, or bike'],'Tools':['Electronics, bike, or outdoor equipment'],'Music':['Electronics, PA system, or camera'],'Sports':['Camping gear, kayak, or electronics'],'Gaming':['Gaming PC, TV, or electronics']};
+  const s=map[cat]||['Tools, food, electronics, or clothing'];
+  document.getElementById('fWants').value=s[0];
+  livePreview();
+  toast('✨','Suggestion added — edit to your needs!');
+}
+
+// ── STEPS ──
+function goNext(from){
+  if(!validate(from))return;
+  hide(from); step=from+1; show(step); updateProg(step);
+  if(step===4)buildReview();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function goPrev(from){hide(from);step=from-1;show(step);updateProg(step);window.scrollTo({top:0,behavior:'smooth'});}
+
+function hide(n){
+  const c=document.getElementById('card'+n);
+  c.style.opacity='0';c.style.transform='translateX(-10px)';c.style.transition='all .2s';
+  setTimeout(()=>{c.style.display='none';c.style.opacity='';c.style.transform='';},200);
+}
+function show(n){
+  setTimeout(()=>{
+    const c=document.getElementById('card'+n);
+    c.style.display='block';c.style.opacity='0';c.style.transform='translateX(10px)';c.style.transition='all .25s';
+    setTimeout(()=>{c.style.opacity='1';c.style.transform='translateX(0)';},20);
+  },220);
+}
+
+function updateProg(s){
+  document.getElementById('pFill').style.width=((s-1)/3*100)+'%';
+  document.getElementById('pLabel').textContent=`Step ${s} of 4`;
+  ['pill1','pill2','pill3','pill4'].forEach((id,i)=>{
+    const p=document.getElementById(id);
+    p.className='step-pill '+(i+1<s?'done':i+1===s?'active':'pending');
+  });
+}
+
+// ── VALIDATION ──
+function validate(s){
+  let ok=true;
+  function err(id,inputId){const e=document.getElementById(id);e.style.display='block';setTimeout(()=>e.style.display='none',3000);if(inputId){const inp=document.getElementById(inputId);inp.style.borderColor='var(--red)';setTimeout(()=>inp.style.borderColor='',3000);}ok=false;}
+  if(s===1){
+    if(photos.length < 3){
+      showToast('📷','Please upload at least 3 photos — front, back, and a detail or damage shot.');
+      ok=false;
+    }
+  }
+  if(s===2){
+    if(!document.getElementById('fTitle').value.trim())err('eTit','fTitle');
+    if(!document.getElementById('fDesc').value.trim())err('eDesc','fDesc');
+  }
+  if(s===3){
+    if(!document.getElementById('fWants').value.trim())err('eWants','fWants');
+    if(!prefs.trade&&!prefs.tc&&!prefs.cash){toast('⚠️','Enable at least one offer type.');ok=false;}
+  }
+  return ok;
+}
+
+// ── REVIEW ──
+function buildReview(){
+  const title=document.getElementById('fTitle').value||'—';
+  const val=document.getElementById('fVal').value;
+  const wants=document.getElementById('fWants').value||'—';
+  const desc=document.getElementById('fDesc').value||'—';
+  const qty=document.getElementById('fQty').value||'1';
+  const meetup=document.getElementById('fMeetup').value;
+  const avail=document.getElementById('fAvail').value;
+  const area=document.getElementById('fArea').value||'Not specified';
+  const activePrefs=[];
+  if(prefs.trade)activePrefs.push('🔄 Trade Only');
+  if(prefs.tc)activePrefs.push('🔄💵 Trade + Cash');
+  if(prefs.cash)activePrefs.push('💵 Cash');
+  if(prefs.bundle)activePrefs.push('📦 Bundle');
+  const meetupLabel=meetup==='public'?'Public place only':meetup==='curb'?'Curbside pickup':'Either works';
+
+  let photoHtml=photos.length
+    ?`<div style="display:flex;gap:6px;margin-bottom:12px">${photos.slice(0,4).map(p=>`<img src="${p}" style="width:58px;height:58px;object-fit:cover;border-radius:6px;border:1px solid var(--border)">`).join('')}${photos.length>4?`<div style="width:58px;height:58px;border-radius:6px;background:#f1f5f9;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#94a3b8">+${photos.length-4}</div>`:''}</div>`
+    :`<div style="background:#fff7ed;border:1px solid #fed7aa;border-radius:6px;padding:10px;font-size:12px;color:#9a3412;margin-bottom:10px">⚠️ No photos added — listings with photos get far more offers.</div>`;
+
+  document.getElementById('reviewRows').innerHTML=photoHtml
+    +rr('📦','Item',`<strong>${title}</strong> · Qty: ${qty}`)
+    +rr('🏷️','Category',`${cat} · ${cond}`)
+    +rr('💰','Est. Value',val?`$${parseFloat(val).toLocaleString()}`:'Not specified')
+    +rr('🤝','Looking For',wants)
+    +rr('✅','Offer Types',activePrefs.join(', ')||'None selected')
+    +rr('📍','Meetup',`${meetupLabel} · ${avail}`)
+    +(area!=='Not specified'?rr('🗺️','Area',area):'')
+    +(tags.length?rr('🔖','Tags',tags.map(t=>`<span style="background:#eff6ff;color:var(--blue);border:1px solid #bfdbfe;border-radius:99px;padding:2px 7px;font-size:11px;font-weight:700">${t}</span>`).join(' ')):'');
+}
+function rr(icon,label,val){return `<div class="review-row"><span class="rr-icon">${icon}</span><span class="rr-label">${label}</span><span class="rr-val">${val}</span></div>`;}
+
+// ── PUBLISH ──
+function publish(){
+  const title = document.getElementById('fTitle').value || 'Your Item';
+  const desc = document.getElementById('fDesc').value || '';
+  const btn = event.target;
+
+  // ── TRADEZY CONTENT SCREENING ──
+  if (typeof TradezyScan !== 'undefined') {
+    const scan = TradezyScan.scanListing(title, desc);
+    if (!scan.canPost && scan.violations.length > 0) {
+      const v = scan.violations[0];
+      const action = TradezyScan.getUserAction(v);
+
+      // Log to admin (in production this goes to Supabase)
+      console.warn('[TRADEZY SCREEN] Listing blocked:', {
+        title, category: v.category, severity: v.severity,
+        matched: v.matched, action: v.action
+      });
+
+      // Show user warning
+      toast('🚫', `Listing blocked: ${v.category.toLowerCase()} items are not allowed on Tradezy.`);
+
+      // Show detailed warning after toast
+      setTimeout(() => {
+        alert(`⚠️ Listing Not Allowed
+
+${v.message}
+
+If you believe this is an error, contact support@tradezyhq.com`);
+      }, 500);
+
+      // If ban-worthy, flag account (in production this hits Supabase)
+      if (action.ban) {
+        console.error('[TRADEZY SCREEN] ACCOUNT FLAGGED FOR BAN:', title, v.category);
+      }
+      return; // Stop publish
+    }
+  }
+
+  // ── PASSED SCREENING — PUBLISH LISTING ──
+  btn.textContent='⏳ Publishing…'; btn.disabled=true;
+  document.getElementById('pFill').style.width='100%';
+  document.getElementById('pLabel').textContent='Published! 🎉';
+  ['pill1','pill2','pill3','pill4'].forEach(id=>{const p=document.getElementById(id);p.className='step-pill done';});
+
+  setTimeout(()=>{
+    document.getElementById('reviewRows').style.display='none';
+    document.getElementById('reviewBtns').style.display='none';
+    document.getElementById('head4Icon').textContent='🎉';
+    document.getElementById('head4Title').textContent='Listing Live!';
+    document.getElementById('head4Sub').textContent='Visible to traders near you right now.';
+    const sw=document.getElementById('successWrap'); sw.classList.add('show');
+    document.getElementById('sucTitle').textContent=title;
+    document.getElementById('sucMeta').textContent=`Just listed in ${cat} · 0 offers`;
+    if(photos[0]){document.getElementById('sucImg').innerHTML=`<img src="${photos[0]}" style="width:56px;height:56px;object-fit:cover;border-radius:8px">`;}
+    toast('🚀',`"${title}" is now live!`);
+  },1800);
+}
+
+function saveDraft(){toast('💾','Draft saved! Finish it anytime.');}
+
+function resetAll(){
+  photos=[];tags=[];cat='Food & Water';cond='Like New';step=1;
+  prefs={trade:true,tc:true,cash:false,bundle:false};
+  document.getElementById('successWrap').classList.remove('show');
+  document.getElementById('card4').style.display='none';
+  document.getElementById('reviewRows').style.display='';
+  document.getElementById('reviewBtns').style.display='';
+  document.getElementById('head4Icon').textContent='✅';
+  document.getElementById('head4Title').textContent='Review & Publish';
+  document.getElementById('head4Sub').textContent='Everything look good? Go live instantly.';
+  document.getElementById('fTitle').value='';
+  document.getElementById('fDesc').value='';
+  document.getElementById('fWants').value='';
+  document.getElementById('fVal').value='';
+  updateProg(1); renderGrid(); livePreview();
+  show(1); window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// ── TOAST ──
+function toast(icon,msg){
+  document.getElementById('toastIc').textContent=icon;
+  document.getElementById('toastTx').textContent=msg;
+  const t=document.getElementById('toastEl'); t.classList.add('show');
+  clearTimeout(window._tt); window._tt=setTimeout(()=>t.classList.remove('show'),3500);
+}
+
+// Init
+renderGrid(); updateProg(1); livePreview();
+</script>
+</body>
+</html>

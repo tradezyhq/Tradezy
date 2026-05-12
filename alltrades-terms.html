@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light only">
+<title>Tradezy — Terms of Service</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#0a1628;--blue:#1a56db;--gold:#f59e0b;--green:#16a34a;--red:#dc2626;--text:#1a1a2e;--muted:#374151;--border:#e2e8f0;--bg:#f8fafc;--white:#fff;--surface:#f1f5f9;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Lato',sans-serif;background:#f9fafb!important;color:#111827!important;line-height:1.7;-webkit-text-size-adjust:100%;}
+html{background:#f9fafb!important;}
+.nav{background:var(--navy);padding:0 24px;height:54px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+.logo{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.5rem;letter-spacing:-1px;cursor:pointer;text-decoration:none;}
+.logo .a{color:#fff;}.logo .t{color:var(--blue);}.logo .d{color:var(--gold);}
+.nav-links{display:flex;gap:16px;}
+.nav-links a{color:#94a3b8;font-size:13px;font-weight:700;cursor:pointer;text-decoration:none;transition:color .15s;}
+.nav-links a:hover{color:#fff;}
+.page{max-width:860px;margin:0 auto;padding:40px 24px 60px;}
+.doc-header{text-align:center;margin-bottom:40px;padding-bottom:28px;border-bottom:2px solid var(--border);}
+.doc-tag{display:inline-flex;align-items:center;gap:6px;background:#eff6ff;border:1px solid #bfdbfe;color:var(--blue);font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:4px 12px;border-radius:4px;margin-bottom:14px;}
+.doc-title{font-family:'Barlow Condensed',sans-serif;font-size:2.4rem;font-weight:900;color:#0a1628!important;margin-bottom:10px;letter-spacing:-.5px;}
+.doc-meta{font-size:13px;color:#374151;}
+.doc-meta strong{color:var(--text);}
+.toc{background:#ffffff!important;border:1px solid #d1d5db;border-radius:12px;padding:20px 24px;margin-bottom:32px;}
+.toc-title{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1rem;color:var(--navy);margin-bottom:12px;}
+.toc-list{display:grid;grid-template-columns:1fr 1fr;gap:4px 24px;}
+.toc-item{font-size:13px;color:var(--blue);cursor:pointer;padding:3px 0;}
+.toc-item:hover{text-decoration:underline;}
+.section{margin-bottom:36px;}
+.section-num{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:#1a56db;margin-bottom:6px;}
+.section-title{font-family:'Barlow Condensed',sans-serif;font-size:1.35rem;font-weight:800;color:#0a1628!important;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid #d1d5db;}
+.section p{font-size:14px;color:#374151;margin-bottom:12px;}
+.section p strong{color:#111827;}
+.section ul,.section ol{padding-left:20px;margin-bottom:12px;}
+.section li{font-size:14px;color:#374151;margin-bottom:6px;}
+.section li strong{color:#111827;}
+.highlight-box{border-radius:10px;padding:14px 18px;margin-bottom:16px;display:flex;gap:10px;}
+.hb-blue{background:#eff6ff;border:1px solid #bfdbfe;border-left:4px solid var(--blue);}
+.hb-yellow{background:#fffbeb;border:1px solid #fde68a;border-left:4px solid var(--gold);}
+.hb-red{background:#fef2f2;border:1px solid #fecaca;border-left:4px solid var(--red);}
+.hb-green{background:#f0fdf4;border:1px solid #bbf7d0;border-left:4px solid var(--green);}
+.hb-icon{font-size:1.1rem;flex-shrink:0;margin-top:1px;}
+.hb-text{font-size:13px;line-height:1.6;color:#111827;}
+.hb-blue .hb-text{color:#111827;}
+.hb-yellow .hb-text{color:#111827;}
+.hb-red .hb-text{color:#111827;}
+.hb-green .hb-text{color:#111827;}
+.hb-text strong{color:#000;}
+.hb-text strong{font-weight:700;}
+
+
+
+
+.fee-table{width:100%;border-collapse:collapse;margin-bottom:16px;border-radius:8px;overflow:hidden;border:1px solid var(--border);}
+.fee-table th{background:var(--navy);color:#fff;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.85rem;padding:10px 14px;text-align:left;}
+.fee-table td{padding:10px 14px;font-size:13px;border-bottom:1px solid var(--border);color:#1f2937;}
+.fee-table td:first-child{font-weight:700;color:var(--text);}
+.fee-table tr:last-child td{border:none;}
+.fee-table tr:nth-child(even) td{background:var(--surface);color:var(--muted);}
+.contact-box{background:var(--navy);border-radius:12px;padding:24px;margin-top:32px;text-align:center;}
+.cb-title{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.2rem;color:#fff;margin-bottom:8px;}
+.cb-sub{font-size:13px;color:#64748b;margin-bottom:14px;}
+.cb-email{color:#fbbf24;font-weight:700;font-size:14px;}
+.back-btn{display:inline-flex;align-items:center;gap:6px;background:var(--navy);color:#fff;border:none;border-radius:7px;padding:9px 18px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.9rem;cursor:pointer;text-decoration:none;margin-top:20px;transition:all .15s;}
+.back-btn:hover{background:#1a3a6b;}
+@media(max-width:600px){.toc-list{grid-template-columns:1fr;}.doc-title{font-size:1.8rem;}}
+
+/* ── DARK MODE ── */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --navy:#0a1628;
+    --blue:#3b82f6;
+    --blue-l:#60a5fa;
+    --gold:#fbbf24;
+    --gold-l:#fcd34d;
+    --green:#22c55e;
+    --green-l:#4ade80;
+    --red:#f87171;
+    --orange:#fb923c;
+    --text:#f1f5f9;
+    --muted:#94a3b8;
+    --light:#64748b;
+    --border:rgba(255,255,255,.1);
+    --bg:#0f172a;
+    --white:#1e293b;
+    --surface:#162032;
+    --card:#1e293b;
+  }
+  body { background:#0f172a !important; color:#f1f5f9 !important; }
+  /* Nav always dark - already fine */
+  /* Cards and panels */
+  .card, .panel, .pay-card, .summary-card, .rate-card, .review-card,
+  .profile-card, .rating-overview-card, .dispute-flow, .step-panel,
+  .step-list, .protection-hero ~ .panel, .stat-card, .fund-card,
+  .chart-card, .dq-item, .ai-panel { background:#1e293b !important; border-color:rgba(255,255,255,.08) !important; }
+  /* Text */
+  h1,h2,h3,h4,h5,h6 { color:#f1f5f9 !important; }
+  p, li, span:not(.logo *):not(.badge):not(.chip) { color:#94a3b8; }
+  strong { color:#e2e8f0 !important; }
+  /* Inputs */
+  input, select, textarea {
+    background:#162032 !important;
+    border-color:rgba(255,255,255,.12) !important;
+    color:#f1f5f9 !important;
+  }
+  input::placeholder, textarea::placeholder { color:#334155 !important; }
+  /* Surfaces */
+  .surface, [class*="surface"], [class*="-body"], [class*="-wrap"],
+  .pay-body, .sp-body, .panel-body, .mbody, .dq, .ai-chat,
+  .sum-body, .pc-body { background:#1e293b !important; }
+  /* Borders */
+  [class*="border"], hr { border-color:rgba(255,255,255,.08) !important; }
+  /* Table rows */
+  .trow:hover, .saved-card:hover, .step-item:hover { background:rgba(255,255,255,.05) !important; }
+  /* White backgrounds that need to go dark */
+  .white-bg, .bg-white, [style*="background:#fff"], [style*="background: #fff"],
+  [style*="background:white"], [style*="background: white"] { background:#1e293b !important; }
+  /* Legal pages specific */
+  .doc-header { background:transparent !important; }
+  .doc-title { color:#f1f5f9 !important; }
+  .doc-meta { color:#94a3b8 !important; }
+  .doc-meta strong { color:#e2e8f0 !important; }
+  .toc { background:#1e293b !important; border-color:rgba(255,255,255,.08) !important; }
+  .toc-title { color:#f1f5f9 !important; }
+  .section-title { color:#f1f5f9 !important; border-color:rgba(255,255,255,.08) !important; }
+  .section-num { color:#60a5fa !important; }
+  .section p, .section li { color:#94a3b8 !important; }
+  .section p strong, .section li strong { color:#e2e8f0 !important; }
+  /* Highlight boxes in legal pages — keep light backgrounds with dark text */
+  .hb-blue { background:#1e3a5f !important; border-color:#1d4ed8 !important; border-left-color:#3b82f6 !important; }
+  .hb-yellow { background:#422006 !important; border-color:#92400e !important; border-left-color:#fbbf24 !important; }
+  .hb-red { background:#450a0a !important; border-color:#991b1b !important; border-left-color:#f87171 !important; }
+  .hb-green { background:#052e16 !important; border-color:#166534 !important; border-left-color:#22c55e !important; }
+  .hb-blue .hb-text { color:#93c5fd !important; }
+  .hb-yellow .hb-text { color:#fcd34d !important; }
+  .hb-red .hb-text { color:#fca5a5 !important; }
+  .hb-green .hb-text { color:#86efac !important; }
+  .hb-text strong { color:inherit !important; }
+  /* Tables */
+  .fee-table th, .data-table th { background:#0f172a !important; color:#f1f5f9 !important; }
+  .fee-table td, .data-table td { color:#94a3b8 !important; background:#1e293b !important; }
+  .fee-table tr:nth-child(even) td, .data-table tr:nth-child(even) td { background:#162032 !important; }
+  .fee-table td:first-child, .data-table td:first-child { color:#e2e8f0 !important; }
+  /* Rights grid */
+  .right-card, .badge-card, .pf-card, .stat-card { background:#1e293b !important; border-color:rgba(255,255,255,.08) !important; }
+  .rc-title, .bc-name, .pf-title, .sc-lbl { color:#e2e8f0 !important; }
+  .rc-desc, .bc-desc, .pf-desc { color:#94a3b8 !important; }
+  /* Contact box stays dark - already fine */
+  /* Back buttons */
+  .back-btn { background:#1e3a8a !important; color:#fff !important; }
+  /* Nav links */
+  .nav-links a { color:#94a3b8 !important; }
+  .nav-links a:hover { color:#fff !important; }
+  /* Modal */
+  .modal, .overlay .modal { background:#1e293b !important; border-color:rgba(255,255,255,.1) !important; }
+  .mfield input, .mfield select, .mfield textarea { background:#0f172a !important; }
+  /* Chart bars already colored */
+  /* Star ratings */
+  .star, .mini-star { filter:none !important; }
+  /* OTP inputs */
+  .otp-input { background:#162032 !important; color:#f1f5f9 !important; }
+  .otp-input.filled { background:#052e16 !important; }
+  /* Upload zones */
+  .upload-zone, .upload-side, .ev-slot { background:#162032 !important; border-color:rgba(255,255,255,.1) !important; }
+  /* Step list sidebar */
+  .step-list { background:#1e293b !important; }
+  .step-item { background:transparent !important; }
+  .step-item.completed { background:rgba(22,163,74,.1) !important; }
+  .step-item.active { background:rgba(26,86,219,.1) !important; }
+  .si-title { color:#e2e8f0 !important; }
+  .si-meta { color:#64748b !important; }
+  /* Trust ring text */
+  .trust-num { color:#fff !important; }
+  /* Bypass rows */
+  .bp-msg, .br-msg { background:rgba(124,58,237,.15) !important; }
+  /* Summary card */
+  .sum-row-label { color:#94a3b8 !important; }
+  .sum-row-val { color:#e2e8f0 !important; }
+  /* Payment page */
+  .card-logo-chip { border-color:rgba(255,255,255,.15) !important; }
+  .express-btn.google { background:#1e293b !important; color:#f1f5f9 !important; border-color:rgba(255,255,255,.15) !important; }
+  /* Category cards */
+  .cat-rate, .cbd-item, .metric, .wb-stat, .phs-item { background:rgba(255,255,255,.05) !important; border-color:rgba(255,255,255,.08) !important; }
+  .wb-num, .metric-val, .sc-num { color:#fbbf24 !important; }
+  /* Payout rows */
+  .pay-row, .trow, .ur, .bp-row { border-color:rgba(255,255,255,.06) !important; }
+  /* Scrollbars */
+  ::-webkit-scrollbar { background:#0f172a; }
+  ::-webkit-scrollbar-thumb { background:#334155; border-radius:4px; }
+}
+
+</style>
+</head>
+<body>
+
+<div class="nav">
+  <a class="logo" href="alltrades.html"><span class="a">Trade</span><span class="t">zy</span><span class="d">.</span></a>
+  <div class="nav-links">
+    <a href="alltrades-auth.html">Sign Up</a>
+    <a href="alltrades-privacy.html">Privacy Policy</a>
+    <a href="alltrades.html">Home</a>
+  </div>
+</div>
+
+<div class="page">
+
+  <div class="doc-header">
+    <div class="doc-tag">📋 Legal Document</div>
+    <div class="doc-title">Terms of Service</div>
+    <div class="doc-meta">
+      <strong>Effective Date:</strong> May 6, 2026 &nbsp;·&nbsp;
+      <strong>Last Updated:</strong> May 6, 2026 &nbsp;·&nbsp;
+      <strong>Version:</strong> 1.0<br>
+      <span style="margin-top:6px;display:block">These Terms govern your use of Tradezy and form a binding legal agreement between you and <strong>Tradezy LLC</strong>, a Connecticut limited liability company.</span>
+    </div>
+  </div>
+
+  <div class="highlight-box hb-yellow">
+    <span class="hb-icon">⚠️</span>
+    <div class="hb-text"><strong>Please read these Terms carefully before creating an account.</strong> By signing up, you confirm you have read, understood, and agreed to be bound by these Terms. If you do not agree, do not create an account or use the platform. These Terms include a limitation of liability clause and a dispute resolution process that affect your legal rights.</div>
+  </div>
+
+  <!-- TABLE OF CONTENTS -->
+  <div class="toc">
+    <div class="toc-title">📋 Table of Contents</div>
+    <div class="toc-list">
+      <div class="toc-item">1. About Tradezy</div>
+      <div class="toc-item">2. Eligibility & Account</div>
+      <div class="toc-item">3. How Tradezy Works</div>
+      <div class="toc-item">4. Platform Fees (5%)</div>
+      <div class="toc-item">5. Food, Water & Essentials</div>
+      <div class="toc-item">6. Trade Protection & Escrow</div>
+      <div class="toc-item">7. Disputes & Resolution</div>
+      <div class="toc-item">8. Identity Verification</div>
+      <div class="toc-item">9. Prohibited Conduct</div>
+      <div class="toc-item">10. Platform Bypass Policy</div>
+      <div class="toc-item">11. Account Suspension & Bans</div>
+      <div class="toc-item">12. Ratings & Reviews</div>
+      <div class="toc-item">13. AI-Assisted Dispute System</div>
+      <div class="toc-item">14. Limitation of Liability</div>
+      <div class="toc-item">15. Taxes & Compliance</div>
+      <div class="toc-item">16. Changes to Terms</div>
+      <div class="toc-item">17. Contact Information</div>
+    </div>
+  </div>
+
+  <!-- SECTION 1 -->
+  <div class="section">
+    <div class="section-num">Section 1</div>
+    <div class="section-title">About Tradezy</div>
+    <p>Tradezy is an online peer-to-peer bartering marketplace that enables users to trade goods, food, water, and other items with other users in their local area. Tradezy is operated by <strong>Tradezy LLC</strong>, a Connecticut limited liability company.</p>
+    <p><strong>Tradezy is a platform, not a party to any trade.</strong> We provide the technology, tools, escrow infrastructure, and dispute resolution services that enable trades to happen — but we are not the buyer, seller, or trader in any transaction. All trades are made directly between users.</p>
+    <p>Tradezy was designed to help communities during economically difficult times by enabling people to exchange goods locally without requiring cash, though cash add-ons are permitted at each trader's discretion.</p>
+  </div>
+
+  <!-- SECTION 2 -->
+  <div class="section">
+    <div class="section-num">Section 2</div>
+    <div class="section-title">Eligibility &amp; Account Requirements</div>
+    <p>To use Tradezy, you must:</p>
+    <ul>
+      <li>Be at least <strong>18 years of age</strong></li>
+      <li>Be a legal resident of the United States</li>
+      <li>Provide accurate, current, and complete information during registration</li>
+      <li>Have a valid email address and phone number capable of receiving SMS</li>
+      <li>Agree to these Terms of Service and our Privacy Policy</li>
+      <li>Not be currently banned from Tradezy under any previous account</li>
+    </ul>
+    <p>You are responsible for maintaining the security of your account credentials. Tradezy will not be liable for any loss or damage arising from unauthorized access to your account caused by your failure to keep your login information secure.</p>
+    <div class="highlight-box hb-blue">
+      <span class="hb-icon">👤</span>
+      <div class="hb-text"><strong>One account per person.</strong> Creating multiple accounts to evade a ban or circumvent platform rules is a violation of these Terms and may result in all associated accounts being permanently banned.</div>
+    </div>
+  </div>
+
+  <!-- SECTION 3 -->
+  <div class="section">
+    <div class="section-num">Section 3</div>
+    <div class="section-title">How Tradezy Works</div>
+    <p>Tradezy operates as a hyperlocal bartering marketplace. Here is how the platform works:</p>
+    <ol>
+      <li><strong>List an item:</strong> Users post items they wish to trade. <strong>A minimum of 3 photos is required</strong> — front view, back view, and a detail or damage shot. Listing also requires an accurate condition rating (New / Like New / Good / Fair / Poor) and estimated value.</li>
+      <li><strong>Make or receive an offer:</strong> Users can offer to trade item-for-item, trade with a cash add-on, or make a cash-only offer depending on the seller's preferences. <strong>When making an offer, Trader B is required to upload a minimum of 3 photos of their item</strong> (front view, back view, and detail/damage) and select their item's condition rating. These are shown to the listing owner before they accept and are stored as dispute evidence.</li>
+      <li><strong>Agree to a trade:</strong> When both parties accept an offer, the <strong>5% platform fee is immediately collected from both parties into Stripe escrow</strong>. The meetup cannot be scheduled until both payments have cleared.</li>
+      <li><strong>Schedule the meetup:</strong> Once both fees are confirmed in escrow, traders can schedule a meetup at a public location within their chosen radius. The meetup date and location are set through the platform.</li>
+      <li><strong>Meet locally and swap:</strong> Traders meet in person and complete the exchange.</li>
+      <li><strong>Confirm completion:</strong> Both parties confirm the trade is complete through the platform. Escrow is released to Tradezy as earned revenue.</li>
+      <li><strong>Rate your trader:</strong> Both parties leave ratings and reviews visible on the other's public profile.</li>
+    </ol>
+    <div class="highlight-box hb-blue">
+      <span class="hb-icon">📷</span>
+      <div class="hb-text"><strong>Photo & Condition Requirements:</strong> Both the listing owner (Trader A) and the person making an offer (Trader B) are required to upload a minimum of 3 photos of their respective items and select an accurate condition rating. These photos and ratings are stored automatically and used as evidence in any dispute about item condition. Submitting inaccurate photos or a false condition rating is a violation of these Terms.</div>
+    </div>
+    <p>Tradezy is not responsible for the quality, safety, legality, or accuracy of any items listed. Users trade at their own risk. Tradezy's trade protection program provides dispute resolution but does not guarantee the outcome of every dispute.</p>
+  </div>
+
+  <!-- SECTION 4 -->
+  <div class="section">
+    <div class="section-num">Section 4</div>
+    <div class="section-title">Platform Fees</div>
+    <p>Tradezy charges a <strong>5% platform fee</strong> to each party in a completed trade. Fees are calculated as follows:</p>
+    <table class="fee-table">
+      <tr><th>Fee Type</th><th>Who Pays</th><th>Amount</th><th>When Charged</th></tr>
+      <tr><td>Platform Fee — Trader A</td><td>Person giving their item</td><td>5% of their item's agreed value</td><td>On trade confirmation</td></tr>
+      <tr><td>Platform Fee — Trader B</td><td>Person receiving the item</td><td>5% of their item's agreed value</td><td>On trade confirmation</td></tr>
+      <tr><td>Cash Add-On Fee</td><td>Person paying the cash difference</td><td>5% of cash amount added</td><td>On trade confirmation</td></tr>
+      <tr><td>Sales Tax</td><td>Both parties (where applicable)</td><td>Varies by state — CT is 6.35%</td><td>On trade confirmation</td></tr>
+      <tr><td>Cancellation Fee</td><td>Party who cancels after payment</td><td>$0.50 or Stripe processing cost (whichever is greater)</td><td>If cancelled after escrow clears</td></tr>
+    </table>
+    <div class="highlight-box hb-green">
+      <span class="hb-icon">✅</span>
+      <div class="hb-text"><strong>Fees are collected immediately when an offer is accepted</strong> — not after the meetup. Sending an offer is always free. If an offer is <em>declined</em> before the fee is collected, no charge occurs. If a trade is cancelled <em>after</em> escrow clears, a small cancellation fee ($0.50 minimum or Stripe processing cost) applies. The remaining escrow is refunded in full. Fees on successfully completed trades are non-refundable unless Tradezy's dispute process determines otherwise.</div>
+    </div>
+    <p>Tradezy reserves the right to change its fee structure with <strong>30 days written notice</strong> via email and in-app notification. Changes to fees do not apply retroactively to trades already in progress.</p>
+  </div>
+
+  <!-- SECTION 5 -->
+  <div class="section">
+    <div class="section-num">Section 5</div>
+    <div class="section-title">Food, Water &amp; Essential Goods</div>
+    <p>Tradezy permits and encourages the trading of food, water, and other essential goods between community members. The following rules apply to all food and essential goods listings:</p>
+    <ul>
+      <li>All food items must be <strong>safe for human consumption</strong> and accurately described including expiration dates, condition, and any known allergens</li>
+      <li>Canned, sealed, and packaged goods must be <strong>undamaged and within their expiration date</strong> at the time of trade</li>
+      <li>Fresh produce must be described accurately as to freshness and quantity</li>
+      <li>Homemade or home-cooked food may be traded but the trader assumes full responsibility for food safety compliance with local health regulations</li>
+      <li>Water must be listed accurately — sealed bottled water, filtered water, or other forms should be clearly distinguished</li>
+      <li><strong>You may not list food items that are expired, adulterated, or unsafe for consumption</strong></li>
+    </ul>
+    <div class="highlight-box hb-red">
+      <span class="hb-icon">⚠️</span>
+      <div class="hb-text"><strong>Tradezy is not responsible for illness or injury resulting from food or water traded on the platform.</strong> By trading food or water, both parties acknowledge the inherent risks and agree that Tradezy's liability is limited to the platform fee paid, not the value of the goods or any consequential damages. Tradezy strongly recommends inspecting all food items at the time of exchange before accepting the trade.</div>
+    </div>
+    <p>Tradezy reserves the right to remove food listings that appear unsafe, fraudulent, or in violation of local health codes.</p>
+  </div>
+
+  <!-- SECTION 6 -->
+  <div class="section">
+    <div class="section-num">Section 6</div>
+    <div class="section-title">Trade Protection &amp; Escrow</div>
+    <p>When a trade offer is accepted, Tradezy initiates an escrow hold via <strong>Stripe</strong> on the 5% platform fee from both parties. This escrow serves the following purposes:</p>
+    <ul>
+      <li>Protects both parties' fees until the trade is confirmed complete</li>
+      <li>Provides funds for refunds in the event of a dispute decided in a trader's favor</li>
+      <li>Allows Tradezy to freeze funds instantly when a dispute is filed</li>
+    </ul>
+    <p><strong>Payment is required before the meetup can be scheduled.</strong> Once both parties' 5% fees are confirmed in Stripe escrow, the platform unlocks the meetup scheduling feature. This ensures both parties have financial stake in completing the trade as agreed.</p>
+    <p><strong>Trade Protection only applies to trades conducted entirely through the Tradezy platform.</strong> Trades arranged off-platform, including those where contact was made via phone, email, or social media before the trade was agreed, are not eligible for dispute resolution or escrow protection.</p>
+    <p>Escrow is held by Stripe and subject to Stripe's terms of service. Tradezy does not hold user funds directly.</p>
+  </div>
+
+  <!-- SECTION 6b - CANCELLATION -->
+  <div class="section">
+    <div class="section-num">Section 6b</div>
+    <div class="section-title">Cancellation Policy</div>
+    <p>Because fees are collected at the time of offer acceptance, the following cancellation rules apply:</p>
+    <ul>
+      <li><strong>Offer declined (before escrow):</strong> No fee charged to either party. Full refund, instant.</li>
+      <li><strong>Cancelled after escrow clears (before meetup):</strong> A cancellation fee of <strong>$0.50 or the Stripe processing cost</strong> (whichever is greater) is deducted from the cancelling party's refund. The other party receives a full refund of their escrow.</li>
+      <li><strong>No-show at meetup:</strong> The party who did not show is subject to a dispute filed by the other party. If found at fault, their escrow fee is forfeited and applied to the other party's refund. Repeat no-shows result in account suspension.</li>
+      <li><strong>Mutual cancellation:</strong> If both parties agree to cancel before the meetup, both receive full refunds minus the Stripe processing fee. Mutual cancellations do not count as strikes against either account.</li>
+      <li><strong>Cancelled after meetup confirmed:</strong> Once both parties confirm the trade is complete, no refund is available. If there is a dispute about the item after confirmation, file a dispute within 14 days.</li>
+    </ul>
+    <div class="highlight-box hb-blue">
+      <span class="hb-icon">💡</span>
+      <div class="hb-text"><strong>Why we charge a cancellation fee:</strong> Stripe charges us a processing fee every time a card is charged and refunded. The cancellation fee covers this cost — we do not profit from cancellations. We want trading to be as low-friction as possible.</div>
+    </div>
+  </div>
+
+  <!-- SECTION 7 -->
+  <div class="section">
+    <div class="section-num">Section 7</div>
+    <div class="section-title">Disputes &amp; Resolution</div>
+    <p>Tradezy provides a dispute resolution system for trades that go wrong. The following process applies:</p>
+    <ol>
+      <li><strong>File a dispute</strong> within <strong>14 days</strong> of trade completion through the Disputes section of your dashboard</li>
+      <li>Escrow is immediately frozen for both parties upon dispute filing</li>
+      <li>The other party is notified and given <strong>48 hours</strong> to submit their statement and evidence</li>
+      <li>Tradezy's AI system (powered by Claude AI) reviews all evidence and suggests a resolution</li>
+      <li>For low-to-medium severity cases, the AI resolution may be applied automatically</li>
+      <li>High-severity cases, fraud allegations, and ban decisions always require human admin review</li>
+      <li>A final decision is issued within <strong>5 business days</strong></li>
+      <li>Decisions are <strong>binding</strong> — by using Tradezy you agree to accept dispute resolutions</li>
+    </ol>
+    <div class="highlight-box hb-blue">
+      <span class="hb-icon">⚖️</span>
+      <div class="hb-text"><strong>Tradezy's dispute decisions are final.</strong> Filing a false dispute, submitting fabricated evidence, or misrepresenting facts in a dispute is a violation of these Terms and may result in immediate account suspension and forfeiture of your escrow funds.</div>
+    </div>
+    <p>Tradezy reserves the right to refund platform fees at its discretion when a trade is found to have been conducted in bad faith by one party.</p>
+  </div>
+
+  <!-- SECTION 8 -->
+  <div class="section">
+    <div class="section-num">Section 8</div>
+    <div class="section-title">Identity Verification</div>
+    <p>Tradezy offers a voluntary identity verification program that increases your trust score and makes you eligible for higher-value trades. Verification may include:</p>
+    <ul>
+      <li><strong>Email verification</strong> — required for all accounts</li>
+      <li><strong>Phone number verification</strong> — required for making or receiving trade offers above $50 in value</li>
+      <li><strong>Government ID verification</strong> — via Stripe Identity, voluntary but earns +40 trust points</li>
+      <li><strong>Selfie / liveness check</strong> — matches face to government ID, voluntary</li>
+      <li><strong>Address confirmation</strong> — confirms local trading area, voluntary</li>
+    </ul>
+    <p>By submitting identity documents, you consent to Tradezy sharing those documents with Stripe Identity for verification purposes. <strong>Tradezy does not store your ID images.</strong> Documents are processed by Stripe and deleted after verification is complete. Only your verification status (verified / not verified) is retained by Tradezy.</p>
+    <p>Submitting false, altered, or fraudulent identity documents is a violation of these Terms and may constitute a criminal offense under applicable law.</p>
+  </div>
+
+  <!-- SECTION 9 -->
+  <div class="section">
+    <div class="section-num">Section 9</div>
+    <div class="section-title">Prohibited Conduct</div>
+    <p>The following activities are strictly prohibited on Tradezy and may result in immediate account suspension or permanent ban:</p>
+
+    <div class="highlight-box hb-red">
+      <span class="hb-icon">🚫</span>
+      <div class="hb-text"><strong>Zero Tolerance Items:</strong> The following may NEVER be listed or traded on Tradezy under any circumstances. Violations result in immediate permanent ban with no appeal: firearms, ammunition, weapons, tobacco, vaping products, alcohol, prescription medications, illegal drugs, stolen property, counterfeit goods, live animals, adult content, hazardous materials, cash, gift cards, and cryptocurrency.</div>
+    </div>
+
+    <div style="margin-bottom:12px">
+      <strong style="color:var(--red);font-size:13px">🔫 Weapons &amp; Dangerous Items — Permanently Prohibited</strong>
+      <ul style="margin-top:6px">
+        <li>Firearms of any kind — handguns, rifles, shotguns, antique firearms</li>
+        <li>Ammunition, magazines, silencers, and firearm accessories or parts</li>
+        <li>Explosives, fireworks, and incendiary devices of any kind</li>
+        <li>Knives that exceed legal blade length limits under federal law or in any US state or local jurisdiction — when in doubt do not list it</li>
+        <li>Tasers, stun guns, brass knuckles, and other weapons</li>
+        <li>BB guns, airsoft guns, and realistic replica weapons</li>
+      </ul>
+    </div>
+
+    <div style="margin-bottom:12px">
+      <strong style="color:var(--red);font-size:13px">🍺 Regulated Substances — Permanently Prohibited</strong>
+      <ul style="margin-top:6px">
+        <li>Alcohol of any kind — beer, wine, spirits, regardless of quantity</li>
+        <li>Tobacco products — cigarettes, cigars, chewing tobacco, pipe tobacco</li>
+        <li>Vaping devices, e-cigarettes, vape juice, and related accessories</li>
+        <li>Illegal drugs, controlled substances, and drug paraphernalia</li>
+        <li>Prescription medications, even if prescribed to the seller</li>
+        <li>Cannabis and cannabis products regardless of state or local law</li>
+      </ul>
+    </div>
+
+    <div style="margin-bottom:12px">
+      <strong style="color:var(--red);font-size:13px">💰 Financial Items — Permanently Prohibited</strong>
+      <ul style="margin-top:6px">
+        <li>Cash of any denomination or currency</li>
+        <li>Gift cards and store credit of any kind</li>
+        <li>Cryptocurrency, NFTs, and digital financial instruments</li>
+        <li>Checks, money orders, and negotiable financial instruments</li>
+        <li>Lottery tickets and gambling-related items</li>
+      </ul>
+    </div>
+
+    <div style="margin-bottom:12px">
+      <strong style="color:var(--red);font-size:13px">🐾 Animals &amp; Hazardous Items — Permanently Prohibited</strong>
+      <ul style="margin-top:6px">
+        <li>Live animals of any kind — pets, livestock, wildlife, insects</li>
+        <li>Animal parts, fur, ivory, and protected species products</li>
+        <li>Hazardous chemicals, flammable materials, and toxic substances</li>
+        <li>Biological materials, medical waste, and bodily fluids</li>
+        <li>Recalled products and items with known safety hazards</li>
+        <li>Human organs, body parts, or human remains of any kind</li>
+      </ul>
+    </div>
+
+    <div style="margin-bottom:12px">
+      <strong style="color:var(--red);font-size:13px">🔞 Adult &amp; Illegal Content — Permanently Prohibited</strong>
+      <ul style="margin-top:6px">
+        <li>Adult content, adult items, or adult services of any kind</li>
+        <li>Stolen property or items obtained through illegal means</li>
+        <li>Counterfeit goods, replica designer items, and knockoff products</li>
+        <li>Items that infringe on intellectual property or trademark rights</li>
+      </ul>
+    </div>
+
+    <strong style="color:var(--muted);font-size:13px">Additional Prohibited Conduct</strong>
+    <ul style="margin-top:6px">
+      <li>Listing items you do not own or do not intend to actually trade</li>
+      <li>Submitting <strong>fraudulent listings</strong> with false photos, false descriptions, or misrepresented value</li>
+      <li>Uploading <strong>photos that do not accurately represent your item</strong> — stock photos, photos of a different item, or photos concealing damage</li>
+      <li>Creating <strong>multiple accounts</strong> to evade a ban or circumvent platform rules</li>
+      <li>Attempting to <strong>manipulate ratings</strong> by creating fake reviews or pressuring other users</li>
+      <li>Threatening, harassing, or intimidating other users</li>
+      <li>Using Tradezy to <strong>launder money</strong> or conduct fraudulent financial activity</li>
+      <li>Sharing personal contact information to <strong>bypass the platform</strong> and avoid fees</li>
+      <li>Listing <strong>expired or unsafe food</strong> or food that violates local health regulations</li>
+      <li>Using automated bots or scripts to scrape data or create listings</li>
+      <li>Impersonating another user, business, or Tradezy staff</li>
+    </ul>  </div>
+
+  <!-- SECTION 10 -->
+  <div class="section">
+    <div class="section-num">Section 10</div>
+    <div class="section-title">Platform Bypass Policy</div>
+    <p>Tradezy's platform fee funds the escrow protection, dispute resolution, AI support, identity verification, and all other safety features that protect you. To maintain platform integrity, <strong>all communication and trade agreement must remain on Tradezy.</strong></p>
+    <div class="highlight-box hb-red">
+      <span class="hb-icon">🚨</span>
+      <div class="hb-text"><strong>Sharing phone numbers, email addresses, social media handles, or payment app usernames (Venmo, CashApp, Zelle, PayPal, etc.) with the intent to arrange a trade outside of Tradezy is a violation of these Terms.</strong> First offense: formal warning. Second offense: 7-day suspension. Third offense: permanent ban. Tradezy's message scanner actively monitors for bypass attempts.</div>
+    </div>
+    <p>Users who bypass the platform and then experience a problem with the trade are <strong>not eligible for trade protection, dispute resolution, or escrow refunds.</strong> By keeping your trades on-platform you protect yourself as well as the platform.</p>
+  </div>
+
+  <!-- SECTION 11 -->
+  <div class="section">
+    <div class="section-num">Section 11</div>
+    <div class="section-title">Account Suspension &amp; Permanent Bans</div>
+    <p>Tradezy reserves the right to suspend or permanently ban any account at its sole discretion for violations of these Terms. The general escalation path is:</p>
+    <ol>
+      <li><strong>Formal warning</strong> — documented in your account record, sent via email and in-app notification</li>
+      <li><strong>Temporary suspension</strong> — 7 to 30 days depending on severity, all listings paused</li>
+      <li><strong>Permanent ban</strong> — account deleted, all listings removed, email and device blocked from re-registering, any remaining escrow funds reviewed and disbursed per dispute outcomes</li>
+    </ol>
+    <p>Tradezy may skip directly to a permanent ban for egregious violations including fraud, identity theft, threats of violence, or illegal activity without prior warning.</p>
+    <p>Banned users may appeal by contacting <strong>support@tradezyhq.com</strong> within 30 days of the ban. Appeals are reviewed by a human admin. Decisions on appeals are final.</p>
+  </div>
+
+  <!-- SECTION 12 -->
+  <div class="section">
+    <div class="section-num">Section 12</div>
+    <div class="section-title">Ratings &amp; Reviews</div>
+    <p>Tradezy's ratings system is designed to build community trust. The following rules apply:</p>
+    <ul>
+      <li>Ratings can only be left for trades that were <strong>completed and confirmed through Tradezy</strong></li>
+      <li>Reviews must be <strong>honest, accurate, and based on your actual experience</strong></li>
+      <li>You may not offer incentives, gifts, or threats in exchange for positive reviews</li>
+      <li>Leaving false or defamatory reviews is a violation of these Terms</li>
+      <li>Sellers may respond to reviews once — responses must be professional and factual</li>
+      <li>Tradezy may remove reviews that violate these Terms after investigation</li>
+    </ul>
+    <p>Your public profile rating is an average of all verified trade ratings. Ratings cannot be removed unless they are found to violate these Terms following a review request submitted to <strong>support@tradezyhq.com</strong>.</p>
+  </div>
+
+  <!-- SECTION 13 -->
+  <div class="section">
+    <div class="section-num">Section 13</div>
+    <div class="section-title">AI-Assisted Dispute System</div>
+    <p>Tradezy uses an AI system powered by <strong>Claude AI (Anthropic)</strong> as the first point of contact in the dispute resolution process. By using Tradezy, you acknowledge and agree to the following:</p>
+    <ul>
+      <li>Your chat logs, trade history, evidence, and account information <strong>may be reviewed by the AI system</strong> for the purpose of dispute resolution</li>
+      <li>The AI may suggest a resolution based on its analysis — these suggestions are reviewed by a human admin before being applied in high-severity cases</li>
+      <li>AI-suggested resolutions for low-to-medium severity disputes may be applied automatically when confidence is above 80%</li>
+      <li>You have the right to <strong>request human admin review</strong> of any AI decision by noting this in the dispute response</li>
+      <li>The AI is a tool to assist resolution — final accountability rests with Tradezy's human team</li>
+    </ul>
+  </div>
+
+  <!-- SECTION 14 -->
+  <div class="section">
+    <div class="section-num">Section 14</div>
+    <div class="section-title">Limitation of Liability</div>
+    <div class="highlight-box hb-yellow">
+      <span class="hb-icon">⚖️</span>
+      <div class="hb-text"><strong>THIS SECTION LIMITS TRADEZY'S LEGAL LIABILITY. PLEASE READ CAREFULLY.</strong></div>
+    </div>
+    <p>To the maximum extent permitted by applicable law, Tradezy and its officers, directors, employees, and agents shall not be liable for:</p>
+    <ul>
+      <li>Any indirect, incidental, special, consequential, or punitive damages</li>
+      <li>Loss of profits, data, goodwill, or other intangible losses</li>
+      <li>Damages resulting from the actions or omissions of other users on the platform</li>
+      <li>Any illness, injury, or harm resulting from food, water, or other goods traded on the platform</li>
+      <li>Loss or theft of items during or after a trade meetup</li>
+      <li>Failure or interruption of the Tradezy platform or Stripe payment services</li>
+      <li>Unauthorized access to your account resulting from your failure to secure credentials</li>
+    </ul>
+    <p><strong>Tradezy's total liability to you for any claim arising from use of the platform shall not exceed the total platform fees you paid to Tradezy in the 6 months preceding the claim.</strong></p>
+    <p>Some jurisdictions do not allow the limitation of liability for personal injury or certain other damages. In such jurisdictions, Tradezy's liability is limited to the fullest extent permitted by law.</p>
+  </div>
+
+  <!-- SECTION 15 -->
+  <div class="section">
+    <div class="section-num">Section 15</div>
+    <div class="section-title">Taxes &amp; Compliance</div>
+    <p>Users are solely responsible for determining and fulfilling any tax obligations arising from trades conducted on Tradezy. This includes but is not limited to:</p>
+    <ul>
+      <li>Income tax on the fair market value of goods received in trade</li>
+      <li>Sales tax obligations in your state of residence where applicable</li>
+      <li>Any business licensing requirements if you use Tradezy for commercial volume trading</li>
+    </ul>
+    <p>Tradezy operates as a nationwide marketplace and collects and remits sales tax on platform fees in every state where it is registered and legally required to do so. Tradezy is initially registered in <strong>Connecticut at 6.35%</strong>. As Tradezy grows into additional states it will register in each state once it meets that state's economic nexus threshold — currently $100,000 in annual sales or 200 transactions per year in that state. Sales tax rates vary by state and are calculated automatically at checkout via Stripe Tax. Users in states with no sales tax (Oregon, Montana, New Hampshire, Delaware, and Alaska) will not be charged sales tax on platform fees.</p>
+    <p>Tradezy will issue a <strong>1099-K</strong> to users who receive more than $600 in platform transactions in a calendar year as required by IRS regulations effective 2024.</p>
+    <p><strong>Tradezy is not a tax advisor.</strong> Please consult a qualified tax professional regarding your specific tax obligations.</p>
+  </div>
+
+  <!-- SECTION 16 -->
+  <div class="section">
+    <div class="section-num">Section 16</div>
+    <div class="section-title">Changes to These Terms</div>
+    <p>Tradezy reserves the right to update these Terms of Service at any time. When changes are made:</p>
+    <ul>
+      <li>We will update the "Last Updated" date at the top of this document</li>
+      <li>We will send an email notification to all registered users at least <strong>14 days before</strong> material changes take effect</li>
+      <li>We will display an in-app notification requiring you to acknowledge the updated Terms</li>
+      <li>Continued use of Tradezy after the effective date constitutes acceptance of the updated Terms</li>
+    </ul>
+    <p>If you do not agree with updated Terms, you must stop using Tradezy and may request account deletion by contacting support@tradezyhq.com.</p>
+  </div>
+
+  <!-- SECTION 17 -->
+  <div class="section">
+    <div class="section-num">Section 17</div>
+    <div class="section-title">Governing Law &amp; Jurisdiction</div>
+    <p>These Terms are governed by the laws of the <strong>State of Connecticut</strong>, without regard to conflict of law principles, as Tradezy LLC is a Connecticut limited liability company. Tradezy operates as a nationwide platform and users in all 50 US states are subject to these Terms. Any disputes arising from these Terms or your use of Tradezy that are not resolved through the platform's dispute resolution process shall be subject to the exclusive jurisdiction of the courts of Connecticut. By using Tradezy from any state, you consent to jurisdiction in Connecticut for any legal matters.</p>
+    <p>If any provision of these Terms is found to be unenforceable, the remaining provisions shall continue in full force and effect.</p>
+  </div>
+
+  <div class="contact-box">
+    <div class="cb-title">Questions About These Terms?</div>
+    <div class="cb-sub">Our team is happy to explain any part of these Terms in plain language.</div>
+    <div class="cb-email">📧 legal@tradezyhq.com</div>
+    <div style="font-size:12px;color:#475569;margin-top:6px">Tradezy LLC · Connecticut, USA · support@tradezyhq.com</div>
+  </div>
+
+  <div style="text-align:center;margin-top:24px">
+    <a class="back-btn" href="alltrades-auth.html">← Back to Sign Up</a>
+    <a class="back-btn" href="alltrades-privacy.html" style="margin-left:10px;background:var(--blue)">Privacy Policy →</a>
+  </div>
+
+</div>
+</body>
+</html>
