@@ -1426,5 +1426,60 @@ function goToPost() {
   alert('📦 Redirecting to Post a Listing... (We\'ll build this next!)');
 }
 </script>
+<script type="module">
+  import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
+
+  const SUPABASE_URL = 'https://equvwaspcoeetfsexqki.supabase.co'
+  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVxdXZ3YXNwY29lZXRmc2V4cWtpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY3NTY5NjYsImV4cCI6MjA2MjMzMjk2Nn0.sb_publishable_9cdmp0R_vARuFa7d1021BVA_54eYrOCG'
+  const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
+
+  // SIGN UP
+  async function handleSignUp(email, password, displayName, phone) {
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        data: { display_name: displayName, phone }
+      }
+    })
+    if (error) { alert('Sign up error: ' + error.message); return null }
+    
+    // Create user profile in public.users
+    const { error: profileError } = await supabase.from('users').insert({
+      id: data.user.id,
+      email,
+      display_name: displayName,
+      phone
+    })
+    if (profileError) console.error('Profile error:', profileError)
+    return data
+  }
+
+  // SIGN IN
+  async function handleSignIn(email, password) {
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password })
+    if (error) { alert('Sign in error: ' + error.message); return null }
+    window.location.href = 'alltrades-dashboard.html'
+    return data
+  }
+
+  // FORGOT PASSWORD
+  async function handleForgotPassword(email) {
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: 'https://tradezyhq.com/alltrades-auth.html'
+    })
+    if (error) { alert('Error: ' + error.message); return }
+    alert('Password reset email sent to ' + email)
+  }
+
+  // CHECK SESSION
+  const { data: { session } } = await supabase.auth.getSession()
+  if (session) window.location.href = 'alltrades-dashboard.html'
+
+  // Expose functions globally
+  window.supabaseSignUp = handleSignUp
+  window.supabaseSignIn = handleSignIn
+  window.supabaseForgotPassword = handleForgotPassword
+</script>
 </body>
 </html>
