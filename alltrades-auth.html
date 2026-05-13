@@ -1475,7 +1475,7 @@ function goToPost() {
     alert('Password reset email sent to ' + email)
   }
 
-  function toggleCheck(id) { var cb = document.getElementById(id); cb.checked = !cb.checked; }
+  window.toggleCheck = function(id) { var cb = document.getElementById(id); cb.checked = !cb.checked; }
 
 // CHECK SESSION
   const { data: { session } } = await supabase.auth.getSession()
