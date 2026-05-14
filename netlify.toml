@@ -1,0 +1,10 @@
+[[headers]]
+  for = "/npm/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+
+[[redirects]]
+  from = "/npm/*"
+  to = "https://esm.sh/npm/:splat"
+  status = 200
+  force = true
