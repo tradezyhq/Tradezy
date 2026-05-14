@@ -994,7 +994,7 @@ body { font-family:'Lato',sans-serif; background:var(--bg); color:var(--text); m
 
         <div class="field">
           <label>Phone Number <span style="color:#94a3b8;font-weight:400;text-transform:none">(for verification)</span></label>
-          <input type="tel" id="phone" placeholder="(555) 000-0000" >
+          <input type="tel" id="phone" placeholder="(555) 000-0000" oninput="formatPhone(this)">
           <div class="field-hint">Used only for trade safety. Never shared publicly.</div>
         </div>
 
@@ -1029,17 +1029,17 @@ body { font-family:'Lato',sans-serif; background:var(--bg); color:var(--text); m
           <div class="field-error" id="pw2Err">Passwords don't match.</div>
         </div>
 
-        <div class="check-row">
+        <div class="check-row" onclick="document.getElementById('agreeTerms').click()">
           <input type="checkbox" id="agreeTerms">
           <div class="check-label">I have read and agree to Tradezy's <a href="alltrades-terms.html" target="_blank" onclick="event.stopPropagation()" style="color:var(--blue);font-weight:700">Terms of Service</a>. I understand Tradezy is a peer-to-peer trading platform and a 5% fee applies to completed trades.</div>
         </div>
 
-        <div class="check-row">
+        <div class="check-row" onclick="document.getElementById('agreePrivacy').click()">
           <input type="checkbox" id="agreePrivacy">
           <div class="check-label">I have read and agree to Tradezy's <a href="alltrades-privacy.html" target="_blank" onclick="event.stopPropagation()" style="color:var(--blue);font-weight:700">Privacy Policy</a>. I consent to the collection and use of my data as described, including SMS verification and message monitoring for safety.</div>
         </div>
 
-        <div class="check-row">
+        <div class="check-row" onclick="document.getElementById('agreeAge').click()">
           <input type="checkbox" id="agreeAge">
           <div class="check-label">I confirm I am <strong>18 years of age or older</strong>. Tradezy is not available to minors.</div>
         </div>
@@ -1331,13 +1331,10 @@ function checkMatch() {
 
 // ── PHONE FORMAT ──
 function formatPhone(input) {
-  const pos = input.selectionStart;
-  let v = input.value.replace(/D/g, '').slice(0,10);
-  let out = '';
-  if (v.length > 0) out = '(' + v.slice(0,3);
-  if (v.length >= 4) out += ') ' + v.slice(3,6);
-  if (v.length >= 7) out += '-' + v.slice(6,10);
-  input.value = out;
+  let v = input.value.replace(/\D/g,'');
+  if (v.length >= 6) v = '(' + v.slice(0,3) + ') ' + v.slice(3,6) + '-' + v.slice(6,10);
+  else if (v.length >= 3) v = '(' + v.slice(0,3) + ') ' + v.slice(3);
+  input.value = v;
 }
 
 // ── LOCATION ──
@@ -1429,12 +1426,11 @@ function goToPost() {
   alert('📦 Redirecting to Post a Listing... (We\'ll build this next!)');
 }
 </script>
-<script>function toggleCheck(id) { var cb = document.getElementById(id); cb.checked = (cb.checked ? false : true); }</script>
 <script type="module">
   import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
 
   const SUPABASE_URL = 'https://equvwaspcoeetfsexqki.supabase.co'
-  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVxdXZ3YXNwY29lZXRmc2V4cWtpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgyNzc2MjQsImV4cCI6MjA5Mzg1MzYyNH0.TP6Kk3pzHW1PYMUu5D9Vu2lJrazIEagzu5csYhqkrfI'
+  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVxdXZ3YXNwY29lZXRmc2V4cWtpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY3NTY5NjYsImV4cCI6MjA2MjMzMjk2Nn0.sb_publishable_9cdmp0R_vARuFa7d1021BVA_54eYrOCG'
   const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
 
   // SIGN UP
@@ -1476,9 +1472,7 @@ function goToPost() {
     alert('Password reset email sent to ' + email)
   }
 
-
-
-// CHECK SESSION
+  // CHECK SESSION
   const { data: { session } } = await supabase.auth.getSession()
   if (session) window.location.href = 'alltrades-dashboard.html'
 
