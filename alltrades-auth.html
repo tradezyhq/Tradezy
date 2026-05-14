@@ -1431,6 +1431,7 @@ function goToPost() {
 }
 </script>
 <script>function toggleCheck(id) { var cb = document.getElementById(id); cb.checked = (cb.checked ? false : true); }</script>
+<script>
 window.handleSignupFlow = async function() {
   const email = document.getElementById('email').value;
   const password = document.getElementById('pw1').value;
@@ -1439,6 +1440,7 @@ window.handleSignupFlow = async function() {
   const result = await window.supabaseSignUp(email, password, displayName, phone);
   if (result) nextStep(3);
 }
+</script>
 
 <script type="module">
   import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
