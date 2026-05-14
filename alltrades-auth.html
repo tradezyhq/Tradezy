@@ -1094,7 +1094,7 @@ body { font-family:'Lato',sans-serif; background:var(--bg); color:var(--text); m
 
         <div class="btn-row">
           <button class="btn-back" onclick="prevStep(3)">← Back</button>
-          <button class="btn-submit gold" style="flex:2" onclick="handleSignupFlow()">Create My Account 🚀</button>
+          <button class="btn-submit gold" style="flex:2" onclick="nextStep(3)">Create My Account 🚀</button>
         </div>
       </div>
 
@@ -1431,17 +1431,6 @@ function goToPost() {
 }
 </script>
 <script>function toggleCheck(id) { var cb = document.getElementById(id); cb.checked = (cb.checked ? false : true); }</script>
-<script>
-window.handleSignupFlow = async function() {
-  const email = document.getElementById('email').value;
-  const password = document.getElementById('pw1').value;
-  const displayName = document.getElementById('fname').value + ' ' + document.getElementById('lname').value;
-  const phone = document.getElementById('phone').value;
-  const result = await window.supabaseSignUp(email, password, displayName, phone);
-  if (result) nextStep(3);
-}
-</script>
-
 <script type="module">
   import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
 
@@ -1495,7 +1484,6 @@ window.handleSignupFlow = async function() {
   if (session) window.location.href = 'alltrades-dashboard.html'
 
   // Expose functions globally
-  window.supabaseSignUp = handleSignUp
   window.supabaseSignUp = handleSignUp
   window.supabaseSignIn = handleSignIn
   window.supabaseForgotPassword = handleForgotPassword
