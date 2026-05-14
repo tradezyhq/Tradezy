@@ -1443,60 +1443,64 @@ async function doCreateAccount() {
   } else { nextStep(3); }
 }
 </script>
-<script type="module">
-  import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
+<script>
+let supabase;
+(async () => {
+  const { createClient } = await import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm');
+  supabase = createClient(
+    'https://equvwaspcoeetfsexqki.supabase.co',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVxdXZ3YXNwY29lZXRmc2V4cWtpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgyNzc2MjQsImV4cCI6MjA5Mzg1MzYyNH0.TP6Kk3pzHW1PYMUu5D9Vu2lJrazIEagzu5csYhqkrfI'
+  );
+  window.supabase = supabase;
+  const { data: { session } } = await supabase.auth.getSession();
+  if (session) window.location.href = 'alltrades-dashboard.html';
+})();
 
-  const SUPABASE_URL = 'https://equvwaspcoeetfsexqki.supabase.co'
-  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVxdXZ3YXNwY29lZXRmc2V4cWtpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgyNzc2MjQsImV4cCI6MjA5Mzg1MzYyNH0.TP6Kk3pzHW1PYMUu5D9Vu2lJrazIEagzu5csYhqkrfI'
-  const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
-
-  // SIGN UP
-  async function handleSignUp(email, password, displayName, phone) {
+async function doCreateAccount() {
+  if (!validateStep(3)) return;
+  const btn = document.querySelector('#step3 .btn-submit.gold');
+  btn.textContent = 'Creating account...';
+  btn.disabled = true;
+  const email = document.getElementById('email').value;
+  const password = document.getElementById('pw1').value;
+  const firstName = document.getElementById('firstName').value;
+  const lastName = document.getElementById('lastName').value;
+  const displayName = firstName + ' ' + lastName;
+  try {
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
-      options: {
-        data: { display_name: displayName, phone }
-      }
-    })
-    if (error) { alert('Sign up error: ' + error.message); return null }
-    
-    // Create user profile in public.users
-    const { error: profileError } = await supabase.from('users').insert({
+      options: { data: { display_name: displayName } }
+    });
+    if (error) {
+      alert('Sign up error: ' + error.message);
+      btn.textContent = 'Create My Account 🚀';
+      btn.disabled = false;
+      return;
+    }
+    await supabase.from('users').insert({
       id: data.user.id,
       email,
-      display_name: displayName,
-      phone
-    })
-    if (profileError) console.error('Profile error:', profileError)
-    return data
+      display_name: displayName
+    });
+    nextStep(3);
+  } catch(e) {
+    alert('Error: ' + e.message);
+    btn.textContent = 'Create My Account 🚀';
+    btn.disabled = false;
   }
+}
 
-  // SIGN IN
-  async function handleSignIn(email, password) {
-    const { data, error } = await supabase.auth.signInWithPassword({ email, password })
-    if (error) { alert('Sign in error: ' + error.message); return null }
-    window.location.href = 'alltrades-dashboard.html'
-    return data
-  }
-
-  // FORGOT PASSWORD
-  async function handleForgotPassword(email) {
-    const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: 'https://tradezyhq.com/alltrades-auth.html'
-    })
-    if (error) { alert('Error: ' + error.message); return }
-    alert('Password reset email sent to ' + email)
-  }
-
-  // CHECK SESSION
-  const { data: { session } } = await supabase.auth.getSession()
-  if (session) window.location.href = 'alltrades-dashboard.html'
-
-  // Expose functions globally
-  window.supabaseSignUp = handleSignUp
-  window.supabaseSignIn = handleSignIn
-  window.supabaseForgotPassword = handleForgotPassword
+async function doSignIn() {
+  const email = document.getElementById('signinEmail').value;
+  const password = document.getElementById('signinPw').value;
+  if (!email || !password) { alert('Please enter email and password.'); return; }
+  try {
+    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    if (error) { alert('Sign in error: ' + error.message); return; }
+    window.location.href = 'alltrades-dashboard.html';
+  } catch(e) { alert('Error: ' + e.message); }
+}
 </script>
 </body>
 </html>
