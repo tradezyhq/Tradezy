@@ -1128,6 +1128,36 @@ body { font-family:'Lato',sans-serif; background:var(--bg); color:var(--text); m
 
 
 <script>
+  function clearErr(id) {
+  const el = document.getElementById(id);
+  if (el) el.style.display = 'none';
+}
+
+function showErr(id, input) {
+  const el = document.getElementById(id);
+  if (el) el.style.display = 'block';
+  if (input) input.style.borderColor = 'var(--red)';
+}
+
+function isValidEmail(email) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+function validateEmail(input) {
+  const email = input.value.trim();
+  if (!isValidEmail(email)) {
+    input.style.borderColor = 'var(--red)';
+  } else {
+    input.style.borderColor = '';
+  }
+}
+
+function formatPhone(input) {
+  let v = input.value.replace(/\D/g, '');
+  if (v.length >= 6) v = v.slice(0,3) + '-' + v.slice(3,6) + '-' + v.slice(6,10);
+  else if (v.length >= 3) v = v.slice(0,3) + '-' + v.slice(3);
+  input.value = v;
+}
 let _supabase;
 (async () => {
   const createClient = window.supabase.createClient;
