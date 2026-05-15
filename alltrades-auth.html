@@ -1188,7 +1188,7 @@ function validateStep(step) {
     return true;
   }
   if (step === 3) {
-    const tos = document.getElementById('tosCheck');
+    const tos = document.getElementById('agreeTerms');
     if (!tos || !tos.checked) { alert('Please agree to the Terms of Service.'); return false; }
     return true;
   }
