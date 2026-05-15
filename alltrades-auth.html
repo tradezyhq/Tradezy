@@ -1194,6 +1194,36 @@ function validateStep(step) {
   }
   return true;
 }
+function checkStrength(pw) {
+  const bar = document.getElementById('strengthBar');
+  const txt = document.getElementById('strengthText');
+  if (!bar || !txt) return;
+  let score = 0;
+  if (pw.length >= 8) score++;
+  if (/[A-Z]/.test(pw)) score++;
+  if (/[0-9]/.test(pw)) score++;
+  if (/[^A-Za-z0-9]/.test(pw)) score++;
+  const levels = ['','Weak','Fair','Good','Strong'];
+  const colors = ['','#dc2626','#f59e0b','#2563eb','#16a34a'];
+  bar.style.width = (score * 25) + '%';
+  bar.style.background = colors[score];
+  txt.textContent = levels[score];
+}
+
+function checkMatch() {
+  const pw1 = document.getElementById('pw1').value;
+  const pw2 = document.getElementById('pw2').value;
+  const msg = document.getElementById('matchMsg');
+  if (!msg) return;
+  if (!pw2) { msg.textContent = ''; return; }
+  if (pw1 === pw2) {
+    msg.textContent = '✓ Passwords match';
+    msg.style.color = '#16a34a';
+  } else {
+    msg.textContent = '✗ Passwords do not match';
+    msg.style.color = '#dc2626';
+  }
+}
 let _supabase;
 (async () => {
   const createClient = window.supabase.createClient;
