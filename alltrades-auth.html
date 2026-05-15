@@ -1158,6 +1158,42 @@ function formatPhone(input) {
   else if (v.length >= 3) v = v.slice(0,3) + '-' + v.slice(3);
   input.value = v;
 }
+function nextStep(current) {
+  document.getElementById('step' + current).style.display = 'none';
+  const next = current + 1;
+  const nextEl = document.getElementById('step' + next);
+  if (nextEl) nextEl.style.display = 'block';
+  document.querySelectorAll('.step-dot').forEach((dot, i) => {
+    dot.classList.toggle('active', i < next);
+  });
+}
+
+function validateStep(step) {
+  if (step === 1) {
+    const first = document.getElementById('firstName');
+    const last = document.getElementById('lastName');
+    if (!first.value.trim() || !last.value.trim()) {
+      alert('Please enter your first and last name.');
+      return false;
+    }
+    return true;
+  }
+  if (step === 2) {
+    const email = document.getElementById('email');
+    const pw1 = document.getElementById('pw1');
+    const pw2 = document.getElementById('pw2');
+    if (!isValidEmail(email.value)) { alert('Please enter a valid email.'); return false; }
+    if (pw1.value.length < 8) { alert('Password must be at least 8 characters.'); return false; }
+    if (pw1.value !== pw2.value) { alert('Passwords do not match.'); return false; }
+    return true;
+  }
+  if (step === 3) {
+    const tos = document.getElementById('tosCheck');
+    if (!tos || !tos.checked) { alert('Please agree to the Terms of Service.'); return false; }
+    return true;
+  }
+  return true;
+}
 let _supabase;
 (async () => {
   const createClient = window.supabase.createClient;
