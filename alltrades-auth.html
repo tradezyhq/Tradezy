@@ -1130,7 +1130,7 @@ body { font-family:'Lato',sans-serif; background:var(--bg); color:var(--text); m
 <script>
 let supabase;
 (async () => {
-  const createClient = supabase.createClient;
+  const createClient = window.Supabase.createClient;
   supabase = createClient(
     'https://equvwaspcoeetfsexqki.supabase.co',
     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVxdXZ3YXNwY29lZXRmc2V4cWtpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgyNzc2MjQsImV4cCI6MjA5Mzg1MzYyNH0.TP6Kk3pzHW1PYMUu5D9Vu2lJrazIEagzu5csYhqkrfI'
