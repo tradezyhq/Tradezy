@@ -705,7 +705,7 @@ body, html { background: #060e1c !important; }
 
 <!-- Netlify Form Detection -->
 
-<form name="waitlist" netlify netlify-honeypot="bot-field" hidden>
+<form name="waitlist" hidden>
   <input type="email" name="email"/>
 </form>
 
@@ -856,7 +856,7 @@ body, html { background: #060e1c !important; }
     <div class="ref-title">🚀 Move Up the List!</div>
     <div class="ref-sub">Share your unique link — every friend who signs up moves you closer to the front of the launch queue.</div>
     <div class="ref-link-wrap">
-      <input type="text" class="ref-link-input" id="refLink" readonly value="tradezyhq.netlify.app">
+      <input type="text" class="ref-link-input" id="refLink" readonly value="tradezyhq.com">
       <button class="ref-copy-btn" onclick="copyRefLink()">Copy</button>
     </div>
     <div class="ref-count">👥 <span id="refCount">0</span> friends referred</div>
@@ -1099,15 +1099,10 @@ async function submitEmail() {
   btn.disabled = true;
 
   try {
-    // Submit to Netlify Forms
-    const formData = new FormData();
-    formData.append('form-name', 'waitlist');
-    formData.append('email', email);
-
-    await fetch('/', {
+   await fetch('https://formspree.io/f/xwvydrkg', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: new URLSearchParams(formData).toString()
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: email })
     });
 
     // ── SUCCESS ──
@@ -1226,13 +1221,13 @@ function copyRefLink() {
 
 function shareX(e) {
   e.preventDefault();
-  const text = encodeURIComponent("I just signed up for @tradyhq — a free bartering app launching July 31st! Trade what you have for what you need. No cash needed 🔄 tradezyhq.netlify.app");
+  const text = encodeURIComponent("I just signed up for @tradyhq — a free bartering app launching July 31st! Trade what you have for what you need. No cash needed 🔄 tradezyhq.com");
   window.open('https://x.com/intent/tweet?text=' + text, '_blank');
 }
 
 function shareFB(e) {
   e.preventDefault();
-  const url = encodeURIComponent('https://tradezyhq.netlify.app');
+  const url = encodeURIComponent('https://tradezyhq.com');
   window.open('https://www.facebook.com/sharer/sharer.php?u=' + url, '_blank');
 }
 
@@ -1242,7 +1237,7 @@ function shareText(e) {
     navigator.share({
       title: 'Tradezy — Trade Local',
       text: 'Check out Tradezy — a free bartering app launching July 31st! Trade what you have for what you need. No cash needed!',
-      url: 'https://tradezyhq.netlify.app'
+      url: 'https://tradezyhq.com'
     });
   } else {
     showToast('📱', 'Copy the link and send it via text!');
