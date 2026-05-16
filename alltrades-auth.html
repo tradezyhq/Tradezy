@@ -1128,14 +1128,15 @@ body { font-family:'Lato',sans-serif; background:var(--bg); color:var(--text); m
 
 
 <script>
-  function clearErr(id) {function prevStep(current) {
+  function clearErr(id) {
+  const el = document.getElementById(id);
+  if (el) el.style.display = 'none';
+}
+function prevStep(current) {
   document.getElementById('step' + current).style.display = 'none';
   const prev = current - 1;
   const prevEl = document.getElementById('step' + prev);
   if (prevEl) prevEl.style.display = 'block';
-}
-  const el = document.getElementById(id);
-  if (el) el.style.display = 'none';
 }
 
 function showErr(id, input) {
