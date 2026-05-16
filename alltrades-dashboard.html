@@ -3,7 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tradezy — My Dashboard</title>
+
+<!-- SEO -->
+<title>Tradezy — My Dashboard | Local Trading & Bartering</title>
+<meta name="description" content="Manage your Tradezy trades, listings, offers, and messages. Track your trade value and connect with local traders in your community.">
+<meta name="keywords" content="tradezy dashboard, local trading, barter marketplace, trade locally, Meriden CT, Connecticut marketplace">
+<meta property="og:title" content="Tradezy — My Dashboard">
+<meta property="og:description" content="Manage your trades, listings and offers on Tradezy — the safe local trading marketplace.">
+<meta property="og:url" content="https://tradezyhq.com/alltrades-dashboard.html">
+<meta property="og:image" content="https://tradezyhq.com/tradezy-preview.png">
+<link rel="canonical" href="https://tradezyhq.com/alltrades-dashboard.html">
+
+<script src="/supabase.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
 <style>
 :root{--navy:#0a1628;--navy2:#112240;--blue:#1a56db;--blue-l:#2563eb;--gold:#f59e0b;--gold-l:#fbbf24;--green:#16a34a;--green-l:#22c55e;--red:#dc2626;--orange:#ea580c;--text:#1a1a2e;--muted:#475569;--light:#94a3b8;--border:#e2e8f0;--bg:#f0f4f8;--white:#fff;--surface:#f8fafc;}
@@ -28,7 +39,7 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
 .sidebar{width:220px;background:var(--white);border-right:1px solid var(--border);flex-shrink:0;display:flex;flex-direction:column;position:sticky;top:56px;height:calc(100vh - 56px);overflow-y:auto;}
 .sb-sec{padding:14px 12px 6px;}
 .sb-label{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--light);padding:0 8px;margin-bottom:5px;}
-.nav-item{display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:8px;cursor:pointer;transition:all .15s;color:var(--muted);font-size:13px;font-weight:700;margin-bottom:2px;position:relative;}
+.nav-item{display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:8px;cursor:pointer;transition:all .15s;color:var(--muted);font-size:13px;font-weight:700;margin-bottom:2px;position:relative;text-decoration:none;}
 .nav-item:hover{background:var(--surface);color:var(--text);}
 .nav-item.active{background:#eff6ff;color:var(--blue);}
 .ni-ic{font-size:1rem;width:18px;text-align:center;flex-shrink:0;}
@@ -62,54 +73,48 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
 .alert.success .al-btn{background:var(--green);color:#fff;}
 .al-close{color:var(--light);cursor:pointer;font-size:.85rem;padding:2px 6px;flex-shrink:0;}
 .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px;}
-.stat-card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:15px 17px;position:relative;overflow:hidden;transition:all .2s;cursor:default;}
-.stat-card:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.08);}
+.stat-card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:15px 17px;position:relative;overflow:hidden;transition:all .2s;}
 .stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:12px 12px 0 0;}
 .sc-blue::before{background:var(--blue);}.sc-gold::before{background:var(--gold);}.sc-green::before{background:var(--green);}.sc-red::before{background:var(--red);}
 .sc-icon{font-size:1.5rem;margin-bottom:7px;}
 .sc-num{font-family:'Barlow Condensed',sans-serif;font-size:1.8rem;font-weight:900;line-height:1;margin-bottom:2px;}
 .sc-lbl{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;}
-.sc-change{font-size:11px;margin-top:3px;font-weight:700;}
-.sc-change.up{color:var(--green);}
+.sc-change{font-size:11px;margin-top:3px;font-weight:700;color:var(--muted);}
 .sec-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
 .sec-ttl{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1rem;color:var(--text);}
 .sec-cnt{font-size:.75rem;border-radius:99px;padding:1px 7px;margin-left:5px;vertical-align:middle;font-weight:800;color:#fff;background:var(--red);}
 .sec-cnt.gold{background:var(--gold);color:var(--navy);}.sec-cnt.green{background:var(--green);}
 .sec-lnk{font-size:12px;color:var(--blue);font-weight:700;cursor:pointer;}
 .panel{background:var(--white);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:18px;}
-.offer-row{display:flex;align-items:center;gap:11px;padding:12px 15px;border-bottom:1px solid var(--border);transition:background .15s;cursor:pointer;}
+.offer-row{display:flex;align-items:center;gap:11px;padding:12px 15px;border-bottom:1px solid var(--border);transition:background .15s;}
 .offer-row:last-child{border-bottom:none;}
 .offer-row:hover{background:var(--surface);}
 .or-em{width:42px;height:42px;background:var(--surface);border:1px solid var(--border);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0;}
 .or-info{flex:1;min-width:0;}
 .or-ttl{font-weight:700;font-size:13px;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .or-meta{font-size:11px;color:var(--muted);display:flex;align-items:center;gap:5px;flex-wrap:wrap;}
-.fr-av{width:15px;height:15px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.5rem;font-weight:800;font-family:'Barlow Condensed',sans-serif;color:#fff;flex-shrink:0;}
+.fr-av{width:15px;height:15px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.5rem;font-weight:800;font-family:'Barlow Condensed',sans-serif;color:#fff;flex-shrink:0;background:var(--blue);}
 .or-rt{text-align:right;flex-shrink:0;}
 .or-st{font-size:10px;font-weight:800;padding:2px 7px;border-radius:4px;letter-spacing:.3px;}
 .st-pend{background:#fffbeb;color:#92400e;border:1px solid #fde68a;}
 .st-acc{background:#f0fdf4;color:#14532d;border:1px solid #bbf7d0;}
 .st-dec{background:#fef2f2;color:#991b1b;border:1px solid #fecaca;}
-.st-ctr{background:#eff6ff;color:#1e3a8a;border:1px solid #bfdbfe;}
 .or-time{font-size:10px;color:var(--muted);margin-top:3px;}
 .or-acts{display:flex;gap:4px;margin-top:3px;}
 .or-btn{padding:4px 9px;border-radius:5px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.72rem;cursor:pointer;border:none;transition:all .15s;}
 .btn-acc{background:var(--green);color:#fff;}
-.btn-acc:hover{background:var(--green-l);}
 .btn-dec{background:transparent;border:1px solid var(--border);color:var(--muted);}
 .btn-dec:hover{border-color:var(--red);color:var(--red);}
-.btn-ctr{background:var(--blue);color:#fff;}
 .two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:18px;}
-.trade-card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:13px 15px;margin-bottom:9px;cursor:pointer;transition:all .15s;}
-.trade-card:hover{border-color:var(--blue);transform:translateX(2px);}
+.trade-card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:13px 15px;margin-bottom:9px;transition:all .15s;}
+.trade-card:hover{border-color:var(--blue);}
 .tc-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
 .tc-id{font-size:10px;color:var(--muted);font-weight:700;}
 .tc-stage{font-size:10px;font-weight:800;padding:2px 7px;border-radius:4px;letter-spacing:.3px;}
-.stg-agree{background:#eff6ff;color:#1e3a8a;border:1px solid #bfdbfe;}
 .stg-meet{background:#fffbeb;color:#92400e;border:1px solid #fde68a;}
+.stg-agree{background:#eff6ff;color:#1e3a8a;border:1px solid #bfdbfe;}
 .tc-items{display:flex;align-items:center;gap:7px;margin-bottom:8px;}
 .tc-itm{flex:1;background:var(--surface);border:1px solid var(--border);border-radius:7px;padding:7px;text-align:center;}
-.tc-itm-em{font-size:1.2rem;margin-bottom:2px;}
 .tc-itm-nm{font-size:11px;font-weight:700;margin-bottom:1px;}
 .tc-itm-vl{font-size:10px;color:var(--muted);}
 .tc-sw{color:var(--muted);font-size:.9rem;flex-shrink:0;}
@@ -121,15 +126,13 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
 .tc-ftr{display:flex;gap:5px;}
 .tc-btn{flex:1;padding:6px;border-radius:6px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.75rem;cursor:pointer;border:none;transition:all .15s;text-align:center;}
 .tcb-msg{background:var(--surface);border:1px solid var(--border);color:var(--muted);}
-.tcb-msg:hover{border-color:var(--blue);color:var(--blue);}
 .tcb-confirm{background:var(--green);color:#fff;}
-.tcb-confirm:hover{background:var(--green-l);}
 .tcb-meet{background:#fffbeb;border:1px solid #fde68a;color:#92400e;}
 .msg-panel{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:13px;}
 .msg-item{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:8px;cursor:pointer;transition:all .15s;margin-bottom:5px;}
 .msg-item:hover{background:var(--surface);}
 .msg-item.unread{background:#eff6ff;}
-.mi-av{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.8rem;color:#fff;flex-shrink:0;position:relative;}
+.mi-av{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.8rem;color:#fff;flex-shrink:0;position:relative;background:var(--blue);}
 .mi-dot{position:absolute;top:0;right:0;width:9px;height:9px;background:var(--blue);border-radius:50%;border:2px solid var(--white);}
 .mi-info{flex:1;min-width:0;}
 .mi-nm{font-weight:700;font-size:13px;margin-bottom:1px;}
@@ -152,39 +155,15 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
 .lr-btn{padding:3px 8px;border-radius:4px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.68rem;cursor:pointer;border:none;transition:all .15s;}
 .lrb-edit{background:var(--surface);border:1px solid var(--border);color:var(--muted);}
 .lrb-edit:hover{border-color:var(--blue);color:var(--blue);}
-.lrb-boost{background:#fffbeb;border:1px solid #fde68a;color:#92400e;}
 .lrb-del{background:transparent;border:1px solid transparent;color:var(--light);}
 .lrb-del:hover{border-color:#fecaca;color:var(--red);}
 .two-col-bot{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:18px;}
-.ratings-card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:15px;}
-.ro-wrap{display:flex;align-items:center;gap:14px;margin-bottom:12px;}
-.ro-big{font-family:'Barlow Condensed',sans-serif;font-size:2.8rem;font-weight:900;line-height:1;}
-.ro-stars{color:var(--gold);font-size:1rem;margin-bottom:2px;}
-.ro-cnt{font-size:11px;color:var(--muted);}
-.ro-bars{flex:1;}
-.ro-br{display:flex;align-items:center;gap:5px;margin-bottom:3px;font-size:11px;}
-.ro-blbl{width:12px;text-align:right;color:var(--muted);}
-.ro-btrack{flex:1;height:5px;background:var(--border);border-radius:3px;overflow:hidden;}
-.ro-bfill{height:100%;background:var(--gold);border-radius:3px;}
-.ro-bcnt{width:18px;color:var(--muted);font-size:10px;}
-.review-bubble{background:var(--surface);border:1px solid var(--border);border-radius:7px;padding:9px 11px;font-size:12px;color:var(--muted);font-style:italic;margin-bottom:7px;line-height:1.5;}
 .earnings-card{background:linear-gradient(135deg,#14532d,#166534);border-radius:12px;padding:15px;margin-bottom:12px;}
 .ec-ttl{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.85rem;color:#86efac;text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px;}
 .ec-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
 .ec-item{text-align:center;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1);border-radius:7px;padding:9px;}
 .ec-num{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.15rem;color:#fff;}
 .ec-lbl{font-size:10px;color:#86efac;text-transform:uppercase;letter-spacing:.3px;margin-top:1px;}
-.hist-item{display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:7px;transition:background .15s;cursor:pointer;margin-bottom:3px;}
-.hist-item:hover{background:var(--surface);}
-.hi-ic{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.9rem;flex-shrink:0;}
-.hi-won{background:#f0fdf4;border:1px solid #bbf7d0;}.hi-gave{background:#eff6ff;border:1px solid #bfdbfe;}
-.hi-info{flex:1;min-width:0;}
-.hi-ttl{font-weight:700;font-size:12px;margin-bottom:1px;}
-.hi-meta{font-size:11px;color:var(--muted);}
-.hi-rt{text-align:right;flex-shrink:0;}
-.hi-val{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.88rem;}
-.hi-val.green{color:var(--green);}.hi-val.blue{color:var(--blue);}
-.hi-rat{font-size:10px;color:var(--gold);}
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(10,22,40,.8);z-index:500;align-items:center;justify-content:center;padding:20px;}
 .modal-overlay.open{display:flex;}
 .modal{background:var(--white);border-radius:14px;width:100%;max-width:480px;max-height:88vh;overflow-y:auto;animation:slideUp .25s ease;}
@@ -195,432 +174,220 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
 .mhd-close:hover{background:rgba(255,255,255,.2);color:#fff;}
 .mbody{padding:19px;}
 .mbtn{width:100%;padding:11px;border:none;border-radius:7px;font-family:'Barlow Condensed',sans-serif;font-size:.92rem;font-weight:800;cursor:pointer;transition:all .15s;margin-bottom:7px;}
-.mbtn.green{background:var(--green);color:#fff;}.mbtn.green:hover{background:var(--green-l);}
-.mbtn.red{background:var(--red);color:#fff;}.mbtn.red:hover{background:#ef4444;}
-.mbtn.gold{background:var(--gold);color:var(--navy);}.mbtn.gold:hover{background:var(--gold-l);}
-.mbtn.outline{background:transparent;border:1.5px solid var(--border);color:var(--muted);}.mbtn.outline:hover{border-color:#999;color:var(--text);}
-.mbtn.blue{background:var(--blue);color:#fff;}.mbtn.blue:hover{background:var(--blue-l);}
-.star-picker{display:flex;gap:8px;justify-content:center;margin:12px 0;}
-.star-pk{font-size:2rem;cursor:pointer;transition:transform .15s;filter:grayscale(1);opacity:.4;}
-.star-pk:hover,.star-pk.on{filter:none;opacity:1;transform:scale(1.15);}
-.ptabs{display:flex;gap:2px;background:var(--surface);border-radius:7px;padding:3px;margin-bottom:12px;}
-.ptab{flex:1;padding:6px;text-align:center;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.78rem;cursor:pointer;border-radius:5px;transition:all .2s;color:var(--muted);border:none;background:transparent;}
-.ptab.active{background:var(--white);color:var(--text);box-shadow:0 1px 4px rgba(0,0,0,.08);}
+.mbtn.green{background:var(--green);color:#fff;}
+.mbtn.red{background:var(--red);color:#fff;}
+.mbtn.outline{background:transparent;border:1.5px solid var(--border);color:var(--muted);}
+.mbtn.outline:hover{border-color:#999;color:var(--text);}
+.empty-state{text-align:center;padding:32px 20px;color:var(--muted);}
+.empty-icon{font-size:2.5rem;margin-bottom:10px;}
+.empty-txt{font-size:13px;line-height:1.5;}
 .toast{position:fixed;bottom:20px;right:20px;background:var(--navy);color:#e2e8f0;border:1px solid #1e3a5f;border-left:4px solid var(--green);border-radius:8px;padding:10px 16px;font-size:13px;z-index:9999;display:flex;align-items:center;gap:9px;max-width:280px;box-shadow:0 8px 28px rgba(0,0,0,.25);transform:translateX(120%);transition:transform .3s ease;}
 .toast.show{transform:translateX(0);}
+.loading{text-align:center;padding:20px;color:var(--muted);font-size:13px;}
 @media(max-width:1000px){.stats-grid{grid-template-columns:repeat(2,1fr);}.two-col,.two-col-bot{grid-template-columns:1fr;}}
 @media(max-width:760px){.sidebar{display:none;}.wb-stats{display:none;}.top-search{display:none;}}
-
-/* ── DARK MODE ── */
-@media (prefers-color-scheme: dark) {
-  :root {
-    --navy:#0a1628;
-    --blue:#3b82f6;
-    --blue-l:#60a5fa;
-    --gold:#fbbf24;
-    --gold-l:#fcd34d;
-    --green:#22c55e;
-    --green-l:#4ade80;
-    --red:#f87171;
-    --orange:#fb923c;
-    --text:#f1f5f9;
-    --muted:#94a3b8;
-    --light:#64748b;
-    --border:rgba(255,255,255,.1);
-    --bg:#0f172a;
-    --white:#1e293b;
-    --surface:#162032;
-    --card:#1e293b;
-  }
-  body { background:#0f172a !important; color:#f1f5f9 !important; }
-  /* Nav always dark - already fine */
-  /* Cards and panels */
-  .card, .panel, .pay-card, .summary-card, .rate-card, .review-card,
-  .profile-card, .rating-overview-card, .dispute-flow, .step-panel,
-  .step-list, .protection-hero ~ .panel, .stat-card, .fund-card,
-  .chart-card, .dq-item, .ai-panel { background:#1e293b !important; border-color:rgba(255,255,255,.08) !important; }
-  /* Text */
-  h1,h2,h3,h4,h5,h6 { color:#f1f5f9 !important; }
-  p, li, span:not(.logo *):not(.badge):not(.chip) { color:#94a3b8; }
-  strong { color:#e2e8f0 !important; }
-  /* Inputs */
-  input, select, textarea {
-    background:#162032 !important;
-    border-color:rgba(255,255,255,.12) !important;
-    color:#f1f5f9 !important;
-  }
-  input::placeholder, textarea::placeholder { color:#334155 !important; }
-  /* Surfaces */
-  .surface, [class*="surface"], [class*="-body"], [class*="-wrap"],
-  .pay-body, .sp-body, .panel-body, .mbody, .dq, .ai-chat,
-  .sum-body, .pc-body { background:#1e293b !important; }
-  /* Borders */
-  [class*="border"], hr { border-color:rgba(255,255,255,.08) !important; }
-  /* Table rows */
-  .trow:hover, .saved-card:hover, .step-item:hover { background:rgba(255,255,255,.05) !important; }
-  /* White backgrounds that need to go dark */
-  .white-bg, .bg-white, [style*="background:#fff"], [style*="background: #fff"],
-  [style*="background:white"], [style*="background: white"] { background:#1e293b !important; }
-  /* Legal pages specific */
-  .doc-header { background:transparent !important; }
-  .doc-title { color:#f1f5f9 !important; }
-  .doc-meta { color:#94a3b8 !important; }
-  .doc-meta strong { color:#e2e8f0 !important; }
-  .toc { background:#1e293b !important; border-color:rgba(255,255,255,.08) !important; }
-  .toc-title { color:#f1f5f9 !important; }
-  .section-title { color:#f1f5f9 !important; border-color:rgba(255,255,255,.08) !important; }
-  .section-num { color:#60a5fa !important; }
-  .section p, .section li { color:#94a3b8 !important; }
-  .section p strong, .section li strong { color:#e2e8f0 !important; }
-  /* Highlight boxes in legal pages — keep light backgrounds with dark text */
-  .hb-blue { background:#1e3a5f !important; border-color:#1d4ed8 !important; border-left-color:#3b82f6 !important; }
-  .hb-yellow { background:#422006 !important; border-color:#92400e !important; border-left-color:#fbbf24 !important; }
-  .hb-red { background:#450a0a !important; border-color:#991b1b !important; border-left-color:#f87171 !important; }
-  .hb-green { background:#052e16 !important; border-color:#166534 !important; border-left-color:#22c55e !important; }
-  .hb-blue .hb-text { color:#93c5fd !important; }
-  .hb-yellow .hb-text { color:#fcd34d !important; }
-  .hb-red .hb-text { color:#fca5a5 !important; }
-  .hb-green .hb-text { color:#86efac !important; }
-  .hb-text strong { color:inherit !important; }
-  /* Tables */
-  .fee-table th, .data-table th { background:#0f172a !important; color:#f1f5f9 !important; }
-  .fee-table td, .data-table td { color:#94a3b8 !important; background:#1e293b !important; }
-  .fee-table tr:nth-child(even) td, .data-table tr:nth-child(even) td { background:#162032 !important; }
-  .fee-table td:first-child, .data-table td:first-child { color:#e2e8f0 !important; }
-  /* Rights grid */
-  .right-card, .badge-card, .pf-card, .stat-card { background:#1e293b !important; border-color:rgba(255,255,255,.08) !important; }
-  .rc-title, .bc-name, .pf-title, .sc-lbl { color:#e2e8f0 !important; }
-  .rc-desc, .bc-desc, .pf-desc { color:#94a3b8 !important; }
-  /* Contact box stays dark - already fine */
-  /* Back buttons */
-  .back-btn { background:#1e3a8a !important; color:#fff !important; }
-  /* Nav links */
-  .nav-links a { color:#94a3b8 !important; }
-  .nav-links a:hover { color:#fff !important; }
-  /* Modal */
-  .modal, .overlay .modal { background:#1e293b !important; border-color:rgba(255,255,255,.1) !important; }
-  .mfield input, .mfield select, .mfield textarea { background:#0f172a !important; }
-  /* Chart bars already colored */
-  /* Star ratings */
-  .star, .mini-star { filter:none !important; }
-  /* OTP inputs */
-  .otp-input { background:#162032 !important; color:#f1f5f9 !important; }
-  .otp-input.filled { background:#052e16 !important; }
-  /* Upload zones */
-  .upload-zone, .upload-side, .ev-slot { background:#162032 !important; border-color:rgba(255,255,255,.1) !important; }
-  /* Step list sidebar */
-  .step-list { background:#1e293b !important; }
-  .step-item { background:transparent !important; }
-  .step-item.completed { background:rgba(22,163,74,.1) !important; }
-  .step-item.active { background:rgba(26,86,219,.1) !important; }
-  .si-title { color:#e2e8f0 !important; }
-  .si-meta { color:#64748b !important; }
-  /* Trust ring text */
-  .trust-num { color:#fff !important; }
-  /* Bypass rows */
-  .bp-msg, .br-msg { background:rgba(124,58,237,.15) !important; }
-  /* Summary card */
-  .sum-row-label { color:#94a3b8 !important; }
-  .sum-row-val { color:#e2e8f0 !important; }
-  /* Payment page */
-  .card-logo-chip { border-color:rgba(255,255,255,.15) !important; }
-  .express-btn.google { background:#1e293b !important; color:#f1f5f9 !important; border-color:rgba(255,255,255,.15) !important; }
-  /* Category cards */
-  .cat-rate, .cbd-item, .metric, .wb-stat, .phs-item { background:rgba(255,255,255,.05) !important; border-color:rgba(255,255,255,.08) !important; }
-  .wb-num, .metric-val, .sc-num { color:#fbbf24 !important; }
-  /* Payout rows */
-  .pay-row, .trow, .ur, .bp-row { border-color:rgba(255,255,255,.06) !important; }
-  /* Scrollbars */
-  ::-webkit-scrollbar { background:#0f172a; }
-  ::-webkit-scrollbar-thumb { background:#334155; border-radius:4px; }
+@media(prefers-color-scheme:dark){
+  :root{--navy:#0a1628;--blue:#3b82f6;--gold:#fbbf24;--green:#22c55e;--red:#f87171;--text:#f1f5f9;--muted:#94a3b8;--light:#64748b;--border:rgba(255,255,255,.1);--bg:#0f172a;--white:#1e293b;--surface:#162032;}
+  body{background:#0f172a !important;color:#f1f5f9 !important;}
+  .stat-card,.panel,.msg-panel,.listings-panel,.trade-card,.modal{background:#1e293b !important;border-color:rgba(255,255,255,.08) !important;}
+  input,select,textarea{background:#162032 !important;border-color:rgba(255,255,255,.12) !important;color:#f1f5f9 !important;}
+  .mbody{background:#1e293b !important;}
 }
-
 </style>
 </head>
 <body>
+
+<!-- TOP BAR -->
 <div class="topbar">
-  <a href="alltrades.html" style="text-decoration:none"><div class="logo"><span class="a">Trade</span><span class="t">zy</span><span class="d">.</span></div></a>
-  <div class="top-search"><input type="text" placeholder="Search listings near you…"><button>Go</button></div>
+  <a href="alltrades.html" style="text-decoration:none">
+    <div class="logo"><span class="a">Trade</span><span class="t">zy</span><span class="d">.</span></div>
+  </a>
+  <div class="top-search">
+    <input type="text" placeholder="Search listings near you…">
+    <button>Go</button>
+  </div>
   <div style="display:flex;align-items:center">
     <div class="top-icons">
-      <div class="ti" onclick="showToast('🔔','No new notifications')">🔔<span class="badge">2</span></div>
-      <div class="ti" onclick="openModal('msgModal')">💬<span class="badge">3</span></div>
+      <div class="ti" onclick="showToast('🔔','No new notifications')">🔔<span class="badge" id="notifBadge" style="display:none">0</span></div>
+      <div class="ti" onclick="openModal('msgModal')">💬<span class="badge" id="msgBadge" style="display:none">0</span></div>
     </div>
-    <div class="user-chip"><div class="user-av">JD</div><div class="user-name">Jane D.</div></div>
+    <div class="user-chip" onclick="doSignOut()">
+      <div class="user-av" id="userAv">?</div>
+      <div class="user-name" id="userName">Loading…</div>
+    </div>
   </div>
 </div>
+
 <div class="layout">
+  <!-- SIDEBAR -->
   <div class="sidebar">
     <div class="sb-sec">
       <div class="sb-label">Overview</div>
-      <div class="nav-item active" onclick="navClick(this)"><span class="ni-ic">🏠</span>Dashboard</div>
-      <div class="nav-item" onclick="navClick(this)"><span class="ni-ic">📨</span>Offers Received<span class="ni-badge">4</span></div>
-      <div class="nav-item" onclick="navClick(this)"><span class="ni-ic">📤</span>Offers Sent<span class="ni-badge gold">2</span></div>
-      <div class="nav-item" onclick="navClick(this)"><span class="ni-ic">🔄</span>Active Trades<span class="ni-badge green">2</span></div>
+      <div class="nav-item active"><span class="ni-ic">🏠</span>Dashboard</div>
+      <div class="nav-item" onclick="window.location.href='alltrades-messages.html'"><span class="ni-ic">📨</span>Offers<span class="ni-badge" id="sbOfferBadge" style="display:none">0</span></div>
+      <div class="nav-item" onclick="window.location.href='alltrades-messages.html'"><span class="ni-ic">💬</span>Messages<span class="ni-badge" id="sbMsgBadge" style="display:none">0</span></div>
+      <div class="nav-item"><span class="ni-ic">🔄</span>Active Trades<span class="ni-badge green" id="sbTradeBadge" style="display:none">0</span></div>
     </div>
     <div class="sb-div"></div>
     <div class="sb-sec">
       <div class="sb-label">My Items</div>
-      <div class="nav-item" onclick="navClick(this)"><span class="ni-ic">📦</span>My Listings</div>
-      <div class="nav-item" onclick="navClick(this)"><span class="ni-ic">♡</span>Watchlist</div>
-      <div class="nav-item" onclick="navClick(this)"><span class="ni-ic">📋</span>Trade History</div>
+      <div class="nav-item" onclick="window.location.href='alltrades-post.html'"><span class="ni-ic">📦</span>My Listings</div>
+      <div class="nav-item"><span class="ni-ic">📋</span>Trade History</div>
     </div>
     <div class="sb-div"></div>
     <div class="sb-sec">
       <div class="sb-label">Account</div>
-      <div class="nav-item" onclick="navClick(this)"><span class="ni-ic">👤</span>My Profile</div>
-      <div class="nav-item" onclick="navClick(this)"><span class="ni-ic">💰</span>Earnings</div>
-      <div class="nav-item" onclick="navClick(this)"><span class="ni-ic">⚙️</span>Settings</div>
+      <div class="nav-item" onclick="window.location.href='alltrades-verification.html'"><span class="ni-ic">✅</span>Verification</div>
+      <div class="nav-item" onclick="window.location.href='alltrades-ratings.html'"><span class="ni-ic">⭐</span>My Ratings</div>
+      <div class="nav-item" onclick="doSignOut()"><span class="ni-ic">🚪</span>Sign Out</div>
     </div>
-    <div class="sb-bottom"><button class="post-btn" onclick="showToast('📦','Opening Post a Listing…')">+ Post New Listing</button></div>
+    <div class="sb-bottom">
+      <button class="post-btn" onclick="window.location.href='alltrades-post.html'">+ Post New Listing</button>
+    </div>
   </div>
 
+  <!-- MAIN CONTENT -->
   <div class="main">
-    <!-- WELCOME -->
+
+    <!-- WELCOME BAR -->
     <div class="welcome-bar">
       <div>
-        <div class="wb-greet">👋 Good morning</div>
-        <div class="wb-name">Jane Doe</div>
-        <div class="wb-sub">📍 Austin, TX · 10 mi radius · <span style="color:var(--gold-l);font-weight:700">4 new offers waiting!</span></div>
+        <div class="wb-greet" id="wbGreet">👋 Good morning</div>
+        <div class="wb-name" id="wbName">Loading…</div>
+        <div class="wb-sub" id="wbSub">📍 Loading your location…</div>
       </div>
       <div class="wb-stats">
-        <div class="wb-stat"><div class="wb-num">4.9★</div><div class="wb-lbl">Rating</div></div>
-        <div class="wb-stat"><div class="wb-num">23</div><div class="wb-lbl">Total Trades</div></div>
+        <div class="wb-stat"><div class="wb-num" id="wbRating">—</div><div class="wb-lbl">Rating</div></div>
+        <div class="wb-stat"><div class="wb-num" id="wbTrades">—</div><div class="wb-lbl">Total Trades</div></div>
         <div class="wb-stat"><div class="wb-num">$0</div><div class="wb-lbl">Listing Fees</div></div>
       </div>
     </div>
 
     <!-- ALERTS -->
-    <div class="alerts">
-      <div class="alert urgent">
-        <span class="al-ic">⏰</span>
-        <div class="al-txt"><strong>Offer expiring!</strong> RiderJay's offer on your Canned Goods expires in 6 hours.</div>
-        <button class="al-btn" onclick="openModal('offerModal')">Review Now</button>
-        <span class="al-close" onclick="this.closest('.alert').remove()">✕</span>
-      </div>
-      <div class="alert info">
-        <span class="al-ic">💬</span>
-        <div class="al-txt"><strong>3 unread messages</strong> — PrepMike and 2 others replied to your offers.</div>
-        <button class="al-btn" onclick="openModal('msgModal')">View Messages</button>
-        <span class="al-close" onclick="this.closest('.alert').remove()">✕</span>
-      </div>
-      <div class="alert success">
-        <span class="al-ic">🎉</span>
-        <div class="al-txt"><strong>Trade complete!</strong> Your swap with GardenSue is done. Leave a rating!</div>
-        <button class="al-btn" onclick="openModal('rateModal')">Rate Sue</button>
-        <span class="al-close" onclick="this.closest('.alert').remove()">✕</span>
-      </div>
-    </div>
+    <div class="alerts" id="alertsArea"></div>
 
-    <!-- STATS -->
+    <!-- STATS GRID -->
     <div class="stats-grid">
-      <div class="stat-card sc-blue"><div class="sc-icon">📨</div><div class="sc-num" style="color:var(--blue)">4</div><div class="sc-lbl">Offers Received</div><div class="sc-change up">↑ 2 new today</div></div>
-      <div class="stat-card sc-gold"><div class="sc-icon">📦</div><div class="sc-num" style="color:var(--gold)">6</div><div class="sc-lbl">Active Listings</div><div class="sc-change up">↑ 47 total views</div></div>
-      <div class="stat-card sc-green"><div class="sc-icon">🔄</div><div class="sc-num" style="color:var(--green)">2</div><div class="sc-lbl">Active Trades</div><div class="sc-change up">↑ 1 needs confirm</div></div>
-      <div class="stat-card sc-red"><div class="sc-icon">💰</div><div class="sc-num" style="color:var(--orange)">$312</div><div class="sc-lbl">Trade Value (30d)</div><div class="sc-change up">↑ +$88 vs last month</div></div>
+      <div class="stat-card sc-blue">
+        <div class="sc-icon">📨</div>
+        <div class="sc-num" id="statOffers" style="color:var(--blue)">—</div>
+        <div class="sc-lbl">Offers Received</div>
+        <div class="sc-change" id="statOffersSub">Loading…</div>
+      </div>
+      <div class="stat-card sc-gold">
+        <div class="sc-icon">📦</div>
+        <div class="sc-num" id="statListings" style="color:var(--gold)">—</div>
+        <div class="sc-lbl">Active Listings</div>
+        <div class="sc-change" id="statListingsSub">Loading…</div>
+      </div>
+      <div class="stat-card sc-green">
+        <div class="sc-icon">🔄</div>
+        <div class="sc-num" id="statTrades" style="color:var(--green)">—</div>
+        <div class="sc-lbl">Active Trades</div>
+        <div class="sc-change" id="statTradesSub">Loading…</div>
+      </div>
+      <div class="stat-card sc-red">
+        <div class="sc-icon">💰</div>
+        <div class="sc-num" id="statValue" style="color:var(--orange)">—</div>
+        <div class="sc-lbl">Trade Value (30d)</div>
+        <div class="sc-change" id="statValueSub">Loading…</div>
+      </div>
     </div>
 
-    <!-- OFFERS -->
-    <div class="sec-hdr"><div class="sec-ttl">📨 Incoming Offers<span class="sec-cnt">4</span></div><div class="sec-lnk">View all →</div></div>
-    <div class="panel">
-      <div class="offer-row" onclick="openModal('offerModal')">
-        <div class="or-em">🔧</div>
-        <div class="or-info"><div class="or-ttl">For: Case of Canned Goods (24 cans)</div><div class="or-meta"><div class="fr-av" style="background:var(--blue)">RJ</div>RiderJay<span>·</span>🔄 DeWalt Drill + 2 Batteries<span>·</span>~$140 est.</div></div>
-        <div class="or-rt"><div class="or-st st-pend">PENDING</div><div class="or-time">14m ago</div><div class="or-acts"><button class="or-btn btn-acc" onclick="event.stopPropagation();acceptOffer(this,'RiderJay')">✓ Accept</button><button class="or-btn btn-dec" onclick="event.stopPropagation();declineOffer(this)">✕</button></div></div>
-      </div>
-      <div class="offer-row">
-        <div class="or-em">🌾</div>
-        <div class="or-info"><div class="or-ttl">For: Case of Canned Goods (24 cans)</div><div class="or-meta"><div class="fr-av" style="background:var(--green)">GS</div>GardenSue<span>·</span>🔄💵 25lb Rice + $8 cash<span>·</span>~$30 est.</div></div>
-        <div class="or-rt"><div class="or-st st-pend">PENDING</div><div class="or-time">31m ago</div><div class="or-acts"><button class="or-btn btn-acc" onclick="event.stopPropagation();acceptOffer(this,'GardenSue')">✓ Accept</button><button class="or-btn btn-ctr" onclick="event.stopPropagation();showToast('💬','Counter offer coming soon!')">↩ Counter</button><button class="or-btn btn-dec" onclick="event.stopPropagation();declineOffer(this)">✕</button></div></div>
-      </div>
-      <div class="offer-row">
-        <div class="or-em">🔨</div>
-        <div class="or-info"><div class="or-ttl">For: Trek Mountain Bike 27-Speed</div><div class="or-meta"><div class="fr-av" style="background:var(--gold)">BB</div>BuildBob<span>·</span>🔄 Craftsman Wrench Set<span>·</span>~$45 est.</div></div>
-        <div class="or-rt"><div class="or-st st-ctr">COUNTERED</div><div class="or-time">2h ago</div><div class="or-acts"><button class="or-btn btn-acc" onclick="event.stopPropagation();acceptOffer(this,'BuildBob')">✓ Accept</button><button class="or-btn btn-dec" onclick="event.stopPropagation();declineOffer(this)">✕</button></div></div>
-      </div>
-      <div class="offer-row">
-        <div class="or-em">💵</div>
-        <div class="or-info"><div class="or-ttl">For: Case of Canned Goods (24 cans)</div><div class="or-meta"><div class="fr-av" style="background:var(--red)">OP</div>OutdoorPete<span>·</span>💵 Cash offer: $22.00<span>·</span>+5% fee = $23.10</div></div>
-        <div class="or-rt"><div class="or-st st-pend">PENDING</div><div class="or-time">4h ago</div><div class="or-acts"><button class="or-btn btn-acc" onclick="event.stopPropagation();acceptOffer(this,'OutdoorPete')">✓ Accept</button><button class="or-btn btn-dec" onclick="event.stopPropagation();declineOffer(this)">✕</button></div></div>
-      </div>
+    <!-- OFFERS RECEIVED -->
+    <div class="sec-hdr">
+      <div class="sec-ttl">📨 Incoming Offers <span class="sec-cnt" id="offerCount">0</span></div>
+      <div class="sec-lnk" onclick="window.location.href='alltrades-messages.html'">View all →</div>
+    </div>
+    <div class="panel" id="offersPanel">
+      <div class="loading">Loading offers…</div>
     </div>
 
     <!-- ACTIVE TRADES + MESSAGES -->
     <div class="two-col">
       <div>
-        <div class="sec-hdr"><div class="sec-ttl">🔄 Active Trades<span class="sec-cnt green">2</span></div><div class="sec-lnk">View all →</div></div>
-        <div class="trade-card" onclick="openModal('tradeModal')">
-          <div class="tc-hdr"><div class="tc-id">Trade #AT-2847</div><div class="tc-stage stg-meet">📍 MEETUP PENDING</div></div>
-          <div class="tc-items">
-            <div class="tc-itm"><div class="tc-itm-em">🥫</div><div class="tc-itm-nm">Canned Goods (24)</div><div class="tc-itm-vl">~$29 · You</div></div>
-            <div class="tc-sw">⇄</div>
-            <div class="tc-itm"><div class="tc-itm-em">🔧</div><div class="tc-itm-nm">DeWalt Drill Set</div><div class="tc-itm-vl">~$140 · RiderJay</div></div>
-          </div>
-          <div class="tc-prog"><div class="tc-prog-lbl"><span>Progress</span><span style="color:var(--gold);font-weight:700">Step 2 of 3</span></div><div class="tc-prog-bar"><div class="tc-prog-fill fill-gold" style="width:66%"></div></div></div>
-          <div class="tc-ftr">
-            <div class="tc-btn tcb-msg" onclick="event.stopPropagation();openModal('msgModal')">💬 Message</div>
-            <div class="tc-btn tcb-confirm" onclick="event.stopPropagation();openModal('confirmModal')">✓ Confirm Done</div>
-          </div>
+        <div class="sec-hdr">
+          <div class="sec-ttl">🔄 Active Trades <span class="sec-cnt green" id="tradeCount">0</span></div>
+          <div class="sec-lnk">View all →</div>
         </div>
-        <div class="trade-card">
-          <div class="tc-hdr"><div class="tc-id">Trade #AT-2831</div><div class="tc-stage stg-agree">✅ OFFER ACCEPTED</div></div>
-          <div class="tc-items">
-            <div class="tc-itm"><div class="tc-itm-em">🚲</div><div class="tc-itm-nm">Trek Bike 27-Spd</div><div class="tc-itm-vl">~$320 · You</div></div>
-            <div class="tc-sw">⇄</div>
-            <div class="tc-itm"><div class="tc-itm-em">💻</div><div class="tc-itm-nm">Dell Laptop i7</div><div class="tc-itm-vl">~$380 · TechLisa</div></div>
-          </div>
-          <div class="tc-prog"><div class="tc-prog-lbl"><span>Progress</span><span style="color:var(--blue);font-weight:700">Step 1 of 3</span></div><div class="tc-prog-bar"><div class="tc-prog-fill fill-blue" style="width:33%"></div></div></div>
-          <div class="tc-ftr">
-            <div class="tc-btn tcb-msg" onclick="event.stopPropagation();openModal('msgModal')">💬 Message TechLisa</div>
-            <div class="tc-btn tcb-meet">📍 Set Meetup</div>
-          </div>
-        </div>
+        <div id="tradesPanel"><div class="loading">Loading trades…</div></div>
       </div>
       <div>
-        <div class="sec-hdr"><div class="sec-ttl">💬 Messages<span class="sec-cnt">3</span></div><div class="sec-lnk" onclick="openModal('msgModal')">Open inbox →</div></div>
-        <div class="msg-panel">
-          <div class="msg-item unread" onclick="openModal('msgModal')"><div class="mi-av" style="background:var(--blue)">PM<div class="mi-dot"></div></div><div class="mi-info"><div class="mi-nm">PrepMike</div><div class="mi-prev">Hey! Still interested in the canned goods trade?</div></div><div class="mi-time">2m</div></div>
-          <div class="msg-item unread" onclick="openModal('msgModal')"><div class="mi-av" style="background:var(--green)">GS<div class="mi-dot"></div></div><div class="mi-info"><div class="mi-nm">GardenSue</div><div class="mi-prev">Can we meet Saturday at the HEB parking lot?</div></div><div class="mi-time">18m</div></div>
-          <div class="msg-item unread" onclick="openModal('msgModal')"><div class="mi-av" style="background:var(--orange)">TL<div class="mi-dot"></div></div><div class="mi-info"><div class="mi-nm">TechLisa</div><div class="mi-prev">The laptop is in great shape, just upgraded…</div></div><div class="mi-time">1h</div></div>
-          <div class="msg-item" onclick="openModal('msgModal')"><div class="mi-av" style="background:#64748b">RJ</div><div class="mi-info"><div class="mi-nm">RiderJay</div><div class="mi-prev">Sounds good, I can do evenings this week.</div></div><div class="mi-time">3h</div></div>
+        <div class="sec-hdr">
+          <div class="sec-ttl">💬 Messages <span class="sec-cnt" id="msgCount">0</span></div>
+          <div class="sec-lnk" onclick="window.location.href='alltrades-messages.html'">Open inbox →</div>
+        </div>
+        <div class="msg-panel" id="msgsPanel">
+          <div class="loading">Loading messages…</div>
         </div>
       </div>
     </div>
 
-    <!-- LISTINGS -->
-    <div class="sec-hdr"><div class="sec-ttl">📦 My Listings<span class="sec-cnt gold">6</span></div><div class="sec-lnk">+ Add New →</div></div>
-    <div class="listings-panel">
-      <div class="lr"><div class="lr-em">🥫</div><div class="lr-info"><div class="lr-ttl">Case of Assorted Canned Goods (24 cans)</div><div class="lr-meta"><span>Food &amp; Water · New</span><span>·</span><span>👁 47 views</span><span>·</span><span style="color:var(--red);font-weight:700">4 offers</span><span>·</span><span>2h ago</span></div></div><div class="lr-rt"><div class="lr-val">~$29</div><span class="lr-st lst-active">ACTIVE</span><div class="lr-acts"><button class="lr-btn lrb-edit">Edit</button><button class="lr-btn lrb-boost">Boost</button><button class="lr-btn lrb-del">✕</button></div></div></div>
-      <div class="lr"><div class="lr-em">🚲</div><div class="lr-info"><div class="lr-ttl">Trek Mountain Bike 27-Speed, Good Condition</div><div class="lr-meta"><span>Sports · Good</span><span>·</span><span>👁 23 views</span><span>·</span><span style="color:var(--blue);font-weight:700">1 offer</span><span>·</span><span>1d ago</span></div></div><div class="lr-rt"><div class="lr-val">~$320</div><span class="lr-st lst-active">ACTIVE</span><div class="lr-acts"><button class="lr-btn lrb-edit">Edit</button><button class="lr-btn lrb-boost">Boost</button><button class="lr-btn lrb-del">✕</button></div></div></div>
-      <div class="lr"><div class="lr-em">🌱</div><div class="lr-info"><div class="lr-ttl">Heirloom Tomato Seedlings — 12 Plants</div><div class="lr-meta"><span>Garden · Fresh</span><span>·</span><span>👁 31 views</span><span>·</span><span style="color:var(--red);font-weight:700">3 offers</span><span>·</span><span>3d ago</span></div></div><div class="lr-rt"><div class="lr-val">~$18</div><span class="lr-st lst-active">ACTIVE</span><div class="lr-acts"><button class="lr-btn lrb-edit">Edit</button><button class="lr-btn lrb-boost">Boost</button><button class="lr-btn lrb-del">✕</button></div></div></div>
-      <div class="lr"><div class="lr-em">🎸</div><div class="lr-info"><div class="lr-ttl">Fender Acoustic Guitar + Hard Case</div><div class="lr-meta"><span>Music · Like New</span><span>·</span><span>👁 12 views</span><span>·</span><span>0 offers</span><span>·</span><span>5d ago</span></div></div><div class="lr-rt"><div class="lr-val">~$260</div><span class="lr-st lst-paused">PAUSED</span><div class="lr-acts"><button class="lr-btn lrb-edit">Edit</button><button class="lr-btn" style="background:#f0fdf4;border:1px solid #bbf7d0;color:#14532d;padding:3px 8px;border-radius:4px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.68rem;cursor:pointer" onclick="showToast('✅','Listing reactivated!')">Re-activate</button><button class="lr-btn lrb-del">✕</button></div></div></div>
+    <!-- MY LISTINGS -->
+    <div class="sec-hdr">
+      <div class="sec-ttl">📦 My Listings <span class="sec-cnt gold" id="listingCount">0</span></div>
+      <div class="sec-lnk" onclick="window.location.href='alltrades-post.html'">+ Add New →</div>
+    </div>
+    <div class="listings-panel" id="listingsPanel">
+      <div class="loading">Loading listings…</div>
     </div>
 
-    <!-- RATINGS + HISTORY -->
+    <!-- TRADE VALUE SUMMARY -->
     <div class="two-col-bot">
       <div>
-        <div class="sec-hdr"><div class="sec-ttl">⭐ Your Ratings</div><div class="sec-lnk">See all →</div></div>
-        <div class="ratings-card">
-          <div class="ro-wrap">
-            <div><div class="ro-big">4.9</div><div class="ro-stars">★★★★★</div><div class="ro-cnt">23 trades</div></div>
-            <div class="ro-bars">
-              <div class="ro-br"><span class="ro-blbl">5</span><div class="ro-btrack"><div class="ro-bfill" style="width:88%"></div></div><span class="ro-bcnt">19</span></div>
-              <div class="ro-br"><span class="ro-blbl">4</span><div class="ro-btrack"><div class="ro-bfill" style="width:16%"></div></div><span class="ro-bcnt">3</span></div>
-              <div class="ro-br"><span class="ro-blbl">3</span><div class="ro-btrack"><div class="ro-bfill" style="width:5%"></div></div><span class="ro-bcnt">1</span></div>
-              <div class="ro-br"><span class="ro-blbl">2</span><div class="ro-btrack"><div class="ro-bfill" style="width:0"></div></div><span class="ro-bcnt">0</span></div>
-              <div class="ro-br"><span class="ro-blbl">1</span><div class="ro-btrack"><div class="ro-bfill" style="width:0"></div></div><span class="ro-bcnt">0</span></div>
-            </div>
-          </div>
-          <div class="review-bubble">"Jane was super easy to deal with — item exactly as described and on time!" <span style="color:var(--gold);font-style:normal">★★★★★</span> — <strong>RiderJay</strong></div>
-          <div class="review-bubble">"Great trade, fair deal. Canned goods were exactly as listed." <span style="color:var(--gold);font-style:normal">★★★★★</span> — <strong>GardenSue</strong></div>
-        </div>
-      </div>
-      <div>
-        <div class="sec-hdr"><div class="sec-ttl">💰 Trade Value Summary</div><div class="sec-lnk">Full report →</div></div>
+        <div class="sec-hdr"><div class="sec-ttl">💰 Trade Value Summary</div></div>
         <div class="earnings-card">
           <div class="ec-ttl">30-Day Overview</div>
           <div class="ec-grid">
-            <div class="ec-item"><div class="ec-num">$312</div><div class="ec-lbl">Value Traded</div></div>
-            <div class="ec-item"><div class="ec-num">$15.60</div><div class="ec-lbl">Platform Fees</div></div>
-            <div class="ec-item"><div class="ec-num">8</div><div class="ec-lbl">Trades Done</div></div>
+            <div class="ec-item"><div class="ec-num" id="ev30Value">$0</div><div class="ec-lbl">Value Traded</div></div>
+            <div class="ec-item"><div class="ec-num" id="ev30Fees">$0</div><div class="ec-lbl">Platform Fees</div></div>
+            <div class="ec-item"><div class="ec-num" id="ev30Count">0</div><div class="ec-lbl">Trades Done</div></div>
           </div>
         </div>
         <div style="background:var(--white);border:1px solid var(--border);border-radius:12px;padding:13px;">
-          <div class="sec-ttl" style="margin-bottom:9px;font-size:.88rem">Recent History</div>
-          <div class="hist-item"><div class="hi-ic hi-won">🥫</div><div class="hi-info"><div class="hi-ttl">Got: DeWalt Drill + Batteries</div><div class="hi-meta">Traded: Canned Goods · May 4</div></div><div class="hi-rt"><div class="hi-val green">+$111</div><div class="hi-rat">★★★★★</div></div></div>
-          <div class="hist-item"><div class="hi-ic hi-gave">🌱</div><div class="hi-info"><div class="hi-ttl">Gave: Tomato Seedlings (12)</div><div class="hi-meta">Got: 25lb Flour Bag · May 2</div></div><div class="hi-rt"><div class="hi-val blue">~$18</div><div class="hi-rat">★★★★★</div></div></div>
-          <div class="hist-item"><div class="hi-ic hi-won">💊</div><div class="hi-info"><div class="hi-ttl">Got: First Aid Kit (full)</div><div class="hi-meta">Traded: Used Books · Apr 29</div></div><div class="hi-rt"><div class="hi-val green">+$35</div><div class="hi-rat">★★★★☆</div></div></div>
-          <div class="hist-item"><div class="hi-ic hi-gave">🎮</div><div class="hi-info"><div class="hi-ttl">Gave: PS4 + 3 Games</div><div class="hi-meta">Got: Camping Tent + Gear · Apr 22</div></div><div class="hi-rt"><div class="hi-val blue">~$180</div><div class="hi-rat">★★★★★</div></div></div>
+          <div class="sec-ttl" style="margin-bottom:9px;font-size:.88rem">All Time</div>
+          <div class="ec-grid" style="margin-bottom:0">
+            <div class="ec-item" style="background:var(--surface);border:1px solid var(--border)"><div class="ec-num" style="color:var(--green)" id="evAllValue">$0</div><div class="ec-lbl" style="color:var(--muted)">Total Value</div></div>
+            <div class="ec-item" style="background:var(--surface);border:1px solid var(--border)"><div class="ec-num" style="color:var(--blue)" id="evAllFees">$0</div><div class="ec-lbl" style="color:var(--muted)">Total Fees</div></div>
+            <div class="ec-item" style="background:var(--surface);border:1px solid var(--border)"><div class="ec-num" style="color:var(--gold)" id="evAllCount">0</div><div class="ec-lbl" style="color:var(--muted)">All Trades</div></div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="sec-hdr"><div class="sec-ttl">⭐ Your Ratings</div><div class="sec-lnk" onclick="window.location.href='alltrades-ratings.html'">See all →</div></div>
+        <div style="background:var(--white);border:1px solid var(--border);border-radius:12px;padding:15px;" id="ratingsPanel">
+          <div class="loading">Loading ratings…</div>
         </div>
       </div>
     </div>
-  </div>
-</div>
 
-<!-- MODALS -->
-<div class="modal-overlay" id="offerModal">
-  <div class="modal">
-    <div class="mhd"><div class="mhd-ttl">📨 Offer from RiderJay</div><button class="mhd-close" onclick="closeModal('offerModal')">✕</button></div>
-    <div class="mbody">
-      <div style="display:flex;align-items:center;gap:10px;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:13px;margin-bottom:12px">
-        <div style="flex:1;background:#fff;border:1px solid var(--border);border-radius:8px;padding:10px;text-align:center"><div style="font-size:1.7rem">🥫</div><div style="font-size:12px;font-weight:700;margin-top:3px">Canned Goods (24)</div><div style="font-family:'Barlow Condensed',sans-serif;font-weight:800;color:var(--gold)">~$29</div><div style="font-size:10px;color:var(--muted)">Your item</div></div>
-        <div style="font-size:1.1rem;color:var(--muted)">⇄</div>
-        <div style="flex:1;background:#fff;border:1px solid var(--border);border-radius:8px;padding:10px;text-align:center"><div style="font-size:1.7rem">🔧</div><div style="font-size:12px;font-weight:700;margin-top:3px">DeWalt Drill Set</div><div style="font-family:'Barlow Condensed',sans-serif;font-weight:800;color:var(--blue)">~$140</div><div style="font-size:10px;color:var(--muted)">RiderJay</div></div>
-      </div>
-      <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:7px;padding:9px 11px;margin-bottom:12px;font-size:12px;color:#14532d;text-align:center">✅ Their item is worth ~$111 more — <strong>great deal for you!</strong></div>
-      <div style="background:linear-gradient(135deg,#1e3a8a,#1d4ed8);border-radius:9px;padding:11px 13px;margin-bottom:12px">
-        <div style="font-size:11px;color:#93c5fd;text-transform:uppercase;letter-spacing:.5px;font-weight:700;margin-bottom:7px">5% Platform Fees if Accepted</div>
-        <div style="display:flex;justify-content:space-between;font-size:12px;color:#93c5fd;margin-bottom:3px"><span>Your fee (5% of $29)</span><span style="color:#fff;font-weight:700">$1.45</span></div>
-        <div style="display:flex;justify-content:space-between;font-size:12px;color:#93c5fd"><span>RiderJay's fee (5% of $140)</span><span style="color:#fff;font-weight:700">$7.00</span></div>
-      </div>
-      <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:10px 12px;margin-bottom:12px;font-size:12px;color:var(--muted)"><strong style="color:var(--text)">Message from RiderJay:</strong><br><br>"Hey! I'd love to trade my DeWalt drill set for your canned goods. The drill is barely used — bought it for a project that never happened!"</div>
-      <button class="mbtn green" onclick="acceptOffer(null,'RiderJay');closeModal('offerModal')">✓ Accept This Trade</button>
-      <button class="mbtn gold" onclick="closeModal('offerModal');showToast('💬','Counter offer coming soon!')">↩ Counter Offer</button>
-      <button class="mbtn red" onclick="declineOffer(null);closeModal('offerModal')">✕ Decline</button>
-      <button class="mbtn outline" onclick="closeModal('offerModal')">← Back</button>
-    </div>
-  </div>
-</div>
+  </div><!-- /main -->
+</div><!-- /layout -->
 
-<div class="modal-overlay" id="tradeModal">
-  <div class="modal">
-    <div class="mhd"><div class="mhd-ttl">🔄 Trade #AT-2847</div><button class="mhd-close" onclick="closeModal('tradeModal')">✕</button></div>
-    <div class="mbody">
-      <div style="display:flex;gap:8px;margin-bottom:12px">
-        <div style="flex:1;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:10px;text-align:center"><div style="font-size:1.8rem">🥫</div><div style="font-size:12px;font-weight:700">Canned Goods (24)</div><div style="color:var(--gold);font-family:'Barlow Condensed',sans-serif;font-weight:800">~$29</div><div style="font-size:10px;color:var(--muted)">You</div></div>
-        <div style="display:flex;align-items:center;color:var(--muted)">⇄</div>
-        <div style="flex:1;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:10px;text-align:center"><div style="font-size:1.8rem">🔧</div><div style="font-size:12px;font-weight:700">DeWalt Drill Set</div><div style="color:var(--blue);font-family:'Barlow Condensed',sans-serif;font-weight:800">~$140</div><div style="font-size:10px;color:var(--muted)">RiderJay</div></div>
-      </div>
-      <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:12px;margin-bottom:12px">
-        <div style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.85rem;margin-bottom:9px">Trade Progress</div>
-        <div style="display:flex;align-items:center;gap:9px;margin-bottom:7px;font-size:13px"><div style="width:22px;height:22px;border-radius:50%;background:var(--green);color:#fff;display:flex;align-items:center;justify-content:center;font-size:.65rem;font-weight:800;flex-shrink:0">✓</div>Trade Accepted</div>
-        <div style="display:flex;align-items:center;gap:9px;margin-bottom:7px;font-size:13px;font-weight:700"><div style="width:22px;height:22px;border-radius:50%;background:var(--gold);color:var(--navy);display:flex;align-items:center;justify-content:center;font-size:.65rem;font-weight:800;flex-shrink:0">2</div>📍 Meetup Scheduled — Confirm when done</div>
-        <div style="display:flex;align-items:center;gap:9px;font-size:13px;color:var(--muted)"><div style="width:22px;height:22px;border-radius:50%;background:var(--border);color:var(--muted);display:flex;align-items:center;justify-content:center;font-size:.65rem;font-weight:800;flex-shrink:0">3</div>Trade Confirmed ⏳</div>
-      </div>
-      <button class="mbtn green" onclick="closeModal('tradeModal');openModal('confirmModal')">✓ Confirm Trade Complete</button>
-      <button class="mbtn blue" onclick="closeModal('tradeModal');openModal('msgModal')">💬 Message RiderJay</button>
-      <button class="mbtn outline" onclick="closeModal('tradeModal')">← Back</button>
-    </div>
-  </div>
-</div>
-
+<!-- CONFIRM TRADE MODAL -->
 <div class="modal-overlay" id="confirmModal">
   <div class="modal">
     <div class="mhd"><div class="mhd-ttl">✅ Confirm Trade Complete</div><button class="mhd-close" onclick="closeModal('confirmModal')">✕</button></div>
     <div class="mbody">
-      <div style="text-align:center;margin-bottom:16px"><div style="font-size:3rem;margin-bottom:9px">🤝</div><div style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.15rem;margin-bottom:5px">Did the trade happen successfully?</div><div style="font-size:13px;color:var(--muted);line-height:1.5">Confirming releases the platform fee payment. Both traders must confirm for the trade to close.</div></div>
-      <div style="background:#fffbeb;border:1px solid #fde68a;border-radius:8px;padding:11px;margin-bottom:13px;font-size:12px;color:#92400e"><strong>Your 5% fee: $1.45</strong> will be charged when you confirm.</div>
-      <button class="mbtn green" onclick="confirmTrade()">✅ Yes — Trade Complete!</button>
-      <button class="mbtn red" onclick="closeModal('confirmModal');showToast('⚠️','Issue reported. Support team notified.')">⚠️ There Was a Problem</button>
+      <div style="text-align:center;margin-bottom:16px">
+        <div style="font-size:3rem;margin-bottom:9px">🤝</div>
+        <div style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.15rem;margin-bottom:5px">Did the trade happen successfully?</div>
+        <div style="font-size:13px;color:var(--muted);line-height:1.5">Confirming records the meetup in our system. Both traders must confirm for the trade to close.</div>
+      </div>
+      <div style="background:#fffbeb;border:1px solid #fde68a;border-radius:8px;padding:11px;margin-bottom:13px;font-size:12px;color:#92400e" id="confirmFeeNote">Your 5% platform fee will be recorded when you confirm.</div>
+      <button class="mbtn green" onclick="doConfirmTrade()">✅ Yes — Trade Complete!</button>
+      <button class="mbtn red" onclick="closeModal('confirmModal');showToast('⚠️','Issue reported. Support will follow up.')">⚠️ There Was a Problem</button>
       <button class="mbtn outline" onclick="closeModal('confirmModal')">← Not Yet</button>
     </div>
   </div>
 </div>
 
-<div class="modal-overlay" id="rateModal">
-  <div class="modal">
-    <div class="mhd"><div class="mhd-ttl">⭐ Rate GardenSue</div><button class="mhd-close" onclick="closeModal('rateModal')">✕</button></div>
-    <div class="mbody">
-      <div style="text-align:center;margin-bottom:12px"><div style="width:50px;height:50px;border-radius:50%;background:var(--green);color:#fff;font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.1rem;display:flex;align-items:center;justify-content:center;margin:0 auto 7px">GS</div><div style="font-weight:700;font-size:14px">GardenSue</div><div style="font-size:12px;color:var(--muted)">Trade: Tomato Seedlings ⇄ 25lb Flour Bag</div></div>
-      <div style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.85rem;text-align:center;margin-bottom:4px;text-transform:uppercase;letter-spacing:.5px">How was the trade?</div>
-      <div class="star-picker" id="starPick"><span class="star-pk" onclick="rateStar(1)">★</span><span class="star-pk" onclick="rateStar(2)">★</span><span class="star-pk" onclick="rateStar(3)">★</span><span class="star-pk on" onclick="rateStar(4)">★</span><span class="star-pk on" onclick="rateStar(5)">★</span></div>
-      <div style="margin-bottom:11px"><textarea placeholder="Leave a review (optional)…" style="width:100%;border:1.5px solid var(--border);border-radius:7px;padding:9px 12px;font-size:13px;font-family:'Lato',sans-serif;outline:none;resize:vertical;min-height:75px;" onfocus="this.style.borderColor='var(--blue)'" onblur="this.style.borderColor='var(--border)'"></textarea></div>
-      <button class="mbtn gold" onclick="submitRating()">⭐ Submit Rating</button>
-      <button class="mbtn outline" onclick="closeModal('rateModal')">Skip for now</button>
-    </div>
-  </div>
-</div>
-
+<!-- MESSAGES MODAL -->
 <div class="modal-overlay" id="msgModal">
   <div class="modal" style="max-width:520px">
     <div class="mhd"><div class="mhd-ttl">💬 Messages</div><button class="mhd-close" onclick="closeModal('msgModal')">✕</button></div>
-    <div class="mbody" style="padding:15px">
-      <div class="ptabs"><button class="ptab active" onclick="ptab(this)">All (3)</button><button class="ptab" onclick="ptab(this)">Trade Chats</button><button class="ptab" onclick="ptab(this)">Offer Chats</button></div>
-      <div class="msg-item unread" onclick="showToast('💬','Opening chat with PrepMike…')"><div class="mi-av" style="background:var(--blue)">PM<div class="mi-dot"></div></div><div class="mi-info"><div class="mi-nm">PrepMike <span style="font-size:10px;background:var(--blue);color:#fff;border-radius:99px;padding:1px 5px;font-weight:800">NEW</span></div><div class="mi-prev">Hey! Still interested in the canned goods trade?</div></div><div class="mi-time">2m</div></div>
-      <div class="msg-item unread" onclick="showToast('💬','Opening chat with GardenSue…')"><div class="mi-av" style="background:var(--green)">GS<div class="mi-dot"></div></div><div class="mi-info"><div class="mi-nm">GardenSue <span style="font-size:10px;background:var(--blue);color:#fff;border-radius:99px;padding:1px 5px;font-weight:800">NEW</span></div><div class="mi-prev">Can we meet Saturday at the HEB parking lot?</div></div><div class="mi-time">18m</div></div>
-      <div class="msg-item unread" onclick="showToast('💬','Opening chat with TechLisa…')"><div class="mi-av" style="background:var(--orange)">TL<div class="mi-dot"></div></div><div class="mi-info"><div class="mi-nm">TechLisa <span style="font-size:10px;background:var(--blue);color:#fff;border-radius:99px;padding:1px 5px;font-weight:800">NEW</span></div><div class="mi-prev">The laptop is in great shape, just upgraded…</div></div><div class="mi-time">1h</div></div>
-      <div class="msg-item" onclick="showToast('💬','Opening chat with RiderJay…')"><div class="mi-av" style="background:#64748b">RJ</div><div class="mi-info"><div class="mi-nm">RiderJay</div><div class="mi-prev">Sounds good, I can do evenings this week.</div></div><div class="mi-time">3h</div></div>
-      <div class="msg-item" onclick="showToast('💬','Opening chat with BuildBob…')"><div class="mi-av" style="background:var(--gold)">BB</div><div class="mi-info"><div class="mi-nm">BuildBob</div><div class="mi-prev">Let me know if you want to counter with something.</div></div><div class="mi-time">5h</div></div>
+    <div class="mbody" style="padding:15px" id="msgModalBody">
+      <div class="loading">Loading messages…</div>
     </div>
   </div>
 </div>
@@ -628,17 +395,504 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
 <div class="toast" id="toastEl"><span id="toastIc">✅</span><span id="toastTx">Done!</span></div>
 
 <script>
-function navClick(el){document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));el.classList.add('active');showToast('🧭','Viewing: '+el.textContent.trim().replace(/\d+/g,'').trim());}
-function openModal(id){document.getElementById(id).classList.add('open');}
-function closeModal(id){document.getElementById(id).classList.remove('open');}
-document.querySelectorAll('.modal-overlay').forEach(o=>{o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('open');});});
-function acceptOffer(btn,name){if(btn){const row=btn.closest('.offer-row');row.querySelector('.or-st').textContent='ACCEPTED';row.querySelector('.or-st').className='or-st st-acc';row.querySelector('.or-acts').innerHTML='<span style="font-size:11px;color:var(--green);font-weight:700">✓ Trade started!</span>';}showToast('🎉','Trade accepted with '+name+'! New trade created.');}
-function declineOffer(btn){if(btn){const row=btn.closest('.offer-row');row.querySelector('.or-st').textContent='DECLINED';row.querySelector('.or-st').className='or-st st-dec';row.querySelector('.or-acts').innerHTML='';row.style.opacity='.5';}showToast('👋','Offer declined. Trader notified.');}
-function confirmTrade(){closeModal('confirmModal');closeModal('tradeModal');showToast('🎉','Trade #AT-2847 confirmed! $1.45 fee charged. Please rate RiderJay!');setTimeout(()=>openModal('rateModal'),1600);}
-function rateStar(n){document.querySelectorAll('.star-pk').forEach((s,i)=>s.classList.toggle('on',i<n));}
-function submitRating(){closeModal('rateModal');showToast('⭐','Rating submitted! Thanks for keeping Tradezy trustworthy.');}
-function ptab(el){document.querySelectorAll('.ptab').forEach(t=>t.classList.remove('active'));el.classList.add('active');}
-function showToast(icon,msg){document.getElementById('toastIc').textContent=icon;document.getElementById('toastTx').textContent=msg;const t=document.getElementById('toastEl');t.classList.add('show');clearTimeout(window._tt);window._tt=setTimeout(()=>t.classList.remove('show'),3800);}
+/* ── Supabase init ── */
+const createClient = window.supabase.createClient;
+const supabase = createClient(
+  'https://equvwaspcoeetfsexqki.supabase.co',
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVxdXZ3YXNwY29lZXRmc2V4cWtpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgyNzc2MjQsImV4cCI6MjA5Mzg1MzYyNH0.TP6Kk3pzHW1PYMUu5D9Vu2lJrazIEagzu5csYhqkrfI'
+);
+
+let currentUser = null;
+let currentTradeId = null;
+
+/* ── Session check ── */
+(async () => {
+  const { data: { session } } = await supabase.auth.getSession();
+  if (!session) {
+    window.location.href = 'alltrades-auth.html';
+    return;
+  }
+  currentUser = session.user;
+  initDashboard();
+})();
+
+/* ── Init ── */
+async function initDashboard() {
+  setGreeting();
+  await Promise.all([
+    loadUserProfile(),
+    loadOffers(),
+    loadTrades(),
+    loadListings(),
+    loadMessages(),
+    loadTradeValue(),
+    loadRatings()
+  ]);
+}
+
+/* ── Greeting ── */
+function setGreeting() {
+  const h = new Date().getHours();
+  const g = h < 12 ? '☀️ Good morning' : h < 17 ? '👋 Good afternoon' : '🌙 Good evening';
+  document.getElementById('wbGreet').textContent = g;
+}
+
+/* ── User Profile ── */
+async function loadUserProfile() {
+  try {
+    const { data, error } = await supabase
+      .from('users')
+      .select('display_name, location_city, location_state')
+      .eq('id', currentUser.id)
+      .single();
+
+    const name = data?.display_name || currentUser.email?.split('@')[0] || 'Trader';
+    const initials = name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0,2);
+    const location = data?.location_city
+      ? `📍 ${data.location_city}${data.location_state ? ', ' + data.location_state : ''}`
+      : '📍 Location not set';
+
+    document.getElementById('userName').textContent = name;
+    document.getElementById('userAv').textContent = initials;
+    document.getElementById('wbName').textContent = name;
+    document.getElementById('wbSub').innerHTML = `${location} · <a href="alltrades-verification.html" style="color:var(--gold-l);font-weight:700;text-decoration:none">Verify your account →</a>`;
+  } catch(e) {
+    document.getElementById('wbName').textContent = 'Trader';
+  }
+}
+
+/* ── Offers ── */
+async function loadOffers() {
+  try {
+    const { data: listings } = await supabase
+      .from('listings')
+      .select('id')
+      .eq('user_id', currentUser.id);
+
+    const listingIds = listings?.map(l => l.id) || [];
+
+    let offers = [];
+    if (listingIds.length > 0) {
+      const { data } = await supabase
+        .from('offers')
+        .select('*')
+        .in('listing_id', listingIds)
+        .eq('status', 'pending')
+        .order('created_at', { ascending: false })
+        .limit(5);
+      offers = data || [];
+    }
+
+    const count = offers.length;
+    document.getElementById('offerCount').textContent = count;
+    document.getElementById('statOffers').textContent = count;
+    document.getElementById('statOffersSub').textContent = count > 0 ? `${count} pending review` : 'No pending offers';
+
+    if (count > 0) {
+      document.getElementById('sbOfferBadge').textContent = count;
+      document.getElementById('sbOfferBadge').style.display = 'inline';
+    }
+
+    const panel = document.getElementById('offersPanel');
+    if (offers.length === 0) {
+      panel.innerHTML = `<div class="empty-state"><div class="empty-icon">📭</div><div class="empty-txt">No pending offers yet.<br>Post a listing to start receiving offers!</div></div>`;
+      return;
+    }
+
+    panel.innerHTML = offers.map(offer => `
+      <div class="offer-row">
+        <div class="or-em">📦</div>
+        <div class="or-info">
+          <div class="or-ttl">${offer.title || 'Offer received'}</div>
+          <div class="or-meta">
+            <span class="fr-av"></span>
+            <span>Offer: $${offer.cash_amount ? offer.cash_amount.toFixed(2) : '—'}</span>
+            <span>·</span>
+            <span>${timeAgo(offer.created_at)}</span>
+          </div>
+        </div>
+        <div class="or-rt">
+          <div class="or-st st-pend">PENDING</div>
+          <div class="or-acts">
+            <button class="or-btn btn-acc" onclick="acceptOffer('${offer.id}')">✓ Accept</button>
+            <button class="or-btn btn-dec" onclick="declineOffer('${offer.id}', this)">✕</button>
+          </div>
+        </div>
+      </div>
+    `).join('');
+
+    // Add new offer alert if any
+    if (count > 0) {
+      addAlert('urgent', '📨', `<strong>${count} offer${count>1?'s':''} waiting</strong> — Review and accept or decline.`, 'Review Now', "document.getElementById('offersPanel').scrollIntoView({behavior:'smooth'})");
+    }
+  } catch(e) {
+    document.getElementById('offersPanel').innerHTML = `<div class="empty-state"><div class="empty-txt">Could not load offers.</div></div>`;
+  }
+}
+
+/* ── Trades ── */
+async function loadTrades() {
+  try {
+    const { data: trades } = await supabase
+      .from('trades')
+      .select('*')
+      .or(`trader_a_id.eq.${currentUser.id},trader_b_id.eq.${currentUser.id}`)
+      .in('status', ['accepted', 'meetup_scheduled'])
+      .order('created_at', { ascending: false })
+      .limit(5);
+
+    const count = trades?.length || 0;
+    document.getElementById('tradeCount').textContent = count;
+    document.getElementById('statTrades').textContent = count;
+    document.getElementById('statTradesSub').textContent = count > 0 ? `${count} in progress` : 'No active trades';
+
+    if (count > 0) {
+      document.getElementById('sbTradeBadge').textContent = count;
+      document.getElementById('sbTradeBadge').style.display = 'inline';
+    }
+
+    const panel = document.getElementById('tradesPanel');
+    if (!trades || trades.length === 0) {
+      panel.innerHTML = `<div class="empty-state"><div class="empty-icon">🔄</div><div class="empty-txt">No active trades.<br>Accept an offer to start trading!</div></div>`;
+      return;
+    }
+
+    panel.innerHTML = trades.map(trade => {
+      const isMeetup = trade.status === 'meetup_scheduled';
+      const myConfirmed = trade.trader_a_id === currentUser.id ? trade.trade_confirmed_a : trade.trade_confirmed_b;
+      const fee = trade.trader_a_id === currentUser.id ? trade.fee_a : trade.fee_b;
+      return `
+        <div class="trade-card">
+          <div class="tc-hdr">
+            <div class="tc-id">Trade #${trade.id.slice(0,8).toUpperCase()}</div>
+            <div class="tc-stage ${isMeetup ? 'stg-meet' : 'stg-agree'}">${isMeetup ? '📍 MEETUP PENDING' : '✅ ACCEPTED'}</div>
+          </div>
+          <div class="tc-items">
+            <div class="tc-itm">
+              <div class="tc-itm-nm">Trade in progress</div>
+              <div class="tc-itm-vl">${trade.total_value ? '~$' + trade.total_value.toFixed(0) : 'Value TBD'}</div>
+            </div>
+          </div>
+          <div class="tc-prog">
+            <div class="tc-prog-lbl"><span>Progress</span><span style="color:var(--${isMeetup?'gold':'blue'});font-weight:700">Step ${isMeetup?'2':'1'} of 3</span></div>
+            <div class="tc-prog-bar"><div class="tc-prog-fill fill-${isMeetup?'gold':'blue'}" style="width:${isMeetup?'66':'33'}%"></div></div>
+          </div>
+          <div class="tc-ftr">
+            <div class="tc-btn tcb-msg" onclick="window.location.href='alltrades-messages.html'">💬 Message</div>
+            ${!myConfirmed ? `<div class="tc-btn tcb-confirm" onclick="openConfirmModal('${trade.id}', ${fee||0})">✓ Confirm Done</div>` : `<div class="tc-btn" style="background:#f0fdf4;border:1px solid #bbf7d0;color:#14532d">✅ You confirmed</div>`}
+          </div>
+        </div>
+      `;
+    }).join('');
+  } catch(e) {
+    document.getElementById('tradesPanel').innerHTML = `<div class="empty-state"><div class="empty-txt">Could not load trades.</div></div>`;
+  }
+}
+
+/* ── Listings ── */
+async function loadListings() {
+  try {
+    const { data: listings } = await supabase
+      .from('listings')
+      .select('*')
+      .eq('user_id', currentUser.id)
+      .order('created_at', { ascending: false })
+      .limit(6);
+
+    const count = listings?.length || 0;
+    document.getElementById('listingCount').textContent = count;
+    document.getElementById('statListings').textContent = count;
+    document.getElementById('statListingsSub').textContent = count > 0 ? `${count} listed` : 'No listings yet';
+
+    const panel = document.getElementById('listingsPanel');
+    if (!listings || listings.length === 0) {
+      panel.innerHTML = `<div class="empty-state"><div class="empty-icon">📦</div><div class="empty-txt">No listings yet.<br><a href="alltrades-post.html" style="color:var(--blue);font-weight:700">Post your first item →</a></div></div>`;
+      return;
+    }
+
+    const catEmoji = {
+      'Food & Water':'🥫','Garden':'🌱','Electronics':'⚡','Tools':'🔧',
+      'Sports':'🚲','Music':'🎵','Gaming':'🎮','Clothing':'👗','Books':'📚',
+      'Trading Cards':'🃏','Other':'📦'
+    };
+
+    panel.innerHTML = listings.map(l => `
+      <div class="lr">
+        <div class="lr-em">${catEmoji[l.category] || '📦'}</div>
+        <div class="lr-info">
+          <div class="lr-ttl">${l.title}</div>
+          <div class="lr-meta">
+            <span>${l.category || 'General'}</span>
+            ${l.condition ? `<span>·</span><span>${l.condition}</span>` : ''}
+            <span>·</span><span>${timeAgo(l.created_at)}</span>
+          </div>
+        </div>
+        <div class="lr-rt">
+          <div class="lr-val">${l.estimated_value ? '~$' + Number(l.estimated_value).toFixed(0) : '—'}</div>
+          <span class="lr-st ${l.status === 'active' ? 'lst-active' : 'lst-paused'}">${(l.status || 'active').toUpperCase()}</span>
+          <div class="lr-acts">
+            <button class="lr-btn lrb-edit" onclick="window.location.href='alltrades-post.html'">Edit</button>
+            <button class="lr-btn lrb-del" onclick="deleteListing('${l.id}', this)">✕</button>
+          </div>
+        </div>
+      </div>
+    `).join('');
+  } catch(e) {
+    document.getElementById('listingsPanel').innerHTML = `<div class="empty-state"><div class="empty-txt">Could not load listings.</div></div>`;
+  }
+}
+
+/* ── Messages ── */
+async function loadMessages() {
+  try {
+    const { data: messages } = await supabase
+      .from('messages')
+      .select('*')
+      .or(`sender_id.eq.${currentUser.id},receiver_id.eq.${currentUser.id}`)
+      .order('created_at', { ascending: false })
+      .limit(5);
+
+    const unread = messages?.filter(m => m.receiver_id === currentUser.id && !m.read_at) || [];
+    const count = unread.length;
+
+    document.getElementById('msgCount').textContent = count;
+    if (count > 0) {
+      document.getElementById('msgBadge').textContent = count;
+      document.getElementById('msgBadge').style.display = 'inline';
+      document.getElementById('sbMsgBadge').textContent = count;
+      document.getElementById('sbMsgBadge').style.display = 'inline';
+    }
+
+    const panel = document.getElementById('msgsPanel');
+    if (!messages || messages.length === 0) {
+      panel.innerHTML = `<div class="empty-state"><div class="empty-icon">💬</div><div class="empty-txt">No messages yet.</div></div>`;
+      document.getElementById('msgModalBody').innerHTML = `<div class="empty-state"><div class="empty-icon">💬</div><div class="empty-txt">No messages yet.</div></div>`;
+      return;
+    }
+
+    const colors = ['var(--blue)','var(--green)','var(--orange)','var(--gold)','#64748b'];
+    const msgHtml = messages.map((m, i) => {
+      const isUnread = m.receiver_id === currentUser.id && !m.read_at;
+      const otherId = m.sender_id === currentUser.id ? m.receiver_id : m.sender_id;
+      const initials = otherId.slice(0,2).toUpperCase();
+      return `
+        <div class="msg-item ${isUnread ? 'unread' : ''}" onclick="window.location.href='alltrades-messages.html'">
+          <div class="mi-av" style="background:${colors[i%colors.length]}">${initials}${isUnread?'<div class="mi-dot"></div>':''}</div>
+          <div class="mi-info">
+            <div class="mi-nm">Trader ${initials}</div>
+            <div class="mi-prev">${m.content ? m.content.slice(0,50) + (m.content.length>50?'…':'') : 'Message'}</div>
+          </div>
+          <div class="mi-time">${timeAgo(m.created_at)}</div>
+        </div>
+      `;
+    }).join('');
+
+    panel.innerHTML = msgHtml;
+    document.getElementById('msgModalBody').innerHTML = msgHtml;
+  } catch(e) {
+    document.getElementById('msgsPanel').innerHTML = `<div class="empty-state"><div class="empty-txt">Could not load messages.</div></div>`;
+  }
+}
+
+/* ── Trade Value ── */
+async function loadTradeValue() {
+  try {
+    const { data: allTrades } = await supabase
+      .from('trades')
+      .select('total_value, fee_a, fee_b, trader_a_id, trader_b_id, created_at, status')
+      .or(`trader_a_id.eq.${currentUser.id},trader_b_id.eq.${currentUser.id}`)
+      .eq('status', 'completed');
+
+    const now = new Date();
+    const thirtyDaysAgo = new Date(now - 30 * 24 * 60 * 60 * 1000);
+
+    const trades30 = (allTrades || []).filter(t => new Date(t.created_at) > thirtyDaysAgo);
+
+    // Calculate values — if multiple items sum is in total_value
+    const calc30Value = trades30.reduce((sum, t) => sum + (t.total_value || 0), 0);
+    const calc30Fees = trades30.reduce((sum, t) => {
+      const fee = t.trader_a_id === currentUser.id ? (t.fee_a || 0) : (t.fee_b || 0);
+      return sum + fee;
+    }, 0);
+
+    const calcAllValue = (allTrades || []).reduce((sum, t) => sum + (t.total_value || 0), 0);
+    const calcAllFees = (allTrades || []).reduce((sum, t) => {
+      const fee = t.trader_a_id === currentUser.id ? (t.fee_a || 0) : (t.fee_b || 0);
+      return sum + fee;
+    }, 0);
+
+    // Update stat card
+    document.getElementById('statValue').textContent = calc30Value > 0 ? '$' + calc30Value.toFixed(0) : '$0';
+    document.getElementById('statValueSub').textContent = trades30.length > 0 ? `${trades30.length} trade${trades30.length>1?'s':''} this month` : 'No completed trades yet';
+
+    // Update trade value summary
+    document.getElementById('ev30Value').textContent = '$' + calc30Value.toFixed(2);
+    document.getElementById('ev30Fees').textContent = '$' + calc30Fees.toFixed(2);
+    document.getElementById('ev30Count').textContent = trades30.length;
+    document.getElementById('evAllValue').textContent = '$' + calcAllValue.toFixed(2);
+    document.getElementById('evAllFees').textContent = '$' + calcAllFees.toFixed(2);
+    document.getElementById('evAllCount').textContent = allTrades?.length || 0;
+
+    // Update welcome bar trade count
+    document.getElementById('wbTrades').textContent = allTrades?.length || 0;
+  } catch(e) {
+    document.getElementById('statValue').textContent = '$0';
+  }
+}
+
+/* ── Ratings ── */
+async function loadRatings() {
+  try {
+    const { data: ratings } = await supabase
+      .from('ratings')
+      .select('*')
+      .eq('rated_user_id', currentUser.id)
+      .order('created_at', { ascending: false });
+
+    const panel = document.getElementById('ratingsPanel');
+
+    if (!ratings || ratings.length === 0) {
+      document.getElementById('wbRating').textContent = '—';
+      panel.innerHTML = `<div class="empty-state"><div class="empty-icon">⭐</div><div class="empty-txt">No ratings yet.<br>Complete a trade to earn your first rating!</div></div>`;
+      return;
+    }
+
+    const avg = ratings.reduce((sum, r) => sum + r.stars, 0) / ratings.length;
+    document.getElementById('wbRating').textContent = avg.toFixed(1) + '★';
+
+    const stars = '★'.repeat(Math.round(avg)) + '☆'.repeat(5 - Math.round(avg));
+    const latest = ratings.slice(0, 2);
+
+    panel.innerHTML = `
+      <div style="display:flex;align-items:center;gap:14px;margin-bottom:12px">
+        <div>
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:2.8rem;font-weight:900;line-height:1">${avg.toFixed(1)}</div>
+          <div style="color:var(--gold);font-size:1rem">${stars}</div>
+          <div style="font-size:11px;color:var(--muted)">${ratings.length} trade${ratings.length>1?'s':''}</div>
+        </div>
+      </div>
+      ${latest.map(r => `
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:7px;padding:9px 11px;font-size:12px;color:var(--muted);font-style:italic;margin-bottom:7px;line-height:1.5">
+          "${r.review || 'Great trade!'}" <span style="color:var(--gold);font-style:normal">${'★'.repeat(r.stars)}</span>
+        </div>
+      `).join('')}
+      <a href="alltrades-ratings.html" style="font-size:12px;color:var(--blue);font-weight:700;text-decoration:none">See all ratings →</a>
+    `;
+  } catch(e) {
+    document.getElementById('ratingsPanel').innerHTML = `<div class="empty-state"><div class="empty-txt">Could not load ratings.</div></div>`;
+  }
+}
+
+/* ── Accept / Decline Offer ── */
+async function acceptOffer(offerId) {
+  try {
+    await supabase.from('offers').update({ status: 'accepted' }).eq('id', offerId);
+    showToast('🎉', 'Offer accepted! Trade created.');
+    loadOffers();
+    loadTrades();
+  } catch(e) {
+    showToast('⚠️', 'Error accepting offer.');
+  }
+}
+
+async function declineOffer(offerId, btn) {
+  try {
+    await supabase.from('offers').update({ status: 'declined' }).eq('id', offerId);
+    btn.closest('.offer-row').style.opacity = '.4';
+    showToast('👋', 'Offer declined. Trader notified.');
+  } catch(e) {
+    showToast('⚠️', 'Error declining offer.');
+  }
+}
+
+/* ── Confirm Trade ── */
+function openConfirmModal(tradeId, fee) {
+  currentTradeId = tradeId;
+  document.getElementById('confirmFeeNote').textContent = `Your 5% platform fee${fee ? ': $' + Number(fee).toFixed(2) : ''} will be recorded when you confirm.`;
+  openModal('confirmModal');
+}
+
+async function doConfirmTrade() {
+  if (!currentTradeId) return;
+  try {
+    const trade = await supabase.from('trades').select('trader_a_id, trade_confirmed_a, trade_confirmed_b').eq('id', currentTradeId).single();
+    const isTraderA = trade.data.trader_a_id === currentUser.id;
+    const field = isTraderA ? 'trade_confirmed_a' : 'trade_confirmed_b';
+    const otherConfirmed = isTraderA ? trade.data.trade_confirmed_b : trade.data.trade_confirmed_a;
+
+    const update = { [field]: true };
+    if (otherConfirmed) update.status = 'completed';
+
+    await supabase.from('trades').update(update).eq('id', currentTradeId);
+    closeModal('confirmModal');
+    showToast('🎉', 'Trade confirmed! ' + (otherConfirmed ? 'Trade is now complete!' : 'Waiting for the other trader to confirm.'));
+    loadTrades();
+    loadTradeValue();
+  } catch(e) {
+    showToast('⚠️', 'Error confirming trade.');
+  }
+}
+
+/* ── Delete Listing ── */
+async function deleteListing(listingId, btn) {
+  if (!confirm('Delete this listing? This cannot be undone.')) return;
+  try {
+    await supabase.from('listings').delete().eq('id', listingId).eq('user_id', currentUser.id);
+    btn.closest('.lr').remove();
+    showToast('🗑️', 'Listing deleted.');
+    loadListings();
+  } catch(e) {
+    showToast('⚠️', 'Error deleting listing.');
+  }
+}
+
+/* ── Sign Out ── */
+async function doSignOut() {
+  await supabase.auth.signOut();
+  window.location.href = 'alltrades-auth.html';
+}
+
+/* ── Alerts ── */
+function addAlert(type, icon, text, btnLabel, btnAction) {
+  const area = document.getElementById('alertsArea');
+  const div = document.createElement('div');
+  div.className = `alert ${type}`;
+  div.innerHTML = `
+    <span class="al-ic">${icon}</span>
+    <div class="al-txt">${text}</div>
+    ${btnLabel ? `<button class="al-btn" onclick="${btnAction}">${btnLabel}</button>` : ''}
+    <span class="al-close" onclick="this.closest('.alert').remove()">✕</span>
+  `;
+  area.appendChild(div);
+}
+
+/* ── Utilities ── */
+function timeAgo(ts) {
+  if (!ts) return '';
+  const diff = Date.now() - new Date(ts).getTime();
+  const m = Math.floor(diff / 60000);
+  if (m < 1) return 'just now';
+  if (m < 60) return m + 'm ago';
+  const h = Math.floor(m / 60);
+  if (h < 24) return h + 'h ago';
+  return Math.floor(h / 24) + 'd ago';
+}
+
+function openModal(id) { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+document.querySelectorAll('.modal-overlay').forEach(o => {
+  o.addEventListener('click', e => { if (e.target === o) o.classList.remove('open'); });
+});
+
+function showToast(icon, msg) {
+  document.getElementById('toastIc').textContent = icon;
+  document.getElementById('toastTx').textContent = msg;
+  const t = document.getElementById('toastEl');
+  t.classList.add('show');
+  clearTimeout(window._tt);
+  window._tt = setTimeout(() => t.classList.remove('show'), 3800);
+}
 </script>
 </body>
 </html>
