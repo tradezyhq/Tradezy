@@ -226,13 +226,13 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
       <div class="nav-item active"><span class="ni-ic">🏠</span>Dashboard</div>
       <div class="nav-item" onclick="window.location.href='alltrades-messages.html'"><span class="ni-ic">📨</span>Offers<span class="ni-badge" id="sbOfferBadge" style="display:none">0</span></div>
       <div class="nav-item" onclick="window.location.href='alltrades-messages.html'"><span class="ni-ic">💬</span>Messages<span class="ni-badge" id="sbMsgBadge" style="display:none">0</span></div>
-      <div class="nav-item"><span class="ni-ic">🔄</span>Active Trades<span class="ni-badge green" id="sbTradeBadge" style="display:none">0</span></div>
+      <div class="nav-item" onclick="showToast('🔄','Active trades shown below!')"><span class="ni-ic">🔄</span>Active Trades<span class="ni-badge green" id="sbTradeBadge" style="display:none">0</span></div>
     </div>
     <div class="sb-div"></div>
     <div class="sb-sec">
       <div class="sb-label">My Items</div>
       <div class="nav-item" onclick="window.location.href='alltrades-post.html'"><span class="ni-ic">📦</span>My Listings</div>
-      <div class="nav-item"><span class="ni-ic">📋</span>Trade History</div>
+    <div class="nav-item" onclick="showToast('📋','Trade history coming soon!')"><span class="ni-ic">📋</span>Trade History</div>
     </div>
     <div class="sb-div"></div>
     <div class="sb-sec">
