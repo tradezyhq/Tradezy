@@ -35,34 +35,60 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);}
 .nav-btn.gold{background:var(--gold);color:var(--navy);}
 .nav-btn.gold:hover{background:var(--gold-l);}
 .breadcrumb{background:var(--white);border-bottom:1px solid var(--border);padding:10px 24px;font-size:12px;color:var(--muted);}
-.breadcrumb a{color:var(--blue);cursor:pointer;font-weight:700;}
+.breadcrumb a{color:var(--blue);cursor:pointer;font-weight:700;text-decoration:none;}
 .breadcrumb span{margin:0 6px;color:#cbd5e1;}
 .page{max-width:1180px;margin:0 auto;padding:24px 20px;display:grid;grid-template-columns:1fr 400px;gap:24px;align-items:start;}
+
+/* ── GALLERY ── */
 .img-gallery{background:var(--white);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px;}
-.main-img{width:100%;height:320px;background:linear-gradient(135deg,#1e293b,#0f172a);display:flex;align-items:center;justify-content:center;font-size:8rem;position:relative;overflow:hidden;}
-.main-img img{width:100%;height:100%;object-fit:cover;}
-.img-badges{position:absolute;top:12px;left:12px;display:flex;gap:6px;}
+
+/* KEY FIX: aspect-ratio instead of fixed height so portrait images aren't cropped */
+.main-img-wrap{
+  position:relative;
+  width:100%;
+  aspect-ratio:4/3;          /* fills square-ish but shows full portrait card */
+  background:linear-gradient(135deg,#1e293b,#0f172a);
+  display:flex;align-items:center;justify-content:center;
+  overflow:hidden;
+}
+.main-img-wrap img{
+  width:100%;
+  height:100%;
+  object-fit:contain;         /* contain = full image visible, no crop */
+  object-position:center;
+  background:#0f172a;
+}
+.main-img-emoji{font-size:7rem;}
+.img-badges{position:absolute;top:12px;left:12px;display:flex;gap:6px;z-index:2;}
 .ibadge{font-size:11px;font-weight:800;padding:3px 9px;border-radius:4px;letter-spacing:.4px;}
-.ibadge.ess{background:var(--green);color:#fff;}
 .ibadge.local{background:var(--blue);color:#fff;}
 .ibadge.tcg{background:#7c3aed;color:#fff;}
 .ibadge.cash{background:var(--gold);color:var(--navy);}
-.watch-btn{position:absolute;top:12px;right:12px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#fff;border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center;font-size:1rem;cursor:pointer;transition:all .2s;}
-.watch-btn:hover,.watch-btn.on{background:rgba(239,68,68,.2);border-color:rgba(239,68,68,.5);color:#fca5a5;}
+.ibadge.ess{background:var(--green);color:#fff;}
+.watch-btn{position:absolute;top:12px;right:12px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);color:#fff;border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center;font-size:1rem;cursor:pointer;transition:all .2s;z-index:2;}
+.watch-btn:hover,.watch-btn.on{background:rgba(239,68,68,.25);border-color:rgba(239,68,68,.6);color:#fca5a5;}
 .thumbs{display:flex;gap:8px;padding:12px;overflow-x:auto;}
-.thumb{width:60px;height:60px;border-radius:8px;background:var(--surface);border:2px solid transparent;display:flex;align-items:center;justify-content:center;font-size:1.6rem;cursor:pointer;transition:all .15s;flex-shrink:0;overflow:hidden;}
+.thumb{
+  width:64px;height:64px;border-radius:8px;
+  background:var(--surface);border:2px solid transparent;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.6rem;cursor:pointer;transition:all .15s;
+  flex-shrink:0;overflow:hidden;
+}
 .thumb img{width:100%;height:100%;object-fit:cover;}
 .thumb:hover,.thumb.active{border-color:var(--blue);}
+
+/* ── DETAIL ── */
 .detail-card{background:var(--white);border:1px solid var(--border);border-radius:14px;padding:22px;margin-bottom:16px;}
 .item-category{font-size:11px;font-weight:700;color:var(--blue);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;}
 .item-title{font-family:'Barlow Condensed',sans-serif;font-size:1.8rem;font-weight:900;line-height:1.1;margin-bottom:10px;letter-spacing:-.3px;}
-.item-meta-row{display:flex;align-items:center;gap:12px;margin-bottom:14px;flex-wrap:wrap;}
+.item-meta-row{display:flex;align-items:center;gap:8px;margin-bottom:14px;flex-wrap:wrap;}
 .meta-chip{display:flex;align-items:center;gap:5px;font-size:12px;color:var(--muted);background:var(--surface);border:1px solid var(--border);border-radius:99px;padding:3px 10px;}
 .value-banner{background:linear-gradient(135deg,#1e3a8a,#1d4ed8);border-radius:10px;padding:16px 18px;margin-bottom:14px;display:flex;align-items:center;gap:14px;}
 .vb-icon{font-size:1.8rem;flex-shrink:0;}
 .vb-text .vb-title{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1rem;color:#fff;margin-bottom:2px;}
 .vb-text .vb-desc{font-size:12px;color:#93c5fd;line-height:1.4;}
-.vb-value{text-align:right;flex-shrink:0;}
+.vb-value{text-align:right;flex-shrink:0;margin-left:auto;}
 .vb-num{font-family:'Barlow Condensed',sans-serif;font-size:1.5rem;font-weight:900;color:var(--gold-l);}
 .vb-label{font-size:10px;color:#60a5fa;text-transform:uppercase;letter-spacing:.5px;}
 .item-desc{font-size:14px;color:var(--muted);line-height:1.7;margin-bottom:16px;}
@@ -71,6 +97,8 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);}
 .wants-text{font-size:13px;color:var(--blue);font-weight:700;}
 .wants-tags{display:flex;gap:5px;flex-wrap:wrap;margin-top:7px;}
 .wants-tag{font-size:11px;background:#eff6ff;color:var(--blue);border:1px solid #bfdbfe;border-radius:99px;padding:2px 9px;font-weight:700;}
+
+/* ── SELLER ── */
 .seller-card{background:var(--white);border:1px solid var(--border);border-radius:14px;padding:18px 20px;margin-bottom:16px;}
 .seller-row{display:flex;align-items:center;gap:12px;margin-bottom:12px;}
 .seller-av{width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--navy));color:#fff;font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.1rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
@@ -92,6 +120,8 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);}
 .oi-right{text-align:right;flex-shrink:0;}
 .oi-val{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.95rem;color:var(--blue);}
 .oi-time{font-size:10px;color:var(--muted);margin-top:1px;}
+
+/* ── OFFER PANEL ── */
 .offer-panel{background:var(--white);border:1px solid var(--border);border-radius:14px;overflow:hidden;position:sticky;top:72px;}
 .op-head{background:linear-gradient(135deg,var(--navy),#1a3a6b);padding:18px 20px;}
 .op-head-title{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.15rem;color:#fff;margin-bottom:2px;}
@@ -146,6 +176,7 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);}
 .btn-submit:disabled{opacity:.5;cursor:not-allowed;transform:none;}
 .btn-secondary{width:100%;padding:10px;background:transparent;border:1.5px solid var(--border);border-radius:8px;font-family:'Barlow Condensed',sans-serif;font-size:.95rem;font-weight:700;cursor:pointer;color:var(--muted);transition:all .15s;margin-top:7px;}
 .btn-secondary:hover{border-color:#999;color:var(--text);}
+.own-listing-notice{background:#fffbeb;border:1px solid #fde68a;border-radius:10px;padding:16px;text-align:center;font-size:13px;color:#92400e;}
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(10,22,40,.85);z-index:500;align-items:center;justify-content:center;padding:20px;}
 .modal-overlay.open{display:flex;}
 .modal{background:var(--white);border-radius:16px;width:100%;max-width:520px;max-height:92vh;overflow-y:auto;animation:slideUp .3s ease;}
@@ -158,15 +189,13 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);}
 .modal-btn{width:100%;padding:12px;border:none;border-radius:8px;font-family:'Barlow Condensed',sans-serif;font-size:1.05rem;font-weight:900;cursor:pointer;transition:all .15s;margin-bottom:7px;}
 .modal-btn.gold{background:var(--gold);color:var(--navy);}
 .modal-btn.gold:hover{background:var(--gold-l);}
-.modal-btn.green{background:var(--green);color:#fff;}
 .modal-btn.outline{background:transparent;border:1.5px solid var(--border);color:var(--muted);}
 .modal-btn.outline:hover{border-color:#999;color:var(--text);}
 .loading-state{text-align:center;padding:60px 20px;}
 .loading-spinner{font-size:2rem;margin-bottom:12px;animation:spin 1s linear infinite;}
 @keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
 .not-found{text-align:center;padding:60px 20px;}
-.own-listing-notice{background:#fffbeb;border:1px solid #fde68a;border-radius:10px;padding:14px;text-align:center;font-size:13px;color:#92400e;}
-.toast{position:fixed;bottom:22px;right:22px;background:var(--navy);color:#e2e8f0;border:1px solid #1e3a5f;border-left:4px solid var(--green);border-radius:8px;padding:11px 16px;font-size:13px;z-index:999;display:flex;align-items:center;gap:9px;max-width:290px;box-shadow:0 8px 28px rgba(0,0,0,.25);transform:translateX(120%);transition:transform .3s ease;}
+.toast{position:fixed;bottom:22px;right:22px;background:var(--navy);color:#e2e8f0;border:1px solid #1e3a5f;border-left:4px solid var(--green);border-radius:8px;padding:11px 16px;font-size:13px;z-index:9999;display:flex;align-items:center;gap:9px;max-width:290px;box-shadow:0 8px 28px rgba(0,0,0,.25);transform:translateX(120%);transition:transform .3s ease;}
 .toast.show{transform:translateX(0);}
 @media(max-width:900px){.page{grid-template-columns:1fr;}.offer-panel{position:static;}}
 @media(prefers-color-scheme:dark){
@@ -174,6 +203,7 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);}
   body{background:#0f172a !important;color:#f1f5f9 !important;}
   .detail-card,.seller-card,.img-gallery,.offers-list,.offer-panel,.modal{background:#1e293b !important;border-color:rgba(255,255,255,.08) !important;}
   input,select,textarea{background:#162032 !important;border-color:rgba(255,255,255,.12) !important;color:#f1f5f9 !important;}
+  .main-img-wrap img{background:#0f172a;}
 }
 </style>
 </head>
@@ -189,9 +219,9 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);}
 </div>
 
 <div class="breadcrumb">
-  <a onclick="window.location.href='alltrades.html'">Home</a>
+  <a href="alltrades.html">Home</a>
   <span>›</span>
-  <a onclick="window.location.href='alltrades-dashboard.html'" id="bcCategory">Listings</a>
+  <a href="alltrades-dashboard.html" id="bcCategory">Listings</a>
   <span>›</span>
   <span id="bcTitle">Loading…</span>
 </div>
@@ -215,21 +245,27 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);}
 
   <!-- LEFT: ITEM DETAIL -->
   <div>
+    <!-- GALLERY -->
     <div class="img-gallery">
-      <div class="main-img" id="mainImg">
+      <!-- badges and watch button sit OUTSIDE the swappable image area so they're never wiped -->
+      <div style="position:relative;">
         <div class="img-badges" id="imgBadges"></div>
-        <div class="watch-btn" id="watchBtn" onclick="toggleWatch()">♡</div>
-        <span id="mainEmoji" style="font-size:8rem">📦</span>
+        <button class="watch-btn" id="watchBtn" onclick="toggleWatch()">♡</button>
+        <div class="main-img-wrap" id="mainImgWrap">
+          <span class="main-img-emoji" id="mainEmoji">📦</span>
+        </div>
       </div>
       <div class="thumbs" id="thumbsRow"></div>
     </div>
 
+    <!-- DETAIL CARD -->
     <div class="detail-card">
       <div class="item-category" id="itemCategory">Category</div>
       <div class="item-title" id="itemTitle">Loading…</div>
       <div class="item-meta-row">
         <div class="meta-chip" id="metaCondition">—</div>
         <div class="meta-chip" id="metaTime">—</div>
+        <div class="meta-chip" id="metaViews" style="display:none">—</div>
         <div class="meta-chip" id="metaQty" style="display:none">—</div>
       </div>
 
@@ -254,6 +290,7 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);}
       </div>
     </div>
 
+    <!-- SELLER CARD -->
     <div class="seller-card">
       <div class="seller-row">
         <div class="seller-av" id="sellerAv">?</div>
@@ -273,11 +310,13 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);}
       </div>
     </div>
 
+    <!-- SAFETY -->
     <div class="safety-box">
       <span>🛡️</span>
       <div><strong>Safety tip:</strong> Always meet in a public place — parking lots, libraries, or police station community lots. Never share your home address. Tradezy never asks for payment outside this platform.</div>
     </div>
 
+    <!-- CURRENT OFFERS -->
     <div class="offers-list">
       <div class="ol-title">Current Offers <span class="ol-count" id="offersCount">0</span></div>
       <div id="offersList"><div style="font-size:13px;color:var(--muted);text-align:center;padding:16px">No offers yet — be the first!</div></div>
@@ -296,7 +335,7 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);}
       <div class="own-listing-notice" id="ownListingNotice" style="display:none">
         <div style="font-size:1.5rem;margin-bottom:8px">📦</div>
         <div style="font-weight:700;margin-bottom:4px">This is your listing</div>
-        <div style="font-size:12px;color:var(--muted)">You can't make an offer on your own item.</div>
+        <div style="font-size:12px;color:#92400e;margin-bottom:2px">You can't make an offer on your own item.</div>
         <button class="btn-submit" style="max-width:180px;margin:12px auto 0" onclick="window.location.href='alltrades-dashboard.html'">← My Dashboard</button>
       </div>
 
@@ -416,18 +455,23 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);}
 <div class="toast" id="toastEl"><span id="toastIc">✅</span><span id="toastTx">Done!</span></div>
 
 <script>
-/* ── Supabase ── */
 const sb = window.supabase.createClient(
   'https://equvwaspcoeetfsexqki.supabase.co',
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVxdXZ3YXNwY29lZXRmc2V4cWtpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgyNzc2MjQsImV4cCI6MjA5Mzg1MzYyNH0.TP6Kk3pzHW1PYMUu5D9Vu2lJrazIEagzu5csYhqkrfI'
 );
 
 let currentUser = null;
-let listing = null;
-let seller = null;
-let offerType = 'trade';
+let listing     = null;
+let offerType   = 'trade';
+let watching    = false;
 
-/* ── Session check ── */
+const CAT_EMOJI = {
+  'Food & Water':'🥫','Garden':'🌱','Electronics':'⚡','Tools':'🔧',
+  'Sports':'🚲','Music':'🎵','Gaming':'🎮','Clothing':'👗',
+  'Books':'📚','Trading Cards':'🃏','Other':'📦'
+};
+
+/* ── Session ── */
 (async () => {
   const { data: { session } } = await sb.auth.getSession();
   if (!session) { window.location.href = 'alltrades-auth.html'; return; }
@@ -435,10 +479,8 @@ let offerType = 'trade';
   loadListing();
 })();
 
-/* ── Get listing ID from URL ── */
 function getListingId() {
-  const params = new URLSearchParams(window.location.search);
-  return params.get('id');
+  return new URLSearchParams(window.location.search).get('id');
 }
 
 /* ── Load listing ── */
@@ -447,20 +489,17 @@ async function loadListing() {
   if (!id) { showNotFound(); return; }
 
   try {
-    const { data, error } = await sb
-      .from('listings')
-      .select('*')
-      .eq('id', id)
-      .single();
-
+    const { data, error } = await sb.from('listings').select('*').eq('id', id).single();
     if (error || !data) { showNotFound(); return; }
     listing = data;
 
-    await Promise.all([
-      loadSeller(data.user_id),
-      loadOffers(id)
-    ]);
+    // increment view count (fire-and-forget, don't block render)
+    sb.from('listings')
+      .update({ view_count: (data.view_count || 0) + 1 })
+      .eq('id', id)
+      .then(() => {});
 
+    await Promise.all([loadSeller(data.user_id), loadOffers(id)]);
     renderListing(data);
   } catch(e) {
     showNotFound();
@@ -476,37 +515,36 @@ async function loadSeller(userId) {
       { count: listingCount },
       { data: ratings }
     ] = await Promise.all([
-      sb.from('users').select('display_name, created_at').eq('id', userId).single(),
-      sb.from('trades').select('*', { count: 'exact', head: true }).or(`trader_a_id.eq.${userId},trader_b_id.eq.${userId}`).eq('status', 'completed'),
-      sb.from('listings').select('*', { count: 'exact', head: true }).eq('user_id', userId).eq('status', 'active'),
+      sb.from('users').select('display_name,created_at').eq('id', userId).single(),
+      sb.from('trades').select('*', { count:'exact', head:true }).or(`trader_a_id.eq.${userId},trader_b_id.eq.${userId}`).eq('status','completed'),
+      sb.from('listings').select('*', { count:'exact', head:true }).eq('user_id', userId).eq('status','active'),
       sb.from('ratings').select('stars').eq('rated_user_id', userId)
     ]);
 
-    seller = user;
-    const name = user?.display_name || 'Trader';
+    const name     = user?.display_name || 'Trader';
     const initials = name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0,2);
-    const avg = ratings?.length ? (ratings.reduce((s,r) => s+r.stars, 0) / ratings.length).toFixed(1) : null;
-    const stars = avg ? '★'.repeat(Math.round(avg)) + '☆'.repeat(5-Math.round(avg)) : '—';
-    const joined = user?.created_at ? new Date(user.created_at).toLocaleDateString('en-US', { month:'short', year:'numeric' }) : '—';
+    const avg      = ratings?.length ? (ratings.reduce((s,r) => s+r.stars, 0) / ratings.length).toFixed(1) : null;
+    const stars    = avg ? '★'.repeat(Math.round(avg)) + '☆'.repeat(5-Math.round(avg)) : '—';
+    const joined   = user?.created_at ? new Date(user.created_at).toLocaleDateString('en-US', { month:'short', year:'numeric' }) : '—';
 
-    document.getElementById('sellerAv').textContent = initials;
-    document.getElementById('sellerName').textContent = name;
-    document.getElementById('sellerSince').textContent = `📍 Member since ${joined}`;
-    document.getElementById('sellerStars').textContent = stars;
-    document.getElementById('sellerRating').textContent = avg ? `${avg} · ${ratings.length} ratings` : 'No ratings yet';
-    document.getElementById('sellerTrades').textContent = tradeCount || 0;
-    document.getElementById('sellerRatingNum').textContent = avg ? avg + '★' : '—';
-    document.getElementById('sellerListings').textContent = listingCount || 0;
-    document.getElementById('opSub').textContent = `${tradeCount || 0} completed trades · ${avg ? avg + '★ rating' : 'No ratings yet'}`;
+    document.getElementById('sellerAv').textContent         = initials;
+    document.getElementById('sellerName').textContent       = name;
+    document.getElementById('sellerSince').textContent      = `📍 Member since ${joined}`;
+    document.getElementById('sellerStars').textContent      = stars;
+    document.getElementById('sellerRating').textContent     = avg ? `${avg} · ${ratings.length} ratings` : 'No ratings yet';
+    document.getElementById('sellerTrades').textContent     = tradeCount  || 0;
+    document.getElementById('sellerRatingNum').textContent  = avg ? avg + '★' : '—';
+    document.getElementById('sellerListings').textContent   = listingCount || 0;
+    document.getElementById('opSub').textContent            = `${tradeCount || 0} completed trades · ${avg ? avg+'★ rating' : 'No ratings yet'}`;
   } catch(e) {}
 }
 
-/* ── Load offers ── */
+/* ── Load offers — join users table for real display names ── */
 async function loadOffers(listingId) {
   try {
     const { data: offers, count } = await sb
       .from('offers')
-      .select('*', { count: 'exact' })
+      .select('*, offerer:offerer_id(display_name)', { count:'exact' })
       .eq('listing_id', listingId)
       .eq('status', 'pending')
       .order('created_at', { ascending: false })
@@ -515,85 +553,89 @@ async function loadOffers(listingId) {
     document.getElementById('offersCount').textContent = count || 0;
 
     if (!offers?.length) {
-      document.getElementById('offersList').innerHTML = '<div style="font-size:13px;color:var(--muted);text-align:center;padding:16px">No offers yet — be the first!</div>';
+      document.getElementById('offersList').innerHTML =
+        '<div style="font-size:13px;color:var(--muted);text-align:center;padding:16px">No offers yet — be the first!</div>';
       return;
     }
 
     const colors = ['#1a56db','#16a34a','#ea580c','#f59e0b','#7c3aed'];
     document.getElementById('offersList').innerHTML = offers.map((o, i) => {
-      const initials = o.offerer_id?.slice(0,2).toUpperCase() || '??';
+      const name     = o.offerer?.display_name || 'Trader';
+      const initials = name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0,2);
       const offerDesc = o.offer_type === 'cash'
         ? `💵 Cash offer: $${Number(o.cash_amount).toFixed(2)}`
         : o.offer_type === 'tc'
-        ? `🔄💵 ${o.offered_item_title || 'Item'} + $${Number(o.cash_amount).toFixed(2)}`
+        ? `🔄💵 ${o.offered_item_title || 'Item'} + $${Number(o.cash_amount||0).toFixed(2)}`
         : `🔄 ${o.offered_item_title || 'Item trade'}`;
-      return `<div class="offer-item">
-        <div class="oi-av" style="background:${colors[i%colors.length]}">${initials}</div>
-        <div class="oi-info">
-          <div class="oi-name">Trader ${initials}</div>
-          <div class="oi-detail">${offerDesc}</div>
-        </div>
-        <div class="oi-right">
-          <div class="oi-val">~$${Number(o.offered_item_value || o.cash_amount || 0).toFixed(0)}</div>
-          <div class="oi-time">${timeAgo(o.created_at)}</div>
-        </div>
-      </div>`;
+      return `
+        <div class="offer-item">
+          <div class="oi-av" style="background:${colors[i % colors.length]}">${initials}</div>
+          <div class="oi-info">
+            <div class="oi-name">${name}</div>
+            <div class="oi-detail">${offerDesc}</div>
+          </div>
+          <div class="oi-right">
+            <div class="oi-val">~$${Number(o.offered_item_value || o.cash_amount || 0).toFixed(0)}</div>
+            <div class="oi-time">${timeAgo(o.created_at)}</div>
+          </div>
+        </div>`;
     }).join('');
   } catch(e) {}
 }
 
 /* ── Render listing ── */
 function renderListing(l) {
+  const emoji = CAT_EMOJI[l.category] || '📦';
+  const isTCG = l.category === 'Trading Cards';
+
   // SEO
   document.title = `Tradezy — ${l.title} | Local Trading`;
-  document.querySelector('meta[name="description"]').content = `${l.title} — ${l.description?.slice(0,120) || 'View this listing on Tradezy and make a trade offer.'}`;
+  document.querySelector('meta[name="description"]').content =
+    `${l.title} — ${l.description?.slice(0,120) || 'View this listing on Tradezy and make a trade offer.'}`;
 
   // Breadcrumb
-  document.getElementById('bcCategory').textContent = l.category || 'Listings';
-  document.getElementById('bcTitle').textContent = l.title;
+  document.getElementById('bcCategory').textContent = l.category || 'Browse';
+  document.getElementById('bcTitle').textContent    = l.title;
 
-  // Category emoji
-  const catEmoji = {
-    'Food & Water':'🥫','Garden':'🌱','Electronics':'⚡','Tools':'🔧',
-    'Sports':'🚲','Music':'🎵','Gaming':'🎮','Clothing':'👗',
-    'Books':'📚','Trading Cards':'🃏','Other':'📦'
-  };
-  const emoji = catEmoji[l.category] || '📦';
-  document.getElementById('mainEmoji').textContent = emoji;
-
-  // Photos — if real photos exist show them
-  if (l.photos?.length > 0) {
-    const main = document.getElementById('mainImg');
-    main.innerHTML = `
-      <div class="img-badges" id="imgBadges"></div>
-      <div class="watch-btn" id="watchBtn" onclick="toggleWatch()">♡</div>
-      <img src="${l.photos[0]}" style="width:100%;height:100%;object-fit:cover">
-    `;
-    const thumbs = document.getElementById('thumbsRow');
-    thumbs.innerHTML = l.photos.slice(0,6).map((p, i) =>
-      `<div class="thumb ${i===0?'active':''}" onclick="switchPhoto('${p}',this)"><img src="${p}"></div>`
-    ).join('');
-  } else {
-    document.getElementById('thumbsRow').innerHTML = `<div class="thumb active">${emoji}</div>`;
-  }
-
-  // Badges
-  const isTCG = l.category === 'Trading Cards';
-  const isEss = ['Food & Water','Garden'].includes(l.category);
+  // Badges (built once, sit above the image wrap — never wiped)
   const hasCash = l.trade_type === 'cash' || l.trade_type === 'item_plus_cash';
-  const badges = [
+  const isEss   = ['Food & Water','Garden'].includes(l.category);
+  document.getElementById('imgBadges').innerHTML = [
     '<span class="ibadge local">LOCAL</span>',
-    isEss ? '<span class="ibadge ess">ESSENTIAL</span>' : '',
-    isTCG ? '<span class="ibadge tcg">🃏 TCG</span>' : '',
+    isEss   ? '<span class="ibadge ess">ESSENTIAL</span>'  : '',
+    isTCG   ? '<span class="ibadge tcg">🃏 TCG</span>'    : '',
     hasCash ? '<span class="ibadge cash">💵 CASH OK</span>' : ''
   ].join('');
-  document.getElementById('imgBadges').innerHTML = badges;
 
-  // Details
+  // Photos — only touch the inner wrap, badges/watch stay put
+  const wrap = document.getElementById('mainImgWrap');
+  if (l.photos?.length > 0) {
+    // show first photo; contain so full card is visible
+    wrap.innerHTML = `<img src="${l.photos[0]}" alt="${l.title}">`;
+
+    // thumbnails
+    document.getElementById('thumbsRow').innerHTML = l.photos.slice(0,6).map((p, i) =>
+      `<div class="thumb ${i===0?'active':''}" onclick="switchPhoto('${p}',this)">
+         <img src="${p}" alt="photo ${i+1}" loading="lazy">
+       </div>`
+    ).join('');
+  } else {
+    wrap.innerHTML = `<span class="main-img-emoji">${emoji}</span>`;
+    document.getElementById('thumbsRow').innerHTML =
+      `<div class="thumb active">${emoji}</div>`;
+  }
+
+  // Detail card
   document.getElementById('itemCategory').textContent = `${emoji} ${l.category}${isTCG?' · Trading Cards':''}`;
-  document.getElementById('itemTitle').textContent = l.title;
-  document.getElementById('metaCondition').innerHTML = `<span>✨</span> ${l.condition || 'Condition not specified'}`;
-  document.getElementById('metaTime').innerHTML = `<span>⏰</span> ${timeAgo(l.created_at)}`;
+  document.getElementById('itemTitle').textContent    = l.title;
+  document.getElementById('metaCondition').innerHTML  = `<span>✨</span> ${l.condition || 'Condition not specified'}`;
+  document.getElementById('metaTime').innerHTML       = `<span>⏰</span> ${timeAgo(l.created_at)}`;
+
+  // View count chip
+  const views = l.view_count || 0;
+  const viewChip = document.getElementById('metaViews');
+  viewChip.innerHTML = `<span>👁</span> ${views + 1} view${views !== 0 ? 's' : ''}`;
+  viewChip.style.display = 'flex';
 
   if (l.quantity > 1) {
     document.getElementById('metaQty').innerHTML = `<span>📦</span> Qty: ${l.quantity}`;
@@ -601,41 +643,57 @@ function renderListing(l) {
   }
 
   document.getElementById('itemValue').textContent = l.estimated_value ? `$${Number(l.estimated_value).toFixed(0)}` : '—';
-  document.getElementById('itemDesc').textContent = l.description || 'No description provided.';
+  document.getElementById('itemDesc').textContent  = l.description || 'No description provided.';
 
   // Wants
   if (l.wants) {
     document.getElementById('wantsBox').style.display = 'block';
-    document.getElementById('wantsText').textContent = `"${l.wants}"`;
+    document.getElementById('wantsText').textContent  = `"${l.wants}"`;
     if (l.tags?.length) {
       document.getElementById('wantsTags').innerHTML = l.tags.map(t =>
-        `<span class="wants-tag">${t}</span>`
-      ).join('');
+        `<span class="wants-tag">${t}</span>`).join('');
     }
   }
 
-  // Trade comparison values
-  document.getElementById('theirAmt').textContent = l.estimated_value ? `$${Number(l.estimated_value).toFixed(0)}` : '$—';
+  // Trade comparison seed values
+  document.getElementById('theirAmt').textContent      = l.estimated_value ? `$${Number(l.estimated_value).toFixed(0)}` : '$—';
   document.getElementById('theirItemLabel').textContent = l.title.slice(0,25);
 
-  // Check if own listing
+  // Own listing check
   if (l.user_id === currentUser.id) {
     document.getElementById('ownListingNotice').style.display = 'block';
-    document.getElementById('offerForm').style.display = 'none';
+    document.getElementById('offerForm').style.display        = 'none';
   }
 
-  // Show offer tabs based on trade_type
+  // Hide tabs that don't apply to this listing's trade_type
   if (l.trade_type === 'cash') {
     setOfferType('cash');
     document.getElementById('tab-trade').style.display = 'none';
-    document.getElementById('tab-tc').style.display = 'none';
+    document.getElementById('tab-tc').style.display    = 'none';
   } else if (l.trade_type === 'item') {
-    document.getElementById('tab-cash').style.display = 'none';
+    document.getElementById('tab-cash').style.display  = 'none';
   }
 
   // Show page
-  document.getElementById('loadingState').style.display = 'none';
-  document.getElementById('pageContent').style.display = 'grid';
+  document.getElementById('loadingState').style.display  = 'none';
+  document.getElementById('pageContent').style.display   = 'grid';
+}
+
+/* ── Photo switcher — only swaps src, no innerHTML rebuild ── */
+function switchPhoto(src, el) {
+  document.querySelectorAll('.thumb').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  const img = document.getElementById('mainImgWrap').querySelector('img');
+  if (img) img.src = src;
+}
+
+/* ── Watch toggle ── */
+function toggleWatch() {
+  watching = !watching;
+  const btn = document.getElementById('watchBtn');
+  btn.textContent = watching ? '♥' : '♡';
+  btn.classList.toggle('on', watching);
+  showToast(watching ? '♥' : '♡', watching ? 'Added to watchlist!' : 'Removed from watchlist');
 }
 
 /* ── Offer type ── */
@@ -644,33 +702,34 @@ function setOfferType(type) {
   document.querySelectorAll('.otab').forEach(t => t.classList.remove('active'));
   const tab = document.getElementById('tab-' + type);
   if (tab) tab.classList.add('active');
-  document.getElementById('yourItemSection').style.display = type === 'cash' ? 'none' : 'block';
+  document.getElementById('yourItemSection').style.display  = type === 'cash' ? 'none' : 'block';
   document.getElementById('cashBox').classList.toggle('show', type === 'tc');
-  document.getElementById('cashOnlySection').style.display = type === 'cash' ? 'block' : 'none';
+  document.getElementById('cashOnlySection').style.display  = type === 'cash' ? 'block' : 'none';
+  if (type !== 'trade') document.getElementById('compareBox').style.display = 'none';
   updateFees();
 }
 
 /* ── Trade comparison ── */
 function updateComparison() {
-  const yourVal = parseFloat(document.getElementById('offerVal')?.value) || 0;
+  const yourVal  = parseFloat(document.getElementById('offerVal')?.value) || 0;
   const theirVal = listing?.estimated_value ? Number(listing.estimated_value) : 0;
   const itemText = document.getElementById('offerItem')?.value || 'Your offer';
 
   if (yourVal > 0 && offerType !== 'cash' && theirVal > 0) {
     document.getElementById('compareBox').style.display = 'block';
-    document.getElementById('yourAmt').textContent = `$${yourVal.toFixed(0)}`;
+    document.getElementById('yourAmt').textContent      = `$${yourVal.toFixed(0)}`;
     document.getElementById('yourItemLabel').textContent = itemText.slice(0,22);
 
     const diff = theirVal - yourVal;
-    const bal = document.getElementById('tcBalance');
+    const bal  = document.getElementById('tcBalance');
     if (Math.abs(diff) <= 3) {
-      bal.className = 'tc-balance fair';
+      bal.className   = 'tc-balance fair';
       bal.textContent = '✅ Even trade — fair for both sides!';
     } else if (diff > 0) {
-      bal.className = 'tc-balance you-pay';
+      bal.className   = 'tc-balance you-pay';
       bal.textContent = `⚖️ Their item is worth ~$${diff.toFixed(0)} more — consider adding cash`;
     } else {
-      bal.className = 'tc-balance they-pay';
+      bal.className   = 'tc-balance they-pay';
       bal.textContent = `⚖️ Your item is worth ~$${Math.abs(diff).toFixed(0)} more — great deal for them!`;
     }
   } else {
@@ -681,14 +740,15 @@ function updateComparison() {
 /* ── Fee calc ── */
 function updateFees() {
   let base = 0;
-  if (offerType === 'trade') base = parseFloat(document.getElementById('offerVal')?.value) || 0;
-  if (offerType === 'tc') base = (parseFloat(document.getElementById('offerVal')?.value) || 0) + (parseFloat(document.getElementById('cashAmt')?.value) || 0);
-  if (offerType === 'cash') base = parseFloat(document.getElementById('cashOnlyAmt')?.value) || 0;
+  if (offerType === 'trade') base = parseFloat(document.getElementById('offerVal')?.value)     || 0;
+  if (offerType === 'tc')    base = (parseFloat(document.getElementById('offerVal')?.value) || 0)
+                                  + (parseFloat(document.getElementById('cashAmt')?.value)  || 0);
+  if (offerType === 'cash')  base = parseFloat(document.getElementById('cashOnlyAmt')?.value)  || 0;
 
-  const fee = base * 0.05;
+  const fee   = base * 0.05;
   const total = base + fee;
-  document.getElementById('feeBase').textContent = `$${base.toFixed(2)}`;
-  document.getElementById('feePct').textContent = `$${fee.toFixed(2)}`;
+  document.getElementById('feeBase').textContent  = `$${base.toFixed(2)}`;
+  document.getElementById('feePct').textContent   = `$${fee.toFixed(2)}`;
   document.getElementById('feeTotal').textContent = `$${total.toFixed(2)}`;
 }
 
@@ -697,12 +757,11 @@ async function submitOffer() {
   if (!listing) return;
 
   const itemTitle = document.getElementById('offerItem')?.value.trim();
-  const itemVal = parseFloat(document.getElementById('offerVal')?.value) || 0;
-  const cashAdd = parseFloat(document.getElementById('cashAmt')?.value) || 0;
-  const cashOnly = parseFloat(document.getElementById('cashOnlyAmt')?.value) || 0;
-  const msg = document.getElementById('offerMsg')?.value.trim();
+  const itemVal   = parseFloat(document.getElementById('offerVal')?.value)      || 0;
+  const cashAdd   = parseFloat(document.getElementById('cashAmt')?.value)       || 0;
+  const cashOnly  = parseFloat(document.getElementById('cashOnlyAmt')?.value)   || 0;
+  const msg       = document.getElementById('offerMsg')?.value.trim();
 
-  // Validate
   if (offerType !== 'cash' && !itemTitle) {
     showToast('⚠️', 'Please describe what you are offering to trade.');
     return;
@@ -714,72 +773,55 @@ async function submitOffer() {
 
   const btn = document.getElementById('submitOfferBtn');
   btn.textContent = '⏳ Sending…';
-  btn.disabled = true;
+  btn.disabled    = true;
 
   try {
-    const offerData = {
-      listing_id: listing.id,
-      offerer_id: currentUser.id,
-      status: 'pending',
-      offer_type: offerType,
-      offered_item_title: offerType !== 'cash' ? itemTitle : null,
-      offered_item_value: offerType !== 'cash' ? itemVal : cashOnly,
-      cash_amount: offerType === 'tc' ? cashAdd : offerType === 'cash' ? cashOnly : 0,
-      message: msg || null,
-      offered_condition: null,
-      offered_photos: null
-    };
-
-    const { error } = await sb.from('offers').insert(offerData);
+    const { error } = await sb.from('offers').insert({
+      listing_id:          listing.id,
+      offerer_id:          currentUser.id,
+      status:              'pending',
+      offer_type:          offerType,
+      offered_item_title:  offerType !== 'cash' ? itemTitle  : null,
+      offered_item_value:  offerType !== 'cash' ? itemVal    : cashOnly,
+      cash_amount:         offerType === 'tc'   ? cashAdd    : offerType === 'cash' ? cashOnly : 0,
+      message:             msg || null,
+      offered_condition:   null,
+      offered_photos:      null
+    });
 
     if (error) throw error;
 
     openModal('successModal');
-    loadOffers(listing.id); // refresh offers list
+    loadOffers(listing.id); // refresh count + list
   } catch(e) {
     showToast('⚠️', 'Error sending offer. Please try again.');
   } finally {
     btn.textContent = '🤝 Send Trade Offer';
-    btn.disabled = false;
+    btn.disabled    = false;
   }
 }
 
-/* ── Watch ── */
-function toggleWatch() {
-  const btn = document.getElementById('watchBtn');
-  btn.classList.toggle('on');
-  btn.textContent = btn.classList.contains('on') ? '♥' : '♡';
-  showToast(btn.classList.contains('on') ? '♥' : '♡', btn.classList.contains('on') ? 'Added to watchlist!' : 'Removed from watchlist');
-}
-
-/* ── Photo switcher ── */
-function switchPhoto(src, el) {
-  document.querySelectorAll('.thumb').forEach(t => t.classList.remove('active'));
-  el.classList.add('active');
-  const main = document.getElementById('mainImg');
-  const img = main.querySelector('img');
-  if (img) img.src = src;
-}
-
-/* ── Utilities ── */
+/* ── Helpers ── */
 function showNotFound() {
-  document.getElementById('loadingState').style.display = 'none';
+  document.getElementById('loadingState').style.display  = 'none';
   document.getElementById('notFoundState').style.display = 'block';
 }
 
 function timeAgo(ts) {
   if (!ts) return '';
   const m = Math.floor((Date.now() - new Date(ts)) / 60000);
-  if (m < 1) return 'just now';
+  if (m < 1)  return 'just now';
   if (m < 60) return m + 'm ago';
   const h = Math.floor(m/60);
   if (h < 24) return h + 'h ago';
   return Math.floor(h/24) + 'd ago';
 }
 
-function openModal(id) { document.getElementById(id).classList.add('open'); }
+function openModal(id)  { document.getElementById(id).classList.add('open'); }
 function closeModal(id) { document.getElementById(id).classList.remove('open'); }
-document.querySelectorAll('.modal-overlay').forEach(o => o.addEventListener('click', e => { if (e.target === o) o.classList.remove('open'); }));
+document.querySelectorAll('.modal-overlay').forEach(o =>
+  o.addEventListener('click', e => { if (e.target === o) o.classList.remove('open'); })
+);
 
 function showToast(icon, msg) {
   document.getElementById('toastIc').textContent = icon;
