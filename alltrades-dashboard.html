@@ -86,14 +86,16 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
 .sec-cnt.gold{background:var(--gold);color:var(--navy);}.sec-cnt.green{background:var(--green);}
 .sec-lnk{font-size:12px;color:var(--blue);font-weight:700;cursor:pointer;}
 .panel{background:var(--white);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:18px;}
-.offer-row{display:flex;align-items:center;gap:11px;padding:12px 15px;border-bottom:1px solid var(--border);transition:background .15s;}
+
+/* ── OFFER ROWS ── */
+.offer-row{display:flex;align-items:center;gap:11px;padding:12px 15px;border-bottom:1px solid var(--border);transition:background .15s;cursor:pointer;}
 .offer-row:last-child{border-bottom:none;}
 .offer-row:hover{background:var(--surface);}
-.or-em{width:42px;height:42px;background:var(--surface);border:1px solid var(--border);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0;}
+.or-em{width:42px;height:42px;background:var(--surface);border:1px solid var(--border);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0;overflow:hidden;}
+.or-em img{width:100%;height:100%;object-fit:cover;border-radius:8px;}
 .or-info{flex:1;min-width:0;}
 .or-ttl{font-weight:700;font-size:13px;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .or-meta{font-size:11px;color:var(--muted);display:flex;align-items:center;gap:5px;flex-wrap:wrap;}
-.fr-av{width:15px;height:15px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.5rem;font-weight:800;font-family:'Barlow Condensed',sans-serif;color:#fff;flex-shrink:0;background:var(--blue);}
 .or-rt{text-align:right;flex-shrink:0;}
 .or-st{font-size:10px;font-weight:800;padding:2px 7px;border-radius:4px;letter-spacing:.3px;}
 .st-pend{background:#fffbeb;color:#92400e;border:1px solid #fde68a;}
@@ -105,6 +107,7 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
 .btn-acc{background:var(--green);color:#fff;}
 .btn-dec{background:transparent;border:1px solid var(--border);color:var(--muted);}
 .btn-dec:hover{border-color:var(--red);color:var(--red);}
+
 .two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:18px;}
 .trade-card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:13px 15px;margin-bottom:9px;transition:all .15s;}
 .trade-card:hover{border-color:var(--blue);}
@@ -117,7 +120,6 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
 .tc-itm{flex:1;background:var(--surface);border:1px solid var(--border);border-radius:7px;padding:7px;text-align:center;}
 .tc-itm-nm{font-size:11px;font-weight:700;margin-bottom:1px;}
 .tc-itm-vl{font-size:10px;color:var(--muted);}
-.tc-sw{color:var(--muted);font-size:.9rem;flex-shrink:0;}
 .tc-prog{margin-bottom:7px;}
 .tc-prog-lbl{font-size:10px;color:var(--muted);margin-bottom:3px;display:flex;justify-content:space-between;}
 .tc-prog-bar{height:4px;background:var(--border);border-radius:2px;overflow:hidden;}
@@ -127,7 +129,7 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
 .tc-btn{flex:1;padding:6px;border-radius:6px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.75rem;cursor:pointer;border:none;transition:all .15s;text-align:center;}
 .tcb-msg{background:var(--surface);border:1px solid var(--border);color:var(--muted);}
 .tcb-confirm{background:var(--green);color:#fff;}
-.tcb-meet{background:#fffbeb;border:1px solid #fde68a;color:#92400e;}
+
 .msg-panel{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:13px;}
 .msg-item{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:8px;cursor:pointer;transition:all .15s;margin-bottom:5px;}
 .msg-item:hover{background:var(--surface);}
@@ -138,25 +140,32 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
 .mi-nm{font-weight:700;font-size:13px;margin-bottom:1px;}
 .mi-prev{font-size:11px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .mi-time{font-size:10px;color:var(--muted);flex-shrink:0;}
+
+/* ── LISTING ROWS ── */
 .listings-panel{background:var(--white);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:18px;}
-.lr{display:flex;align-items:center;gap:11px;padding:11px 15px;border-bottom:1px solid var(--border);transition:background .15s;}
+.lr{display:flex;align-items:center;gap:11px;padding:11px 15px;border-bottom:1px solid var(--border);transition:background .15s;cursor:pointer;text-decoration:none;color:inherit;}
 .lr:last-child{border-bottom:none;}
 .lr:hover{background:var(--surface);}
-.lr-em{width:46px;height:46px;background:var(--surface);border:1px solid var(--border);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0;}
+.lr-thumb{width:46px;height:46px;background:var(--surface);border:1px solid var(--border);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0;overflow:hidden;}
+.lr-thumb img{width:100%;height:100%;object-fit:cover;border-radius:8px;}
 .lr-info{flex:1;min-width:0;}
 .lr-ttl{font-weight:700;font-size:13px;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.lr-meta{font-size:11px;color:var(--muted);display:flex;gap:7px;flex-wrap:wrap;}
+.lr-meta{font-size:11px;color:var(--muted);display:flex;gap:7px;flex-wrap:wrap;align-items:center;}
+.lr-views{font-size:10px;color:var(--light);display:flex;align-items:center;gap:2px;}
 .lr-rt{text-align:right;flex-shrink:0;}
 .lr-val{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.93rem;margin-bottom:2px;}
 .lr-st{font-size:10px;font-weight:800;padding:2px 7px;border-radius:3px;display:inline-block;margin-bottom:4px;}
 .lst-active{background:#f0fdf4;color:#14532d;border:1px solid #bbf7d0;}
 .lst-paused{background:#f1f5f9;color:var(--muted);border:1px solid var(--border);}
 .lr-acts{display:flex;gap:4px;justify-content:flex-end;}
-.lr-btn{padding:3px 8px;border-radius:4px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.68rem;cursor:pointer;border:none;transition:all .15s;}
+.lr-btn{padding:3px 8px;border-radius:4px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.68rem;cursor:pointer;border:none;transition:all .15s;text-decoration:none;display:inline-block;}
+.lrb-view{background:#eff6ff;border:1px solid #bfdbfe;color:var(--blue);}
+.lrb-view:hover{background:#dbeafe;}
 .lrb-edit{background:var(--surface);border:1px solid var(--border);color:var(--muted);}
 .lrb-edit:hover{border-color:var(--blue);color:var(--blue);}
 .lrb-del{background:transparent;border:1px solid transparent;color:var(--light);}
 .lrb-del:hover{border-color:#fecaca;color:var(--red);}
+
 .two-col-bot{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:18px;}
 .earnings-card{background:linear-gradient(135deg,#14532d,#166534);border-radius:12px;padding:15px;margin-bottom:12px;}
 .ec-ttl{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.85rem;color:#86efac;text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px;}
@@ -270,12 +279,14 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
       <div class="stat-card sc-red"><div class="sc-icon">💰</div><div class="sc-num" id="statValue" style="color:var(--orange)">—</div><div class="sc-lbl">Trade Value (30d)</div><div class="sc-change" id="statValueSub">Loading…</div></div>
     </div>
 
+    <!-- OFFERS -->
     <div class="sec-hdr">
       <div class="sec-ttl">📨 Incoming Offers <span class="sec-cnt" id="offerCount">0</span></div>
       <div class="sec-lnk" onclick="window.location.href='alltrades-messages.html'">View all →</div>
     </div>
     <div class="panel" id="offersPanel"><div class="loading">Loading offers…</div></div>
 
+    <!-- TRADES + MESSAGES -->
     <div class="two-col">
       <div>
         <div class="sec-hdr"><div class="sec-ttl">🔄 Active Trades <span class="sec-cnt green" id="tradeCount">0</span></div><div class="sec-lnk">View all →</div></div>
@@ -287,12 +298,14 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
       </div>
     </div>
 
+    <!-- LISTINGS -->
     <div class="sec-hdr">
       <div class="sec-ttl">📦 My Listings <span class="sec-cnt gold" id="listingCount">0</span></div>
       <div class="sec-lnk" onclick="window.location.href='alltrades-post.html'">+ Add New →</div>
     </div>
     <div class="listings-panel" id="listingsPanel"><div class="loading">Loading listings…</div></div>
 
+    <!-- VALUE + RATINGS -->
     <div class="two-col-bot">
       <div>
         <div class="sec-hdr"><div class="sec-ttl">💰 Trade Value Summary</div></div>
@@ -351,7 +364,6 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
 <div class="toast" id="toastEl"><span id="toastIc">✅</span><span id="toastTx">Done!</span></div>
 
 <script>
-/* ── sb = Supabase client (avoid conflict with global window.supabase from UMD bundle) ── */
 const sb = window.supabase.createClient(
   'https://equvwaspcoeetfsexqki.supabase.co',
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVxdXZ3YXNwY29lZXRmc2V4cWtpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgyNzc2MjQsImV4cCI6MjA5Mzg1MzYyNH0.TP6Kk3pzHW1PYMUu5D9Vu2lJrazIEagzu5csYhqkrfI'
@@ -359,6 +371,9 @@ const sb = window.supabase.createClient(
 
 let currentUser = null;
 let currentTradeId = null;
+
+const CAT_EMOJI = {'Food & Water':'🥫','Garden':'🌱','Electronics':'⚡','Tools':'🔧','Sports':'🚲','Music':'🎵','Gaming':'🎮','Clothing':'👗','Books':'📚','Trading Cards':'🃏','Other':'📦'};
+const AV_COLORS = ['var(--blue)','var(--green)','var(--orange)','var(--gold)','#64748b'];
 
 (async () => {
   const { data: { session } } = await sb.auth.getSession();
@@ -379,10 +394,10 @@ function setGreeting() {
 
 async function loadUserProfile() {
   try {
-    const { data } = await sb.from('users').select('display_name, location_city, location_state').eq('id', currentUser.id).single();
+    const { data } = await sb.from('users').select('display_name,location_city,location_state').eq('id', currentUser.id).single();
     const name = data?.display_name || currentUser.email?.split('@')[0] || 'Trader';
     const initials = name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0,2);
-    const location = data?.location_city ? `📍 ${data.location_city}${data.location_state ? ', ' + data.location_state : ''}` : '📍 Location not set';
+    const location = data?.location_city ? `📍 ${data.location_city}${data.location_state ? ', '+data.location_state : ''}` : '📍 Location not set';
     document.getElementById('userName').textContent = name;
     document.getElementById('userAv').textContent = initials;
     document.getElementById('wbName').textContent = name;
@@ -395,13 +410,22 @@ async function loadUserProfile() {
 
 async function loadOffers() {
   try {
-    const { data: listings } = await sb.from('listings').select('id').eq('user_id', currentUser.id);
-    const listingIds = listings?.map(l => l.id) || [];
+    // get this user's listing IDs
+    const { data: myListings } = await sb.from('listings').select('id').eq('user_id', currentUser.id);
+    const listingIds = myListings?.map(l => l.id) || [];
     let offers = [];
     if (listingIds.length > 0) {
-      const { data } = await sb.from('offers').select('*').in('listing_id', listingIds).eq('status', 'pending').order('created_at', { ascending: false }).limit(5);
+      // join listing title so we have the actual item name in the offer row
+      const { data } = await sb
+        .from('offers')
+        .select('*, listing:listing_id(title, photos, category)')
+        .in('listing_id', listingIds)
+        .eq('status', 'pending')
+        .order('created_at', { ascending: false })
+        .limit(5);
       offers = data || [];
     }
+
     const count = offers.length;
     document.getElementById('offerCount').textContent = count;
     document.getElementById('statOffers').textContent = count;
@@ -411,134 +435,302 @@ async function loadOffers() {
       document.getElementById('sbOfferBadge').style.display = 'inline';
       addAlert('urgent', '📨', `<strong>${count} offer${count>1?'s':''} waiting</strong> — Review and accept or decline.`, 'Review Now', "document.getElementById('offersPanel').scrollIntoView({behavior:'smooth'})");
     }
+
     const panel = document.getElementById('offersPanel');
-    if (!offers.length) { panel.innerHTML = `<div class="empty-state"><div class="empty-icon">📭</div><div class="empty-txt">No pending offers yet.<br>Post a listing to start receiving offers!</div></div>`; return; }
-    panel.innerHTML = offers.map(o => `
-      <div class="offer-row">
-        <div class="or-em">📦</div>
-        <div class="or-info"><div class="or-ttl">${o.title || 'Offer received'}</div><div class="or-meta"><span>Offer: ${o.cash_amount ? '$'+Number(o.cash_amount).toFixed(2) : '—'}</span><span>·</span><span>${timeAgo(o.created_at)}</span></div></div>
-        <div class="or-rt"><div class="or-st st-pend">PENDING</div><div class="or-acts"><button class="or-btn btn-acc" onclick="acceptOffer('${o.id}')">✓ Accept</button><button class="or-btn btn-dec" onclick="declineOffer('${o.id}',this)">✕</button></div></div>
-      </div>`).join('');
-  } catch(e) { document.getElementById('offersPanel').innerHTML = `<div class="empty-state"><div class="empty-txt">Could not load offers.</div></div>`; }
+    if (!offers.length) {
+      panel.innerHTML = `<div class="empty-state"><div class="empty-icon">📭</div><div class="empty-txt">No pending offers yet.<br>Post a listing to start receiving offers!</div></div>`;
+      return;
+    }
+
+    panel.innerHTML = offers.map(o => {
+      const listingTitle = o.listing?.title || 'Listing';
+      const firstPhoto = o.listing?.photos?.[0];
+      const cat = o.listing?.category || '';
+      const thumbHtml = firstPhoto
+        ? `<img src="${firstPhoto}" alt="${listingTitle}" loading="lazy">`
+        : (CAT_EMOJI[cat] || '📦');
+      const offerDesc = o.offer_type === 'cash'
+        ? `Cash offer: $${Number(o.cash_amount||0).toFixed(2)}`
+        : o.offer_type === 'item'
+          ? `Item trade: ${o.offered_item_title || 'Item'}`
+          : `Trade offer`;
+      return `
+        <div class="offer-row" onclick="window.location.href='alltrades-item.html?id=${o.listing_id}'">
+          <div class="or-em">${thumbHtml}</div>
+          <div class="or-info">
+            <div class="or-ttl">${listingTitle}</div>
+            <div class="or-meta">
+              <span>${offerDesc}</span>
+              <span>·</span>
+              <span>${timeAgo(o.created_at)}</span>
+              ${o.message ? `<span>·</span><span style="font-style:italic">"${o.message.slice(0,40)}${o.message.length>40?'…':''}"</span>` : ''}
+            </div>
+          </div>
+          <div class="or-rt">
+            <div class="or-st st-pend">PENDING</div>
+            <div class="or-acts">
+              <button class="or-btn btn-acc" onclick="event.stopPropagation();acceptOffer('${o.id}')">✓ Accept</button>
+              <button class="or-btn btn-dec" onclick="event.stopPropagation();declineOffer('${o.id}',this)">✕</button>
+            </div>
+          </div>
+        </div>`;
+    }).join('');
+  } catch(e) {
+    document.getElementById('offersPanel').innerHTML = `<div class="empty-state"><div class="empty-txt">Could not load offers.</div></div>`;
+  }
 }
 
 async function loadTrades() {
   try {
-    const { data: trades } = await sb.from('trades').select('*').or(`trader_a_id.eq.${currentUser.id},trader_b_id.eq.${currentUser.id}`).in('status', ['accepted','meetup_scheduled']).order('created_at', { ascending: false }).limit(5);
+    const { data: trades } = await sb.from('trades').select('*')
+      .or(`trader_a_id.eq.${currentUser.id},trader_b_id.eq.${currentUser.id}`)
+      .in('status', ['accepted','meetup_scheduled'])
+      .order('created_at', { ascending: false })
+      .limit(5);
+
     const count = trades?.length || 0;
     document.getElementById('tradeCount').textContent = count;
     document.getElementById('statTrades').textContent = count;
     document.getElementById('statTradesSub').textContent = count > 0 ? `${count} in progress` : 'No active trades';
-    if (count > 0) { document.getElementById('sbTradeBadge').textContent = count; document.getElementById('sbTradeBadge').style.display = 'inline'; }
+    if (count > 0) {
+      document.getElementById('sbTradeBadge').textContent = count;
+      document.getElementById('sbTradeBadge').style.display = 'inline';
+    }
+
     const panel = document.getElementById('tradesPanel');
-    if (!trades?.length) { panel.innerHTML = `<div class="empty-state"><div class="empty-icon">🔄</div><div class="empty-txt">No active trades.<br>Accept an offer to start trading!</div></div>`; return; }
+    if (!trades?.length) {
+      panel.innerHTML = `<div class="empty-state"><div class="empty-icon">🔄</div><div class="empty-txt">No active trades.<br>Accept an offer to start trading!</div></div>`;
+      return;
+    }
+
     panel.innerHTML = trades.map(t => {
       const isMeetup = t.status === 'meetup_scheduled';
       const myConfirmed = t.trader_a_id === currentUser.id ? t.trade_confirmed_a : t.trade_confirmed_b;
       const fee = t.trader_a_id === currentUser.id ? t.fee_a : t.fee_b;
       return `<div class="trade-card">
-        <div class="tc-hdr"><div class="tc-id">Trade #${t.id.slice(0,8).toUpperCase()}</div><div class="tc-stage ${isMeetup?'stg-meet':'stg-agree'}">${isMeetup?'📍 MEETUP PENDING':'✅ ACCEPTED'}</div></div>
-        <div class="tc-items"><div class="tc-itm"><div class="tc-itm-nm">Trade in progress</div><div class="tc-itm-vl">${t.total_value?'~$'+Number(t.total_value).toFixed(0):'Value TBD'}</div></div></div>
-        <div class="tc-prog"><div class="tc-prog-lbl"><span>Progress</span><span style="color:var(--${isMeetup?'gold':'blue'});font-weight:700">Step ${isMeetup?'2':'1'} of 3</span></div><div class="tc-prog-bar"><div class="tc-prog-fill fill-${isMeetup?'gold':'blue'}" style="width:${isMeetup?'66':'33'}%"></div></div></div>
-        <div class="tc-ftr"><div class="tc-btn tcb-msg" onclick="window.location.href='alltrades-messages.html'">💬 Message</div>${!myConfirmed?`<div class="tc-btn tcb-confirm" onclick="openConfirmModal('${t.id}',${fee||0})">✓ Confirm Done</div>`:`<div class="tc-btn" style="background:#f0fdf4;border:1px solid #bbf7d0;color:#14532d">✅ You confirmed</div>`}</div>
+        <div class="tc-hdr">
+          <div class="tc-id">Trade #${t.id.slice(0,8).toUpperCase()}</div>
+          <div class="tc-stage ${isMeetup?'stg-meet':'stg-agree'}">${isMeetup?'📍 MEETUP PENDING':'✅ ACCEPTED'}</div>
+        </div>
+        <div class="tc-items">
+          <div class="tc-itm">
+            <div class="tc-itm-nm">Trade in progress</div>
+            <div class="tc-itm-vl">${t.total_value ? '~$'+Number(t.total_value).toFixed(0) : 'Value TBD'}</div>
+          </div>
+        </div>
+        <div class="tc-prog">
+          <div class="tc-prog-lbl"><span>Progress</span><span style="color:var(--${isMeetup?'gold':'blue'});font-weight:700">Step ${isMeetup?'2':'1'} of 3</span></div>
+          <div class="tc-prog-bar"><div class="tc-prog-fill fill-${isMeetup?'gold':'blue'}" style="width:${isMeetup?'66':'33'}%"></div></div>
+        </div>
+        <div class="tc-ftr">
+          <div class="tc-btn tcb-msg" onclick="window.location.href='alltrades-messages.html'">💬 Message</div>
+          ${!myConfirmed
+            ? `<div class="tc-btn tcb-confirm" onclick="openConfirmModal('${t.id}',${fee||0})">✓ Confirm Done</div>`
+            : `<div class="tc-btn" style="background:#f0fdf4;border:1px solid #bbf7d0;color:#14532d">✅ You confirmed</div>`}
+        </div>
       </div>`;
     }).join('');
-  } catch(e) { document.getElementById('tradesPanel').innerHTML = `<div class="empty-state"><div class="empty-txt">Could not load trades.</div></div>`; }
+  } catch(e) {
+    document.getElementById('tradesPanel').innerHTML = `<div class="empty-state"><div class="empty-txt">Could not load trades.</div></div>`;
+  }
 }
 
 async function loadListings() {
   try {
-    const { data: listings } = await sb.from('listings').select('*').eq('user_id', currentUser.id).order('created_at', { ascending: false }).limit(6);
+    const { data: listings } = await sb.from('listings')
+      .select('id,title,category,condition,estimated_value,status,created_at,photos,view_count')
+      .eq('user_id', currentUser.id)
+      .order('created_at', { ascending: false })
+      .limit(10);
+
     const count = listings?.length || 0;
     document.getElementById('listingCount').textContent = count;
     document.getElementById('statListings').textContent = count;
     document.getElementById('statListingsSub').textContent = count > 0 ? `${count} listed` : 'No listings yet';
+
     const panel = document.getElementById('listingsPanel');
-    if (!listings?.length) { panel.innerHTML = `<div class="empty-state"><div class="empty-icon">📦</div><div class="empty-txt">No listings yet.<br><a href="alltrades-post.html" style="color:var(--blue);font-weight:700">Post your first item →</a></div></div>`; return; }
-    const catEmoji = {'Food & Water':'🥫','Garden':'🌱','Electronics':'⚡','Tools':'🔧','Sports':'🚲','Music':'🎵','Gaming':'🎮','Clothing':'👗','Books':'📚','Trading Cards':'🃏','Other':'📦'};
-    panel.innerHTML = listings.map(l => `
-      <div class="lr">
-        <div class="lr-em">${catEmoji[l.category]||'📦'}</div>
-        <div class="lr-info"><div class="lr-ttl">${l.title}</div><div class="lr-meta"><span>${l.category||'General'}</span>${l.condition?`<span>·</span><span>${l.condition}</span>`:''}<span>·</span><span>${timeAgo(l.created_at)}</span></div></div>
-        <div class="lr-rt"><div class="lr-val">${l.estimated_value?'~$'+Number(l.estimated_value).toFixed(0):'—'}</div><span class="lr-st ${l.status==='active'?'lst-active':'lst-paused'}">${(l.status||'active').toUpperCase()}</span><div class="lr-acts"><button class="lr-btn lrb-edit" onclick="window.location.href='alltrades-post.html'">Edit</button><button class="lr-btn lrb-del" onclick="deleteListing('${l.id}',this)">✕</button></div></div>
-      </div>`).join('');
-  } catch(e) { document.getElementById('listingsPanel').innerHTML = `<div class="empty-state"><div class="empty-txt">Could not load listings.</div></div>`; }
+    if (!listings?.length) {
+      panel.innerHTML = `<div class="empty-state"><div class="empty-icon">📦</div><div class="empty-txt">No listings yet.<br><a href="alltrades-post.html" style="color:var(--blue);font-weight:700">Post your first item →</a></div></div>`;
+      return;
+    }
+
+    panel.innerHTML = listings.map(l => {
+      const firstPhoto = l.photos?.[0];
+      const thumbHtml = firstPhoto
+        ? `<img src="${firstPhoto}" alt="${l.title}" loading="lazy">`
+        : (CAT_EMOJI[l.category] || '📦');
+      const views = l.view_count || 0;
+      const isActive = (l.status || 'active') === 'active';
+
+      return `
+        <a class="lr" href="alltrades-item.html?id=${l.id}">
+          <div class="lr-thumb">${thumbHtml}</div>
+          <div class="lr-info">
+            <div class="lr-ttl">${l.title}</div>
+            <div class="lr-meta">
+              <span>${l.category || 'General'}</span>
+              ${l.condition ? `<span>·</span><span>${l.condition}</span>` : ''}
+              <span>·</span>
+              <span>${timeAgo(l.created_at)}</span>
+              <span class="lr-views">👁 ${views}</span>
+            </div>
+          </div>
+          <div class="lr-rt">
+            <div class="lr-val">${l.estimated_value ? '~$'+Number(l.estimated_value).toFixed(0) : '—'}</div>
+            <span class="lr-st ${isActive ? 'lst-active' : 'lst-paused'}">${isActive ? 'ACTIVE' : (l.status||'PAUSED').toUpperCase()}</span>
+            <div class="lr-acts">
+              <a class="lr-btn lrb-view" href="alltrades-item.html?id=${l.id}" onclick="event.stopPropagation()">👁 View</a>
+              <a class="lr-btn lrb-edit" href="alltrades-post.html?id=${l.id}" onclick="event.stopPropagation()">Edit</a>
+              <button class="lr-btn lrb-del" onclick="event.stopPropagation();deleteListing('${l.id}',this)">✕</button>
+            </div>
+          </div>
+        </a>`;
+    }).join('');
+  } catch(e) {
+    document.getElementById('listingsPanel').innerHTML = `<div class="empty-state"><div class="empty-txt">Could not load listings.</div></div>`;
+  }
 }
 
 async function loadMessages() {
   try {
-    const { data: messages } = await sb.from('messages').select('*').or(`sender_id.eq.${currentUser.id},receiver_id.eq.${currentUser.id}`).order('created_at', { ascending: false }).limit(5);
-    const unread = messages?.filter(m => m.receiver_id === currentUser.id && !m.read_at) || [];
-    const count = unread.length;
-    document.getElementById('msgCount').textContent = count;
-    if (count > 0) { ['msgBadge','sbMsgBadge'].forEach(id => { document.getElementById(id).textContent = count; document.getElementById(id).style.display = 'inline'; }); }
-    const panel = document.getElementById('msgsPanel');
-    if (!messages?.length) { panel.innerHTML = `<div class="empty-state"><div class="empty-icon">💬</div><div class="empty-txt">No messages yet.</div></div>`; document.getElementById('msgModalBody').innerHTML = panel.innerHTML; return; }
-    const colors = ['var(--blue)','var(--green)','var(--orange)','var(--gold)','#64748b'];
+    const { data: messages } = await sb.from('messages')
+      .select('*')
+      .or(`sender_id.eq.${currentUser.id},receiver_id.eq.${currentUser.id}`)
+      .order('created_at', { ascending: false })
+      .limit(8);
+
+    if (!messages?.length) {
+      const empty = `<div class="empty-state"><div class="empty-icon">💬</div><div class="empty-txt">No messages yet.</div></div>`;
+      document.getElementById('msgsPanel').innerHTML = empty;
+      document.getElementById('msgModalBody').innerHTML = empty;
+      return;
+    }
+
+    // collect unique other-user IDs for display name lookup
+    const otherIds = [...new Set(messages.map(m => m.sender_id === currentUser.id ? m.receiver_id : m.sender_id))];
+    const { data: userRows } = await sb.from('users').select('id,display_name').in('id', otherIds);
+    const nameMap = {};
+    (userRows || []).forEach(u => { nameMap[u.id] = u.display_name || 'Trader'; });
+
+    const unread = messages.filter(m => m.receiver_id === currentUser.id && !m.read_at);
+    const unreadCount = unread.length;
+    document.getElementById('msgCount').textContent = unreadCount;
+    if (unreadCount > 0) {
+      ['msgBadge','sbMsgBadge'].forEach(id => {
+        document.getElementById(id).textContent = unreadCount;
+        document.getElementById(id).style.display = 'inline';
+      });
+    }
+
     const msgHtml = messages.map((m, i) => {
       const isUnread = m.receiver_id === currentUser.id && !m.read_at;
       const otherId = m.sender_id === currentUser.id ? m.receiver_id : m.sender_id;
-      const initials = otherId.slice(0,2).toUpperCase();
-      return `<div class="msg-item ${isUnread?'unread':''}" onclick="window.location.href='alltrades-messages.html'"><div class="mi-av" style="background:${colors[i%colors.length]}">${initials}${isUnread?'<div class="mi-dot"></div>':''}</div><div class="mi-info"><div class="mi-nm">Trader ${initials}</div><div class="mi-prev">${m.content?m.content.slice(0,50)+(m.content.length>50?'…':''):'Message'}</div></div><div class="mi-time">${timeAgo(m.created_at)}</div></div>`;
+      const name = nameMap[otherId] || 'Trader';
+      const initials = name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0,2);
+      return `
+        <div class="msg-item ${isUnread ? 'unread' : ''}" onclick="window.location.href='alltrades-messages.html'">
+          <div class="mi-av" style="background:${AV_COLORS[i % AV_COLORS.length]}">${initials}${isUnread ? '<div class="mi-dot"></div>' : ''}</div>
+          <div class="mi-info">
+            <div class="mi-nm">${name}</div>
+            <div class="mi-prev">${m.content ? m.content.slice(0,50)+(m.content.length>50?'…':'') : 'Message'}</div>
+          </div>
+          <div class="mi-time">${timeAgo(m.created_at)}</div>
+        </div>`;
     }).join('');
-    panel.innerHTML = msgHtml;
+
+    document.getElementById('msgsPanel').innerHTML = msgHtml;
     document.getElementById('msgModalBody').innerHTML = msgHtml;
-  } catch(e) { document.getElementById('msgsPanel').innerHTML = `<div class="empty-state"><div class="empty-txt">Could not load messages.</div></div>`; }
+  } catch(e) {
+    document.getElementById('msgsPanel').innerHTML = `<div class="empty-state"><div class="empty-txt">Could not load messages.</div></div>`;
+  }
 }
 
 async function loadTradeValue() {
   try {
-    const { data: allTrades } = await sb.from('trades').select('total_value,fee_a,fee_b,trader_a_id,created_at').or(`trader_a_id.eq.${currentUser.id},trader_b_id.eq.${currentUser.id}`).eq('status','completed');
+    const { data: allTrades } = await sb.from('trades')
+      .select('total_value,fee_a,fee_b,trader_a_id,created_at')
+      .or(`trader_a_id.eq.${currentUser.id},trader_b_id.eq.${currentUser.id}`)
+      .eq('status','completed');
+
     const now = new Date();
     const ago30 = new Date(now - 30*24*60*60*1000);
     const t30 = (allTrades||[]).filter(t => new Date(t.created_at) > ago30);
-    const sum = (arr, fn) => arr.reduce((s,t) => s + fn(t), 0);
+    const sum = (arr, fn) => arr.reduce((s,t) => s + (fn(t)||0), 0);
     const myFee = t => t.trader_a_id === currentUser.id ? (t.fee_a||0) : (t.fee_b||0);
-    const v30 = sum(t30, t => t.total_value||0), f30 = sum(t30, myFee);
+
+    const v30  = sum(t30, t => t.total_value||0), f30  = sum(t30, myFee);
     const vAll = sum(allTrades||[], t => t.total_value||0), fAll = sum(allTrades||[], myFee);
-    document.getElementById('statValue').textContent = '$' + v30.toFixed(0);
+
+    document.getElementById('statValue').textContent    = '$' + v30.toFixed(0);
     document.getElementById('statValueSub').textContent = t30.length > 0 ? `${t30.length} trade${t30.length>1?'s':''} this month` : 'No completed trades yet';
-    document.getElementById('ev30Value').textContent = '$' + v30.toFixed(2);
-    document.getElementById('ev30Fees').textContent = '$' + f30.toFixed(2);
-    document.getElementById('ev30Count').textContent = t30.length;
-    document.getElementById('evAllValue').textContent = '$' + vAll.toFixed(2);
-    document.getElementById('evAllFees').textContent = '$' + fAll.toFixed(2);
-    document.getElementById('evAllCount').textContent = allTrades?.length || 0;
-    document.getElementById('wbTrades').textContent = allTrades?.length || 0;
-  } catch(e) { document.getElementById('statValue').textContent = '$0'; }
+    document.getElementById('ev30Value').textContent    = '$' + v30.toFixed(2);
+    document.getElementById('ev30Fees').textContent     = '$' + f30.toFixed(2);
+    document.getElementById('ev30Count').textContent    = t30.length;
+    document.getElementById('evAllValue').textContent   = '$' + vAll.toFixed(2);
+    document.getElementById('evAllFees').textContent    = '$' + fAll.toFixed(2);
+    document.getElementById('evAllCount').textContent   = allTrades?.length || 0;
+    document.getElementById('wbTrades').textContent     = allTrades?.length || 0;
+  } catch(e) {
+    document.getElementById('statValue').textContent = '$0';
+  }
 }
 
 async function loadRatings() {
   try {
     const { data: ratings } = await sb.from('ratings').select('*').eq('rated_user_id', currentUser.id).order('created_at', { ascending: false });
     const panel = document.getElementById('ratingsPanel');
-    if (!ratings?.length) { document.getElementById('wbRating').textContent = '—'; panel.innerHTML = `<div class="empty-state"><div class="empty-icon">⭐</div><div class="empty-txt">No ratings yet.<br>Complete a trade to earn your first rating!</div></div>`; return; }
+    if (!ratings?.length) {
+      document.getElementById('wbRating').textContent = '—';
+      panel.innerHTML = `<div class="empty-state"><div class="empty-icon">⭐</div><div class="empty-txt">No ratings yet.<br>Complete a trade to earn your first rating!</div></div>`;
+      return;
+    }
     const avg = ratings.reduce((s,r) => s+r.stars, 0) / ratings.length;
     document.getElementById('wbRating').textContent = avg.toFixed(1) + '★';
-    panel.innerHTML = `<div style="margin-bottom:12px"><div style="font-family:'Barlow Condensed',sans-serif;font-size:2.8rem;font-weight:900;line-height:1">${avg.toFixed(1)}</div><div style="color:var(--gold)">${'★'.repeat(Math.round(avg))}${'☆'.repeat(5-Math.round(avg))}</div><div style="font-size:11px;color:var(--muted)">${ratings.length} trade${ratings.length>1?'s':''}</div></div>${ratings.slice(0,2).map(r=>`<div style="background:var(--surface);border:1px solid var(--border);border-radius:7px;padding:9px 11px;font-size:12px;color:var(--muted);font-style:italic;margin-bottom:7px;line-height:1.5">"${r.review||'Great trade!'}" <span style="color:var(--gold);font-style:normal">${'★'.repeat(r.stars)}</span></div>`).join('')}<a href="alltrades-ratings.html" style="font-size:12px;color:var(--blue);font-weight:700;text-decoration:none">See all ratings →</a>`;
-  } catch(e) { document.getElementById('ratingsPanel').innerHTML = `<div class="empty-state"><div class="empty-txt">Could not load ratings.</div></div>`; }
+    panel.innerHTML = `
+      <div style="margin-bottom:12px">
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:2.8rem;font-weight:900;line-height:1">${avg.toFixed(1)}</div>
+        <div style="color:var(--gold)">${'★'.repeat(Math.round(avg))}${'☆'.repeat(5-Math.round(avg))}</div>
+        <div style="font-size:11px;color:var(--muted)">${ratings.length} trade${ratings.length>1?'s':''}</div>
+      </div>
+      ${ratings.slice(0,2).map(r=>`
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:7px;padding:9px 11px;font-size:12px;color:var(--muted);font-style:italic;margin-bottom:7px;line-height:1.5">
+          "${r.review||'Great trade!'}" <span style="color:var(--gold);font-style:normal">${'★'.repeat(r.stars)}</span>
+        </div>`).join('')}
+      <a href="alltrades-ratings.html" style="font-size:12px;color:var(--blue);font-weight:700;text-decoration:none">See all ratings →</a>`;
+  } catch(e) {
+    document.getElementById('ratingsPanel').innerHTML = `<div class="empty-state"><div class="empty-txt">Could not load ratings.</div></div>`;
+  }
 }
 
+/* ── ACTIONS ── */
+
 async function acceptOffer(id) {
-  try { await sb.from('offers').update({status:'accepted'}).eq('id',id); showToast('🎉','Offer accepted!'); loadOffers(); loadTrades(); }
-  catch(e) { showToast('⚠️','Error accepting offer.'); }
+  try {
+    await sb.from('offers').update({ status: 'accepted' }).eq('id', id);
+    showToast('🎉', 'Offer accepted!');
+    loadOffers();
+    loadTrades();
+  } catch(e) { showToast('⚠️', 'Error accepting offer.'); }
 }
 
 async function declineOffer(id, btn) {
-  try { await sb.from('offers').update({status:'declined'}).eq('id',id); btn.closest('.offer-row').style.opacity='.4'; showToast('👋','Offer declined.'); }
-  catch(e) { showToast('⚠️','Error declining offer.'); }
+  try {
+    await sb.from('offers').update({ status: 'declined' }).eq('id', id);
+    btn.closest('.offer-row').style.opacity = '.4';
+    showToast('👋', 'Offer declined.');
+  } catch(e) { showToast('⚠️', 'Error declining offer.'); }
 }
 
 function openConfirmModal(tradeId, fee) {
   currentTradeId = tradeId;
-  document.getElementById('confirmFeeNote').textContent = `Your 5% platform fee${fee?': $'+Number(fee).toFixed(2):''} will be recorded when you confirm.`;
+  document.getElementById('confirmFeeNote').textContent = `Your 5% platform fee${fee ? ': $'+Number(fee).toFixed(2) : ''} will be recorded when you confirm.`;
   openModal('confirmModal');
 }
 
 async function doConfirmTrade() {
   if (!currentTradeId) return;
   try {
-    const { data: t } = await sb.from('trades').select('trader_a_id,trade_confirmed_a,trade_confirmed_b').eq('id',currentTradeId).single();
+    const { data: t } = await sb.from('trades').select('trader_a_id,trade_confirmed_a,trade_confirmed_b').eq('id', currentTradeId).single();
     const isA = t.trader_a_id === currentUser.id;
     const field = isA ? 'trade_confirmed_a' : 'trade_confirmed_b';
     const otherDone = isA ? t.trade_confirmed_b : t.trade_confirmed_a;
@@ -547,14 +739,19 @@ async function doConfirmTrade() {
     await sb.from('trades').update(update).eq('id', currentTradeId);
     closeModal('confirmModal');
     showToast('🎉', otherDone ? 'Trade complete!' : 'Confirmed! Waiting for the other trader.');
-    loadTrades(); loadTradeValue();
-  } catch(e) { showToast('⚠️','Error confirming trade.'); }
+    loadTrades();
+    loadTradeValue();
+  } catch(e) { showToast('⚠️', 'Error confirming trade.'); }
 }
 
 async function deleteListing(id, btn) {
   if (!confirm('Delete this listing?')) return;
-  try { await sb.from('listings').delete().eq('id',id).eq('user_id',currentUser.id); btn.closest('.lr').remove(); showToast('🗑️','Listing deleted.'); loadListings(); }
-  catch(e) { showToast('⚠️','Error deleting listing.'); }
+  try {
+    await sb.from('listings').delete().eq('id', id).eq('user_id', currentUser.id);
+    btn.closest('.lr').remove();
+    showToast('🗑️', 'Listing deleted.');
+    loadListings();
+  } catch(e) { showToast('⚠️', 'Error deleting listing.'); }
 }
 
 async function doSignOut() {
@@ -562,10 +759,12 @@ async function doSignOut() {
   window.location.href = 'alltrades-auth.html';
 }
 
+/* ── HELPERS ── */
+
 function addAlert(type, icon, text, btnLabel, btnAction) {
   const div = document.createElement('div');
   div.className = `alert ${type}`;
-  div.innerHTML = `<span class="al-ic">${icon}</span><div class="al-txt">${text}</div>${btnLabel?`<button class="al-btn" onclick="${btnAction}">${btnLabel}</button>`:''}<span class="al-close" onclick="this.closest('.alert').remove()">✕</span>`;
+  div.innerHTML = `<span class="al-ic">${icon}</span><div class="al-txt">${text}</div>${btnLabel ? `<button class="al-btn" onclick="${btnAction}">${btnLabel}</button>` : ''}<span class="al-close" onclick="this.closest('.alert').remove()">✕</span>`;
   document.getElementById('alertsArea').appendChild(div);
 }
 
@@ -579,9 +778,9 @@ function timeAgo(ts) {
   return Math.floor(h/24) + 'd ago';
 }
 
-function openModal(id) { document.getElementById(id).classList.add('open'); }
+function openModal(id)  { document.getElementById(id).classList.add('open'); }
 function closeModal(id) { document.getElementById(id).classList.remove('open'); }
-document.querySelectorAll('.modal-overlay').forEach(o => o.addEventListener('click', e => { if (e.target===o) o.classList.remove('open'); }));
+document.querySelectorAll('.modal-overlay').forEach(o => o.addEventListener('click', e => { if (e.target === o) o.classList.remove('open'); }));
 
 function showToast(icon, msg) {
   document.getElementById('toastIc').textContent = icon;
