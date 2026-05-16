@@ -1128,21 +1128,15 @@ body { font-family:'Lato',sans-serif; background:var(--bg); color:var(--text); m
 
 
 <script>
-  function clearErr(id) {
-  const el = document.getElementById(id);
-  if (el) el.style.display = 'none';
-}
-function prevStep(current) {
-  document.getElementById('step' + current).style.display = 'none';
-  const prev = current - 1;
-  const prevEl = document.getElementById('step' + prev);
-  if (prevEl) prevEl.style.display = 'block';
+function clearErr(input) {
+  if (typeof input === 'string') input = document.getElementById(input);
+  if (input) input.style.borderColor = '';
 }
 
 function showErr(id, input) {
   const el = document.getElementById(id);
   if (el) el.style.display = 'block';
-  if (input) input.style.borderColor = 'var(--red)';
+  if (input) input.style.borderColor = 'var(--error)';
 }
 
 function isValidEmail(email) {
@@ -1150,12 +1144,7 @@ function isValidEmail(email) {
 }
 
 function validateEmail(input) {
-  const email = input.value.trim();
-  if (!isValidEmail(email)) {
-    input.style.borderColor = 'var(--red)';
-  } else {
-    input.style.borderColor = '';
-  }
+  input.style.borderColor = isValidEmail(input.value.trim()) ? '' : 'var(--error)';
 }
 
 function formatPhone(input) {
@@ -1164,82 +1153,154 @@ function formatPhone(input) {
   else if (v.length >= 3) v = v.slice(0,3) + '-' + v.slice(3);
   input.value = v;
 }
-function nextStep(current) {
-  document.getElementById('step' + current).style.display = 'none';
-  const next = current + 1;
-  const nextEl = document.getElementById('step' + next);
-  if (nextEl) nextEl.style.display = 'block';
-  document.querySelectorAll('.step-dot').forEach((dot, i) => {
-    dot.classList.toggle('active', i < next);
+
+function socialLogin(provider) {
+  alert(provider + ' sign-in coming soon!');
+}
+
+function showStep(n) {
+  document.querySelectorAll('.signup-step').forEach(s => s.classList.remove('active'));
+  const el = document.getElementById('step' + n);
+  if (el) el.classList.add('active');
+  updateDots(n);
+}
+
+function updateDots(current) {
+  const dots = document.querySelectorAll('.step-dot');
+  const lines = document.querySelectorAll('.step-line');
+  dots.forEach((dot, i) => {
+    dot.classList.remove('active', 'done', 'pending');
+    if (i + 1 < current)        dot.classList.add('done');
+    else if (i + 1 === current) dot.classList.add('active');
+    else                        dot.classList.add('pending');
   });
+  lines.forEach((line, i) => {
+    line.classList.toggle('done', i + 1 < current);
+  });
+}
+
+function nextStep(current) {
+  if (!validateStep(current)) return;
+  showStep(current + 1);
+}
+
+function prevStep(current) {
+  showStep(current - 1);
 }
 
 function validateStep(step) {
   if (step === 1) {
     const first = document.getElementById('firstName');
-    const last = document.getElementById('lastName');
-    if (!first.value.trim() || !last.value.trim()) {
-      alert('Please enter your first and last name.');
-      return false;
-    }
-    return true;
+    const last  = document.getElementById('lastName');
+    const email = document.getElementById('email');
+    let ok = true;
+    if (!first.value.trim()) { showErr('firstNameErr', first); ok = false; }
+    if (!last.value.trim())  { showErr('lastNameErr',  last);  ok = false; }
+    if (!isValidEmail(email.value.trim())) { showErr('emailErr', email); ok = false; }
+    return ok;
   }
   if (step === 2) {
-    const email = document.getElementById('email');
-    const pw1 = document.getElementById('pw1');
-    const pw2 = document.getElementById('pw2');
-    if (!isValidEmail(email.value)) { alert('Please enter a valid email.'); return false; }
-    if (pw1.value.length < 8) { alert('Password must be at least 8 characters.'); return false; }
-    if (pw1.value !== pw2.value) { alert('Passwords do not match.'); return false; }
-    return true;
+    const pw1     = document.getElementById('pw1');
+    const pw2     = document.getElementById('pw2');
+    const terms   = document.getElementById('agreeTerms');
+    const privacy = document.getElementById('agreePrivacy');
+    const age     = document.getElementById('agreeAge');
+    let ok = true;
+    if (pw1.value.length < 8)    { showErr('pw1Err', pw1); ok = false; }
+    if (pw1.value !== pw2.value) { showErr('pw2Err', pw2); ok = false; }
+    if (!terms.checked || !privacy.checked || !age.checked) {
+      alert('Please check all three agreements to continue.');
+      ok = false;
+    }
+    return ok;
   }
   if (step === 3) {
-    const boxes = document.querySelectorAll('input[type="checkbox"]');
-    let allChecked = true;
-    boxes.forEach(cb => { if (!cb.checked) allChecked = false; });
-    if (!allChecked) { alert('Please agree to the Terms of Service.'); return false; }
+    const town = document.getElementById('town');
+    if (!town.value.trim()) { showErr('townErr', town); return false; }
     return true;
   }
   return true;
 }
+
 function checkStrength(pw) {
-  const bar = document.getElementById('strengthBar');
-  const txt = document.getElementById('strengthText');
-  if (!bar || !txt) return;
+  const strength = document.getElementById('pwStrength');
+  const label    = document.getElementById('pwLabel');
+  if (!strength) return;
+  strength.style.display = pw ? 'block' : 'none';
+  const bars = ['bar1','bar2','bar3','bar4'].map(id => document.getElementById(id));
   let score = 0;
-  if (pw.length >= 8) score++;
-  if (/[A-Z]/.test(pw)) score++;
-  if (/[0-9]/.test(pw)) score++;
+  if (pw.length >= 8)          score++;
+  if (/[A-Z]/.test(pw))        score++;
+  if (/[0-9]/.test(pw))        score++;
   if (/[^A-Za-z0-9]/.test(pw)) score++;
-  const levels = ['','Weak','Fair','Good','Strong'];
-  const colors = ['','#dc2626','#f59e0b','#2563eb','#16a34a'];
-  bar.style.width = (score * 25) + '%';
-  bar.style.background = colors[score];
-  txt.textContent = levels[score];
+  const cls   = ['','weak','fair','good','strong'];
+  const names = ['','Weak','Fair','Good','Strong'];
+  bars.forEach((b, i) => {
+    b.className = 'pw-bar';
+    if (i < score) b.classList.add(cls[score]);
+  });
+  if (label) label.textContent = names[score] || '';
 }
 
 function checkMatch() {
   const pw1 = document.getElementById('pw1').value;
   const pw2 = document.getElementById('pw2').value;
-  const msg = document.getElementById('matchMsg');
-  if (!msg) return;
-  if (!pw2) { msg.textContent = ''; return; }
-  if (pw1 === pw2) {
-    msg.textContent = '✓ Passwords match';
-    msg.style.color = '#16a34a';
+  const err = document.getElementById('pw2Err');
+  if (!err || !pw2) return;
+  if (pw1 !== pw2) {
+    err.style.display = 'block';
   } else {
-    msg.textContent = '✗ Passwords do not match';
-    msg.style.color = '#dc2626';
+    err.style.display = 'none';
+    document.getElementById('pw2').style.borderColor = 'var(--success)';
   }
 }
-let _supabase;
+
+function detectLocation() {
+  if (!navigator.geolocation) { alert('Geolocation not supported.'); return; }
+  navigator.geolocation.getCurrentPosition(pos => {
+    document.getElementById('town').value =
+      pos.coords.latitude.toFixed(4) + ', ' + pos.coords.longitude.toFixed(4);
+  }, () => alert('Could not detect location.'));
+}
+
+function toggleCat(el) {
+  el.classList.toggle('selected');
+}
+
+function switchTab(tab) {
+  document.getElementById('panelSignin').classList.toggle('active', tab === 'signin');
+  document.getElementById('panelSignup').classList.toggle('active', tab === 'signup');
+  document.getElementById('tabSignin').classList.toggle('active', tab === 'signin');
+  document.getElementById('tabSignup').classList.toggle('active', tab === 'signup');
+}
+
+function showSuccess() {
+  document.querySelectorAll('.signup-step').forEach(s => s.classList.remove('active'));
+  document.getElementById('stepsIndicator').style.display = 'none';
+  document.querySelector('.steps-labels').style.display = 'none';
+  document.getElementById('trustBadges').style.display = 'none';
+  const screen = document.getElementById('successScreen');
+  screen.style.display = 'block';
+}
+
+function goToDashboard() {
+  window.location.href = 'alltrades-dashboard.html';
+}
+
+function goToPost() {
+  window.location.href = 'alltrades-post.html';
+}
+
+function showForgot() {
+  alert('Password reset coming soon. Email hello@tradezyhq.com for help.');
+}
+
 (async () => {
   const createClient = window.supabase.createClient;
   window.supabase = createClient(
     'https://equvwaspcoeetfsexqki.supabase.co',
     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVxdXZ3YXNwY29lZXRmc2V4cWtpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgyNzc2MjQsImV4cCI6MjA5Mzg1MzYyNH0.TP6Kk3pzHW1PYMUu5D9Vu2lJrazIEagzu5csYhqkrfI'
   );
-  window._supabase = _supabase;
   const { data: { session } } = await supabase.auth.getSession();
   if (session) window.location.href = 'alltrades-dashboard.html';
 })();
@@ -1249,11 +1310,13 @@ async function doCreateAccount() {
   const btn = document.querySelector('#step3 .btn-submit.gold');
   btn.textContent = 'Creating account...';
   btn.disabled = true;
-  const email = document.getElementById('email').value;
-  const password = document.getElementById('pw1').value;
-  const firstName = document.getElementById('firstName').value;
-  const lastName = document.getElementById('lastName').value;
+
+  const email       = document.getElementById('email').value.trim();
+  const password    = document.getElementById('pw1').value;
+  const firstName   = document.getElementById('firstName').value.trim();
+  const lastName    = document.getElementById('lastName').value.trim();
   const displayName = firstName + ' ' + lastName;
+
   try {
     const { data, error } = await supabase.auth.signUp({
       email,
@@ -1271,8 +1334,7 @@ async function doCreateAccount() {
       email,
       display_name: displayName
     });
-    document.querySelectorAll('.signup-step').forEach(s => s.style.display = 'none');
-document.getElementById('successScreen').style.display = 'flex';
+    showSuccess();
   } catch(e) {
     alert('Error: ' + e.message);
     btn.textContent = 'Create My Account 🚀';
@@ -1281,7 +1343,7 @@ document.getElementById('successScreen').style.display = 'flex';
 }
 
 async function doSignIn() {
-  const email = document.getElementById('signinEmail').value;
+  const email    = document.getElementById('signinEmail').value.trim();
   const password = document.getElementById('signinPw').value;
   if (!email || !password) { alert('Please enter email and password.'); return; }
   try {
@@ -1291,5 +1353,6 @@ async function doSignIn() {
   } catch(e) { alert('Error: ' + e.message); }
 }
 </script>
+
 </body>
 </html>
