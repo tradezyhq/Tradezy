@@ -1128,7 +1128,12 @@ body { font-family:'Lato',sans-serif; background:var(--bg); color:var(--text); m
 
 
 <script>
-  function clearErr(id) {
+  function clearErr(id) {function prevStep(current) {
+  document.getElementById('step' + current).style.display = 'none';
+  const prev = current - 1;
+  const prevEl = document.getElementById('step' + prev);
+  if (prevEl) prevEl.style.display = 'block';
+}
   const el = document.getElementById(id);
   if (el) el.style.display = 'none';
 }
@@ -1265,7 +1270,8 @@ async function doCreateAccount() {
       email,
       display_name: displayName
     });
-    nextStep(3);
+    document.querySelectorAll('.signup-step').forEach(s => s.style.display = 'none');
+document.getElementById('successScreen').style.display = 'flex';
   } catch(e) {
     alert('Error: ' + e.message);
     btn.textContent = 'Create My Account 🚀';
