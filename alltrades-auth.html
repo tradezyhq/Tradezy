@@ -1188,8 +1188,10 @@ function validateStep(step) {
     return true;
   }
   if (step === 3) {
-    const tos = document.getElementById('agreeTerms');
-    if (!tos || !tos.checked) { alert('Please agree to the Terms of Service.'); return false; }
+    const boxes = document.querySelectorAll('input[type="checkbox"]');
+    let allChecked = true;
+    boxes.forEach(cb => { if (!cb.checked) allChecked = false; });
+    if (!allChecked) { alert('Please agree to the Terms of Service.'); return false; }
     return true;
   }
   return true;
