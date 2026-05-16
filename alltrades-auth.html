@@ -644,6 +644,8 @@ body { font-family:'Lato',sans-serif; background:var(--bg); color:var(--text); m
 .success-screen {
   text-align:center;
   padding:20px 0;
+  align-items:center;
+  flex-direction:column;
   display:none;
 }
 
@@ -1280,7 +1282,7 @@ function showSuccess() {
   document.querySelector('.steps-labels').style.display = 'none';
   document.getElementById('trustBadges').style.display = 'none';
   const screen = document.getElementById('successScreen');
-  screen.style.display = 'block';
+  screen.style.display = 'flex';
 }
 
 function goToDashboard() {
