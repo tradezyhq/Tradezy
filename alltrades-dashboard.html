@@ -3,17 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<!-- SEO -->
 <title>Tradezy — My Dashboard | Local Trading & Bartering</title>
-<meta name="description" content="Manage your Tradezy trades, listings, offers, and messages. Track your trade value and connect with local traders in your community.">
-<meta name="keywords" content="tradezy dashboard, local trading, barter marketplace, trade locally, Meriden CT, Connecticut marketplace">
+<meta name="description" content="Manage your Tradezy trades, listings, offers, and messages.">
 <meta property="og:title" content="Tradezy — My Dashboard">
-<meta property="og:description" content="Manage your trades, listings and offers on Tradezy — the safe local trading marketplace.">
 <meta property="og:url" content="https://tradezyhq.com/alltrades-dashboard.html">
 <meta property="og:image" content="https://tradezyhq.com/tradezy-preview.png">
 <link rel="canonical" href="https://tradezyhq.com/alltrades-dashboard.html">
-
 <script src="supabase.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
 <style>
@@ -86,8 +81,6 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
 .sec-cnt.gold{background:var(--gold);color:var(--navy);}.sec-cnt.green{background:var(--green);}
 .sec-lnk{font-size:12px;color:var(--blue);font-weight:700;cursor:pointer;}
 .panel{background:var(--white);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:18px;}
-
-/* ── OFFER ROWS ── */
 .offer-row{display:flex;align-items:center;gap:11px;padding:12px 15px;border-bottom:1px solid var(--border);transition:background .15s;cursor:pointer;}
 .offer-row:last-child{border-bottom:none;}
 .offer-row:hover{background:var(--surface);}
@@ -99,15 +92,11 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
 .or-rt{text-align:right;flex-shrink:0;}
 .or-st{font-size:10px;font-weight:800;padding:2px 7px;border-radius:4px;letter-spacing:.3px;}
 .st-pend{background:#fffbeb;color:#92400e;border:1px solid #fde68a;}
-.st-acc{background:#f0fdf4;color:#14532d;border:1px solid #bbf7d0;}
-.st-dec{background:#fef2f2;color:#991b1b;border:1px solid #fecaca;}
-.or-time{font-size:10px;color:var(--muted);margin-top:3px;}
 .or-acts{display:flex;gap:4px;margin-top:3px;}
 .or-btn{padding:4px 9px;border-radius:5px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.72rem;cursor:pointer;border:none;transition:all .15s;}
 .btn-acc{background:var(--green);color:#fff;}
 .btn-dec{background:transparent;border:1px solid var(--border);color:var(--muted);}
 .btn-dec:hover{border-color:var(--red);color:var(--red);}
-
 .two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:18px;}
 .trade-card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:13px 15px;margin-bottom:9px;transition:all .15s;}
 .trade-card:hover{border-color:var(--blue);}
@@ -129,7 +118,6 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
 .tc-btn{flex:1;padding:6px;border-radius:6px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.75rem;cursor:pointer;border:none;transition:all .15s;text-align:center;}
 .tcb-msg{background:var(--surface);border:1px solid var(--border);color:var(--muted);}
 .tcb-confirm{background:var(--green);color:#fff;}
-
 .msg-panel{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:13px;}
 .msg-item{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:8px;cursor:pointer;transition:all .15s;margin-bottom:5px;}
 .msg-item:hover{background:var(--surface);}
@@ -140,8 +128,6 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
 .mi-nm{font-weight:700;font-size:13px;margin-bottom:1px;}
 .mi-prev{font-size:11px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .mi-time{font-size:10px;color:var(--muted);flex-shrink:0;}
-
-/* ── LISTING ROWS ── */
 .listings-panel{background:var(--white);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:18px;}
 .lr{display:flex;align-items:center;gap:11px;padding:11px 15px;border-bottom:1px solid var(--border);transition:background .15s;cursor:pointer;text-decoration:none;color:inherit;}
 .lr:last-child{border-bottom:none;}
@@ -165,7 +151,6 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
 .lrb-edit:hover{border-color:var(--blue);color:var(--blue);}
 .lrb-del{background:transparent;border:1px solid transparent;color:var(--light);}
 .lrb-del:hover{border-color:#fecaca;color:var(--red);}
-
 .two-col-bot{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:18px;}
 .earnings-card{background:linear-gradient(135deg,#14532d,#166534);border-radius:12px;padding:15px;margin-bottom:12px;}
 .ec-ttl{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.85rem;color:#86efac;text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px;}
@@ -233,9 +218,9 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
     <div class="sb-sec">
       <div class="sb-label">Overview</div>
       <div class="nav-item active"><span class="ni-ic">🏠</span>Dashboard</div>
-      <div class="nav-item" onclick="window.location.href='alltrades-messages.html'"><span class="ni-ic">📨</span>Offers<span class="ni-badge" id="sbOfferBadge" style="display:none">0</span></div>
+      <div class="nav-item" onclick="document.getElementById('offersPanel').scrollIntoView({behavior:'smooth'})"><span class="ni-ic">📨</span>Offers<span class="ni-badge" id="sbOfferBadge" style="display:none">0</span></div>
       <div class="nav-item" onclick="window.location.href='alltrades-messages.html'"><span class="ni-ic">💬</span>Messages<span class="ni-badge" id="sbMsgBadge" style="display:none">0</span></div>
-      <div class="nav-item" onclick="showToast('🔄','Active trades shown below!')"><span class="ni-ic">🔄</span>Active Trades<span class="ni-badge green" id="sbTradeBadge" style="display:none">0</span></div>
+      <div class="nav-item" onclick="document.getElementById('tradesPanel').scrollIntoView({behavior:'smooth'})"><span class="ni-ic">🔄</span>Active Trades<span class="ni-badge green" id="sbTradeBadge" style="display:none">0</span></div>
     </div>
     <div class="sb-div"></div>
     <div class="sb-sec">
@@ -279,14 +264,12 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
       <div class="stat-card sc-red"><div class="sc-icon">💰</div><div class="sc-num" id="statValue" style="color:var(--orange)">—</div><div class="sc-lbl">Trade Value (30d)</div><div class="sc-change" id="statValueSub">Loading…</div></div>
     </div>
 
-    <!-- OFFERS -->
     <div class="sec-hdr">
       <div class="sec-ttl">📨 Incoming Offers <span class="sec-cnt" id="offerCount">0</span></div>
       <div class="sec-lnk" onclick="window.location.href='alltrades-messages.html'">View all →</div>
     </div>
     <div class="panel" id="offersPanel"><div class="loading">Loading offers…</div></div>
 
-    <!-- TRADES + MESSAGES -->
     <div class="two-col">
       <div>
         <div class="sec-hdr"><div class="sec-ttl">🔄 Active Trades <span class="sec-cnt green" id="tradeCount">0</span></div><div class="sec-lnk">View all →</div></div>
@@ -298,14 +281,12 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
       </div>
     </div>
 
-    <!-- LISTINGS -->
     <div class="sec-hdr">
       <div class="sec-ttl">📦 My Listings <span class="sec-cnt gold" id="listingCount">0</span></div>
       <div class="sec-lnk" onclick="window.location.href='alltrades-post.html'">+ Add New →</div>
     </div>
     <div class="listings-panel" id="listingsPanel"><div class="loading">Loading listings…</div></div>
 
-    <!-- VALUE + RATINGS -->
     <div class="two-col-bot">
       <div>
         <div class="sec-hdr"><div class="sec-ttl">💰 Trade Value Summary</div></div>
@@ -331,7 +312,6 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
         <div style="background:var(--white);border:1px solid var(--border);border-radius:12px;padding:15px;" id="ratingsPanel"><div class="loading">Loading ratings…</div></div>
       </div>
     </div>
-
   </div>
 </div>
 
@@ -369,7 +349,7 @@ const sb = window.supabase.createClient(
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVxdXZ3YXNwY29lZXRmc2V4cWtpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgyNzc2MjQsImV4cCI6MjA5Mzg1MzYyNH0.TP6Kk3pzHW1PYMUu5D9Vu2lJrazIEagzu5csYhqkrfI'
 );
 
-let currentUser = null;
+let currentUser    = null;
 let currentTradeId = null;
 
 const CAT_EMOJI = {'Food & Water':'🥫','Garden':'🌱','Electronics':'⚡','Tools':'🔧','Sports':'🚲','Music':'🎵','Gaming':'🎮','Clothing':'👗','Books':'📚','Trading Cards':'🃏','Other':'📦'};
@@ -395,27 +375,25 @@ function setGreeting() {
 async function loadUserProfile() {
   try {
     const { data } = await sb.from('users').select('display_name,location_city,location_state').eq('id', currentUser.id).single();
-    const name = data?.display_name || currentUser.email?.split('@')[0] || 'Trader';
+    const name     = data?.display_name || currentUser.email?.split('@')[0] || 'Trader';
     const initials = name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0,2);
     const location = data?.location_city ? `📍 ${data.location_city}${data.location_state ? ', '+data.location_state : ''}` : '📍 Location not set';
     document.getElementById('userName').textContent = name;
-    document.getElementById('userAv').textContent = initials;
-    document.getElementById('wbName').textContent = name;
-    document.getElementById('wbSub').innerHTML = `${location} · <a href="alltrades-verification.html" style="color:var(--gold-l);font-weight:700;text-decoration:none">Verify your account →</a>`;
+    document.getElementById('userAv').textContent   = initials;
+    document.getElementById('wbName').textContent   = name;
+    document.getElementById('wbSub').innerHTML      = `${location} · <a href="alltrades-verification.html" style="color:var(--gold-l);font-weight:700;text-decoration:none">Verify your account →</a>`;
   } catch(e) {
-    document.getElementById('wbName').textContent = 'Trader';
+    document.getElementById('wbName').textContent  = 'Trader';
     document.getElementById('userName').textContent = 'Trader';
   }
 }
 
 async function loadOffers() {
   try {
-    // get this user's listing IDs
     const { data: myListings } = await sb.from('listings').select('id').eq('user_id', currentUser.id);
     const listingIds = myListings?.map(l => l.id) || [];
     let offers = [];
     if (listingIds.length > 0) {
-      // join listing title so we have the actual item name in the offer row
       const { data } = await sb
         .from('offers')
         .select('*, listing:listing_id(title, photos, category)')
@@ -425,44 +403,35 @@ async function loadOffers() {
         .limit(5);
       offers = data || [];
     }
-
     const count = offers.length;
-    document.getElementById('offerCount').textContent = count;
-    document.getElementById('statOffers').textContent = count;
+    document.getElementById('offerCount').textContent    = count;
+    document.getElementById('statOffers').textContent    = count;
     document.getElementById('statOffersSub').textContent = count > 0 ? `${count} pending review` : 'No pending offers';
     if (count > 0) {
-      document.getElementById('sbOfferBadge').textContent = count;
+      document.getElementById('sbOfferBadge').textContent   = count;
       document.getElementById('sbOfferBadge').style.display = 'inline';
       addAlert('urgent', '📨', `<strong>${count} offer${count>1?'s':''} waiting</strong> — Review and accept or decline.`, 'Review Now', "document.getElementById('offersPanel').scrollIntoView({behavior:'smooth'})");
     }
-
     const panel = document.getElementById('offersPanel');
     if (!offers.length) {
       panel.innerHTML = `<div class="empty-state"><div class="empty-icon">📭</div><div class="empty-txt">No pending offers yet.<br>Post a listing to start receiving offers!</div></div>`;
       return;
     }
-
     panel.innerHTML = offers.map(o => {
       const listingTitle = o.listing?.title || 'Listing';
-      const firstPhoto = o.listing?.photos?.[0];
-      const cat = o.listing?.category || '';
-      const thumbHtml = firstPhoto
-        ? `<img src="${firstPhoto}" alt="${listingTitle}" loading="lazy">`
-        : (CAT_EMOJI[cat] || '📦');
-      const offerDesc = o.offer_type === 'cash'
-        ? `Cash offer: $${Number(o.cash_amount||0).toFixed(2)}`
-        : o.offer_type === 'item'
-          ? `Item trade: ${o.offered_item_title || 'Item'}`
-          : `Trade offer`;
+      const firstPhoto   = o.listing?.photos?.[0];
+      const cat          = o.listing?.category || '';
+      const thumbHtml    = firstPhoto ? `<img src="${firstPhoto}" alt="${listingTitle}" loading="lazy">` : (CAT_EMOJI[cat] || '📦');
+      const offerDesc    = o.offer_type === 'cash' ? `Cash offer: $${Number(o.cash_amount||0).toFixed(2)}`
+                         : o.offer_type === 'item' ? `Item trade: ${o.offered_item_title || 'Item'}`
+                         : `Trade offer`;
       return `
         <div class="offer-row" onclick="window.location.href='alltrades-item.html?id=${o.listing_id}'">
           <div class="or-em">${thumbHtml}</div>
           <div class="or-info">
             <div class="or-ttl">${listingTitle}</div>
             <div class="or-meta">
-              <span>${offerDesc}</span>
-              <span>·</span>
-              <span>${timeAgo(o.created_at)}</span>
+              <span>${offerDesc}</span><span>·</span><span>${timeAgo(o.created_at)}</span>
               ${o.message ? `<span>·</span><span style="font-style:italic">"${o.message.slice(0,40)}${o.message.length>40?'…':''}"</span>` : ''}
             </div>
           </div>
@@ -487,26 +456,23 @@ async function loadTrades() {
       .in('status', ['accepted','meetup_scheduled'])
       .order('created_at', { ascending: false })
       .limit(5);
-
     const count = trades?.length || 0;
-    document.getElementById('tradeCount').textContent = count;
-    document.getElementById('statTrades').textContent = count;
+    document.getElementById('tradeCount').textContent    = count;
+    document.getElementById('statTrades').textContent    = count;
     document.getElementById('statTradesSub').textContent = count > 0 ? `${count} in progress` : 'No active trades';
     if (count > 0) {
-      document.getElementById('sbTradeBadge').textContent = count;
+      document.getElementById('sbTradeBadge').textContent   = count;
       document.getElementById('sbTradeBadge').style.display = 'inline';
     }
-
     const panel = document.getElementById('tradesPanel');
     if (!trades?.length) {
       panel.innerHTML = `<div class="empty-state"><div class="empty-icon">🔄</div><div class="empty-txt">No active trades.<br>Accept an offer to start trading!</div></div>`;
       return;
     }
-
     panel.innerHTML = trades.map(t => {
-      const isMeetup = t.status === 'meetup_scheduled';
+      const isMeetup    = t.status === 'meetup_scheduled';
       const myConfirmed = t.trader_a_id === currentUser.id ? t.trade_confirmed_a : t.trade_confirmed_b;
-      const fee = t.trader_a_id === currentUser.id ? t.fee_a : t.fee_b;
+      const fee         = t.trader_a_id === currentUser.id ? t.fee_a : t.fee_b;
       return `<div class="trade-card">
         <div class="tc-hdr">
           <div class="tc-id">Trade #${t.id.slice(0,8).toUpperCase()}</div>
@@ -542,26 +508,20 @@ async function loadListings() {
       .eq('user_id', currentUser.id)
       .order('created_at', { ascending: false })
       .limit(10);
-
     const count = listings?.length || 0;
-    document.getElementById('listingCount').textContent = count;
-    document.getElementById('statListings').textContent = count;
+    document.getElementById('listingCount').textContent    = count;
+    document.getElementById('statListings').textContent    = count;
     document.getElementById('statListingsSub').textContent = count > 0 ? `${count} listed` : 'No listings yet';
-
     const panel = document.getElementById('listingsPanel');
     if (!listings?.length) {
       panel.innerHTML = `<div class="empty-state"><div class="empty-icon">📦</div><div class="empty-txt">No listings yet.<br><a href="alltrades-post.html" style="color:var(--blue);font-weight:700">Post your first item →</a></div></div>`;
       return;
     }
-
     panel.innerHTML = listings.map(l => {
       const firstPhoto = l.photos?.[0];
-      const thumbHtml = firstPhoto
-        ? `<img src="${firstPhoto}" alt="${l.title}" loading="lazy">`
-        : (CAT_EMOJI[l.category] || '📦');
-      const views = l.view_count || 0;
-      const isActive = (l.status || 'active') === 'active';
-
+      const thumbHtml  = firstPhoto ? `<img src="${firstPhoto}" alt="${l.title}" loading="lazy">` : (CAT_EMOJI[l.category] || '📦');
+      const views      = l.view_count || 0;
+      const isActive   = (l.status || 'active') === 'active';
       return `
         <a class="lr" href="alltrades-item.html?id=${l.id}">
           <div class="lr-thumb">${thumbHtml}</div>
@@ -570,8 +530,7 @@ async function loadListings() {
             <div class="lr-meta">
               <span>${l.category || 'General'}</span>
               ${l.condition ? `<span>·</span><span>${l.condition}</span>` : ''}
-              <span>·</span>
-              <span>${timeAgo(l.created_at)}</span>
+              <span>·</span><span>${timeAgo(l.created_at)}</span>
               <span class="lr-views">👁 ${views}</span>
             </div>
           </div>
@@ -598,7 +557,8 @@ async function loadMessages() {
       .or(`sender_id.eq.${currentUser.id},receiver_id.eq.${currentUser.id}`)
       .order('created_at', { ascending: false })
       .limit(50);
-      // Deduplicate — one thread per conversation partner
+
+    // Deduplicate — one thread per conversation partner
     const seen = new Set();
     const uniqueMessages = (messages || []).filter(m => {
       const otherId = m.sender_id === currentUser.id ? m.receiver_id : m.sender_id;
@@ -607,33 +567,32 @@ async function loadMessages() {
       return true;
     }).slice(0, 5);
 
-    if (!uniqueMessages?.length) {
+    if (!uniqueMessages.length) {
       const empty = `<div class="empty-state"><div class="empty-icon">💬</div><div class="empty-txt">No messages yet.</div></div>`;
-      document.getElementById('msgsPanel').innerHTML = empty;
+      document.getElementById('msgsPanel').innerHTML    = empty;
       document.getElementById('msgModalBody').innerHTML = empty;
       return;
     }
 
-    // collect unique other-user IDs for display name lookup
     const otherIds = [...new Set(uniqueMessages.map(m => m.sender_id === currentUser.id ? m.receiver_id : m.sender_id))];
     const { data: userRows } = await sb.from('users').select('id,display_name').in('id', otherIds);
     const nameMap = {};
     (userRows || []).forEach(u => { nameMap[u.id] = u.display_name || 'Trader'; });
 
-    const unread = uniqueMessages.filter(m => m.receiver_id === currentUser.id && !m.read_at);
+    const unread      = uniqueMessages.filter(m => m.receiver_id === currentUser.id && !m.read_at);
     const unreadCount = unread.length;
     document.getElementById('msgCount').textContent = unreadCount;
     if (unreadCount > 0) {
       ['msgBadge','sbMsgBadge'].forEach(id => {
-        document.getElementById(id).textContent = unreadCount;
+        document.getElementById(id).textContent   = unreadCount;
         document.getElementById(id).style.display = 'inline';
       });
     }
 
     const msgHtml = uniqueMessages.map((m, i) => {
       const isUnread = m.receiver_id === currentUser.id && !m.read_at;
-      const otherId = m.sender_id === currentUser.id ? m.receiver_id : m.sender_id;
-      const name = nameMap[otherId] || 'Trader';
+      const otherId  = m.sender_id === currentUser.id ? m.receiver_id : m.sender_id;
+      const name     = nameMap[otherId] || 'Trader';
       const initials = name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0,2);
       return `
         <div class="msg-item ${isUnread ? 'unread' : ''}" onclick="window.location.href='alltrades-messages.html'">
@@ -646,7 +605,7 @@ async function loadMessages() {
         </div>`;
     }).join('');
 
-    document.getElementById('msgsPanel').innerHTML = msgHtml;
+    document.getElementById('msgsPanel').innerHTML    = msgHtml;
     document.getElementById('msgModalBody').innerHTML = msgHtml;
   } catch(e) {
     document.getElementById('msgsPanel').innerHTML = `<div class="empty-state"><div class="empty-txt">Could not load messages.</div></div>`;
@@ -659,16 +618,13 @@ async function loadTradeValue() {
       .select('total_value,fee_a,fee_b,trader_a_id,created_at')
       .or(`trader_a_id.eq.${currentUser.id},trader_b_id.eq.${currentUser.id}`)
       .eq('status','completed');
-
-    const now = new Date();
+    const now   = new Date();
     const ago30 = new Date(now - 30*24*60*60*1000);
-    const t30 = (allTrades||[]).filter(t => new Date(t.created_at) > ago30);
-    const sum = (arr, fn) => arr.reduce((s,t) => s + (fn(t)||0), 0);
+    const t30   = (allTrades||[]).filter(t => new Date(t.created_at) > ago30);
+    const sum   = (arr, fn) => arr.reduce((s,t) => s + (fn(t)||0), 0);
     const myFee = t => t.trader_a_id === currentUser.id ? (t.fee_a||0) : (t.fee_b||0);
-
-    const v30  = sum(t30, t => t.total_value||0), f30  = sum(t30, myFee);
+    const v30  = sum(t30, t => t.total_value||0),       f30  = sum(t30, myFee);
     const vAll = sum(allTrades||[], t => t.total_value||0), fAll = sum(allTrades||[], myFee);
-
     document.getElementById('statValue').textContent    = '$' + v30.toFixed(0);
     document.getElementById('statValueSub').textContent = t30.length > 0 ? `${t30.length} trade${t30.length>1?'s':''} this month` : 'No completed trades yet';
     document.getElementById('ev30Value').textContent    = '$' + v30.toFixed(2);
@@ -725,11 +681,6 @@ async function acceptOffer(id) {
       trader_a_id: currentUser.id,
       trader_b_id: offer.offerer_id,
       status:      'accepted',
-      trade_type:  offer.offer_type,
-      cash_amount: offer.cash_amount || 0,
-      total_value: offer.offered_item_value || 0,
-      fee_a:       (offer.offered_item_value || 0) * 0.05,
-      fee_b:       (offer.offered_item_value || 0) * 0.05,
     });
 
     showToast('🎉', 'Offer accepted! Trade created.');
@@ -737,6 +688,7 @@ async function acceptOffer(id) {
     loadTrades();
   } catch(e) {
     showToast('⚠️', 'Error accepting offer.');
+    console.error('acceptOffer error:', e);
   }
 }
 
@@ -758,10 +710,10 @@ async function doConfirmTrade() {
   if (!currentTradeId) return;
   try {
     const { data: t } = await sb.from('trades').select('trader_a_id,trade_confirmed_a,trade_confirmed_b').eq('id', currentTradeId).single();
-    const isA = t.trader_a_id === currentUser.id;
-    const field = isA ? 'trade_confirmed_a' : 'trade_confirmed_b';
+    const isA       = t.trader_a_id === currentUser.id;
+    const field     = isA ? 'trade_confirmed_a' : 'trade_confirmed_b';
     const otherDone = isA ? t.trade_confirmed_b : t.trade_confirmed_a;
-    const update = { [field]: true };
+    const update    = { [field]: true };
     if (otherDone) update.status = 'completed';
     await sb.from('trades').update(update).eq('id', currentTradeId);
     closeModal('confirmModal');
@@ -798,7 +750,7 @@ function addAlert(type, icon, text, btnLabel, btnAction) {
 function timeAgo(ts) {
   if (!ts) return '';
   const m = Math.floor((Date.now() - new Date(ts)) / 60000);
-  if (m < 1) return 'just now';
+  if (m < 1)  return 'just now';
   if (m < 60) return m + 'm ago';
   const h = Math.floor(m/60);
   if (h < 24) return h + 'h ago';
