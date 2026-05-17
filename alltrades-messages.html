@@ -842,9 +842,14 @@ async function sendMessage() {
     if (error) throw error;
 
     // Append immediately (optimistic)
-    const area = document.getElementById('msgsArea');
-    area.appendChild(makeBubble(inserted));
-    area.scrollTop = area.scrollHeight;
+const area = document.getElementById('msgsArea');
+const bubble = makeBubble({
+  ...inserted,
+  sender_id: currentUser.id,
+  receiver_id: activeOtherId
+});
+area.appendChild(bubble);
+area.scrollTop = area.scrollHeight;
 
     // Update thread preview
     const thread = threads.find(t => t.otherId === activeOtherId);
