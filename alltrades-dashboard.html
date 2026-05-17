@@ -597,9 +597,17 @@ async function loadMessages() {
       .select('*')
       .or(`sender_id.eq.${currentUser.id},receiver_id.eq.${currentUser.id}`)
       .order('created_at', { ascending: false })
-      .limit(8);
+      .limit(50);
+      // Deduplicate — one thread per conversation partner
+    const seen = new Set();
+    const uniqueMessages = (messages || []).filter(m => {
+      const otherId = m.sender_id === currentUser.id ? m.receiver_id : m.sender_id;
+      if (seen.has(otherId)) return false;
+      seen.add(otherId);
+      return true;
+    }).slice(0, 5);
 
-    if (!messages?.length) {
+    if (!uniqueMessages?.length) {
       const empty = `<div class="empty-state"><div class="empty-icon">💬</div><div class="empty-txt">No messages yet.</div></div>`;
       document.getElementById('msgsPanel').innerHTML = empty;
       document.getElementById('msgModalBody').innerHTML = empty;
@@ -607,12 +615,12 @@ async function loadMessages() {
     }
 
     // collect unique other-user IDs for display name lookup
-    const otherIds = [...new Set(messages.map(m => m.sender_id === currentUser.id ? m.receiver_id : m.sender_id))];
+    const otherIds = [...new Set(uniqueMessages.map(m => m.sender_id === currentUser.id ? m.receiver_id : m.sender_id))];
     const { data: userRows } = await sb.from('users').select('id,display_name').in('id', otherIds);
     const nameMap = {};
     (userRows || []).forEach(u => { nameMap[u.id] = u.display_name || 'Trader'; });
 
-    const unread = messages.filter(m => m.receiver_id === currentUser.id && !m.read_at);
+    const unread = uniqueMessages.filter(m => m.receiver_id === currentUser.id && !m.read_at);
     const unreadCount = unread.length;
     document.getElementById('msgCount').textContent = unreadCount;
     if (unreadCount > 0) {
@@ -622,7 +630,7 @@ async function loadMessages() {
       });
     }
 
-    const msgHtml = messages.map((m, i) => {
+    const msgHtml = uniqueMessages.map((m, i) => {
       const isUnread = m.receiver_id === currentUser.id && !m.read_at;
       const otherId = m.sender_id === currentUser.id ? m.receiver_id : m.sender_id;
       const name = nameMap[otherId] || 'Trader';
