@@ -429,8 +429,7 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);}
         <button class="btn-submit" id="submitOfferBtn" onclick="submitOffer()">
           🤝 Send Trade Offer
         </button>
-        <button class="btn-secondary" onclick="window.location.href='alltrades-messages.html'">💬 Message Seller First</button>
-      </div>
+<button class="btn-secondary" onclick="messageSeller()">💬 Message Seller First</button>      </div>
     </div>
   </div>
 </div>
@@ -752,7 +751,11 @@ function updateFees() {
   document.getElementById('feeTotal').textContent = `$${total.toFixed(2)}`;
 }
 
-/* ── Submit offer ── */
+function messageSeller() {
+  if (!listing) return;
+  window.location.href = `alltrades-messages.html?user=${listing.user_id}&listing=${listing.id}`;
+}/*
+ ── Submit offer ── */
 async function submitOffer() {
   if (!listing) return;
 
