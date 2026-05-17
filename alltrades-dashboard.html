@@ -677,7 +677,7 @@ async function loadTradeValue() {
 
 async function loadRatings() {
   try {
-    const { data: ratings } = await sb.from('ratings').select('*').eq('rated_user_id', currentUser.id).order('created_at', { ascending: false });
+    const { data: ratings } = await sb.from('ratings').select('*').eq('rated_id', currentUser.id).order('created_at', { ascending: false });
     const panel = document.getElementById('ratingsPanel');
     if (!ratings?.length) {
       document.getElementById('wbRating').textContent = '—';
