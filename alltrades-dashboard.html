@@ -714,11 +714,30 @@ async function loadRatings() {
 
 async function acceptOffer(id) {
   try {
+    const { data: offer } = await sb.from('offers').select('*').eq('id', id).single();
+    if (!offer) throw new Error('Offer not found');
+
     await sb.from('offers').update({ status: 'accepted' }).eq('id', id);
-    showToast('🎉', 'Offer accepted!');
+
+    await sb.from('trades').insert({
+      offer_id:    offer.id,
+      listing_id:  offer.listing_id,
+      trader_a_id: currentUser.id,
+      trader_b_id: offer.offerer_id,
+      status:      'accepted',
+      trade_type:  offer.offer_type,
+      cash_amount: offer.cash_amount || 0,
+      total_value: offer.offered_item_value || 0,
+      fee_a:       (offer.offered_item_value || 0) * 0.05,
+      fee_b:       (offer.offered_item_value || 0) * 0.05,
+    });
+
+    showToast('🎉', 'Offer accepted! Trade created.');
     loadOffers();
     loadTrades();
-  } catch(e) { showToast('⚠️', 'Error accepting offer.'); }
+  } catch(e) {
+    showToast('⚠️', 'Error accepting offer.');
+  }
 }
 
 async function declineOffer(id, btn) {
