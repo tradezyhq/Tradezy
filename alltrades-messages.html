@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Tradezy — Messages</title>
+<script src="supabase.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -15,7 +16,6 @@
 *{margin:0;padding:0;box-sizing:border-box;}
 body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);height:100vh;display:flex;flex-direction:column;overflow:hidden;}
 
-/* ── NAV ── */
 .nav{background:var(--navy);padding:0 20px;height:54px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;z-index:100;}
 .logo{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.5rem;letter-spacing:-1px;cursor:pointer;}
 .logo .a{color:#fff;}.logo .t{color:var(--blue);}.logo .d{color:var(--gold);}
@@ -23,35 +23,29 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);height
 .nav-btn{padding:6px 14px;border-radius:6px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.88rem;cursor:pointer;border:none;transition:all .15s;}
 .nav-btn.ghost{background:transparent;color:#94a3b8;border:1px solid rgba(255,255,255,.1);}
 .nav-btn.ghost:hover{color:#fff;}
-.nav-btn.gold{background:var(--gold);color:var(--navy);}
 .user-chip{display:flex;align-items:center;gap:7px;padding:4px 10px;border-radius:6px;cursor:pointer;}
 .user-chip:hover{background:rgba(255,255,255,.07);}
 .u-av{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--orange));color:var(--navy);font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:.8rem;display:flex;align-items:center;justify-content:center;}
 .u-name{font-size:13px;color:#cbd5e1;font-weight:700;}
 
-/* ── MAIN LAYOUT ── */
 .chat-layout{display:flex;flex:1;min-height:0;overflow:hidden;}
 
-/* ── SIDEBAR ── */
+/* SIDEBAR */
 .sidebar{width:300px;background:var(--white);border-right:1px solid var(--border);display:flex;flex-direction:column;flex-shrink:0;}
-
 .sb-head{padding:14px 16px;border-bottom:1px solid var(--border);}
 .sb-title-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
 .sb-title{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.1rem;color:var(--text);}
 .sb-new-btn{background:var(--blue);color:#fff;border:none;border-radius:6px;padding:5px 11px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.78rem;cursor:pointer;transition:all .15s;}
 .sb-new-btn:hover{background:var(--blue-l);}
-
 .sb-search{display:flex;align-items:center;background:var(--surface);border:1.5px solid var(--border);border-radius:8px;overflow:hidden;transition:border-color .15s;}
 .sb-search:focus-within{border-color:var(--blue);}
 .sb-search-ic{padding:0 10px;color:var(--light);font-size:.95rem;}
 .sb-search input{flex:1;background:transparent;border:none;outline:none;padding:8px 0;font-family:'Lato',sans-serif;font-size:13px;color:var(--text);}
 .sb-search input::placeholder{color:var(--light);}
-
 .sb-tabs{display:flex;border-bottom:1px solid var(--border);}
 .sb-tab{flex:1;padding:9px;text-align:center;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.78rem;cursor:pointer;transition:all .15s;color:var(--muted);border-bottom:2px solid transparent;}
 .sb-tab.active{color:var(--blue);border-bottom-color:var(--blue);}
 .sb-tab-cnt{background:var(--red);color:#fff;font-size:9px;font-weight:800;border-radius:99px;padding:1px 4px;margin-left:3px;}
-
 .thread-list{flex:1;overflow-y:auto;}
 .thread{display:flex;align-items:center;gap:10px;padding:12px 14px;cursor:pointer;transition:background .15s;border-bottom:1px solid var(--border);position:relative;}
 .thread:hover{background:var(--surface);}
@@ -64,23 +58,26 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);height
 .th-badge{font-size:9px;font-weight:800;padding:1px 5px;border-radius:3px;letter-spacing:.3px;}
 .th-badge.trade{background:#eff6ff;color:var(--blue-dim);border:1px solid #bfdbfe;}
 .th-badge.offer{background:#fffbeb;color:#92400e;border:1px solid #fde68a;}
-.th-badge.flag{background:#fef2f2;color:#991b1b;border:1px solid #fecaca;}
 .th-preview{font-size:11px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .th-preview.unread{color:var(--text);font-weight:700;}
 .th-right{text-align:right;flex-shrink:0;}
 .th-time{font-size:10px;color:var(--light);}
 .th-unread-cnt{background:var(--blue);color:#fff;font-size:9px;font-weight:800;border-radius:99px;padding:1px 6px;margin-top:3px;display:inline-block;}
+.empty-threads{text-align:center;padding:40px 20px;color:var(--muted);}
+.empty-threads .ei{font-size:2.5rem;margin-bottom:10px;}
+.empty-threads p{font-size:13px;line-height:1.5;}
 
-/* ── CHAT PANEL ── */
+/* CHAT PANEL */
 .chat-panel{flex:1;display:flex;flex-direction:column;min-width:0;}
+.chat-empty{flex:1;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:10px;color:var(--muted);}
+.chat-empty .cei{font-size:3rem;}
+.chat-empty p{font-size:14px;}
 
-/* Chat header */
 .chat-head{background:var(--white);border-bottom:1px solid var(--border);padding:12px 18px;display:flex;align-items:center;gap:12px;flex-shrink:0;}
 .ch-av{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:.88rem;color:#fff;flex-shrink:0;}
 .ch-info{flex:1;min-width:0;}
 .ch-name{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1rem;margin-bottom:1px;}
 .ch-meta{font-size:11px;color:var(--muted);display:flex;align-items:center;gap:6px;}
-.ch-online{width:7px;height:7px;border-radius:50%;background:var(--green);display:inline-block;}
 .ch-actions{display:flex;gap:6px;flex-shrink:0;}
 .ch-btn{padding:6px 12px;border-radius:6px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.78rem;cursor:pointer;border:none;transition:all .15s;}
 .ch-btn.view{background:var(--surface);border:1px solid var(--border);color:var(--muted);}
@@ -90,7 +87,6 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);height
 .ch-btn.danger{background:transparent;border:1px solid var(--border);color:var(--light);}
 .ch-btn.danger:hover{border-color:var(--red);color:var(--red);}
 
-/* Trade context bar */
 .trade-context{background:linear-gradient(90deg,#1e3a8a,#1d4ed8);padding:10px 18px;display:flex;align-items:center;gap:12px;flex-shrink:0;}
 .tc-icon{font-size:1rem;flex-shrink:0;}
 .tc-text{flex:1;font-size:12px;color:#93c5fd;}
@@ -98,20 +94,16 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);height
 .tc-action{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.2);color:#fff;padding:4px 11px;border-radius:5px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.75rem;cursor:pointer;transition:all .15s;}
 .tc-action:hover{background:rgba(255,255,255,.25);}
 
-/* Messages area */
 .msgs-area{flex:1;overflow-y:auto;padding:18px;display:flex;flex-direction:column;gap:14px;background:var(--bg);}
-
-/* Date divider */
 .date-div{text-align:center;margin:6px 0;}
 .date-div span{background:var(--border);color:var(--muted);font-size:10px;font-weight:700;padding:3px 12px;border-radius:99px;text-transform:uppercase;letter-spacing:.5px;}
 
-/* Message bubbles */
 .msg-wrap{display:flex;gap:8px;max-width:75%;animation:fadeIn .2s ease;}
 @keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
 .msg-wrap.mine{align-self:flex-end;flex-direction:row-reverse;}
 .msg-wrap.theirs{align-self:flex-start;}
 .msg-av{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.65rem;color:#fff;flex-shrink:0;margin-top:2px;}
-.bubble{padding:10px 13px;border-radius:12px;font-size:13px;line-height:1.5;position:relative;max-width:420px;}
+.bubble{padding:10px 13px;border-radius:12px;font-size:13px;line-height:1.5;max-width:420px;word-break:break-word;}
 .msg-wrap.mine .bubble{background:var(--blue);color:#fff;border-radius:12px 12px 4px 12px;}
 .msg-wrap.theirs .bubble{background:var(--white);color:var(--text);border:1px solid var(--border);border-radius:12px 12px 12px 4px;}
 .bubble-time{font-size:10px;margin-top:4px;opacity:.65;}
@@ -119,30 +111,11 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);height
 .msg-wrap.theirs .bubble-time{color:var(--muted);}
 .msg-read{font-size:10px;color:var(--green-l);margin-top:2px;text-align:right;}
 
-/* Trade card in message */
-.trade-msg-card{background:var(--surface);border:1.5px solid var(--border);border-radius:10px;padding:12px;margin-bottom:6px;}
-.tmc-title{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.85rem;color:var(--text);margin-bottom:8px;display:flex;align-items:center;gap:5px;}
-.tmc-items{display:flex;align-items:center;gap:8px;}
-.tmc-item{flex:1;background:var(--white);border:1px solid var(--border);border-radius:7px;padding:8px;text-align:center;}
-.tmc-em{font-size:1.3rem;margin-bottom:2px;}
-.tmc-nm{font-size:11px;font-weight:700;}
-.tmc-vl{font-size:10px;font-weight:700;margin-top:1px;}
-.tmc-arrow{color:var(--muted);flex-shrink:0;}
-.tmc-btns{display:flex;gap:6px;margin-top:9px;}
-.tmc-btn{flex:1;padding:6px;border-radius:6px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.75rem;cursor:pointer;border:none;transition:all .15s;text-align:center;}
-.tmc-btn.acc{background:var(--green);color:#fff;}
-.tmc-btn.acc:hover{background:var(--green-l);}
-.tmc-btn.dec{background:var(--surface);border:1px solid var(--border);color:var(--muted);}
-.tmc-btn.dec:hover{border-color:var(--red);color:var(--red);}
-
-/* System messages */
 .sys-msg{text-align:center;font-size:11px;color:var(--muted);background:var(--surface);border:1px solid var(--border);border-radius:99px;padding:5px 14px;width:fit-content;margin:0 auto;}
 .sys-msg.warn{background:#fef2f2;border-color:#fecaca;color:#991b1b;}
 .sys-msg.success{background:#f0fdf4;border-color:#bbf7d0;color:#14532d;}
 
-/* ── BYPASS WARNING BANNER ── */
-.bypass-warn{background:linear-gradient(90deg,#7f1d1d,#991b1b);padding:11px 16px;display:flex;align-items:flex-start;gap:10px;border-bottom:1px solid rgba(248,113,113,.3);animation:slideDown .3s ease;flex-shrink:0;}
-@keyframes slideDown{from{transform:translateY(-100%);opacity:0}to{transform:translateY(0);opacity:1}}
+.bypass-warn{background:linear-gradient(90deg,#7f1d1d,#991b1b);padding:11px 16px;display:flex;align-items:flex-start;gap:10px;border-bottom:1px solid rgba(248,113,113,.3);flex-shrink:0;}
 .bw-icon{font-size:1.2rem;flex-shrink:0;margin-top:1px;}
 .bw-text{flex:1;}
 .bw-title{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.95rem;color:#fca5a5;margin-bottom:3px;}
@@ -150,32 +123,23 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);height
 .bw-close{color:#fca5a5;cursor:pointer;font-size:.85rem;padding:2px 6px;flex-shrink:0;opacity:.7;}
 .bw-close:hover{opacity:1;}
 
-/* ── INPUT AREA ── */
 .input-area{background:var(--white);border-top:1px solid var(--border);padding:12px 16px;flex-shrink:0;}
-
-/* Safety reminder */
 .safety-remind{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:7px;padding:7px 11px;margin-bottom:9px;font-size:11px;color:#14532d;display:flex;align-items:center;gap:6px;}
 .safety-remind.hidden{display:none;}
-
 .input-wrap{display:flex;gap:8px;align-items:flex-end;}
 .input-box{flex:1;border:1.5px solid var(--border);border-radius:10px;overflow:hidden;transition:border-color .15s;background:var(--white);}
 .input-box:focus-within{border-color:var(--blue);box-shadow:0 0 0 3px rgba(26,86,219,.07);}
 .msg-input{width:100%;border:none;outline:none;padding:10px 13px;font-family:'Lato',sans-serif;font-size:14px;color:var(--text);resize:none;min-height:44px;max-height:120px;overflow-y:auto;background:transparent;line-height:1.4;}
 .msg-input::placeholder{color:var(--light);}
-
 .input-toolbar{display:flex;align-items:center;gap:4px;padding:5px 10px;border-top:1px solid var(--border);background:var(--surface);}
 .tool-btn{background:transparent;border:none;padding:4px 7px;border-radius:5px;cursor:pointer;font-size:.95rem;color:var(--muted);transition:all .15s;}
 .tool-btn:hover{background:var(--border);color:var(--text);}
 .char-warn{margin-left:auto;font-size:10px;color:var(--light);}
 .char-warn.close{color:var(--gold);}
 .char-warn.over{color:var(--red);}
-
 .send-btn{width:44px;height:44px;background:var(--blue);color:#fff;border:none;border-radius:10px;cursor:pointer;font-size:1.1rem;transition:all .15s;flex-shrink:0;display:flex;align-items:center;justify-content:center;}
 .send-btn:hover{background:var(--blue-l);transform:scale(1.05);}
-.send-btn:active{transform:scale(.97);}
 .send-btn:disabled{background:#cbd5e1;cursor:not-allowed;transform:none;}
-
-/* Scanning indicator */
 .scanning-indicator{font-size:11px;color:var(--muted);margin-top:5px;display:none;align-items:center;gap:5px;}
 .scanning-indicator.show{display:flex;}
 .scan-dot{width:6px;height:6px;border-radius:50%;background:var(--blue);animation:scanPulse 1s infinite;}
@@ -183,7 +147,7 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);height
 .scan-dot:nth-child(3){animation-delay:.4s;}
 @keyframes scanPulse{0%,100%{opacity:.3}50%{opacity:1}}
 
-/* ── RIGHT PANEL: Trade Info ── */
+/* RIGHT PANEL */
 .right-panel{width:260px;background:var(--white);border-left:1px solid var(--border);display:flex;flex-direction:column;flex-shrink:0;overflow-y:auto;}
 .rp-head{background:linear-gradient(135deg,var(--navy),#1a3a6b);padding:13px 15px;}
 .rp-title{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.92rem;color:#fff;margin-bottom:1px;}
@@ -199,11 +163,9 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);height
 .rp-fee-label{color:var(--muted);}
 .rp-fee-val{font-weight:700;}
 .rp-total{display:flex;justify-content:space-between;padding:6px 8px;background:#fffbeb;border:1px solid #fde68a;border-radius:6px;margin-top:6px;font-size:12px;font-weight:700;color:#92400e;}
-
 .rp-safety{padding:12px 14px;border-bottom:1px solid var(--border);}
 .safety-tip{display:flex;gap:7px;font-size:11px;color:var(--muted);line-height:1.4;margin-bottom:7px;}
 .st-icon{flex-shrink:0;font-size:.9rem;}
-
 .rp-actions{padding:12px 14px;}
 .rp-btn{width:100%;padding:8px;border-radius:7px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.82rem;cursor:pointer;border:none;transition:all .15s;margin-bottom:6px;text-align:center;}
 .rp-btn.green{background:var(--green);color:#fff;}
@@ -213,7 +175,6 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);height
 .rp-btn.red{background:transparent;border:1.5px solid var(--border);color:var(--light);}
 .rp-btn.red:hover{border-color:#fecaca;color:var(--red);}
 
-/* ── MODAL ── */
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(10,22,40,.8);z-index:500;align-items:center;justify-content:center;padding:20px;}
 .modal-overlay.open{display:flex;}
 .modal{background:var(--white);border-radius:14px;width:100%;max-width:440px;max-height:88vh;overflow-y:auto;animation:slideUp .25s ease;}
@@ -229,456 +190,92 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);height
 .mbtn.outline{background:transparent;border:1.5px solid var(--border);color:var(--muted);}
 .mbtn.outline:hover{border-color:#999;color:var(--text);}
 
-/* Toast */
 .toast{position:fixed;bottom:20px;right:20px;background:var(--navy);color:#e2e8f0;border:1px solid #1e3a5f;border-left:4px solid var(--green);border-radius:8px;padding:10px 15px;font-size:13px;z-index:9999;display:flex;align-items:center;gap:8px;max-width:280px;box-shadow:0 8px 26px rgba(0,0,0,.25);transform:translateX(120%);transition:transform .3s ease;}
 .toast.show{transform:translateX(0);}
 
+.typing-indicator{display:none;align-self:flex-start;}
+.typing-indicator.show{display:flex;}
+.typing-bubble{background:var(--white);border:1px solid var(--border);border-radius:12px 12px 12px 4px;padding:10px 14px;display:flex;gap:4px;align-items:center;}
+.typing-dot{width:7px;height:7px;border-radius:50%;background:var(--light);animation:typingPulse 1.2s infinite;}
+.typing-dot:nth-child(2){animation-delay:.2s;}
+.typing-dot:nth-child(3){animation-delay:.4s;}
+@keyframes typingPulse{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-4px)}}
+
 @media(max-width:900px){.right-panel{display:none;}}
 @media(max-width:640px){.sidebar{width:72px;}.th-info,.th-right{display:none;}.th-av{margin:0 auto;}}
-
-/* ── DARK MODE ── */
-@media (prefers-color-scheme: dark) {
-  :root {
-    --navy:#0a1628;
-    --blue:#3b82f6;
-    --blue-l:#60a5fa;
-    --gold:#fbbf24;
-    --gold-l:#fcd34d;
-    --green:#22c55e;
-    --green-l:#4ade80;
-    --red:#f87171;
-    --orange:#fb923c;
-    --text:#f1f5f9;
-    --muted:#94a3b8;
-    --light:#64748b;
-    --border:rgba(255,255,255,.1);
-    --bg:#0f172a;
-    --white:#1e293b;
-    --surface:#162032;
-    --card:#1e293b;
-  }
-  body { background:#0f172a !important; color:#f1f5f9 !important; }
-  /* Nav always dark - already fine */
-  /* Cards and panels */
-  .card, .panel, .pay-card, .summary-card, .rate-card, .review-card,
-  .profile-card, .rating-overview-card, .dispute-flow, .step-panel,
-  .step-list, .protection-hero ~ .panel, .stat-card, .fund-card,
-  .chart-card, .dq-item, .ai-panel { background:#1e293b !important; border-color:rgba(255,255,255,.08) !important; }
-  /* Text */
-  h1,h2,h3,h4,h5,h6 { color:#f1f5f9 !important; }
-  p, li, span:not(.logo *):not(.badge):not(.chip) { color:#94a3b8; }
-  strong { color:#e2e8f0 !important; }
-  /* Inputs */
-  input, select, textarea {
-    background:#162032 !important;
-    border-color:rgba(255,255,255,.12) !important;
-    color:#f1f5f9 !important;
-  }
-  input::placeholder, textarea::placeholder { color:#334155 !important; }
-  /* Surfaces */
-  .surface, [class*="surface"], [class*="-body"], [class*="-wrap"],
-  .pay-body, .sp-body, .panel-body, .mbody, .dq, .ai-chat,
-  .sum-body, .pc-body { background:#1e293b !important; }
-  /* Borders */
-  [class*="border"], hr { border-color:rgba(255,255,255,.08) !important; }
-  /* Table rows */
-  .trow:hover, .saved-card:hover, .step-item:hover { background:rgba(255,255,255,.05) !important; }
-  /* White backgrounds that need to go dark */
-  .white-bg, .bg-white, [style*="background:#fff"], [style*="background: #fff"],
-  [style*="background:white"], [style*="background: white"] { background:#1e293b !important; }
-  /* Legal pages specific */
-  .doc-header { background:transparent !important; }
-  .doc-title { color:#f1f5f9 !important; }
-  .doc-meta { color:#94a3b8 !important; }
-  .doc-meta strong { color:#e2e8f0 !important; }
-  .toc { background:#1e293b !important; border-color:rgba(255,255,255,.08) !important; }
-  .toc-title { color:#f1f5f9 !important; }
-  .section-title { color:#f1f5f9 !important; border-color:rgba(255,255,255,.08) !important; }
-  .section-num { color:#60a5fa !important; }
-  .section p, .section li { color:#94a3b8 !important; }
-  .section p strong, .section li strong { color:#e2e8f0 !important; }
-  /* Highlight boxes in legal pages — keep light backgrounds with dark text */
-  .hb-blue { background:#1e3a5f !important; border-color:#1d4ed8 !important; border-left-color:#3b82f6 !important; }
-  .hb-yellow { background:#422006 !important; border-color:#92400e !important; border-left-color:#fbbf24 !important; }
-  .hb-red { background:#450a0a !important; border-color:#991b1b !important; border-left-color:#f87171 !important; }
-  .hb-green { background:#052e16 !important; border-color:#166534 !important; border-left-color:#22c55e !important; }
-  .hb-blue .hb-text { color:#93c5fd !important; }
-  .hb-yellow .hb-text { color:#fcd34d !important; }
-  .hb-red .hb-text { color:#fca5a5 !important; }
-  .hb-green .hb-text { color:#86efac !important; }
-  .hb-text strong { color:inherit !important; }
-  /* Tables */
-  .fee-table th, .data-table th { background:#0f172a !important; color:#f1f5f9 !important; }
-  .fee-table td, .data-table td { color:#94a3b8 !important; background:#1e293b !important; }
-  .fee-table tr:nth-child(even) td, .data-table tr:nth-child(even) td { background:#162032 !important; }
-  .fee-table td:first-child, .data-table td:first-child { color:#e2e8f0 !important; }
-  /* Rights grid */
-  .right-card, .badge-card, .pf-card, .stat-card { background:#1e293b !important; border-color:rgba(255,255,255,.08) !important; }
-  .rc-title, .bc-name, .pf-title, .sc-lbl { color:#e2e8f0 !important; }
-  .rc-desc, .bc-desc, .pf-desc { color:#94a3b8 !important; }
-  /* Contact box stays dark - already fine */
-  /* Back buttons */
-  .back-btn { background:#1e3a8a !important; color:#fff !important; }
-  /* Nav links */
-  .nav-links a { color:#94a3b8 !important; }
-  .nav-links a:hover { color:#fff !important; }
-  /* Modal */
-  .modal, .overlay .modal { background:#1e293b !important; border-color:rgba(255,255,255,.1) !important; }
-  .mfield input, .mfield select, .mfield textarea { background:#0f172a !important; }
-  /* Chart bars already colored */
-  /* Star ratings */
-  .star, .mini-star { filter:none !important; }
-  /* OTP inputs */
-  .otp-input { background:#162032 !important; color:#f1f5f9 !important; }
-  .otp-input.filled { background:#052e16 !important; }
-  /* Upload zones */
-  .upload-zone, .upload-side, .ev-slot { background:#162032 !important; border-color:rgba(255,255,255,.1) !important; }
-  /* Step list sidebar */
-  .step-list { background:#1e293b !important; }
-  .step-item { background:transparent !important; }
-  .step-item.completed { background:rgba(22,163,74,.1) !important; }
-  .step-item.active { background:rgba(26,86,219,.1) !important; }
-  .si-title { color:#e2e8f0 !important; }
-  .si-meta { color:#64748b !important; }
-  /* Trust ring text */
-  .trust-num { color:#fff !important; }
-  /* Bypass rows */
-  .bp-msg, .br-msg { background:rgba(124,58,237,.15) !important; }
-  /* Summary card */
-  .sum-row-label { color:#94a3b8 !important; }
-  .sum-row-val { color:#e2e8f0 !important; }
-  /* Payment page */
-  .card-logo-chip { border-color:rgba(255,255,255,.15) !important; }
-  .express-btn.google { background:#1e293b !important; color:#f1f5f9 !important; border-color:rgba(255,255,255,.15) !important; }
-  /* Category cards */
-  .cat-rate, .cbd-item, .metric, .wb-stat, .phs-item { background:rgba(255,255,255,.05) !important; border-color:rgba(255,255,255,.08) !important; }
-  .wb-num, .metric-val, .sc-num { color:#fbbf24 !important; }
-  /* Payout rows */
-  .pay-row, .trow, .ur, .bp-row { border-color:rgba(255,255,255,.06) !important; }
-  /* Scrollbars */
-  ::-webkit-scrollbar { background:#0f172a; }
-  ::-webkit-scrollbar-thumb { background:#334155; border-radius:4px; }
+@media(prefers-color-scheme:dark){
+  :root{--text:#f1f5f9;--muted:#94a3b8;--light:#64748b;--border:rgba(255,255,255,.1);--bg:#0f172a;--white:#1e293b;--surface:#162032;}
+  body{background:#0f172a !important;color:#f1f5f9 !important;}
+  .sidebar,.chat-head,.input-area,.right-panel,.modal{background:#1e293b !important;border-color:rgba(255,255,255,.08) !important;}
+  input,textarea{background:#162032 !important;border-color:rgba(255,255,255,.12) !important;color:#f1f5f9 !important;}
+  .msg-wrap.theirs .bubble{background:#162032 !important;border-color:rgba(255,255,255,.1) !important;color:#f1f5f9 !important;}
+  .input-toolbar{background:#162032 !important;}
+  .thread:hover{background:rgba(255,255,255,.04) !important;}
+  .thread.active{background:rgba(26,86,219,.15) !important;}
 }
-
 </style>
+
+<!-- CONTENT SCREENING ENGINE -->
 <script>
-/**
- * TRADEZY CONTENT SCREENING ENGINE
- * Based on Operating Agreement Section 1.6 — Prohibited Items
- * 
- * HOW IT WORKS:
- * 1. Every listing title + description is scanned before going live
- * 2. Every message is scanned before being sent
- * 3. Violations are flagged with severity level
- * 4. Auto-actions taken based on severity
- * 5. All flags logged to admin panel
- * 
- * SEVERITY LEVELS:
- * - CRITICAL: Immediate ban (drugs, weapons, adult content, animals)
- * - HIGH: Listing blocked + warning (alcohol, tobacco, crypto, cash)
- * - MEDIUM: Message blocked + warning (bypass attempts)
- * - LOW: Flag for review (edge cases)
- */
-
 const TradezyScan = (() => {
-
-  // ── PROHIBITED KEYWORDS BY CATEGORY ──
   const BANNED = {
-
-    WEAPONS: {
-      severity: 'CRITICAL',
-      action: 'BAN',
-      message: 'Your listing has been removed. Weapons and dangerous items are strictly prohibited on Tradezy. Your account has been flagged for review.',
-      keywords: [
-        'gun', 'guns', 'firearm', 'rifle', 'pistol', 'handgun', 'shotgun', 'revolver',
-        'ammo', 'ammunition', 'bullets', 'ar-15', 'ak-47', 'glock', 'smith & wesson',
-        'explosive', 'bomb', 'grenade', 'taser', 'stun gun', 'brass knuckles',
-        'switchblade', 'gravity knife', 'ballistic knife', 'throwing stars',
-        'silencer', 'suppressor', 'trigger', 'magazine clip', 'hollow point',
-        'brass knuckle', 'nunchucks', 'pepper spray', 'mace spray',
-        'weapon', 'weapons', 'tactical knife', 'combat knife', 'military knife',
-      ]
-    },
-
-    DRUGS: {
-      severity: 'CRITICAL',
-      action: 'BAN_AND_REPORT',
-      message: 'Your listing has been removed and your account has been permanently banned. Drug-related items are strictly prohibited on Tradezy and may be reported to law enforcement.',
-      keywords: [
-        'weed', 'marijuana', 'cannabis', 'thc', 'cbd oil', 'edibles', 'hash', 'hashish',
-        'cocaine', 'coke', 'crack', 'heroin', 'meth', 'methamphetamine', 'crystal meth',
-        'fentanyl', 'oxycontin', 'percocet', 'xanax', 'adderall', 'ritalin',
-        'mdma', 'ecstasy', 'molly', 'lsd', 'acid', 'shrooms', 'mushrooms',
-        'drug', 'drugs', 'narcotics', 'prescription pills', 'painkillers',
-        'bong', 'pipe', 'rolling papers', 'dab rig', 'vape cartridge', 'cart',
-        'dispensary', 'plug', '420', 'dank', 'loud', 'kush', 'sativa', 'indica',
-      ]
-    },
-
-    ALCOHOL: {
-      severity: 'CRITICAL',
-      action: 'BAN',
-      message: 'Your listing has been removed. Alcohol is strictly prohibited on Tradezy.',
-      keywords: [
-        'beer', 'wine', 'whiskey', 'vodka', 'rum', 'tequila', 'gin', 'bourbon',
-        'scotch', 'brandy', 'champagne', 'spirits', 'liquor', 'alcohol',
-        'six pack', 'case of beer', 'bottle of wine', 'craft beer', 'hard cider',
-        'hard seltzer', 'white claw', 'truly', 'breweries', 'winery',
-        'alcoholic', 'booze', 'hooch', 'moonshine',
-      ]
-    },
-
-    TOBACCO: {
-      severity: 'CRITICAL',
-      action: 'BAN',
-      message: 'Your listing has been removed. Tobacco and nicotine products are strictly prohibited on Tradezy.',
-      keywords: [
-        'cigarette', 'cigarettes', 'cigars', 'cigar', 'tobacco', 'nicotine',
-        'vape', 'vaping', 'e-cigarette', 'juul', 'pod', 'nic', 'dip', 'chew',
-        'chewing tobacco', 'snuff', 'marlboro', 'newport', 'camel cigarettes',
-        'vape pen', 'vape juice', 'e-juice', 'nicotine patch', 'nicotine gum',
-      ]
-    },
-
-    ANIMALS: {
-      severity: 'CRITICAL',
-      action: 'BAN',
-      message: 'Your listing has been removed. Live animals of any kind are strictly prohibited on Tradezy.',
-      keywords: [
-        'puppy', 'puppies', 'kitten', 'kittens', 'dog for trade', 'cat for trade',
-        'live animal', 'live animals', 'pet for trade', 'pets for trade',
-        'rabbit', 'hamster', 'guinea pig', 'parrot', 'bird for trade',
-        'reptile', 'snake', 'lizard', 'exotic animal', 'livestock',
-        'chicken', 'rooster', 'goat for trade', 'pig for trade',
-        'fish for trade', 'aquarium fish',
-      ]
-    },
-
-    ADULT: {
-      severity: 'CRITICAL',
-      action: 'BAN',
-      message: 'Your listing has been removed and your account has been permanently banned. Adult content is strictly prohibited on Tradezy.',
-      keywords: [
-        'porn', 'pornography', 'xxx', 'adult content', 'adult toy', 'sex toy',
-        'dildo', 'vibrator', 'explicit', 'nsfw', 'onlyfans', 'nude', 'nudes',
-        'adult dvd', 'adult film', 'escort', 'prostitution',
-      ]
-    },
-
-    CASH_CRYPTO: {
-      severity: 'HIGH',
-      action: 'WARN_AND_REMOVE',
-      message: 'Your listing has been removed. Cash, cryptocurrency, and gift cards cannot be listed as trade items on Tradezy. Platform fees are processed through Stripe only.',
-      keywords: [
-        'bitcoin', 'btc', 'ethereum', 'eth', 'crypto', 'cryptocurrency', 'nft',
-        'dogecoin', 'litecoin', 'binance', 'coinbase', 'wallet address',
-        'gift card', 'gift cards', 'amazon gift card', 'visa gift card',
-        'cash trade', 'cash only', 'physical cash', 'dollar bills',
-        'money order', 'western union', 'moneygram',
-      ]
-    },
-
-    BYPASS: {
-      severity: 'MEDIUM',
-      action: 'BLOCK_MESSAGE',
-      message: 'Your message was blocked. Sharing contact information or payment methods outside of Tradezy violates our Terms of Service. This is your warning.',
-      patterns: [
-        // Phone numbers
-        /\b\d{3}[-.\s]?\d{3}[-.\s]?\d{4}\b/,
-        /\(\d{3}\)\s?\d{3}[-.\s]\d{4}/,
-        // Emails
-        /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/,
-        // Payment apps
-        /\b(venmo|cashapp|cash app|zelle|paypal|apple pay|google pay|chime)\b/i,
-        // Social handles
-        /\b(instagram|facebook|snapchat|whatsapp|telegram|signal|kik)\b/i,
-        /[@]\w{2,}/,
-        // Bypass phrases
-        /\b(text me|call me|dm me|message me|find me on|hit me up|reach me|contact me outside|off app|off platform|outside the app)\b/i,
-      ]
-    }
+    WEAPONS:{severity:'CRITICAL',action:'BAN',keywords:['gun','guns','firearm','rifle','pistol','handgun','shotgun','revolver','ammo','ammunition','bullets','explosive','bomb','grenade','taser','stun gun','brass knuckles','switchblade','weapon','weapons']},
+    DRUGS:{severity:'CRITICAL',action:'BAN_AND_REPORT',keywords:['weed','marijuana','cannabis','thc','cocaine','coke','crack','heroin','meth','methamphetamine','fentanyl','mdma','ecstasy','molly','lsd','drug','drugs','narcotics','bong','420','kush','sativa','indica']},
+    ALCOHOL:{severity:'CRITICAL',action:'BAN',keywords:['beer','wine','whiskey','vodka','rum','tequila','gin','bourbon','scotch','champagne','spirits','liquor','alcohol','alcoholic','booze']},
+    TOBACCO:{severity:'CRITICAL',action:'BAN',keywords:['cigarette','cigarettes','cigars','cigar','tobacco','nicotine','vape','vaping','e-cigarette','juul']},
+    ANIMALS:{severity:'CRITICAL',action:'BAN',keywords:['puppy','puppies','kitten','kittens','live animal','live animals','pet for trade','exotic animal','livestock']},
+    ADULT:{severity:'CRITICAL',action:'BAN',keywords:['porn','pornography','xxx','adult content','adult toy','sex toy','explicit','nsfw','nude','nudes']},
+    CASH_CRYPTO:{severity:'HIGH',action:'WARN_AND_REMOVE',keywords:['bitcoin','btc','ethereum','eth','crypto','cryptocurrency','nft','gift card','gift cards','money order','western union']},
+    BYPASS:{severity:'MEDIUM',action:'BLOCK_MESSAGE',patterns:[
+      /\b\d{3}[-.\s]?\d{3}[-.\s]?\d{4}\b/,
+      /\(\d{3}\)\s?\d{3}[-.\s]\d{4}/,
+      /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/,
+      /\b(venmo|cashapp|cash app|zelle|paypal|apple pay|google pay|chime)\b/i,
+      /\b(instagram|facebook|snapchat|whatsapp|telegram|signal|kik)\b/i,
+      /[@]\w{2,}/,
+      /\b(text me|call me|dm me|message me|find me on|hit me up|reach me|contact me outside|off app|off platform|outside the app)\b/i,
+    ]}
   };
-
-  // ── SCAN A LISTING ──
-  function scanListing(title, description) {
-    const text = `${title} ${description}`.toLowerCase();
-    const results = [];
-
-    for (const [category, config] of Object.entries(BANNED)) {
-      if (category === 'BYPASS') continue; // bypass is for messages only
-
-      const keywords = config.keywords || [];
-      const found = keywords.filter(kw => text.includes(kw.toLowerCase()));
-
-      if (found.length > 0) {
-        results.push({
-          category,
-          severity: config.severity,
-          action: config.action,
-          message: config.message,
-          matched: found,
-          timestamp: new Date().toISOString()
-        });
-      }
-    }
-
-    // Return worst severity first
-    results.sort((a, b) => {
-      const order = { CRITICAL: 0, HIGH: 1, MEDIUM: 2, LOW: 3 };
-      return order[a.severity] - order[b.severity];
-    });
-
-    return {
-      flagged: results.length > 0,
-      violations: results,
-      canPost: results.filter(r => r.severity === 'CRITICAL' || r.severity === 'HIGH').length === 0
-    };
-  }
-
-  // ── SCAN A MESSAGE ──
   function scanMessage(text) {
     const results = [];
     const bypass = BANNED.BYPASS;
-
-    // Check keyword patterns
     for (const pattern of bypass.patterns) {
-      if (pattern.test(text)) {
-        results.push({
-          category: 'BYPASS',
-          severity: bypass.severity,
-          action: bypass.action,
-          message: bypass.message,
-          matched: text.match(pattern)?.[0] || 'pattern match',
-          timestamp: new Date().toISOString()
-        });
-        break; // one bypass flag is enough
-      }
+      if (pattern.test(text)) { results.push({category:'BYPASS',severity:'MEDIUM',action:'BLOCK_MESSAGE',matched:text.match(pattern)?.[0]||'pattern'}); break; }
     }
-
-    // Also check listing banned items in messages
     const textLower = text.toLowerCase();
-    for (const [category, config] of Object.entries(BANNED)) {
-      if (category === 'BYPASS') continue;
-      const keywords = config.keywords || [];
-      const found = keywords.filter(kw => textLower.includes(kw.toLowerCase()));
-      if (found.length > 0) {
-        results.push({
-          category,
-          severity: config.severity,
-          action: config.action,
-          message: config.message,
-          matched: found,
-          timestamp: new Date().toISOString()
-        });
-      }
+    for (const [cat, cfg] of Object.entries(BANNED)) {
+      if (cat === 'BYPASS') continue;
+      const found = (cfg.keywords||[]).filter(kw => textLower.includes(kw));
+      if (found.length) results.push({category:cat,severity:cfg.severity,action:cfg.action,matched:found});
     }
-
-    return {
-      flagged: results.length > 0,
-      violations: results,
-      canSend: results.filter(r => r.severity === 'CRITICAL' || r.severity === 'HIGH' || r.severity === 'MEDIUM').length === 0
-    };
+    return { flagged:results.length>0, violations:results, canSend:results.filter(r=>['CRITICAL','HIGH','MEDIUM'].includes(r.severity)).length===0 };
   }
-
-  // ── GET USER ACTION ──
-  // Returns what should happen to the user based on violation
-  function getUserAction(violation) {
-    switch (violation.action) {
-      case 'BAN_AND_REPORT':
-        return { ban: true, report: true, warn: false, removeListng: true };
-      case 'BAN':
-        return { ban: true, report: false, warn: false, removeListing: true };
-      case 'WARN_AND_REMOVE':
-        return { ban: false, report: false, warn: true, removeListing: true };
-      case 'BLOCK_MESSAGE':
-        return { ban: false, report: false, warn: true, removeListing: false };
-      default:
-        return { ban: false, report: false, warn: true, removeListing: false };
-    }
-  }
-
-  // ── FORMAT FLAG FOR ADMIN ──
-  function formatAdminFlag(violation, context) {
-    return {
-      id: `FLAG-${Date.now()}`,
-      category: violation.category,
-      severity: violation.severity,
-      action: violation.action,
-      matched: violation.matched,
-      context: context, // listing title or message snippet
-      timestamp: violation.timestamp,
-      requiresReview: violation.severity === 'CRITICAL',
-      autoActioned: violation.severity !== 'CRITICAL' // admin must approve critical bans
-    };
-  }
-
-  // ── USER-FACING WARNING MESSAGES ──
-  const USER_MESSAGES = {
-    LISTING_BLOCKED: (category) => `
-      ⚠️ Your listing was not posted.
-      
-      Tradezy does not allow listings in the "${category}" category.
-      This is a violation of our Terms of Service (Section 3 — Prohibited Items).
-      
-      Repeated violations will result in permanent account suspension.
-      
-      Questions? Contact support@tradezyhq.com
-    `,
-    MESSAGE_BLOCKED: `
-      ⚠️ Your message was not sent.
-      
-      Sharing contact information or payment methods outside of Tradezy 
-      is a violation of our Terms of Service.
-      
-      This is your warning. Further attempts may result in account suspension.
-    `,
-    ACCOUNT_BANNED: `
-      🚫 Your account has been permanently banned.
-      
-      Your account was found to be in violation of Tradezy's Terms of Service.
-      All active listings have been removed and any pending trades have been cancelled.
-      
-      To appeal this decision, contact support@tradezyhq.com with subject line "Ban Appeal".
-      
-      — Tradezy Trust & Safety Team
-    `
-  };
-
-  // Public API
-  return {
-    scanListing,
-    scanMessage,
-    getUserAction,
-    formatAdminFlag,
-    USER_MESSAGES,
-    BANNED
-  };
-
+  const USER_MESSAGES = { MESSAGE_BLOCKED:'⚠️ Your message was not sent. Sharing contact information or payment methods outside of Tradezy violates our Terms of Service.' };
+  return { scanMessage, USER_MESSAGES };
 })();
-
-// TradezyScan available globally in browser
-
 </script>
 </head>
 <body>
 
-<!-- NAV -->
 <div class="nav">
   <a href="alltrades.html" style="text-decoration:none"><div class="logo"><span class="a">Trade</span><span class="t">zy</span><span class="d">.</span></div></a>
   <div class="nav-right">
     <a class="nav-btn ghost" href="alltrades-dashboard.html">← Dashboard</a>
-    <div class="user-chip"><div class="u-av">JD</div><div class="u-name">Jane D.</div></div>
+    <div class="user-chip">
+      <div class="u-av" id="navAv">?</div>
+      <div class="u-name" id="navName">Loading…</div>
+    </div>
   </div>
 </div>
 
 <div class="chat-layout">
 
-  <!-- ── SIDEBAR ── -->
+  <!-- SIDEBAR -->
   <div class="sidebar">
     <div class="sb-head">
       <div class="sb-title-row">
         <div class="sb-title">💬 Messages</div>
-        <button class="sb-new-btn" onclick="showToast('✉️','Select a listing to start a new chat!')">+ New</button>
+        <button class="sb-new-btn" onclick="showToast('✉️','Open a listing and click Message Seller to start a new chat!')">+ New</button>
       </div>
       <div class="sb-search">
         <span class="sb-search-ic">🔍</span>
@@ -686,73 +283,72 @@ const TradezyScan = (() => {
       </div>
     </div>
     <div class="sb-tabs">
-      <div class="sb-tab active" onclick="setTab(this,'all')">All <span class="sb-tab-cnt">3</span></div>
-      <div class="sb-tab" onclick="setTab(this,'trades')">Trades</div>
-      <div class="sb-tab" onclick="setTab(this,'offers')">Offers</div>
-      <div class="sb-tab" onclick="setTab(this,'flagged')">⚑ Flagged</div>
+      <div class="sb-tab active" onclick="setTab(this,'all')">All <span class="sb-tab-cnt" id="tabAllCnt" style="display:none">0</span></div>
+      <div class="sb-tab" onclick="setTab(this,'unread')">Unread</div>
     </div>
     <div class="thread-list" id="threadList">
-      <!-- Rendered by JS -->
+      <div class="empty-threads"><div class="ei">💬</div><p>Loading conversations…</p></div>
     </div>
   </div>
 
-  <!-- ── CHAT PANEL ── -->
-  <div class="chat-panel">
+  <!-- CHAT PANEL -->
+  <div class="chat-panel" id="chatPanel">
+    <div class="chat-empty" id="chatEmpty">
+      <div class="cei">💬</div>
+      <p>Select a conversation to start messaging</p>
+    </div>
 
-    <!-- Chat Header -->
-    <div class="chat-head">
-      <div class="ch-av" id="chatAv" style="background:var(--blue)">RJ</div>
+    <!-- Chat header (hidden until thread selected) -->
+    <div class="chat-head" id="chatHead" style="display:none">
+      <div class="ch-av" id="chatAv" style="background:var(--blue)">?</div>
       <div class="ch-info">
-        <div class="ch-name" id="chatName">RiderJay</div>
-        <div class="ch-meta">
-          <span class="ch-online"></span>
-          <span id="chatMeta">Online · Meriden, CT · 4.8★ · 31 trades</span>
-        </div>
+        <div class="ch-name" id="chatName">—</div>
+        <div class="ch-meta"><span id="chatMeta">—</span></div>
       </div>
       <div class="ch-actions">
-        <button class="ch-btn view" onclick="showToast('👤','Viewing RiderJay\'s profile…')">👤 Profile</button>
-        <button class="ch-btn view" onclick="showToast('📦','Viewing trade listing…')">📦 Listing</button>
-        <button class="ch-btn offer" onclick="openModal('offerModal')">🤝 Make Offer</button>
+        <button class="ch-btn view" id="btnViewListing" onclick="viewActiveListing()">📦 Listing</button>
         <button class="ch-btn danger" onclick="openModal('reportModal')">⚑ Report</button>
       </div>
     </div>
 
-    <!-- Trade Context Bar -->
-    <div class="trade-context" id="tradeContextBar">
+    <!-- Trade context bar (shown when active trade exists) -->
+    <div class="trade-context" id="tradeContextBar" style="display:none">
       <span class="tc-icon">🔄</span>
-      <div class="tc-text">
-        <strong>Trade #AT-2847 in progress</strong> — Canned Goods (24) ⇄ DeWalt Drill Set · Step 2 of 3 · Meetup pending
-      </div>
-      <button class="tc-action" onclick="showToast('🔄','Opening trade details…')">View Trade →</button>
+      <div class="tc-text" id="tradeContextText"><strong>Active trade</strong></div>
+      <button class="tc-action" onclick="window.location.href='alltrades-dashboard.html'">View Trade →</button>
     </div>
 
-    <!-- Bypass Warning (hidden by default, shown when triggered) -->
+    <!-- Bypass warning -->
     <div class="bypass-warn" id="bypassWarn" style="display:none">
       <span class="bw-icon">🚨</span>
       <div class="bw-text">
         <div class="bw-title">Contact Info Detected — Message Blocked</div>
-        <div class="bw-desc" id="bypassDesc">Your message appears to contain personal contact information. Sharing phone numbers, emails, or social handles outside Tradezy removes your trade protection, ratings, and dispute rights. Keep all communication here to stay safe.</div>
+        <div class="bw-desc" id="bypassDesc">Your message appears to contain personal contact information.</div>
       </div>
       <span class="bw-close" onclick="hideBypass()">✕</span>
     </div>
 
-    <!-- Messages -->
-    <div class="msgs-area" id="msgsArea">
-      <!-- Rendered by JS -->
+    <!-- Messages area -->
+    <div class="msgs-area" id="msgsArea" style="display:none"></div>
+
+    <!-- Typing indicator -->
+    <div class="typing-indicator" id="typingIndicator">
+      <div class="typing-bubble">
+        <div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>
+      </div>
     </div>
 
-    <!-- Input Area -->
-    <div class="input-area">
+    <!-- Input area -->
+    <div class="input-area" id="inputArea" style="display:none">
       <div class="safety-remind" id="safetyRemind">
         🛡️ <span>Keep all communication on Tradezy — sharing personal contact info removes your trade protection.</span>
-        <span style="margin-left:auto;cursor:pointer;color:var(--muted)" onclick="document.getElementById('safetyRemind').classList.add('hidden')">✕</span>
+        <span style="margin-left:auto;cursor:pointer;color:var(--muted)" onclick="this.closest('.safety-remind').classList.add('hidden')">✕</span>
       </div>
       <div class="input-wrap">
         <div class="input-box">
-          <textarea class="msg-input" id="msgInput" placeholder="Message RiderJay…" rows="1" oninput="onType(this)" onkeydown="handleKey(event)"></textarea>
+          <textarea class="msg-input" id="msgInput" placeholder="Send a message…" rows="1" oninput="onType(this)" onkeydown="handleKey(event)"></textarea>
           <div class="input-toolbar">
             <button class="tool-btn" onclick="showToast('📷','Photo sharing coming soon!')">📷</button>
-            <button class="tool-btn" onclick="insertTradeCard()">🔄</button>
             <button class="tool-btn" onclick="showToast('📍','Location sharing — public meetup spots only!')">📍</button>
             <button class="tool-btn" onclick="showToast('😊','Emoji picker coming soon!')">😊</button>
             <span class="char-warn" id="charWarn">0 / 500</span>
@@ -761,73 +357,43 @@ const TradezyScan = (() => {
         <button class="send-btn" id="sendBtn" onclick="sendMessage()" disabled>➤</button>
       </div>
       <div class="scanning-indicator" id="scanIndicator">
-        <div class="scan-dot"></div>
-        <div class="scan-dot"></div>
-        <div class="scan-dot"></div>
+        <div class="scan-dot"></div><div class="scan-dot"></div><div class="scan-dot"></div>
         <span style="font-size:11px;color:var(--muted)">Scanning for safety…</span>
       </div>
     </div>
-
   </div>
 
-  <!-- ── RIGHT PANEL ── -->
+  <!-- RIGHT PANEL -->
   <div class="right-panel">
     <div class="rp-head">
-      <div class="rp-title">🔄 Trade Details</div>
-      <div class="rp-sub">Active · #AT-2847</div>
+      <div class="rp-title" id="rpTitle">🔄 Trade Details</div>
+      <div class="rp-sub" id="rpSub">Select a conversation</div>
     </div>
-    <div class="rp-section">
-      <div class="rp-sec-title">Items Being Traded</div>
-      <div class="rp-item">
-        <div class="rp-item-em">🥫</div>
-        <div class="rp-item-nm">Canned Goods (24 cans)</div>
-        <div class="rp-item-vl" style="color:var(--gold)">~$29 est. · You</div>
+    <div id="rpContent">
+      <div class="rp-section">
+        <div class="rp-sec-title">🛡️ Safety Tips</div>
+        <div class="safety-tip"><span class="st-icon">📍</span><span>Meet in a <strong>public place</strong> — parking lot, library, or police station.</span></div>
+        <div class="safety-tip"><span class="st-icon">💬</span><span>Keep all chat <strong>inside Tradezy</strong> to protect your trade rights.</span></div>
+        <div class="safety-tip"><span class="st-icon">🚫</span><span>Never share your <strong>home address</strong> or financial details.</span></div>
+        <div class="safety-tip"><span class="st-icon">⚑</span><span>If something feels wrong, <strong>report it</strong> immediately.</span></div>
       </div>
-      <div class="rp-arrow">⇄</div>
-      <div class="rp-item">
-        <div class="rp-item-em">🔧</div>
-        <div class="rp-item-nm">DeWalt Drill Set</div>
-        <div class="rp-item-vl" style="color:var(--blue)">~$140 est. · RiderJay</div>
-      </div>
-    </div>
-    <div class="rp-section">
-      <div class="rp-sec-title">Fee Breakdown</div>
-      <div class="rp-fee-row"><span class="rp-fee-label">Your item value</span><span class="rp-fee-val">$29.00</span></div>
-      <div class="rp-fee-row"><span class="rp-fee-label">Your 5% fee</span><span class="rp-fee-val" style="color:var(--gold)">$1.45</span></div>
-      <div class="rp-fee-row"><span class="rp-fee-label">RiderJay's fee</span><span class="rp-fee-val" style="color:var(--blue)">$7.00</span></div>
-      <div class="rp-total"><span>Your total</span><span>$30.45</span></div>
-      <div style="font-size:10px;color:var(--muted);margin-top:6px">Only charged when both parties confirm the trade is complete.</div>
-    </div>
-    <div class="rp-safety">
-      <div class="rp-sec-title">🛡️ Safety Tips</div>
-      <div class="safety-tip"><span class="st-icon">📍</span><span>Meet in a <strong>public place</strong> — parking lot, library, or police station.</span></div>
-      <div class="safety-tip"><span class="st-icon">💬</span><span>Keep all chat <strong>inside Tradezy</strong> to protect your trade rights.</span></div>
-      <div class="safety-tip"><span class="st-icon">🚫</span><span>Never share your <strong>home address</strong> or financial details.</span></div>
-      <div class="safety-tip"><span class="st-icon">⚑</span><span>If something feels wrong, <strong>report it</strong> immediately.</span></div>
-    </div>
-    <div class="rp-actions">
-      <button class="rp-btn green" onclick="showToast('✅','Confirm trade modal opening…')">✓ Confirm Trade Done</button>
-      <button class="rp-btn outline" onclick="showToast('📍','Set meetup location…')">📍 Set Meetup Spot</button>
-      <button class="rp-btn red" onclick="openModal('reportModal')">⚑ Report a Problem</button>
     </div>
   </div>
 
 </div>
 
-<!-- ── MODALS ── -->
-
-<!-- Report Modal -->
+<!-- REPORT MODAL -->
 <div class="modal-overlay" id="reportModal">
   <div class="modal">
     <div class="mhd"><div class="mhd-title">⚑ Report This User</div><button class="mhd-close" onclick="closeModal('reportModal')">✕</button></div>
     <div class="mbody">
       <p style="font-size:13px;color:var(--muted);margin-bottom:14px;line-height:1.5">What's the issue? Our team reviews all reports within 24 hours.</p>
       <div style="display:flex;flex-direction:column;gap:7px;margin-bottom:14px" id="reportOptions">
-        <label style="display:flex;align-items:center;gap:10px;padding:10px 12px;border:1.5px solid var(--border);border-radius:7px;cursor:pointer;font-size:13px;transition:all .15s" onclick="selectReport(this)"><input type="radio" name="report" style="accent-color:var(--red)"> Tried to take conversation off-platform</label>
-        <label style="display:flex;align-items:center;gap:10px;padding:10px 12px;border:1.5px solid var(--border);border-radius:7px;cursor:pointer;font-size:13px;transition:all .15s" onclick="selectReport(this)"><input type="radio" name="report" style="accent-color:var(--red)"> Item not as described</label>
-        <label style="display:flex;align-items:center;gap:10px;padding:10px 12px;border:1.5px solid var(--border);border-radius:7px;cursor:pointer;font-size:13px;transition:all .15s" onclick="selectReport(this)"><input type="radio" name="report" style="accent-color:var(--red)"> Suspicious or scam behavior</label>
-        <label style="display:flex;align-items:center;gap:10px;padding:10px 12px;border:1.5px solid var(--border);border-radius:7px;cursor:pointer;font-size:13px;transition:all .15s" onclick="selectReport(this)"><input type="radio" name="report" style="accent-color:var(--red)"> Harassment or threatening messages</label>
-        <label style="display:flex;align-items:center;gap:10px;padding:10px 12px;border:1.5px solid var(--border);border-radius:7px;cursor:pointer;font-size:13px;transition:all .15s" onclick="selectReport(this)"><input type="radio" name="report" style="accent-color:var(--red)"> Other</label>
+        <label style="display:flex;align-items:center;gap:10px;padding:10px 12px;border:1.5px solid var(--border);border-radius:7px;cursor:pointer;font-size:13px" onclick="selectReport(this)"><input type="radio" name="report" style="accent-color:var(--red)"> Tried to take conversation off-platform</label>
+        <label style="display:flex;align-items:center;gap:10px;padding:10px 12px;border:1.5px solid var(--border);border-radius:7px;cursor:pointer;font-size:13px" onclick="selectReport(this)"><input type="radio" name="report" style="accent-color:var(--red)"> Item not as described</label>
+        <label style="display:flex;align-items:center;gap:10px;padding:10px 12px;border:1.5px solid var(--border);border-radius:7px;cursor:pointer;font-size:13px" onclick="selectReport(this)"><input type="radio" name="report" style="accent-color:var(--red)"> Suspicious or scam behavior</label>
+        <label style="display:flex;align-items:center;gap:10px;padding:10px 12px;border:1.5px solid var(--border);border-radius:7px;cursor:pointer;font-size:13px" onclick="selectReport(this)"><input type="radio" name="report" style="accent-color:var(--red)"> Harassment or threatening messages</label>
+        <label style="display:flex;align-items:center;gap:10px;padding:10px 12px;border:1.5px solid var(--border);border-radius:7px;cursor:pointer;font-size:13px" onclick="selectReport(this)"><input type="radio" name="report" style="accent-color:var(--red)"> Other</label>
       </div>
       <textarea placeholder="Additional details (optional)…" style="width:100%;border:1.5px solid var(--border);border-radius:7px;padding:9px 11px;font-family:'Lato',sans-serif;font-size:13px;outline:none;resize:vertical;min-height:70px;" onfocus="this.style.borderColor='var(--blue)'" onblur="this.style.borderColor='var(--border)'"></textarea>
       <div style="margin:12px 0;font-size:11px;color:var(--muted)">Reporting is anonymous. False reports may affect your account standing.</div>
@@ -837,125 +403,392 @@ const TradezyScan = (() => {
   </div>
 </div>
 
-<!-- Offer Modal -->
-<div class="modal-overlay" id="offerModal">
-  <div class="modal">
-    <div class="mhd"><div class="mhd-title">🤝 Send a Trade Offer</div><button class="mhd-close" onclick="closeModal('offerModal')">✕</button></div>
-    <div class="mbody">
-      <p style="font-size:13px;color:var(--muted);margin-bottom:14px;line-height:1.5">You can send a formal trade offer directly from the chat. It will appear as a trade card in the conversation.</p>
-      <div style="margin-bottom:11px"><label style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:4px">Your Item to Offer</label><input type="text" id="offerItemInput" placeholder="e.g. 25lb bag of rice, cordless drill…" style="width:100%;border:1.5px solid var(--border);border-radius:7px;padding:9px 11px;font-size:14px;font-family:'Lato',sans-serif;outline:none;transition:border-color .15s" onfocus="this.style.borderColor='var(--blue)'" onblur="this.style.borderColor='var(--border)'"></div>
-      <div style="margin-bottom:11px"><label style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:4px">Estimated Value ($)</label><input type="number" id="offerValInput" placeholder="0.00" style="width:100%;border:1.5px solid var(--border);border-radius:7px;padding:9px 11px;font-size:14px;font-family:'Lato',sans-serif;outline:none;transition:border-color .15s" onfocus="this.style.borderColor='var(--blue)'" onblur="this.style.borderColor='var(--border)'"></div>
-      <div style="background:linear-gradient(135deg,#1e3a8a,#1d4ed8);border-radius:8px;padding:11px 13px;margin-bottom:12px">
-        <div style="font-size:11px;color:#93c5fd;font-weight:700;margin-bottom:5px">5% Platform Fee Preview</div>
-        <div style="font-size:12px;color:#bfdbfe">Your fee: <strong style="color:#fff" id="feePreview">$0.00</strong> · Only charged if RiderJay accepts</div>
-      </div>
-      <button class="mbtn gold" onclick="sendOfferCard()">🤝 Send Trade Offer Card</button>
-      <button class="mbtn outline" onclick="closeModal('offerModal')">Cancel</button>
-    </div>
-  </div>
-</div>
-
-<!-- TOAST -->
 <div class="toast" id="toastEl"><span id="toastIc">✅</span><span id="toastTx">Done!</span></div>
 
 <script>
-// ── BYPASS SCANNER CONFIG ──
-const BYPASS_PATTERNS = [
-  { pattern: /\b\d{3}[-.\s]?\d{3}[-.\s]?\d{4}\b/, label: 'phone number' },
-  { pattern: /\b\d{10}\b/, label: 'phone number' },
-  { pattern: /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/, label: 'email address' },
-  { pattern: /\b(instagram|insta|ig|facebook|fb|snapchat|snap|twitter|tiktok|telegram|whatsapp|venmo|cashapp|zelle|paypal)\b/i, label: 'external platform or payment app' },
-  { pattern: /\btext me\b|\bcall me\b|\bdm me\b|\bhit me up\b|\bmessage me on\b|\bfind me on\b/i, label: 'request to contact outside Tradezy' },
-  { pattern: /\bmy number is\b|\bmy email is\b|\bcontact me at\b|\breach me at\b/i, label: 'personal contact info' },
-  { pattern: /\bwww\.|https?:\/\//i, label: 'external website link' },
-];
+/* ── SUPABASE ── */
+const sb = window.supabase.createClient(
+  'https://equvwaspcoeetfsexqki.supabase.co',
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVxdXZ3YXNwY29lZXRmc2V4cWtpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgyNzc2MjQsImV4cCI6MjA5Mzg1MzYyNH0.TP6Kk3pzHW1PYMUu5D9Vu2lJrazIEagzu5csYhqkrfI'
+);
 
-function scanMessage(text) {
-  for (const { pattern, label } of BYPASS_PATTERNS) {
-    if (pattern.test(text)) return label;
+/* ── STATE ── */
+let currentUser   = null;
+let currentUserProfile = null;
+let threads       = [];       // [{otherId, otherName, otherInitials, otherColor, lastMsg, lastTime, unreadCount, listingId}]
+let activeOtherId = null;     // UUID of the person we're chatting with
+let activeListingId = null;   // listing_id for this thread
+let realtimeSub   = null;     // Supabase realtime channel
+let allThreadsFilter = 'all';
+let scanTimer     = null;
+
+const AV_COLORS = ['#1a56db','#16a34a','#ea580c','#f59e0b','#7c3aed','#0891b2','#be185d'];
+
+/* ── INIT ── */
+(async () => {
+  const { data: { session } } = await sb.auth.getSession();
+  if (!session) { window.location.href = 'alltrades-auth.html'; return; }
+  currentUser = session.user;
+  await loadUserProfile();
+  await loadThreads();
+  // check if ?user= param to auto-open a thread
+  const params = new URLSearchParams(window.location.search);
+  const openUser = params.get('user');
+  const openListing = params.get('listing');
+  if (openUser) openThread(openUser, openListing || null);
+})();
+
+/* ── LOAD PROFILE ── */
+async function loadUserProfile() {
+  try {
+    const { data } = await sb.from('users').select('display_name').eq('id', currentUser.id).single();
+    const name = data?.display_name || currentUser.email?.split('@')[0] || 'Me';
+    const initials = name.split(' ').map(n=>n[0]).join('').toUpperCase().slice(0,2);
+    currentUserProfile = { name, initials };
+    document.getElementById('navAv').textContent = initials;
+    document.getElementById('navName').textContent = name;
+  } catch(e) {
+    document.getElementById('navName').textContent = 'Me';
   }
-  return null;
 }
 
-// ── THREADS DATA ──
-const THREADS = [
-  { id:'rj', name:'RiderJay', av:'RJ', color:'#1a56db', preview:'Sounds good — what time works for you?', time:'2m', unread:true, unreadCnt:2, badge:'trade', active:true },
-  { id:'gs', name:'GardenSue', av:'GS', color:'#16a34a', preview:'Can we do Saturday at the HEB lot?', time:'18m', unread:true, unreadCnt:1, badge:'trade', active:false },
-  { id:'tl', name:'TechLisa', av:'TL', color:'#ea580c', preview:'The laptop is in great shape, just upgraded…', time:'1h', unread:true, unreadCnt:1, badge:'offer', active:false },
-  { id:'pm', name:'PrepMike', av:'PM', color:'#7c3aed', preview:'Still interested in the canned goods trade?', time:'3h', unread:false, unreadCnt:0, badge:'offer', active:false },
-  { id:'bb', name:'BuildBob', av:'BB', color:'#f59e0b', preview:'Let me know if you want to counter.', time:'5h', unread:false, unreadCnt:0, badge:'offer', active:false },
-  { id:'op', name:'OutdoorPete', av:'OP', color:'#dc2626', preview:'Hey, text me at 512-555-0149 to arrange…', time:'6h', unread:false, unreadCnt:0, badge:'flag', active:false, flagged:true },
-];
+/* ── LOAD THREADS ── */
+async function loadThreads() {
+  try {
+    // Fetch all messages involving the current user
+    const { data: msgs } = await sb
+      .from('messages')
+      .select('*')
+      .or(`sender_id.eq.${currentUser.id},receiver_id.eq.${currentUser.id}`)
+      .order('created_at', { ascending: false });
 
-// ── MESSAGES DATA ──
-const MESSAGES = {
-  rj: [
-    { id:1, from:'them', text:'Hey Jane! I saw your listing for the canned goods. I have a DeWalt drill set I\'d love to trade. It\'s barely used — I bought it for a home project that never happened.', time:'Yesterday 4:32 PM' },
-    { id:2, from:'me', text:'Hi RiderJay! That sounds great. The canned goods are all sealed and have 2+ years until expiration. Would love to trade!', time:'Yesterday 4:45 PM' },
-    { id:3, from:'sys', text:'Jane sent a trade offer' },
-    { id:4, from:'tradecard', item1em:'🥫', item1:'Canned Goods (24)', val1:'~$29', item2em:'🔧', item2:'DeWalt Drill', val2:'~$140', status:'accepted' },
-    { id:5, from:'sys-success', text:'✅ RiderJay accepted the trade offer! Trade #AT-2847 created.' },
-    { id:6, from:'them', text:'Awesome! So excited for this trade. When are you free to meet?', time:'Today 9:14 AM' },
-    { id:7, from:'me', text:'I\'m free this weekend! Saturday morning works best for me. Where are you located?', time:'Today 9:22 AM' },
-    { id:8, from:'them', text:'I\'m on the north side of Meriden. Maybe we could meet at the Target on CT-15? It\'s a good public spot.', time:'Today 9:28 AM' },
-    { id:9, from:'me', text:'That works perfectly — it\'s a safe public location.', time:'Today 9:31 AM', read:true },
-    { id:10, from:'them', text:'Sounds good — what time works for you?', time:'Today 9:35 AM' },
-  ]
-};
+    if (!msgs?.length) {
+      document.getElementById('threadList').innerHTML =
+        `<div class="empty-threads"><div class="ei">💬</div><p>No messages yet.<br>Make an offer on a listing to start chatting!</p></div>`;
+      return;
+    }
 
-let activeThread = 'rj';
-let messageCount = 0;
+    // Group by the other user, keep latest message per thread
+    const threadMap = {};
+    for (const m of msgs) {
+      const otherId = m.sender_id === currentUser.id ? m.receiver_id : m.sender_id;
+      if (!threadMap[otherId]) {
+        threadMap[otherId] = { lastMsg: m, unreadCount: 0, listingId: m.listing_id };
+      }
+      // Count unread
+      if (m.receiver_id === currentUser.id && !m.read_at) {
+        threadMap[otherId].unreadCount++;
+      }
+    }
 
-// ── RENDER THREADS ──
-function renderThreads(filter = '') {
+    // Fetch display names for all other users
+    const otherIds = Object.keys(threadMap);
+    const { data: userRows } = await sb.from('users').select('id,display_name').in('id', otherIds);
+    const nameMap = {};
+    (userRows||[]).forEach(u => { nameMap[u.id] = u.display_name || 'Trader'; });
+
+    threads = otherIds.map((otherId, i) => ({
+      otherId,
+      otherName: nameMap[otherId] || 'Trader',
+      otherInitials: (nameMap[otherId]||'TR').split(' ').map(n=>n[0]).join('').toUpperCase().slice(0,2),
+      otherColor: AV_COLORS[i % AV_COLORS.length],
+      lastMsg: threadMap[otherId].lastMsg,
+      lastTime: threadMap[otherId].lastMsg.created_at,
+      unreadCount: threadMap[otherId].unreadCount,
+      listingId: threadMap[otherId].listingId,
+    })).sort((a,b) => new Date(b.lastTime) - new Date(a.lastTime));
+
+    const totalUnread = threads.reduce((s,t) => s + t.unreadCount, 0);
+    if (totalUnread > 0) {
+      const cnt = document.getElementById('tabAllCnt');
+      cnt.textContent = totalUnread;
+      cnt.style.display = 'inline';
+    }
+
+    renderThreadList();
+  } catch(e) {
+    console.error('loadThreads error:', e);
+    document.getElementById('threadList').innerHTML =
+      `<div class="empty-threads"><div class="ei">⚠️</div><p>Could not load messages.</p></div>`;
+  }
+}
+
+/* ── RENDER THREAD LIST ── */
+function renderThreadList(filter = '') {
   const list = document.getElementById('threadList');
+  let visible = threads;
+  if (filter) visible = threads.filter(t => t.otherName.toLowerCase().includes(filter.toLowerCase()));
+  if (allThreadsFilter === 'unread') visible = visible.filter(t => t.unreadCount > 0);
+
+  if (!visible.length) {
+    list.innerHTML = `<div class="empty-threads"><div class="ei">🔍</div><p>No conversations found.</p></div>`;
+    return;
+  }
+
   list.innerHTML = '';
-  THREADS.filter(t => !filter || t.name.toLowerCase().includes(filter.toLowerCase())).forEach(t => {
+  visible.forEach(t => {
+    const isActive  = t.otherId === activeOtherId;
+    const isUnread  = t.unreadCount > 0;
+    const isMine    = t.lastMsg.sender_id === currentUser.id;
+    const preview   = (isMine ? 'You: ' : '') + (t.lastMsg.content || '').slice(0,45) + ((t.lastMsg.content||'').length > 45 ? '…' : '');
+
     const div = document.createElement('div');
-    div.className = `thread${t.unread ? ' unread' : ''}${t.id === activeThread ? ' active' : ''}`;
-    div.onclick = () => loadThread(t.id);
+    div.className = `thread${isUnread?' unread':''}${isActive?' active':''}`;
+    div.onclick = () => openThread(t.otherId, t.listingId);
     div.innerHTML = `
-      <div class="th-av" style="background:${t.color}">${t.av}${t.unread ? '<div class="th-dot"></div>' : ''}</div>
+      <div class="th-av" style="background:${t.otherColor}">
+        ${t.otherInitials}
+        ${isUnread ? '<div class="th-dot"></div>' : ''}
+      </div>
       <div class="th-info">
-        <div class="th-name">${t.name} <span class="th-badge ${t.badge}">${t.badge === 'trade' ? '🔄 Trade' : t.badge === 'offer' ? '📨 Offer' : '⚑ Flagged'}</span></div>
-        <div class="th-preview${t.unread ? ' unread' : ''}">${t.flagged ? '🚨 ' : ''}${t.preview}</div>
+        <div class="th-name">${t.otherName}</div>
+        <div class="th-preview${isUnread?' unread':''}">${preview}</div>
       </div>
       <div class="th-right">
-        <div class="th-time">${t.time}</div>
-        ${t.unreadCnt > 0 ? `<div class="th-unread-cnt">${t.unreadCnt}</div>` : ''}
+        <div class="th-time">${timeAgo(t.lastTime)}</div>
+        ${isUnread ? `<div class="th-unread-cnt">${t.unreadCount}</div>` : ''}
       </div>`;
     list.appendChild(div);
   });
 }
 
-// ── RENDER MESSAGES ──
-function renderMessages(threadId) {
+/* ── OPEN THREAD ── */
+async function openThread(otherId, listingId) {
+  activeOtherId  = otherId;
+  activeListingId = listingId || null;
+
+  // Mark UI active
+  renderThreadList();
+
+  // Show chat UI
+  document.getElementById('chatEmpty').style.display  = 'none';
+  document.getElementById('chatHead').style.display   = 'flex';
+  document.getElementById('msgsArea').style.display   = 'flex';
+  document.getElementById('inputArea').style.display  = 'block';
+
+  // Set header
+  const thread = threads.find(t => t.otherId === otherId);
+  const otherName     = thread?.otherName     || 'Trader';
+  const otherInitials = thread?.otherInitials || 'TR';
+  const otherColor    = thread?.otherColor    || AV_COLORS[0];
+
+  document.getElementById('chatAv').textContent       = otherInitials;
+  document.getElementById('chatAv').style.background  = otherColor;
+  document.getElementById('chatName').textContent     = otherName;
+  document.getElementById('chatMeta').textContent     = 'Tradezy member';
+  document.getElementById('msgInput').placeholder     = `Message ${otherName}…`;
+
+  // Load listing context if we have a listing ID
+  if (listingId || thread?.listingId) {
+    await loadListingContext(listingId || thread.listingId);
+  } else {
+    document.getElementById('tradeContextBar').style.display = 'none';
+    renderRightPanelDefault();
+  }
+
+  // Load messages
+  await loadMessages(otherId);
+
+  // Mark received messages as read
+  markAsRead(otherId);
+
+  // Subscribe real-time
+  subscribeToMessages(otherId);
+
+  // Update thread unread count locally
+  if (thread) { thread.unreadCount = 0; renderThreadList(); }
+}
+
+/* ── LOAD LISTING CONTEXT ── */
+async function loadListingContext(listingId) {
+  try {
+    const { data: listing } = await sb.from('listings').select('id,title,estimated_value,category').eq('id', listingId).single();
+    if (!listing) { document.getElementById('tradeContextBar').style.display = 'none'; return; }
+
+    // Show trade context bar
+    const bar = document.getElementById('tradeContextBar');
+    bar.style.display = 'flex';
+    document.getElementById('tradeContextText').innerHTML =
+      `<strong>${listing.title}</strong> — Click View Trade for full details`;
+
+    // Update listing button
+    document.getElementById('btnViewListing').onclick = () =>
+      window.location.href = `alltrades-item.html?id=${listing.id}`;
+
+    // Check for active trade between these two users on this listing
+    const { data: trades } = await sb.from('trades')
+      .select('*')
+      .or(`trader_a_id.eq.${currentUser.id},trader_b_id.eq.${currentUser.id}`)
+      .eq('listing_id', listingId)
+      .in('status', ['accepted','meetup_scheduled'])
+      .limit(1);
+
+    const trade = trades?.[0];
+    renderRightPanel(listing, trade);
+  } catch(e) {
+    document.getElementById('tradeContextBar').style.display = 'none';
+    renderRightPanelDefault();
+  }
+}
+
+/* ── RENDER RIGHT PANEL ── */
+const CAT_EMOJI = {'Food & Water':'🥫','Garden':'🌱','Electronics':'⚡','Tools':'🔧','Sports':'🚲','Music':'🎵','Gaming':'🎮','Clothing':'👗','Books':'📚','Trading Cards':'🃏','Other':'📦'};
+
+function renderRightPanel(listing, trade) {
+  const emoji = CAT_EMOJI[listing.category] || '📦';
+  const val   = listing.estimated_value ? Number(listing.estimated_value) : 0;
+  const fee   = val * 0.05;
+
+  document.getElementById('rpTitle').textContent = '📦 Listing Details';
+  document.getElementById('rpSub').textContent   = listing.title.slice(0,28);
+  document.getElementById('rpContent').innerHTML = `
+    <div class="rp-section">
+      <div class="rp-sec-title">Listing</div>
+      <div class="rp-item">
+        <div class="rp-item-em">${emoji}</div>
+        <div class="rp-item-nm">${listing.title}</div>
+        <div class="rp-item-vl" style="color:var(--gold)">~$${val.toFixed(0)} est.</div>
+      </div>
+      ${trade ? `
+      <div class="rp-fee-row"><span class="rp-fee-label">5% platform fee</span><span class="rp-fee-val" style="color:var(--gold)">$${fee.toFixed(2)}</span></div>
+      <div style="font-size:10px;color:var(--muted);margin-top:4px">Only charged when trade is confirmed complete.</div>
+      ` : ''}
+    </div>
+    ${trade ? `
+    <div class="rp-section">
+      <div class="rp-sec-title">Active Trade</div>
+      <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:7px;padding:9px;font-size:12px;color:#14532d;font-weight:700;margin-bottom:6px">
+        ✅ Trade in progress — Step ${trade.status==='meetup_scheduled'?'2':'1'} of 3
+      </div>
+    </div>` : ''}
+    <div class="rp-safety">
+      <div class="rp-sec-title">🛡️ Safety Tips</div>
+      <div class="safety-tip"><span class="st-icon">📍</span><span>Meet in a <strong>public place</strong> — parking lot, library, or police station.</span></div>
+      <div class="safety-tip"><span class="st-icon">💬</span><span>Keep all chat <strong>inside Tradezy</strong> to protect your trade rights.</span></div>
+      <div class="safety-tip"><span class="st-icon">🚫</span><span>Never share your <strong>home address</strong> or financial details.</span></div>
+    </div>
+    <div class="rp-actions">
+      <button class="rp-btn outline" onclick="window.location.href='alltrades-item.html?id=${listing.id}'">📦 View Listing</button>
+      <button class="rp-btn outline" onclick="window.location.href='alltrades-dashboard.html'">📋 My Dashboard</button>
+      <button class="rp-btn red" onclick="openModal('reportModal')">⚑ Report a Problem</button>
+    </div>`;
+}
+
+function renderRightPanelDefault() {
+  document.getElementById('rpTitle').textContent = '🛡️ Safety';
+  document.getElementById('rpSub').textContent   = 'Trade safely';
+  document.getElementById('rpContent').innerHTML = `
+    <div class="rp-safety" style="border-bottom:none">
+      <div class="rp-sec-title">🛡️ Safety Tips</div>
+      <div class="safety-tip"><span class="st-icon">📍</span><span>Meet in a <strong>public place</strong> — parking lot, library, or police station.</span></div>
+      <div class="safety-tip"><span class="st-icon">💬</span><span>Keep all chat <strong>inside Tradezy</strong> to protect your trade rights.</span></div>
+      <div class="safety-tip"><span class="st-icon">🚫</span><span>Never share your <strong>home address</strong> or financial details.</span></div>
+      <div class="safety-tip"><span class="st-icon">⚑</span><span>If something feels wrong, <strong>report it</strong> immediately.</span></div>
+    </div>`;
+}
+
+/* ── LOAD MESSAGES ── */
+async function loadMessages(otherId) {
   const area = document.getElementById('msgsArea');
   area.innerHTML = '';
-  const msgs = MESSAGES[threadId] || [];
-  const thread = THREADS.find(t => t.id === threadId);
 
-  area.appendChild(makeDateDiv('Yesterday'));
+  try {
+    const { data: msgs } = await sb
+      .from('messages')
+      .select('*')
+      .or(
+        `and(sender_id.eq.${currentUser.id},receiver_id.eq.${otherId}),and(sender_id.eq.${otherId},receiver_id.eq.${currentUser.id})`
+      )
+      .order('created_at', { ascending: true });
 
-  msgs.forEach(msg => {
-    if (msg.from === 'sys') {
-      area.appendChild(makeSysMsg(msg.text, false));
-    } else if (msg.from === 'sys-success') {
-      area.appendChild(makeSysMsg(msg.text, true));
-    } else if (msg.from === 'tradecard') {
-      area.appendChild(makeTradeCard(msg));
-    } else {
-      if (msg.time && msg.time.includes('Today') && !area.querySelector('.date-today')) {
-        const d = makeDateDiv('Today');
-        d.classList.add('date-today');
-        area.appendChild(d);
-      }
-      area.appendChild(makeBubble(msg, thread));
+    if (!msgs?.length) {
+      area.innerHTML = `<div class="sys-msg">No messages yet — say hello! 👋</div>`;
+      return;
     }
-  });
 
-  // Scroll to bottom
-  area.scrollTop = area.scrollHeight;
+    // Group by date
+    let lastDate = '';
+    for (const m of msgs) {
+      const msgDate = new Date(m.created_at).toLocaleDateString('en-US', { month:'short', day:'numeric' });
+      const today   = new Date().toLocaleDateString('en-US', { month:'short', day:'numeric' });
+      const label   = msgDate === today ? 'Today' : msgDate;
+
+      if (label !== lastDate) {
+        area.appendChild(makeDateDiv(label));
+        lastDate = label;
+      }
+      area.appendChild(makeBubble(m));
+    }
+
+    area.scrollTop = area.scrollHeight;
+  } catch(e) {
+    area.innerHTML = `<div class="sys-msg warn">Could not load messages.</div>`;
+  }
+}
+
+/* ── MARK AS READ ── */
+async function markAsRead(otherId) {
+  try {
+    await sb.from('messages')
+      .update({ read_at: new Date().toISOString() })
+      .eq('sender_id', otherId)
+      .eq('receiver_id', currentUser.id)
+      .is('read_at', null);
+  } catch(e) {}
+}
+
+/* ── REAL-TIME SUBSCRIPTION ── */
+function subscribeToMessages(otherId) {
+  // Unsubscribe previous
+  if (realtimeSub) { sb.removeChannel(realtimeSub); realtimeSub = null; }
+
+  realtimeSub = sb.channel(`messages-${currentUser.id}`)
+    .on('postgres_changes', {
+      event: 'INSERT',
+      schema: 'public',
+      table: 'messages',
+      filter: `receiver_id=eq.${currentUser.id}`
+    }, payload => {
+      const m = payload.new;
+      // Only render if this message is from the active thread
+      if (m.sender_id === activeOtherId) {
+        const area = document.getElementById('msgsArea');
+        area.appendChild(makeBubble(m));
+        area.scrollTop = area.scrollHeight;
+        markAsRead(activeOtherId);
+      } else {
+        // Update sidebar unread count for other thread
+        const t = threads.find(th => th.otherId === m.sender_id);
+        if (t) { t.unreadCount++; t.lastMsg = m; t.lastTime = m.created_at; }
+        renderThreadList();
+        showToast('💬', `New message from ${threads.find(th=>th.otherId===m.sender_id)?.otherName||'someone'}`);
+      }
+    })
+    .subscribe();
+}
+
+/* ── MAKE BUBBLE ── */
+function makeBubble(m) {
+  const isMine = m.sender_id === currentUser.id;
+  const thread = threads.find(t => t.otherId === (isMine ? m.receiver_id : m.sender_id));
+  const color  = thread?.otherColor || AV_COLORS[0];
+  const initials = thread?.otherInitials || '??';
+
+  const wrap = document.createElement('div');
+  wrap.className = `msg-wrap ${isMine ? 'mine' : 'theirs'}`;
+  wrap.dataset.msgId = m.id;
+
+  const timeStr = new Date(m.created_at).toLocaleTimeString('en-US', { hour:'numeric', minute:'2-digit' });
+  const isRead  = isMine && m.read_at;
+
+  wrap.innerHTML = `
+    ${!isMine ? `<div class="msg-av" style="background:${color}">${initials}</div>` : ''}
+    <div>
+      <div class="bubble">${escHtml(m.content || '')}</div>
+      <div class="bubble-time">${timeStr}</div>
+      ${isRead ? '<div class="msg-read">✓✓ Read</div>' : ''}
+    </div>`;
+  return wrap;
 }
 
 function makeDateDiv(label) {
@@ -972,76 +805,73 @@ function makeSysMsg(text, success = false) {
   return d;
 }
 
-function makeTradeCard(msg) {
-  const isAccepted = msg.status === 'accepted';
-  const d = document.createElement('div');
-  d.style.maxWidth = '360px';
-  d.style.alignSelf = 'center';
-  d.style.width = '100%';
-  d.innerHTML = `
-    <div class="trade-msg-card">
-      <div class="tmc-title">🤝 Trade Offer ${isAccepted ? '<span style="background:#f0fdf4;border:1px solid #bbf7d0;color:#14532d;font-size:10px;padding:2px 6px;border-radius:3px;font-family:\'Barlow Condensed\',sans-serif;font-weight:800">ACCEPTED</span>' : ''}</div>
-      <div class="tmc-items">
-        <div class="tmc-item"><div class="tmc-em">${msg.item1em}</div><div class="tmc-nm">${msg.item1}</div><div class="tmc-vl" style="color:var(--gold)">${msg.val1}</div></div>
-        <div class="tmc-arrow">⇄</div>
-        <div class="tmc-item"><div class="tmc-em">${msg.item2em}</div><div class="tmc-nm">${msg.item2}</div><div class="tmc-vl" style="color:var(--blue)">${msg.val2}</div></div>
-      </div>
-      ${!isAccepted ? `<div class="tmc-btns"><button class="tmc-btn acc" onclick="showToast('✅','Trade accepted!')">✓ Accept</button><button class="tmc-btn dec" onclick="showToast('👋','Trade declined.')">✕ Decline</button></div>` : ''}
-    </div>`;
-  return d;
-}
+/* ── SEND MESSAGE ── */
+async function sendMessage() {
+  if (!activeOtherId) return;
+  const input = document.getElementById('msgInput');
+  const text  = input.value.trim();
+  if (!text || text.length > 500) return;
 
-function makeBubble(msg, thread) {
-  const isMine = msg.from === 'me';
-  const wrap = document.createElement('div');
-  wrap.className = `msg-wrap ${isMine ? 'mine' : 'theirs'}`;
-  wrap.innerHTML = `
-    ${!isMine ? `<div class="msg-av" style="background:${thread.color}">${thread.av}</div>` : ''}
-    <div>
-      <div class="bubble">${msg.text}</div>
-      <div class="bubble-time">${msg.time || ''}</div>
-      ${isMine && msg.read ? '<div class="msg-read">✓✓ Read</div>' : ''}
-    </div>`;
-  return wrap;
-}
-
-// ── LOAD THREAD ──
-function loadThread(id) {
-  activeThread = id;
-  const thread = THREADS.find(t => t.id === id);
-  if (!thread) return;
-
-  // Mark as read
-  thread.unread = false;
-  thread.unreadCnt = 0;
-
-  // Update header
-  document.getElementById('chatAv').textContent = thread.av;
-  document.getElementById('chatAv').style.background = thread.color;
-  document.getElementById('chatName').textContent = thread.name;
-  document.getElementById('msgInput').placeholder = `Message ${thread.name}…`;
-
-  // Show/hide flagged warning
-  if (thread.flagged) {
-    showBypass(`This conversation was flagged — ${thread.name} attempted to share contact information.`);
-  } else {
-    hideBypass();
+  // Content screening
+  const scan = TradezyScan.scanMessage(text);
+  if (!scan.canSend && scan.violations.length > 0) {
+    const v = scan.violations[0];
+    showBypass(TradezyScan.USER_MESSAGES.MESSAGE_BLOCKED);
+    console.warn('[TRADEZY SCREEN] Message blocked:', v);
+    // Add system warning to chat
+    const area = document.getElementById('msgsArea');
+    const warn = makeSysMsg(`⚑ Message blocked — ${v.category}. Keep all communication on Tradezy.`);
+    warn.className = 'sys-msg warn';
+    area.appendChild(warn);
+    area.scrollTop = area.scrollHeight;
+    return;
   }
 
-  renderThreads();
-  renderMessages(id);
+  const btn = document.getElementById('sendBtn');
+  btn.disabled = true;
+
+  try {
+    const { data: inserted, error } = await sb.from('messages').insert({
+      sender_id:   currentUser.id,
+      receiver_id: activeOtherId,
+      content:     text,
+      listing_id:  activeListingId || null,
+      read_at:     null
+    }).select().single();
+
+    if (error) throw error;
+
+    // Append immediately (optimistic)
+    const area = document.getElementById('msgsArea');
+    area.appendChild(makeBubble(inserted));
+    area.scrollTop = area.scrollHeight;
+
+    // Update thread preview
+    const thread = threads.find(t => t.otherId === activeOtherId);
+    if (thread) { thread.lastMsg = inserted; thread.lastTime = inserted.created_at; }
+    renderThreadList();
+
+    // Clear input
+    input.value = '';
+    input.style.height = 'auto';
+    document.getElementById('charWarn').textContent = '0 / 500';
+    document.getElementById('scanIndicator').classList.remove('show');
+    hideBypass();
+
+  } catch(e) {
+    showToast('⚠️', 'Failed to send message. Please try again.');
+  } finally {
+    btn.disabled = !document.getElementById('msgInput').value.trim();
+  }
 }
 
-// ── TYPING ──
-let scanTimer = null;
+/* ── TYPING HANDLER ── */
 function onType(el) {
   const val = el.value;
   const len = val.length;
   const charWarn = document.getElementById('charWarn');
   charWarn.textContent = `${len} / 500`;
-  charWarn.className = 'char-warn' + (len > 450 ? ' close' : '') + (len >= 500 ? ' over' : '');
-
-  // Enable/disable send
+  charWarn.className   = 'char-warn' + (len > 450 ? ' close' : '') + (len >= 500 ? ' over' : '');
   document.getElementById('sendBtn').disabled = !val.trim() || len > 500;
 
   // Auto-resize
@@ -1054,9 +884,9 @@ function onType(el) {
     document.getElementById('scanIndicator').classList.add('show');
     scanTimer = setTimeout(() => {
       document.getElementById('scanIndicator').classList.remove('show');
-      const hit = scanMessage(val);
-      if (hit) {
-        showBypass(`Your message appears to contain a ${hit}. This has been flagged for your protection.`);
+      const scan = TradezyScan.scanMessage(val);
+      if (!scan.canSend) {
+        showBypass('Your message appears to contain prohibited content.');
         document.getElementById('sendBtn').disabled = true;
       } else {
         hideBypass();
@@ -1070,160 +900,62 @@ function onType(el) {
 function handleKey(e) {
   if (e.key === 'Enter' && !e.shiftKey) {
     e.preventDefault();
-    const btn = document.getElementById('sendBtn');
-    if (!btn.disabled) sendMessage();
+    if (!document.getElementById('sendBtn').disabled) sendMessage();
   }
 }
 
-// ── SEND MESSAGE ──
-function sendMessage() {
-  const input = document.getElementById('msgInput');
-  const text = input.value.trim();
-  if (!text || text.length > 500) return;
-
-  // ── TRADEZY FULL CONTENT SCREENING ──
-  if (typeof TradezyScan !== 'undefined') {
-    const scan = TradezyScan.scanMessage(text);
-    if (!scan.canSend && scan.violations.length > 0) {
-      const v = scan.violations[0];
-      showBypass(TradezyScan.USER_MESSAGES.MESSAGE_BLOCKED);
-      logBypassAttempt(activeThread, text, v.category);
-      // Log to admin (connects to Supabase in production)
-      console.warn('[TRADEZY SCREEN] Message blocked:', {
-        category: v.category, severity: v.severity, matched: v.matched
-      });
-      return;
-    }
-  } else {
-    // Fallback to original scanner
-    const hit = scanMessage(text);
-    if (hit) {
-      showBypass(`Message blocked — contains ${hit}. To protect both parties, contact info cannot be shared here.`);
-      logBypassAttempt(activeThread, text, hit);
-      return;
-    }
-  }
-
-  // Add message
-  const thread = THREADS.find(t => t.id === activeThread);
-  const area = document.getElementById('msgsArea');
-  messageCount++;
-
-  const wrap = makeBubble({ from:'me', text, time: 'Just now' }, thread);
-  area.appendChild(wrap);
-  area.scrollTop = area.scrollHeight;
-
-  // Update thread preview
-  thread.preview = text.slice(0, 45) + (text.length > 45 ? '…' : '');
-  renderThreads();
-
-  // Clear input
-  input.value = '';
-  input.style.height = 'auto';
-  document.getElementById('sendBtn').disabled = true;
-  document.getElementById('charWarn').textContent = '0 / 500';
-  document.getElementById('scanIndicator').classList.remove('show');
-
-  // Simulate reply
-  if (Math.random() > 0.4) {
-    setTimeout(() => simulateReply(thread, area), 1400 + Math.random() * 1200);
-  }
+/* ── LISTING BUTTON ── */
+function viewActiveListing() {
+  if (activeListingId) window.location.href = `alltrades-item.html?id=${activeListingId}`;
+  else showToast('📦', 'No listing linked to this conversation.');
 }
 
-function simulateReply(thread, area) {
-  const replies = [
-    "Sounds good to me!",
-    "That works — let me know the exact time.",
-    "Great, I'll bring the item in original packaging.",
-    "Do you prefer morning or afternoon?",
-    "Looking forward to the trade! 🤝",
-    "That location works perfectly for me.",
-    "I can be flexible on timing — whatever works for you.",
-  ];
-  const reply = makeBubble({ from:'them', text: replies[Math.floor(Math.random() * replies.length)], time: 'Just now' }, thread);
-  area.appendChild(reply);
-  area.scrollTop = area.scrollHeight;
+/* ── HELPERS ── */
+function escHtml(str) {
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
-// ── BYPASS DETECTION ──
+function timeAgo(ts) {
+  if (!ts) return '';
+  const m = Math.floor((Date.now() - new Date(ts)) / 60000);
+  if (m < 1)  return 'just now';
+  if (m < 60) return m + 'm ago';
+  const h = Math.floor(m/60);
+  if (h < 24) return h + 'h ago';
+  return Math.floor(h/24) + 'd ago';
+}
+
 function showBypass(desc) {
-  const warn = document.getElementById('bypassWarn');
   document.getElementById('bypassDesc').textContent = desc;
-  warn.style.display = 'flex';
+  document.getElementById('bypassWarn').style.display = 'flex';
 }
+function hideBypass() { document.getElementById('bypassWarn').style.display = 'none'; }
 
-function hideBypass() {
-  document.getElementById('bypassWarn').style.display = 'none';
-}
-
-function logBypassAttempt(threadId, text, type) {
-  console.log(`[BYPASS LOG] Thread: ${threadId} | Type: ${type} | Text: "${text.slice(0,50)}…"`);
-  // In production: POST to /api/admin/bypass-log with user ID, thread ID, message, timestamp
-  showToast('⚑', 'Message blocked and flagged. Our team has been notified.');
-
-  // Add system warning to chat
-  const area = document.getElementById('msgsArea');
-  const warn = makeSysMsg(`⚑ Message blocked — contained ${type}. For your protection, keep all communication on Tradezy.`, false);
-  warn.className = 'sys-msg warn';
-  area.appendChild(warn);
-  area.scrollTop = area.scrollHeight;
-}
-
-// ── INSERT TRADE CARD ──
-function insertTradeCard() {
-  openModal('offerModal');
-}
-
-function sendOfferCard() {
-  const item = document.getElementById('offerItemInput').value.trim();
-  const val = parseFloat(document.getElementById('offerValInput').value) || 0;
-  if (!item) { showToast('⚠️','Please describe your offer item.'); return; }
-
-  closeModal('offerModal');
-  const thread = THREADS.find(t => t.id === activeThread);
-  const area = document.getElementById('msgsArea');
-
-  const cardMsg = { item1em:'📦', item1: item, val1: `~$${val.toFixed(0)}`, item2em:'🥫', item2:'Canned Goods (24)', val2:'~$29', status:'pending' };
-  area.appendChild(makeTradeCard(cardMsg));
-  area.appendChild(makeSysMsg('You sent a trade offer'));
-  area.scrollTop = area.scrollHeight;
-
-  document.getElementById('offerItemInput').value = '';
-  document.getElementById('offerValInput').value = '';
-  showToast('🤝', `Trade offer sent to ${thread.name}!`);
-}
-
-// ── FEE PREVIEW ──
-document.getElementById('offerValInput')?.addEventListener('input', function() {
-  const val = parseFloat(this.value) || 0;
-  document.getElementById('feePreview').textContent = `$${(val * 0.05).toFixed(2)}`;
-});
-
-// ── UI HELPERS ──
 function setTab(el, tab) {
   document.querySelectorAll('.sb-tab').forEach(t => t.classList.remove('active'));
   el.classList.add('active');
-  if (tab === 'flagged') {
-    showToast('⚑', 'Showing flagged conversations — 1 bypass attempt detected');
-  }
+  allThreadsFilter = tab;
+  renderThreadList();
 }
 
-function filterThreads(val) { renderThreads(val); }
+function filterThreads(val) { renderThreadList(val); }
 
 function selectReport(el) {
-  document.querySelectorAll('#reportOptions label').forEach(l => l.style.borderColor = 'var(--border)');
+  document.querySelectorAll('#reportOptions label').forEach(l => { l.style.borderColor='var(--border)'; l.style.background=''; });
   el.style.borderColor = 'var(--red)';
-  el.style.background = '#fef2f2';
+  el.style.background  = '#fef2f2';
 }
 
 function submitReport() {
   closeModal('reportModal');
-  showToast('✅', 'Report submitted. Our team reviews within 24 hours. Thank you for keeping Tradezy safe.');
+  showToast('✅', 'Report submitted. Our team reviews within 24 hours. Thank you.');
 }
 
-function openModal(id) { document.getElementById(id).classList.add('open'); }
+function openModal(id)  { document.getElementById(id).classList.add('open'); }
 function closeModal(id) { document.getElementById(id).classList.remove('open'); }
-document.querySelectorAll('.modal-overlay').forEach(o => o.addEventListener('click', e => { if (e.target === o) o.classList.remove('open'); }));
+document.querySelectorAll('.modal-overlay').forEach(o =>
+  o.addEventListener('click', e => { if (e.target===o) o.classList.remove('open'); })
+);
 
 function showToast(icon, msg) {
   document.getElementById('toastIc').textContent = icon;
@@ -1233,10 +965,6 @@ function showToast(icon, msg) {
   clearTimeout(window._tt);
   window._tt = setTimeout(() => t.classList.remove('show'), 3800);
 }
-
-// ── INIT ──
-renderThreads();
-renderMessages('rj');
 </script>
 </body>
 </html>
