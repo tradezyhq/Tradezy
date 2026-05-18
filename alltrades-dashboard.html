@@ -539,6 +539,11 @@ async function openOfferModal(offerId) {
         </div>`;
     }
 
+    const photosHtml = (o.offered_photos && o.offered_photos.length) ? `
+  <div class="od-section">
+    <div class="od-section-lbl">Photos of offered item</div>
+    <div class="od-item-photos">${o.offered_photos.map((p,i) => `<img class="od-item-photo" src="${p}" alt="offered item" onclick="openLightboxModal(${JSON.stringify(o.offered_photos)},${i})" style="cursor:pointer">`).join('')}</div>
+  </div>` : '';
     const messageHtml = o.message ? `
       <div class="od-section">
         <div class="od-section-lbl">Message from ${offererName}</div>
@@ -558,6 +563,7 @@ async function openOfferModal(offerId) {
         <div><strong>${offererName}</strong> wants to trade · <span style="color:var(--muted)">${timeAgo(o.created_at)}</span></div>
       </div>
       ${offerContent}
+      ${photosHtml}
       ${messageHtml}
       <div class="od-actions">
         <button class="mbtn green" style="margin-bottom:0" onclick="closeModal('offerModal');acceptOffer('${o.id}')">✓ Accept Offer</button>
