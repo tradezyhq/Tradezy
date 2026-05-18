@@ -514,7 +514,7 @@ async function openOfferModal(offerId) {
             $${Number(o.cash_amount||0).toFixed(2)}
           </div>
         </div>`;
-    } else if (o.offer_type === 'item') {
+    } else if (o.offer_type === 'item' || o.offer_type === 'tc') {
       const itemPhotos = o.offered_photos || [];
       offerContent = `
         <div class="od-section">
