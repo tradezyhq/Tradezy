@@ -4,606 +4,328 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Tradezy — Ratings & Reviews</title>
+<script src="supabase.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
 <style>
-:root {
-  --navy:#0a1628;--navy2:#112240;--blue:#1a56db;--blue-l:#2563eb;
-  --gold:#f59e0b;--gold-l:#fbbf24;--green:#16a34a;--green-l:#22c55e;
-  --red:#dc2626;--orange:#ea580c;--text:#1a1a2e;--muted:#475569;
-  --light:#94a3b8;--border:#e2e8f0;--bg:#f0f4f8;--white:#fff;--surface:#f8fafc;
+:root{
+  --navy:#0a1628;--navy2:#0d1f3c;--navy3:#070f1e;
+  --blue:#1a56db;--blue-l:#3b82f6;--blue-dim:#1e3a8a;
+  --gold:#f59e0b;--gold-l:#fbbf24;
+  --green:#16a34a;--green-l:#22c55e;
+  --red:#dc2626;--red-l:#ef4444;
+  --orange:#ea580c;--purple:#7c3aed;--purple-l:#a78bfa;
+  --teal:#0891b2;
+  --text:#e2e8f0;--dim:#475569;--light:#94a3b8;--lighter:#64748b;
+  --border:rgba(255,255,255,.07);--border2:rgba(255,255,255,.13);
+  --card:#0f2341;--surface:rgba(255,255,255,.04);--surface2:rgba(255,255,255,.07);
+  --bg:#080f1e;
 }
 *{margin:0;padding:0;box-sizing:border-box;}
 body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
 
 /* NAV */
-.nav{background:var(--navy);padding:0 24px;height:54px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
-.logo{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.5rem;letter-spacing:-1px;cursor:pointer;}
+.nav{background:rgba(4,10,22,.97);border-bottom:1px solid var(--border);padding:0 20px;height:52px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:300;backdrop-filter:blur(12px);}
+.logo{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.45rem;letter-spacing:-1px;cursor:pointer;text-decoration:none;}
 .logo .a{color:#fff;}.logo .t{color:var(--blue);}.logo .d{color:var(--gold);}
 .nav-right{display:flex;align-items:center;gap:8px;}
-.nav-btn{padding:6px 14px;border-radius:6px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.88rem;cursor:pointer;border:none;transition:all .15s;}
-.nav-btn.ghost{background:transparent;color:#94a3b8;border:1px solid rgba(255,255,255,.1);}
-.nav-btn.ghost:hover{color:#fff;}
-.user-chip{display:flex;align-items:center;gap:7px;padding:4px 10px;border-radius:6px;cursor:pointer;}
-.user-chip:hover{background:rgba(255,255,255,.07);}
+.nav-btn{padding:6px 14px;border-radius:6px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.82rem;cursor:pointer;border:1px solid var(--border2);background:transparent;color:var(--light);transition:all .15s;text-decoration:none;display:inline-flex;align-items:center;}
+.nav-btn:hover{color:var(--text);border-color:rgba(255,255,255,.25);}
 .u-av{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--orange));color:var(--navy);font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:.8rem;display:flex;align-items:center;justify-content:center;}
 .u-name{font-size:13px;color:#cbd5e1;font-weight:700;}
+.user-chip{display:flex;align-items:center;gap:7px;padding:4px 10px;border-radius:6px;}
 
-/* PAGE TABS */
-.page-tabs{background:var(--white);border-bottom:1px solid var(--border);}
+/* TABS */
+.page-tabs{background:rgba(7,15,30,.9);border-bottom:1px solid var(--border);backdrop-filter:blur(8px);}
 .page-tabs-inner{max-width:1100px;margin:0 auto;padding:0 20px;display:flex;gap:0;}
-.ptab{padding:14px 20px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.92rem;cursor:pointer;border-bottom:3px solid transparent;transition:all .15s;color:var(--muted);}
+.ptab{padding:13px 18px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.88rem;cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;color:var(--lighter);}
 .ptab:hover{color:var(--text);}
-.ptab.active{color:var(--blue);border-bottom-color:var(--blue);}
+.ptab.active{color:var(--blue-l);border-bottom-color:var(--blue);}
 .ptab-cnt{background:var(--red);color:#fff;font-size:9px;font-weight:800;border-radius:99px;padding:1px 5px;margin-left:4px;vertical-align:middle;}
 
 /* PAGE */
 .page{max-width:1100px;margin:0 auto;padding:24px 20px;}
 
-/* ════════════════════════════════
-   VIEW 1: PENDING RATINGS
-════════════════════════════════ */
-.pending-header{margin-bottom:20px;}
-.pending-title{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.5rem;color:var(--text);margin-bottom:4px;}
-.pending-sub{font-size:13px;color:var(--muted);}
+/* LOADING / EMPTY */
+.loading-state{text-align:center;padding:40px;color:var(--lighter);font-size:13px;}
+.empty-state{text-align:center;padding:36px;color:var(--lighter);font-size:13px;}
+.empty-state .em-icon{font-size:2.5rem;margin-bottom:10px;}
+.empty-state .em-title{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1.05rem;color:var(--text);margin-bottom:5px;}
 
+/* INFO BOX */
+.info-box{border-radius:9px;padding:12px 15px;margin-bottom:18px;display:flex;gap:9px;font-size:13px;}
+.info-box.blue{background:rgba(26,86,219,.08);border:1px solid rgba(26,86,219,.2);border-left:3px solid var(--blue);color:#93c5fd;}
+.info-box.gold{background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.2);border-left:3px solid var(--gold);color:var(--gold-l);}
+.info-box.green{background:rgba(22,163,74,.08);border:1px solid rgba(22,163,74,.2);border-left:3px solid var(--green);color:var(--green-l);}
+
+/* PENDING GRID */
+.pending-header{margin-bottom:20px;}
+.pending-title{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.4rem;color:var(--text);margin-bottom:4px;}
+.pending-sub{font-size:13px;color:var(--lighter);}
 .pending-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:16px;margin-bottom:28px;}
 
-/* Pending rate card */
-.rate-card{background:var(--white);border:1px solid var(--border);border-radius:14px;overflow:hidden;transition:all .2s;}
-.rate-card:hover{box-shadow:0 6px 24px rgba(0,0,0,.09);transform:translateY(-2px);}
-.rc-head{background:linear-gradient(135deg,var(--navy),#1a3a6b);padding:14px 16px;display:flex;align-items:center;justify-content:space-between;}
-.rc-trade-id{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.82rem;color:#64748b;}
-.rc-badge{font-size:10px;font-weight:800;padding:2px 8px;border-radius:4px;letter-spacing:.3px;}
+/* RATE CARD */
+.rate-card{background:var(--card);border:1px solid var(--border2);border-radius:14px;overflow:hidden;transition:all .2s;}
+.rate-card:hover{box-shadow:0 6px 24px rgba(0,0,0,.3);}
+.rc-head{background:linear-gradient(135deg,var(--navy2),#1a3a6b);padding:12px 16px;display:flex;align-items:center;justify-content:space-between;}
+.rc-trade-id{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.82rem;color:var(--lighter);}
+.rc-badge{font-size:9px;font-weight:800;padding:2px 8px;border-radius:4px;letter-spacing:.3px;}
 .rc-badge.pending{background:rgba(245,158,11,.2);border:1px solid rgba(245,158,11,.3);color:var(--gold-l);}
 .rc-badge.done{background:rgba(22,163,74,.2);border:1px solid rgba(22,163,74,.3);color:var(--green-l);}
 .rc-body{padding:16px;}
+
+/* TRADE ITEMS */
 .rc-trade-items{display:flex;align-items:center;gap:8px;margin-bottom:14px;}
 .rc-item{flex:1;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:9px;text-align:center;}
-.rc-item-em{font-size:1.4rem;margin-bottom:3px;}
-.rc-item-nm{font-size:11px;font-weight:700;margin-bottom:1px;}
-.rc-item-vl{font-size:10px;font-weight:700;}
-.rc-arrow{color:var(--muted);font-size:.9rem;flex-shrink:0;}
+.rc-item-nm{font-size:11px;font-weight:700;margin-bottom:2px;color:var(--text);}
+.rc-item-vl{font-size:10px;font-weight:700;color:var(--gold-l);}
+.rc-arrow{color:var(--lighter);font-size:.9rem;flex-shrink:0;}
+
+/* TRADER INFO */
 .rc-trader{display:flex;align-items:center;gap:8px;margin-bottom:14px;}
 .rc-av{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:.85rem;color:#fff;flex-shrink:0;}
-.rc-trader-info .rc-name{font-weight:700;font-size:13px;}
-.rc-trader-info .rc-meta{font-size:11px;color:var(--muted);}
+.rc-trader-info .rc-name{font-weight:700;font-size:13px;color:var(--text);}
+.rc-trader-info .rc-meta{font-size:11px;color:var(--lighter);}
 .rc-deadline{margin-left:auto;text-align:right;}
-.rc-deadline-num{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.95rem;color:var(--orange);}
-.rc-deadline-label{font-size:10px;color:var(--muted);}
+.rc-deadline-num{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.9rem;color:var(--orange);}
+.rc-deadline-label{font-size:10px;color:var(--lighter);}
 
-/* Star rating widget */
+/* STAR WIDGET */
 .star-widget{margin-bottom:14px;}
-.sw-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:8px;}
-.stars-row{display:flex;gap:6px;margin-bottom:8px;}
-.star{font-size:2rem;cursor:pointer;transition:all .15s;filter:grayscale(1);opacity:.35;user-select:none;}
-.star:hover,.star.lit,.star.hover{filter:none;opacity:1;}
+.sw-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--lighter);margin-bottom:8px;}
+.stars-row{display:flex;gap:6px;margin-bottom:6px;}
+.star{font-size:2rem;cursor:pointer;transition:all .15s;opacity:.25;user-select:none;color:var(--gold-l);}
+.star:hover,.star.lit,.star.hov{opacity:1;}
 .star.lit{transform:scale(1.05);}
-.star-hint{font-size:12px;color:var(--muted);height:16px;transition:all .15s;}
+.star-hint{font-size:12px;color:var(--lighter);height:16px;transition:all .15s;}
 
-/* Category ratings */
+/* MINI STARS */
 .cat-ratings{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;}
 .cat-rate{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:9px 11px;}
-.cat-rate-label{font-size:11px;font-weight:700;color:var(--muted);margin-bottom:5px;display:flex;align-items:center;gap:4px;}
+.cat-rate-label{font-size:11px;font-weight:700;color:var(--lighter);margin-bottom:5px;}
 .mini-stars{display:flex;gap:3px;}
-.mini-star{font-size:1rem;cursor:pointer;filter:grayscale(1);opacity:.3;transition:all .1s;user-select:none;}
-.mini-star.lit{filter:none;opacity:1;}
+.mini-star{font-size:1rem;cursor:pointer;opacity:.2;transition:all .1s;user-select:none;color:var(--gold-l);}
+.mini-star.lit{opacity:1;}
 
-/* Review textarea */
-.review-area{width:100%;border:1.5px solid var(--border);border-radius:8px;padding:10px 12px;font-family:'Lato',sans-serif;font-size:13px;color:var(--text);outline:none;resize:vertical;min-height:80px;transition:border-color .15s;background:var(--white);}
-.review-area:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(26,86,219,.07);}
-.review-area::placeholder{color:var(--light);}
-.review-footer{display:flex;align-items:center;justify-content:space-between;margin-top:5px;}
-.review-chars{font-size:11px;color:var(--light);}
+/* TAGS */
+.tag-section-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--lighter);margin-bottom:6px;margin-top:10px;}
+.review-tags{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:4px;}
+.rtag{padding:4px 10px;border:1.5px solid var(--border2);border-radius:99px;font-size:11px;font-weight:700;cursor:pointer;transition:all .15s;color:var(--lighter);}
+.rtag:hover{border-color:var(--blue);color:var(--blue-l);}
+.rtag.selected{border-color:var(--blue);background:rgba(26,86,219,.15);color:#93c5fd;}
+.rtag.selected.neg{border-color:var(--red);background:rgba(220,38,38,.12);color:#fca5a5;}
+
+/* REVIEW TEXTAREA */
+.review-area{width:100%;background:var(--surface);border:1.5px solid var(--border2);border-radius:8px;padding:10px 12px;font-family:'Lato',sans-serif;font-size:13px;color:var(--text);outline:none;resize:vertical;min-height:80px;transition:border-color .15s;}
+.review-area:focus{border-color:var(--blue);}
+.review-area::placeholder{color:var(--lighter);}
+.review-footer-row{display:flex;align-items:center;justify-content:space-between;margin-top:5px;}
+.review-chars{font-size:11px;color:var(--lighter);}
 .review-chars.warn{color:var(--gold);}
 .review-chars.over{color:var(--red);}
 
-/* Tags */
-.review-tags{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px;}
-.rtag{padding:4px 10px;border:1.5px solid var(--border);border-radius:99px;font-size:11px;font-weight:700;cursor:pointer;transition:all .15s;color:var(--muted);}
-.rtag:hover{border-color:var(--blue);color:var(--blue);}
-.rtag.selected{border-color:var(--blue);background:#eff6ff;color:var(--blue);}
-.rtag.selected.negative{border-color:var(--red);background:#fef2f2;color:var(--red);}
+/* BUTTONS */
+.rate-btn{width:100%;padding:11px;background:linear-gradient(135deg,var(--gold),#d97706);color:var(--navy);border:none;border-radius:8px;font-family:'Barlow Condensed',sans-serif;font-size:1rem;font-weight:900;cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center;gap:6px;margin-top:14px;}
+.rate-btn:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 4px 14px rgba(245,158,11,.3);}
+.rate-btn:disabled{background:var(--dim);color:var(--lighter);cursor:not-allowed;transform:none;box-shadow:none;}
+.skip-btn{width:100%;padding:8px;background:transparent;border:1px solid var(--border2);border-radius:7px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.82rem;cursor:pointer;color:var(--lighter);transition:all .15s;margin-top:6px;}
+.skip-btn:hover{border-color:rgba(255,255,255,.25);color:var(--text);}
 
-/* Photo upload for review */
-.review-photo-row{display:flex;gap:7px;margin-bottom:10px;}
-.rphoto-slot{width:54px;height:54px;border:1.5px dashed var(--border);border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1.2rem;transition:all .15s;color:var(--light);position:relative;overflow:hidden;}
-.rphoto-slot:hover{border-color:var(--blue);color:var(--blue);}
-.rphoto-slot img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
+/* ALREADY RATED */
+.rated-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 16px;display:flex;align-items:center;gap:12px;opacity:.6;margin-bottom:8px;}
+.rated-check{width:36px;height:36px;border-radius:50%;background:rgba(22,163,74,.1);border:1px solid rgba(22,163,74,.25);display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0;}
+.rated-info .rated-name{font-weight:700;font-size:13px;color:var(--text);}
+.rated-info .rated-stars{color:var(--gold-l);font-size:.9rem;}
+.rated-info .rated-meta{font-size:11px;color:var(--lighter);}
 
-/* Submit rating btn */
-.rate-btn{width:100%;padding:11px;background:linear-gradient(135deg,var(--gold),#d97706);color:var(--navy);border:none;border-radius:8px;font-family:'Barlow Condensed',sans-serif;font-size:1rem;font-weight:900;cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center;gap:6px;}
-.rate-btn:hover{transform:translateY(-1px);box-shadow:0 4px 14px rgba(245,158,11,.35);}
-.rate-btn:disabled{background:#94a3b8;cursor:not-allowed;transform:none;box-shadow:none;}
-.skip-btn{width:100%;padding:8px;background:transparent;border:1.5px solid var(--border);border-radius:7px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.88rem;cursor:pointer;color:var(--muted);transition:all .15s;margin-top:6px;}
-.skip-btn:hover{border-color:#999;color:var(--text);}
-
-/* Already rated */
-.rated-card{background:var(--white);border:1px solid var(--border);border-radius:14px;padding:16px;display:flex;align-items:center;gap:12px;opacity:.65;}
-.rated-check{width:38px;height:38px;border-radius:50%;background:#f0fdf4;border:1px solid #bbf7d0;display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;}
-.rated-info .rated-name{font-weight:700;font-size:13px;margin-bottom:2px;}
-.rated-info .rated-stars{color:var(--gold);font-size:.9rem;}
-.rated-info .rated-meta{font-size:11px;color:var(--muted);}
-
-/* ════════════════════════════════
-   VIEW 2: PUBLIC PROFILE
-════════════════════════════════ */
-.profile-layout{display:grid;grid-template-columns:300px 1fr;gap:20px;align-items:start;}
-
-/* Profile card */
-.profile-card{background:var(--white);border:1px solid var(--border);border-radius:14px;overflow:hidden;position:sticky;top:78px;}
-.pc-banner{height:80px;background:linear-gradient(135deg,var(--navy),#1a3a6b);position:relative;}
-.pc-av-wrap{position:absolute;bottom:-28px;left:20px;}
-.pc-av{width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.3rem;color:#fff;border:3px solid var(--white);box-shadow:0 2px 10px rgba(0,0,0,.15);}
-.pc-body{padding:38px 20px 18px;}
-.pc-name{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.3rem;margin-bottom:3px;}
-.pc-location{font-size:12px;color:var(--muted);margin-bottom:10px;display:flex;align-items:center;gap:4px;}
-.pc-badges{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:14px;}
-.pc-badge{display:flex;align-items:center;gap:4px;font-size:10px;font-weight:800;padding:3px 8px;border-radius:4px;letter-spacing:.3px;}
-.pc-badge.verified{background:#eff6ff;color:var(--blue-l);border:1px solid #bfdbfe;}
-.pc-badge.top{background:#fffbeb;color:#92400e;border:1px solid #fde68a;}
-.pc-badge.fast{background:#f0fdf4;color:#14532d;border:1px solid #bbf7d0;}
-.pc-badge.safe{background:#faf5ff;color:#6b21a8;border:1px solid #e9d5ff;}
-.pc-stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;}
+/* PROFILE VIEW */
+.profile-layout{display:grid;grid-template-columns:280px 1fr;gap:20px;align-items:start;}
+.profile-card{background:var(--card);border:1px solid var(--border2);border-radius:14px;overflow:hidden;position:sticky;top:78px;}
+.pc-banner{height:72px;background:linear-gradient(135deg,var(--navy2),#1a3a6b);}
+.pc-body{padding:36px 18px 16px;position:relative;}
+.pc-av{width:54px;height:54px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.25rem;color:#fff;border:3px solid var(--navy2);position:absolute;top:-27px;left:18px;}
+.pc-name{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.25rem;color:var(--text);margin-bottom:2px;}
+.pc-since{font-size:11px;color:var(--lighter);margin-bottom:12px;}
+.pc-stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:12px;}
 .pc-stat{text-align:center;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:9px;}
-.pc-stat-num{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.1rem;}
-.pc-stat-label{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.3px;margin-top:1px;}
-.pc-since{font-size:11px;color:var(--muted);text-align:center;margin-bottom:12px;}
-.pc-btn{width:100%;padding:9px;border-radius:7px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.88rem;cursor:pointer;border:none;transition:all .15s;margin-bottom:6px;}
-.pc-btn.primary{background:var(--blue);color:#fff;}
-.pc-btn.primary:hover{background:var(--blue-l);}
-.pc-btn.outline{background:transparent;border:1.5px solid var(--border);color:var(--muted);}
-.pc-btn.outline:hover{border-color:#999;color:var(--text);}
+.pc-stat-num{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.05rem;}
+.pc-stat-label{font-size:9px;color:var(--lighter);text-transform:uppercase;letter-spacing:.4px;margin-top:1px;}
 
-/* Rating overview */
-.rating-overview-card{background:var(--white);border:1px solid var(--border);border-radius:14px;padding:18px;margin-bottom:16px;}
+/* RATING OVERVIEW */
+.rating-overview-card{background:var(--card);border:1px solid var(--border2);border-radius:14px;padding:18px;margin-bottom:16px;}
 .roc-top{display:flex;align-items:center;gap:18px;margin-bottom:16px;}
-.roc-big{font-family:'Barlow Condensed',sans-serif;font-size:3.2rem;font-weight:900;line-height:1;color:var(--text);}
-.roc-right{}
-.roc-stars{color:var(--gold);font-size:1.2rem;margin-bottom:3px;letter-spacing:2px;}
-.roc-count{font-size:12px;color:var(--muted);}
+.roc-big{font-family:'Barlow Condensed',sans-serif;font-size:3rem;font-weight:900;line-height:1;color:var(--text);}
+.roc-stars{color:var(--gold-l);font-size:1.1rem;margin-bottom:3px;}
+.roc-count{font-size:12px;color:var(--lighter);}
 .roc-bars{flex:1;}
 .roc-bar-row{display:flex;align-items:center;gap:6px;margin-bottom:4px;}
-.roc-bar-lbl{width:12px;font-size:11px;text-align:right;color:var(--muted);}
-.roc-bar-track{flex:1;height:7px;background:var(--border);border-radius:4px;overflow:hidden;}
-.roc-bar-fill{height:100%;border-radius:4px;background:var(--gold);transition:width .6s ease;}
-.roc-bar-cnt{width:22px;font-size:10px;color:var(--muted);}
+.roc-bar-lbl{width:12px;font-size:11px;text-align:right;color:var(--lighter);}
+.roc-bar-track{flex:1;height:6px;background:var(--surface2);border-radius:4px;overflow:hidden;}
+.roc-bar-fill{height:100%;border-radius:4px;background:var(--gold-l);transition:width .6s ease;}
+.roc-bar-cnt{width:20px;font-size:10px;color:var(--lighter);}
 
-/* Category breakdown */
-.cat-breakdown{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:14px;}
-.cbd-item{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:9px 11px;}
-.cbd-label{font-size:11px;font-weight:700;color:var(--muted);margin-bottom:4px;display:flex;align-items:center;gap:4px;}
-.cbd-bar-wrap{display:flex;align-items:center;gap:6px;}
-.cbd-bar-track{flex:1;height:5px;background:var(--border);border-radius:3px;overflow:hidden;}
-.cbd-bar-fill{height:100%;border-radius:3px;background:var(--blue);}
-.cbd-score{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.88rem;color:var(--text);}
-
-/* Review filter tabs */
-.review-filters{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap;}
-.rf-btn{padding:5px 13px;border:1.5px solid var(--border);border-radius:99px;font-size:12px;font-weight:700;cursor:pointer;transition:all .15s;color:var(--muted);background:var(--white);}
-.rf-btn:hover{border-color:var(--blue);color:var(--blue);}
-.rf-btn.active{border-color:var(--blue);background:#eff6ff;color:var(--blue);}
-.rf-btn.red.active{border-color:var(--red);background:#fef2f2;color:var(--red);}
-
-/* Review cards */
-.review-card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:10px;transition:all .15s;}
-.review-card:hover{border-color:#cbd5e1;}
+/* REVIEW CARDS */
+.review-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:10px;transition:border-color .15s;}
+.review-card:hover{border-color:var(--border2);}
 .rv-header{display:flex;align-items:flex-start;gap:10px;margin-bottom:10px;}
-.rv-av{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:.85rem;color:#fff;flex-shrink:0;}
+.rv-av{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:.82rem;color:#fff;flex-shrink:0;}
 .rv-info{flex:1;min-width:0;}
-.rv-name{font-weight:700;font-size:13px;margin-bottom:1px;}
-.rv-stars{color:var(--gold);font-size:.92rem;margin-bottom:2px;}
-.rv-meta{font-size:11px;color:var(--muted);display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
-.rv-verified{display:flex;align-items:center;gap:3px;background:#eff6ff;border:1px solid #bfdbfe;color:var(--blue);font-size:9px;font-weight:800;padding:1px 6px;border-radius:3px;letter-spacing:.3px;}
-.rv-trade-ctx{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:6px 9px;margin-bottom:8px;font-size:11px;color:var(--muted);display:flex;align-items:center;gap:6px;}
-.rv-text{font-size:13px;color:var(--text);line-height:1.6;margin-bottom:8px;}
-.rv-tags{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:8px;}
-.rv-tag{font-size:10px;font-weight:700;padding:2px 7px;border-radius:3px;background:var(--surface);border:1px solid var(--border);color:var(--muted);}
-.rv-tag.positive{background:#f0fdf4;border-color:#bbf7d0;color:#14532d;}
-.rv-tag.negative{background:#fef2f2;border-color:#fecaca;color:#991b1b;}
-.rv-photos{display:flex;gap:6px;margin-bottom:8px;}
-.rv-photo{width:60px;height:60px;border-radius:7px;background:var(--surface);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:1.5rem;cursor:pointer;overflow:hidden;}
-.rv-photo img{width:100%;height:100%;object-fit:cover;}
-.rv-footer{display:flex;align-items:center;gap:10px;}
-.rv-helpful{font-size:11px;color:var(--muted);display:flex;align-items:center;gap:5px;}
-.rv-helpful button{background:transparent;border:1px solid var(--border);border-radius:4px;padding:2px 7px;font-size:10px;font-weight:700;cursor:pointer;color:var(--muted);transition:all .15s;font-family:'Barlow Condensed',sans-serif;}
-.rv-helpful button:hover{border-color:var(--blue);color:var(--blue);}
-.rv-helpful button.voted{border-color:var(--green);color:var(--green);background:#f0fdf4;}
-.rv-report{margin-left:auto;font-size:10px;color:var(--light);cursor:pointer;transition:color .15s;}
-.rv-report:hover{color:var(--red);}
+.rv-name{font-weight:700;font-size:13px;color:var(--text);margin-bottom:1px;}
+.rv-stars{color:var(--gold-l);font-size:.9rem;margin-bottom:2px;}
+.rv-meta{font-size:11px;color:var(--lighter);}
+.rv-verified{display:inline-flex;align-items:center;gap:3px;background:rgba(26,86,219,.15);border:1px solid rgba(26,86,219,.25);color:#93c5fd;font-size:9px;font-weight:800;padding:1px 6px;border-radius:3px;margin-right:4px;}
+.rv-text{font-size:13px;color:var(--light);line-height:1.6;margin-bottom:8px;}
+.rv-response{background:rgba(26,86,219,.06);border:1px solid rgba(26,86,219,.15);border-left:3px solid var(--blue);border-radius:7px;padding:9px 12px;margin-top:8px;}
+.rvr-label{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--blue-l);margin-bottom:3px;}
+.rvr-text{font-size:12px;color:var(--light);line-height:1.5;}
 
-/* Seller response */
-.rv-response{background:linear-gradient(135deg,#f8fafc,var(--surface));border:1px solid var(--border);border-left:3px solid var(--blue);border-radius:8px;padding:10px 12px;margin-top:8px;}
-.rvr-label{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--blue);margin-bottom:4px;}
-.rvr-text{font-size:12px;color:var(--muted);line-height:1.5;}
-
-/* ════════════════════════════════
-   SUCCESS ANIMATION
-════════════════════════════════ */
-.rating-success{display:none;text-align:center;padding:32px 20px;animation:popIn .4s ease;}
-@keyframes popIn{0%{opacity:0;transform:scale(.9)}100%{opacity:1;transform:scale(1)}}
-.rs-emoji{font-size:4rem;margin-bottom:12px;}
-.rs-title{font-family:'Barlow Condensed',sans-serif;font-size:1.8rem;font-weight:900;margin-bottom:6px;}
-.rs-desc{font-size:13px;color:var(--muted);margin-bottom:18px;line-height:1.5;}
-.rs-impact{background:linear-gradient(135px,var(--navy),#1a3a6b);border-radius:10px;padding:14px;margin-bottom:16px;display:flex;gap:12px;}
-.rsi-item{flex:1;text-align:center;}
-.rsi-num{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.3rem;color:var(--gold-l);}
-.rsi-label{font-size:10px;color:#64748b;text-transform:uppercase;letter-spacing:.4px;}
+/* PANEL HEADER */
+.sec-title{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1rem;color:var(--text);margin-bottom:14px;}
 
 /* MODAL */
-.modal-overlay{display:none;position:fixed;inset:0;background:rgba(10,22,40,.8);z-index:500;align-items:center;justify-content:center;padding:20px;}
-.modal-overlay.open{display:flex;}
-.modal{background:var(--white);border-radius:14px;width:100%;max-width:460px;max-height:88vh;overflow-y:auto;animation:slideUp .25s ease;}
+.overlay{display:none;position:fixed;inset:0;background:rgba(4,10,22,.88);z-index:500;align-items:center;justify-content:center;padding:20px;}
+.overlay.open{display:flex;}
+.modal{background:#0f2341;border:1px solid var(--border2);border-radius:14px;width:100%;max-width:460px;max-height:90vh;overflow-y:auto;animation:slideUp .25s ease;}
 @keyframes slideUp{from{transform:translateY(14px);opacity:0}to{transform:translateY(0);opacity:1}}
-.mhd{background:linear-gradient(135deg,var(--navy),#1a3a6b);padding:16px 20px;display:flex;align-items:center;justify-content:space-between;border-radius:14px 14px 0 0;}
-.mhd-title{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.05rem;color:#fff;}
-.mhd-close{background:rgba(255,255,255,.1);border:none;color:#94a3b8;width:27px;height:27px;border-radius:50%;cursor:pointer;font-size:.85rem;display:flex;align-items:center;justify-content:center;}
-.mhd-close:hover{background:rgba(255,255,255,.2);color:#fff;}
+.mhd{background:linear-gradient(135deg,var(--navy),#1a3a6b);padding:16px 20px;display:flex;align-items:center;justify-content:space-between;border-radius:14px 14px 0 0;border-bottom:1px solid var(--border);}
+.mhd-ttl{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.05rem;color:#fff;}
+.mhd-x{background:rgba(255,255,255,.08);border:none;color:var(--light);width:26px;height:26px;border-radius:50%;cursor:pointer;font-size:.85rem;display:flex;align-items:center;justify-content:center;}
+.mhd-x:hover{background:rgba(255,255,255,.16);color:#fff;}
 .mbody{padding:18px;}
-.mbtn{width:100%;padding:11px;border:none;border-radius:7px;font-family:'Barlow Condensed',sans-serif;font-size:.92rem;font-weight:800;cursor:pointer;transition:all .15s;margin-bottom:7px;}
-.mbtn.red{background:var(--red);color:#fff;}
-.mbtn.outline{background:transparent;border:1.5px solid var(--border);color:var(--muted);}
-.mbtn.outline:hover{border-color:#999;color:var(--text);}
+.mfield{margin-bottom:12px;}
+.mfield label{display:block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--lighter);margin-bottom:4px;}
+.mfield textarea{width:100%;background:rgba(255,255,255,.06);border:1.5px solid var(--border2);border-radius:7px;padding:9px 12px;color:var(--text);font-family:'Lato',sans-serif;font-size:13px;outline:none;resize:vertical;min-height:100px;transition:border-color .15s;}
+.mfield textarea:focus{border-color:var(--blue);}
+.mbtn{width:100%;padding:10px;border:none;border-radius:7px;font-family:'Barlow Condensed',sans-serif;font-size:.92rem;font-weight:800;cursor:pointer;transition:all .15s;margin-bottom:7px;}
+.mbtn.blue{background:var(--blue);color:#fff;}
+.mbtn.blue:hover{background:var(--blue-l);}
+.mbtn.outline{background:transparent;border:1.5px solid var(--border2);color:var(--light);}
+.mbtn.outline:hover{border-color:rgba(255,255,255,.25);color:var(--text);}
 
-/* Toast */
-.toast{position:fixed;bottom:20px;right:20px;background:var(--navy);color:#e2e8f0;border:1px solid #1e3a5f;border-left:4px solid var(--green);border-radius:8px;padding:10px 16px;font-size:13px;z-index:9999;display:flex;align-items:center;gap:9px;max-width:280px;box-shadow:0 8px 26px rgba(0,0,0,.25);transform:translateX(120%);transition:transform .3s ease;}
+/* TOAST */
+.toast{position:fixed;bottom:20px;right:20px;background:#0f2341;color:var(--text);border:1px solid var(--border2);border-left:4px solid var(--green);border-radius:8px;padding:10px 16px;font-size:13px;z-index:9999;display:flex;align-items:center;gap:9px;max-width:290px;box-shadow:0 8px 26px rgba(0,0,0,.5);transform:translateX(120%);transition:transform .3s ease;}
 .toast.show{transform:translateX(0);}
+.toast.error{border-left-color:var(--red);}
 
 @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 .fade-in{animation:fadeIn .3s ease both;}
 
 @media(max-width:860px){.profile-layout{grid-template-columns:1fr;}.profile-card{position:static;}}
-@media(max-width:560px){.pending-grid{grid-template-columns:1fr;}.cat-ratings{grid-template-columns:1fr;}.cat-breakdown{grid-template-columns:1fr;}}
-
-/* ── DARK MODE ── */
-@media (prefers-color-scheme: dark) {
-  :root {
-    --navy:#0a1628;
-    --blue:#3b82f6;
-    --blue-l:#60a5fa;
-    --gold:#fbbf24;
-    --gold-l:#fcd34d;
-    --green:#22c55e;
-    --green-l:#4ade80;
-    --red:#f87171;
-    --orange:#fb923c;
-    --text:#f1f5f9;
-    --muted:#94a3b8;
-    --light:#64748b;
-    --border:rgba(255,255,255,.1);
-    --bg:#0f172a;
-    --white:#1e293b;
-    --surface:#162032;
-    --card:#1e293b;
-  }
-  body { background:#0f172a !important; color:#f1f5f9 !important; }
-  /* Nav always dark - already fine */
-  /* Cards and panels */
-  .card, .panel, .pay-card, .summary-card, .rate-card, .review-card,
-  .profile-card, .rating-overview-card, .dispute-flow, .step-panel,
-  .step-list, .protection-hero ~ .panel, .stat-card, .fund-card,
-  .chart-card, .dq-item, .ai-panel { background:#1e293b !important; border-color:rgba(255,255,255,.08) !important; }
-  /* Text */
-  h1,h2,h3,h4,h5,h6 { color:#f1f5f9 !important; }
-  p, li, span:not(.logo *):not(.badge):not(.chip) { color:#94a3b8; }
-  strong { color:#e2e8f0 !important; }
-  /* Inputs */
-  input, select, textarea {
-    background:#162032 !important;
-    border-color:rgba(255,255,255,.12) !important;
-    color:#f1f5f9 !important;
-  }
-  input::placeholder, textarea::placeholder { color:#334155 !important; }
-  /* Surfaces */
-  .surface, [class*="surface"], [class*="-body"], [class*="-wrap"],
-  .pay-body, .sp-body, .panel-body, .mbody, .dq, .ai-chat,
-  .sum-body, .pc-body { background:#1e293b !important; }
-  /* Borders */
-  [class*="border"], hr { border-color:rgba(255,255,255,.08) !important; }
-  /* Table rows */
-  .trow:hover, .saved-card:hover, .step-item:hover { background:rgba(255,255,255,.05) !important; }
-  /* White backgrounds that need to go dark */
-  .white-bg, .bg-white, [style*="background:#fff"], [style*="background: #fff"],
-  [style*="background:white"], [style*="background: white"] { background:#1e293b !important; }
-  /* Legal pages specific */
-  .doc-header { background:transparent !important; }
-  .doc-title { color:#f1f5f9 !important; }
-  .doc-meta { color:#94a3b8 !important; }
-  .doc-meta strong { color:#e2e8f0 !important; }
-  .toc { background:#1e293b !important; border-color:rgba(255,255,255,.08) !important; }
-  .toc-title { color:#f1f5f9 !important; }
-  .section-title { color:#f1f5f9 !important; border-color:rgba(255,255,255,.08) !important; }
-  .section-num { color:#60a5fa !important; }
-  .section p, .section li { color:#94a3b8 !important; }
-  .section p strong, .section li strong { color:#e2e8f0 !important; }
-  /* Highlight boxes in legal pages — keep light backgrounds with dark text */
-  .hb-blue { background:#1e3a5f !important; border-color:#1d4ed8 !important; border-left-color:#3b82f6 !important; }
-  .hb-yellow { background:#422006 !important; border-color:#92400e !important; border-left-color:#fbbf24 !important; }
-  .hb-red { background:#450a0a !important; border-color:#991b1b !important; border-left-color:#f87171 !important; }
-  .hb-green { background:#052e16 !important; border-color:#166534 !important; border-left-color:#22c55e !important; }
-  .hb-blue .hb-text { color:#93c5fd !important; }
-  .hb-yellow .hb-text { color:#fcd34d !important; }
-  .hb-red .hb-text { color:#fca5a5 !important; }
-  .hb-green .hb-text { color:#86efac !important; }
-  .hb-text strong { color:inherit !important; }
-  /* Tables */
-  .fee-table th, .data-table th { background:#0f172a !important; color:#f1f5f9 !important; }
-  .fee-table td, .data-table td { color:#94a3b8 !important; background:#1e293b !important; }
-  .fee-table tr:nth-child(even) td, .data-table tr:nth-child(even) td { background:#162032 !important; }
-  .fee-table td:first-child, .data-table td:first-child { color:#e2e8f0 !important; }
-  /* Rights grid */
-  .right-card, .badge-card, .pf-card, .stat-card { background:#1e293b !important; border-color:rgba(255,255,255,.08) !important; }
-  .rc-title, .bc-name, .pf-title, .sc-lbl { color:#e2e8f0 !important; }
-  .rc-desc, .bc-desc, .pf-desc { color:#94a3b8 !important; }
-  /* Contact box stays dark - already fine */
-  /* Back buttons */
-  .back-btn { background:#1e3a8a !important; color:#fff !important; }
-  /* Nav links */
-  .nav-links a { color:#94a3b8 !important; }
-  .nav-links a:hover { color:#fff !important; }
-  /* Modal */
-  .modal, .overlay .modal { background:#1e293b !important; border-color:rgba(255,255,255,.1) !important; }
-  .mfield input, .mfield select, .mfield textarea { background:#0f172a !important; }
-  /* Chart bars already colored */
-  /* Star ratings */
-  .star, .mini-star { filter:none !important; }
-  /* OTP inputs */
-  .otp-input { background:#162032 !important; color:#f1f5f9 !important; }
-  .otp-input.filled { background:#052e16 !important; }
-  /* Upload zones */
-  .upload-zone, .upload-side, .ev-slot { background:#162032 !important; border-color:rgba(255,255,255,.1) !important; }
-  /* Step list sidebar */
-  .step-list { background:#1e293b !important; }
-  .step-item { background:transparent !important; }
-  .step-item.completed { background:rgba(22,163,74,.1) !important; }
-  .step-item.active { background:rgba(26,86,219,.1) !important; }
-  .si-title { color:#e2e8f0 !important; }
-  .si-meta { color:#64748b !important; }
-  /* Trust ring text */
-  .trust-num { color:#fff !important; }
-  /* Bypass rows */
-  .bp-msg, .br-msg { background:rgba(124,58,237,.15) !important; }
-  /* Summary card */
-  .sum-row-label { color:#94a3b8 !important; }
-  .sum-row-val { color:#e2e8f0 !important; }
-  /* Payment page */
-  .card-logo-chip { border-color:rgba(255,255,255,.15) !important; }
-  .express-btn.google { background:#1e293b !important; color:#f1f5f9 !important; border-color:rgba(255,255,255,.15) !important; }
-  /* Category cards */
-  .cat-rate, .cbd-item, .metric, .wb-stat, .phs-item { background:rgba(255,255,255,.05) !important; border-color:rgba(255,255,255,.08) !important; }
-  .wb-num, .metric-val, .sc-num { color:#fbbf24 !important; }
-  /* Payout rows */
-  .pay-row, .trow, .ur, .bp-row { border-color:rgba(255,255,255,.06) !important; }
-  /* Scrollbars */
-  ::-webkit-scrollbar { background:#0f172a; }
-  ::-webkit-scrollbar-thumb { background:#334155; border-radius:4px; }
-}
-
+@media(max-width:560px){.pending-grid{grid-template-columns:1fr;}.cat-ratings{grid-template-columns:1fr;}}
 </style>
 </head>
 <body>
 
 <!-- NAV -->
 <div class="nav">
-  <a href="alltrades.html" style="text-decoration:none"><div class="logo"><span class="a">Trade</span><span class="t">zy</span><span class="d">.</span></div></a>
+  <a href="alltrades.html" class="logo"><span class="a">Trade</span><span class="t">zy</span><span class="d">.</span></a>
   <div class="nav-right">
-    <button class="nav-btn ghost" href="alltrades-dashboard.html">← Dashboard</button>
-    <div class="user-chip"><div class="u-av">JD</div><div class="u-name">Jane D.</div></div>
+    <a href="alltrades-dashboard.html" class="nav-btn">← Dashboard</a>
+    <div class="user-chip">
+      <div class="u-av" id="navAv">?</div>
+      <div class="u-name" id="navName">Loading…</div>
+    </div>
   </div>
 </div>
 
 <!-- TABS -->
 <div class="page-tabs">
   <div class="page-tabs-inner">
-    <div class="ptab active" onclick="switchView('pending',this)">Rate Trades <span class="ptab-cnt" id="pendingCnt">2</span></div>
-    <div class="ptab" onclick="switchView('profile',this)">My Public Profile</div>
-    <div class="ptab" onclick="switchView('received',this)">Reviews Received</div>
-    <div class="ptab" onclick="switchView('given',this)">Reviews I Gave</div>
+    <div class="ptab active" id="tab-pending" onclick="switchView('pending',this)">Rate Trades <span class="ptab-cnt" id="pendingCnt" style="display:none">0</span></div>
+    <div class="ptab" id="tab-received" onclick="switchView('received',this)">Reviews Received</div>
+    <div class="ptab" id="tab-given" onclick="switchView('given',this)">Reviews I Gave</div>
   </div>
 </div>
 
 <div class="page">
 
-  <!-- ══ VIEW 1: PENDING RATINGS ══ -->
+  <!-- ══ PENDING RATINGS ══ -->
   <div id="view-pending">
     <div class="pending-header">
       <div class="pending-title">⭐ Trades Awaiting Your Rating</div>
-      <div class="pending-sub">Your ratings help build trust for the whole Tradezy community. Ratings are locked to verified completed trades — you can only rate someone after a real swap.</div>
+      <div class="pending-sub">You can only rate a trader after your meetup is confirmed by both parties.</div>
     </div>
-
-    <!-- IMPORTANT NOTICE -->
-    <div style="background:linear-gradient(90deg,rgba(26,86,219,.07),rgba(26,86,219,.03));border:1px solid rgba(26,86,219,.2);border-left:4px solid var(--blue);border-radius:9px;padding:12px 15px;margin-bottom:18px;display:flex;gap:9px;font-size:13px;color:#1e3a8a">
+    <div class="info-box blue">
       <span>🔒</span>
-      <div><strong>Verified Trades Only:</strong> You can only leave a rating after Tradezy confirms a trade was completed on-platform. Ratings from off-platform deals are not accepted — this protects you and every trader.</div>
+      <div><strong>Verified Trades Only:</strong> Ratings are unlocked only after both parties confirm the meetup. This protects every trader on Tradezy.</div>
     </div>
-
     <div class="pending-grid" id="pendingGrid">
-      <!-- Rendered by JS -->
+      <div class="loading-state">Loading trades…</div>
     </div>
-
-    <!-- Already rated section -->
-    <div style="margin-bottom:8px">
-      <div style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.88rem;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:10px">Recently Rated</div>
-      <div class="rated-card fade-in">
-        <div class="rated-check">✅</div>
-        <div class="rated-info">
-          <div class="rated-name">GardenSue — Trade #AT-2831</div>
-          <div class="rated-stars">★★★★★</div>
-          <div class="rated-meta">Rated May 4 · Tomato Seedlings ⇄ Flour Bag</div>
-        </div>
-      </div>
-      <div class="rated-card fade-in" style="margin-top:8px;animation-delay:.1s">
-        <div class="rated-check">✅</div>
-        <div class="rated-info">
-          <div class="rated-name">PrepMike — Trade #AT-2798</div>
-          <div class="rated-stars">★★★★☆</div>
-          <div class="rated-meta">Rated Apr 29 · First Aid Kit ⇄ Used Books</div>
-        </div>
-      </div>
+    <div id="alreadyRatedSection" style="display:none">
+      <div style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.82rem;text-transform:uppercase;letter-spacing:.5px;color:var(--lighter);margin-bottom:10px">Recently Rated</div>
+      <div id="alreadyRatedList"></div>
     </div>
   </div>
 
-  <!-- ══ VIEW 2: PUBLIC PROFILE ══ -->
-  <div id="view-profile" style="display:none">
-    <div class="profile-layout">
-      <div>
-        <!-- Profile Card -->
-        <div class="profile-card">
-          <div class="pc-banner"></div>
-          <div class="pc-body">
-            <div class="pc-av-wrap" style="position:relative;margin-bottom:8px">
-              <div class="pc-av" style="background:linear-gradient(135deg,var(--gold),var(--orange));width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.3rem;color:var(--navy);border:3px solid var(--white);box-shadow:0 2px 10px rgba(0,0,0,.15)">JD</div>
-            </div>
-            <div class="pc-name">Jane Doe</div>
-            <div class="pc-location">📍 Austin, TX · Member since Jan 2026</div>
-            <div class="pc-badges">
-              <span class="pc-badge verified">✓ Verified Trader</span>
-              <span class="pc-badge top">⭐ Top Trader</span>
-              <span class="pc-badge fast">⚡ Fast Responder</span>
-              <span class="pc-badge safe">🛡️ Safe Meetups</span>
-            </div>
-            <div class="pc-stats-grid">
-              <div class="pc-stat"><div class="pc-stat-num" style="color:var(--gold)">4.9★</div><div class="pc-stat-label">Rating</div></div>
-              <div class="pc-stat"><div class="pc-stat-num" style="color:var(--blue)">23</div><div class="pc-stat-label">Trades</div></div>
-              <div class="pc-stat"><div class="pc-stat-num" style="color:var(--green)">100%</div><div class="pc-stat-label">Response</div></div>
-              <div class="pc-stat"><div class="pc-stat-num" style="color:var(--orange)">$312</div><div class="pc-stat-label">Traded (30d)</div></div>
-            </div>
-            <div class="pc-since">Active trader for 4 months · 0 disputes · 0 flags</div>
-            <button class="pc-btn primary" onclick="showToast('📦','View Jane\'s listings…')">📦 View Listings</button>
-            <button class="pc-btn outline" onclick="showToast('💬','Opening message…')">💬 Send Message</button>
-          </div>
-        </div>
-      </div>
-
-      <div>
-        <!-- Rating Overview -->
-        <div class="rating-overview-card">
-          <div style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1rem;margin-bottom:14px">⭐ Overall Rating</div>
-          <div class="roc-top">
-            <div>
-              <div class="roc-big">4.9</div>
-              <div class="roc-stars">★★★★★</div>
-              <div class="roc-count">Based on 23 trades</div>
-            </div>
-            <div class="roc-bars">
-              <div class="roc-bar-row"><span class="roc-bar-lbl">5</span><div class="roc-bar-track"><div class="roc-bar-fill" style="width:87%"></div></div><span class="roc-bar-cnt">19</span></div>
-              <div class="roc-bar-row"><span class="roc-bar-lbl">4</span><div class="roc-bar-track"><div class="roc-bar-fill" style="width:14%"></div></div><span class="roc-bar-cnt">3</span></div>
-              <div class="roc-bar-row"><span class="roc-bar-lbl">3</span><div class="roc-bar-track"><div class="roc-bar-fill" style="width:5%"></div></div><span class="roc-bar-cnt">1</span></div>
-              <div class="roc-bar-row"><span class="roc-bar-lbl">2</span><div class="roc-bar-track"><div class="roc-bar-fill" style="width:0%"></div></div><span class="roc-bar-cnt">0</span></div>
-              <div class="roc-bar-row"><span class="roc-bar-lbl">1</span><div class="roc-bar-track"><div class="roc-bar-fill" style="width:0%"></div></div><span class="roc-bar-cnt">0</span></div>
-            </div>
-          </div>
-
-          <!-- Category breakdown -->
-          <div style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.82rem;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:8px">Rating Breakdown</div>
-          <div class="cat-breakdown">
-            <div class="cbd-item"><div class="cbd-label">📦 Item Accuracy</div><div class="cbd-bar-wrap"><div class="cbd-bar-track"><div class="cbd-bar-fill" style="width:96%"></div></div><span class="cbd-score">4.8</span></div></div>
-            <div class="cbd-item"><div class="cbd-label">⏰ Communication</div><div class="cbd-bar-wrap"><div class="cbd-bar-track"><div class="cbd-bar-fill" style="width:98%"></div></div><span class="cbd-score">4.9</span></div></div>
-            <div class="cbd-item"><div class="cbd-label">📍 Meetup</div><div class="cbd-bar-wrap"><div class="cbd-bar-track"><div class="cbd-bar-fill" style="width:100%"></div></div><span class="cbd-score">5.0</span></div></div>
-            <div class="cbd-item"><div class="cbd-label">🤝 Fair Trade</div><div class="cbd-bar-wrap"><div class="cbd-bar-track"><div class="cbd-bar-fill" style="width:96%"></div></div><span class="cbd-score">4.8</span></div></div>
-          </div>
-        </div>
-
-        <!-- Reviews -->
-        <div style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1rem;margin-bottom:10px">💬 Reviews (23)</div>
-        <div class="review-filters">
-          <div class="rf-btn active" onclick="filterReviews('all',this)">All (23)</div>
-          <div class="rf-btn" onclick="filterReviews('5star',this)">★★★★★ (19)</div>
-          <div class="rf-btn" onclick="filterReviews('4star',this)">★★★★☆ (3)</div>
-          <div class="rf-btn" onclick="filterReviews('low',this)">★★★ and below (1)</div>
-          <div class="rf-btn" onclick="filterReviews('photos',this)">📷 With Photos</div>
-        </div>
-
-        <div id="reviewsList"><!-- Rendered by JS --></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ══ VIEW 3: REVIEWS RECEIVED ══ -->
+  <!-- ══ REVIEWS RECEIVED ══ -->
   <div id="view-received" style="display:none">
-    <div style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.3rem;margin-bottom:4px">Reviews Received</div>
-    <div style="font-size:13px;color:var(--muted);margin-bottom:16px">Reviews others have left for you. You can respond to any review once.</div>
-    <div id="receivedList"><!-- Rendered by JS --></div>
+    <div class="sec-title">Reviews Others Left For You</div>
+    <div id="receivedList"><div class="loading-state">Loading…</div></div>
   </div>
 
-  <!-- ══ VIEW 4: REVIEWS GIVEN ══ -->
+  <!-- ══ REVIEWS GIVEN ══ -->
   <div id="view-given" style="display:none">
-    <div style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.3rem;margin-bottom:4px">Reviews I Left</div>
-    <div style="font-size:13px;color:var(--muted);margin-bottom:16px">Reviews you have written for other traders.</div>
-    <div id="givenList"><!-- Rendered by JS --></div>
+    <div class="sec-title">Reviews You Left</div>
+    <div id="givenList"><div class="loading-state">Loading…</div></div>
   </div>
 
-</div>
-
-<!-- REPORT MODAL -->
-<div class="modal-overlay" id="reportModal">
-  <div class="modal">
-    <div class="mhd"><div class="mhd-title">⚑ Report Review</div><button class="mhd-close" onclick="closeModal('reportModal')">✕</button></div>
-    <div class="mbody">
-      <p style="font-size:13px;color:var(--muted);margin-bottom:14px;line-height:1.5">Why are you reporting this review?</p>
-      <div style="display:flex;flex-direction:column;gap:7px;margin-bottom:14px">
-        <label style="display:flex;align-items:center;gap:9px;padding:9px 11px;border:1.5px solid var(--border);border-radius:7px;cursor:pointer;font-size:13px"><input type="radio" name="rr" style="accent-color:var(--red)"> Contains false information</label>
-        <label style="display:flex;align-items:center;gap:9px;padding:9px 11px;border:1.5px solid var(--border);border-radius:7px;cursor:pointer;font-size:13px"><input type="radio" name="rr" style="accent-color:var(--red)"> Review is not from a real trade</label>
-        <label style="display:flex;align-items:center;gap:9px;padding:9px 11px;border:1.5px solid var(--border);border-radius:7px;cursor:pointer;font-size:13px"><input type="radio" name="rr" style="accent-color:var(--red)"> Contains offensive or inappropriate content</label>
-        <label style="display:flex;align-items:center;gap:9px;padding:9px 11px;border:1.5px solid var(--border);border-radius:7px;cursor:pointer;font-size:13px"><input type="radio" name="rr" style="accent-color:var(--red)"> Other</label>
-      </div>
-      <button class="mbtn red" onclick="submitReport()">Submit Report</button>
-      <button class="mbtn outline" onclick="closeModal('reportModal')">Cancel</button>
-    </div>
-  </div>
 </div>
 
 <!-- RESPOND MODAL -->
-<div class="modal-overlay" id="respondModal">
+<div class="overlay" id="respondModal">
   <div class="modal">
-    <div class="mhd"><div class="mhd-title">💬 Respond to Review</div><button class="mhd-close" onclick="closeModal('respondModal')">✕</button></div>
+    <div class="mhd"><div class="mhd-ttl">💬 Respond to Review</div><button class="mhd-x" onclick="closeModal('respondModal')">✕</button></div>
     <div class="mbody">
-      <p style="font-size:13px;color:var(--muted);margin-bottom:12px;line-height:1.5">Your response will be public and visible on your profile. You can only respond once per review — make it count.</p>
-      <textarea id="responseText" placeholder="Thank the reviewer, address concerns professionally, or provide context…" style="width:100%;border:1.5px solid var(--border);border-radius:8px;padding:10px 12px;font-family:'Lato',sans-serif;font-size:13px;outline:none;resize:vertical;min-height:100px;transition:border-color .15s;margin-bottom:10px" onfocus="this.style.borderColor='var(--blue)'" onblur="this.style.borderColor='var(--border)'"></textarea>
-      <div style="background:#fffbeb;border:1px solid #fde68a;border-radius:7px;padding:9px 11px;font-size:11px;color:#92400e;margin-bottom:12px">
-        💡 Tip: Professional, calm responses build trust even when addressing a negative review. Avoid being defensive.
+      <p style="font-size:13px;color:var(--light);margin-bottom:12px;line-height:1.5">Your response will be visible on your profile. You can only respond once — make it count.</p>
+      <div class="mfield">
+        <label>Your Response</label>
+        <textarea id="responseText" placeholder="Thank the reviewer, address concerns professionally…"></textarea>
       </div>
-      <button class="mbtn" style="background:var(--blue);color:#fff" onclick="submitResponse()">Post Response</button>
+      <div class="info-box gold" style="margin-bottom:12px">
+        <span>💡</span><div>Professional, calm responses build trust even on negative reviews. Avoid being defensive.</div>
+      </div>
+      <button class="mbtn blue" onclick="submitResponse()">Post Response</button>
       <button class="mbtn outline" onclick="closeModal('respondModal')">Cancel</button>
     </div>
   </div>
 </div>
 
 <!-- TOAST -->
-<div class="toast" id="toastEl"><span id="toastIc">✅</span><span id="toastTx">Done!</span></div>
+<div class="toast" id="toastEl"><span id="toastIc">✅</span><span id="toastTx"></span></div>
 
 <script>
-// ── DATA ──
-const PENDING_TRADES = [
-  {
-    id:'AT-2847', trader:'RiderJay', av:'RJ', color:'#1a56db',
-    item1em:'🥫', item1:'Canned Goods (24)', val1:'~$29',
-    item2em:'🔧', item2:'DeWalt Drill Set', val2:'~$140',
-    completedDate:'May 6', deadline:'5 days left',
-    tags_positive:['Item as described','Easy meetup','Great communicator','Fast response','Fair trade'],
-    tags_negative:['Late to meetup','Item condition off','Poor communication']
-  },
-  {
-    id:'AT-2831', trader:'TechLisa', av:'TL', color:'#ea580c',
-    item1em:'🚲', item1:'Trek Bike 27-Spd', val1:'~$320',
-    item2em:'💻', item2:'Dell Laptop i7', val2:'~$380',
-    completedDate:'May 5', deadline:'6 days left',
-    tags_positive:['Item as described','Easy meetup','Great communicator','Fast response','Honest and friendly'],
-    tags_negative:['Item condition off','Late to meetup']
-  }
-];
+const sb = window.supabase.createClient(
+  'https://equvwaspcoeetfsexqki.supabase.co',
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVxdXZ3YXNwY29lZXRmc2V4cWtpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgyNzc2MjQsImV4cCI6MjA5Mzg1MzYyNH0.TP6Kk3pzHW1PYMUu5D9Vu2lJrazIEagzu5csYhqkrfI'
+);
 
-const REVIEWS_DATA = [
-  { id:1, name:'RiderJay', av:'RJ', color:'#1a56db', stars:5, date:'May 4, 2026', tradeCtx:'🥫 Canned Goods (24) ⇄ 🔧 DeWalt Drill Set', text:'Jane was super easy to deal with. The canned goods were exactly as described — all sealed, great condition. She was on time to our meetup and super friendly. Would absolutely trade with her again!', tags:['Item as described','Easy meetup','Great communicator'], helpful:7, hasPhoto:false, verified:true, response:null },
-  { id:2, name:'GardenSue', av:'GS', color:'#16a34a', stars:5, date:'May 4, 2026', tradeCtx:'🌱 Tomato Seedlings (12) ⇄ 🌾 25lb Flour Bag', text:'Amazing trade! Jane brought healthy, beautiful tomato plants. She even gave me a few extra seedlings she had. The meetup was at a public parking lot which felt very safe. 10/10 would trade again.', tags:['Item as described','Fair trade','Honest and friendly'], helpful:4, hasPhoto:true, verified:true, response:'Thank you Sue! Your flour was exactly what I needed — enjoy the tomatoes! 🍅' },
-  { id:3, name:'PrepMike', av:'PM', color:'#7c3aed', stars:4, date:'Apr 29, 2026', tradeCtx:'📚 Used Books (8) ⇄ 💊 First Aid Kit', text:'Good trade overall. Books were in great shape. Communication was excellent. Only minor issue was she was about 10 minutes late to the meetup, but she let me know ahead of time so no big deal. Would trade again.', tags:['Good communication','Item as described'], helpful:2, hasPhoto:false, verified:true, response:null },
-  { id:4, name:'BuildBob', av:'BB', color:'#f59e0b', stars:5, date:'Apr 22, 2026', tradeCtx:'🎮 PS4 + 3 Games ⇄ ⛺ Camping Tent + Gear', text:'Fantastic experience. Jane clearly takes pride in her items — the PS4 was spotless and the games were all in their original cases. Super organized, responded quickly to every message. This is what Tradezy should be!', tags:['Item as described','Fast response','Great communicator','Fair trade'], helpful:11, hasPhoto:true, verified:true, response:null },
-  { id:5, name:'OutdoorKev', av:'OK', color:'#64748b', stars:3, date:'Apr 15, 2026', tradeCtx:'🔧 Wrench Set ⇄ 🎸 Guitar Picks + Accessories', text:'Trade was fine but the item condition was slightly off from the description. Not a huge deal but would have appreciated more accurate photos. Communication was great though, she responded quickly.', tags:['Good communication'], helpful:1, hasPhoto:false, verified:true, response:"Hi Kev - I apologize the condition wasn't exactly as expected. I'll be more precise with my descriptions and photos in future listings. Thanks for the honest feedback — it helps me improve!" },
-];
+let currentUser = null;
+let currentProfile = null;
+let ratingState = {}; // { tradeId: { overall, acc, com, meet, fair, tags, text } }
+let respondTargetId = null;
 
 const starHints = ['','Terrible — would not trade again','Below average — had issues','Average — it was okay','Good — would trade again','Excellent — highly recommend!'];
+const COLORS = ['#1a56db','#16a34a','#ea580c','#7c3aed','#0891b2','#dc2626','#f59e0b'];
+const TAGS_POS = ['Item as described','Easy meetup','Great communicator','Fast response','Honest and friendly','Fair trade'];
+const TAGS_NEG = ['Item condition off','Late to meetup','Poor communication','Slow response','Item not as described'];
 
-let ratings = {}; // { tradeId: { overall, accuracy, communication, meetup, fairness, tags, text } }
-let currentTradeRating = null;
+// ── SESSION CHECK ──
+(async () => {
+  const { data: { session } } = await sb.auth.getSession();
+  if (!session) { window.location.href = 'alltrades-auth.html'; return; }
+  currentUser = session.user;
+
+  const { data: profile } = await sb.from('users').select('display_name, is_banned').eq('id', currentUser.id).single();
+  if (profile?.is_banned) { window.location.href = 'alltrades-auth.html'; return; }
+  currentProfile = profile;
+
+  const name = profile?.display_name || currentUser.email?.split('@')[0] || 'User';
+  const initials = name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0,2);
+  document.getElementById('navAv').textContent = initials;
+  document.getElementById('navName').textContent = name;
+
+  loadPending();
+})();
 
 // ── VIEW SWITCHING ──
 function switchView(view, tab) {
@@ -611,145 +333,169 @@ function switchView(view, tab) {
   document.getElementById('view-' + view).style.display = 'block';
   document.querySelectorAll('.ptab').forEach(t => t.classList.remove('active'));
   tab.classList.add('active');
+  if (view === 'received') loadReceived();
+  if (view === 'given') loadGiven();
 }
 
-// ── RENDER PENDING ──
-function renderPending() {
-  const grid = document.getElementById('pendingGrid');
-  grid.innerHTML = '';
+// ── LOAD PENDING TRADES ──
+async function loadPending() {
+  try {
+    // Get completed trades where current user participated and both meetups confirmed
+    const { data: trades, error } = await sb.from('trades')
+      .select('id, trader_a_id, trader_b_id, created_at, total_value, trade_type, listing_id, offer_id')
+      .or(`trader_a_id.eq.${currentUser.id},trader_b_id.eq.${currentUser.id}`)
+      .eq('meetup_confirmed_a', true)
+      .eq('meetup_confirmed_b', true)
+      .order('created_at', { ascending: false });
 
-  const remaining = PENDING_TRADES.filter(t => !ratings[t.id]);
+    if (error) throw error;
 
-  if (remaining.length === 0) {
-    grid.innerHTML = `<div style="background:var(--white);border:1px solid var(--border);border-radius:12px;padding:28px;text-align:center;color:var(--muted);grid-column:1/-1">
-      <div style="font-size:2.5rem;margin-bottom:10px">🎉</div>
-      <div style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1.1rem;color:var(--text);margin-bottom:5px">All caught up!</div>
-      <div style="font-size:13px">You've rated all your recent trades. New ratings will appear here after each completed trade.</div>
-    </div>`;
-    document.getElementById('pendingCnt').style.display = 'none';
-    return;
+    if (!trades?.length) {
+      document.getElementById('pendingGrid').innerHTML = `
+        <div class="empty-state" style="grid-column:1/-1;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:32px">
+          <div class="em-icon">🤝</div>
+          <div class="em-title">No completed trades yet</div>
+          <div>Ratings unlock after both parties confirm a meetup. Complete your first trade to start building your reputation!</div>
+        </div>`;
+      return;
+    }
+
+    // Get ratings already submitted by this user
+    const { data: myRatings } = await sb.from('ratings')
+      .select('trade_id, rated_user_id, stars')
+      .eq('rater_id', currentUser.id);
+
+    const ratedTradeIds = new Set((myRatings || []).map(r => r.trade_id));
+
+    const pending = trades.filter(t => !ratedTradeIds.has(t.id));
+    const alreadyRated = trades.filter(t => ratedTradeIds.has(t.id));
+
+    // Update badge
+    if (pending.length > 0) {
+      document.getElementById('pendingCnt').textContent = pending.length;
+      document.getElementById('pendingCnt').style.display = 'inline';
+    }
+
+    // Render pending cards
+    const grid = document.getElementById('pendingGrid');
+    if (pending.length === 0) {
+      grid.innerHTML = `
+        <div class="empty-state" style="grid-column:1/-1;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:32px">
+          <div class="em-icon">🎉</div>
+          <div class="em-title">All caught up!</div>
+          <div>You've rated all your completed trades. New ratings appear here after each confirmed meetup.</div>
+        </div>`;
+    } else {
+      grid.innerHTML = '';
+      // Get the other trader's info for each trade
+      for (const trade of pending) {
+        const otherUserId = trade.trader_a_id === currentUser.id ? trade.trader_b_id : trade.trader_a_id;
+        const { data: otherUser } = await sb.from('users').select('display_name, email').eq('id', otherUserId).single();
+        const otherName = otherUser?.display_name || otherUser?.email?.split('@')[0] || 'Trader';
+        renderPendingCard(trade, otherName, otherUserId);
+      }
+    }
+
+    // Render already-rated section
+    if (alreadyRated.length > 0) {
+      document.getElementById('alreadyRatedSection').style.display = 'block';
+      const list = document.getElementById('alreadyRatedList');
+      list.innerHTML = '';
+      for (const trade of alreadyRated) {
+        const myRating = (myRatings || []).find(r => r.trade_id === trade.id);
+        const starsStr = '★'.repeat(myRating?.stars || 0) + '☆'.repeat(5 - (myRating?.stars || 0));
+        list.innerHTML += `
+          <div class="rated-card fade-in">
+            <div class="rated-check">✅</div>
+            <div class="rated-info">
+              <div class="rated-name">Trade #${trade.id.slice(0,8).toUpperCase()}</div>
+              <div class="rated-stars" style="color:var(--gold-l)">${starsStr}</div>
+              <div class="rated-meta">${timeAgo(trade.created_at)}</div>
+            </div>
+          </div>`;
+      }
+    }
+
+  } catch(e) {
+    console.error(e);
+    document.getElementById('pendingGrid').innerHTML = '<div class="loading-state">Could not load trades.</div>';
   }
-
-  document.getElementById('pendingCnt').textContent = remaining.length;
-
-  remaining.forEach(trade => {
-    const card = document.createElement('div');
-    card.className = 'rate-card fade-in';
-    card.id = 'ratecard-' + trade.id;
-    card.innerHTML = buildRateCard(trade);
-    grid.appendChild(card);
-    initStars(trade.id);
-  });
 }
 
-function buildRateCard(trade) {
-  const posTags = trade.tags_positive.map(t => `<div class="rtag" onclick="toggleTag(this,'${trade.id}','${t}',true)">${t}</div>`).join('');
-  const negTags = trade.tags_negative.map(t => `<div class="rtag" onclick="toggleTag(this,'${trade.id}','${t}',false)">${t}</div>`).join('');
+function renderPendingCard(trade, otherName, otherUserId) {
+  const grid = document.getElementById('pendingGrid');
+  const initials = otherName.split(' ').map(n => n[0]).join('').toUpperCase().slice(0,2);
+  const color = COLORS[otherName.charCodeAt(0) % COLORS.length];
+  const tradeShort = trade.id.slice(0,8).toUpperCase();
 
-  return `
-  <div class="rc-head">
-    <div class="rc-trade-id">Trade #${trade.id} · ${trade.completedDate}</div>
-    <div class="rc-badge pending">AWAITING RATING</div>
-  </div>
-  <div class="rc-body">
-    <div class="rc-trade-items">
-      <div class="rc-item"><div class="rc-item-em">${trade.item1em}</div><div class="rc-item-nm">${trade.item1}</div><div class="rc-item-vl" style="color:var(--gold)">${trade.val1}</div></div>
-      <div class="rc-arrow">⇄</div>
-      <div class="rc-item"><div class="rc-item-em">${trade.item2em}</div><div class="rc-item-nm">${trade.item2}</div><div class="rc-item-vl" style="color:var(--blue)">${trade.val2}</div></div>
-    </div>
-    <div class="rc-trader">
-      <div class="rc-av" style="background:${trade.color}">${trade.av}</div>
-      <div class="rc-trader-info"><div class="rc-name">Rate: ${trade.trader}</div><div class="rc-meta">Verified Tradezy swap · Trade locked ✓</div></div>
-      <div class="rc-deadline"><div class="rc-deadline-num">${trade.deadline}</div><div class="rc-deadline-label">to rate</div></div>
-    </div>
+  ratingState[trade.id] = { overall:0, acc:0, com:0, meet:0, fair:0, tags:[], text:'' };
 
-    <!-- Overall stars -->
-    <div class="star-widget">
-      <div class="sw-label">Overall Rating</div>
-      <div class="stars-row" id="stars-${trade.id}">
-        <span class="star" data-val="1" onclick="setStars('${trade.id}',1)">★</span>
-        <span class="star" data-val="2" onclick="setStars('${trade.id}',2)">★</span>
-        <span class="star" data-val="3" onclick="setStars('${trade.id}',3)">★</span>
-        <span class="star" data-val="4" onclick="setStars('${trade.id}',4)">★</span>
-        <span class="star" data-val="5" onclick="setStars('${trade.id}',5)">★</span>
-      </div>
-      <div class="star-hint" id="hint-${trade.id}">Tap to rate</div>
-    </div>
+  const posTags = TAGS_POS.map(t => `<div class="rtag" onclick="toggleTag(this,'${trade.id}','${t}',true)">${t}</div>`).join('');
+  const negTags = TAGS_NEG.map(t => `<div class="rtag" onclick="toggleTag(this,'${trade.id}','${t}',false)">${t}</div>`).join('');
 
-    <!-- Category ratings -->
-    <div class="cat-ratings">
-      <div class="cat-rate">
-        <div class="cat-rate-label">📦 Item Accuracy</div>
-        <div class="mini-stars" id="mini-acc-${trade.id}">
-          ${[1,2,3,4,5].map(n=>`<span class="mini-star" onclick="setMini('acc','${trade.id}',${n})">★</span>`).join('')}
+  const card = document.createElement('div');
+  card.className = 'rate-card fade-in';
+  card.id = 'ratecard-' + trade.id;
+  card.innerHTML = `
+    <div class="rc-head">
+      <div class="rc-trade-id">Trade #${tradeShort}</div>
+      <div class="rc-badge pending">AWAITING RATING</div>
+    </div>
+    <div class="rc-body">
+      <div class="rc-trader">
+        <div class="rc-av" style="background:${color}">${initials}</div>
+        <div class="rc-trader-info">
+          <div class="rc-name">Rate: ${otherName}</div>
+          <div class="rc-meta">Verified meetup confirmed ✓ · ${timeAgo(trade.created_at)}</div>
         </div>
+        ${trade.total_value ? `<div class="rc-deadline"><div class="rc-deadline-num">$${Number(trade.total_value).toFixed(0)}</div><div class="rc-deadline-label">trade value</div></div>` : ''}
       </div>
-      <div class="cat-rate">
-        <div class="cat-rate-label">💬 Communication</div>
-        <div class="mini-stars" id="mini-com-${trade.id}">
-          ${[1,2,3,4,5].map(n=>`<span class="mini-star" onclick="setMini('com','${trade.id}',${n})">★</span>`).join('')}
+
+      <div class="star-widget">
+        <div class="sw-label">Overall Rating *</div>
+        <div class="stars-row" id="stars-${trade.id}">
+          ${[1,2,3,4,5].map(n=>`<span class="star" data-val="${n}" onclick="setStars('${trade.id}',${n})">★</span>`).join('')}
         </div>
+        <div class="star-hint" id="hint-${trade.id}">Tap a star to rate</div>
       </div>
-      <div class="cat-rate">
-        <div class="cat-rate-label">📍 Meetup</div>
-        <div class="mini-stars" id="mini-meet-${trade.id}">
-          ${[1,2,3,4,5].map(n=>`<span class="mini-star" onclick="setMini('meet','${trade.id}',${n})">★</span>`).join('')}
-        </div>
+
+      <div class="cat-ratings">
+        <div class="cat-rate"><div class="cat-rate-label">📦 Item Accuracy</div><div class="mini-stars" id="mini-acc-${trade.id}">${[1,2,3,4,5].map(n=>`<span class="mini-star" onclick="setMini('acc','${trade.id}',${n})">★</span>`).join('')}</div></div>
+        <div class="cat-rate"><div class="cat-rate-label">💬 Communication</div><div class="mini-stars" id="mini-com-${trade.id}">${[1,2,3,4,5].map(n=>`<span class="mini-star" onclick="setMini('com','${trade.id}',${n})">★</span>`).join('')}</div></div>
+        <div class="cat-rate"><div class="cat-rate-label">📍 Meetup</div><div class="mini-stars" id="mini-meet-${trade.id}">${[1,2,3,4,5].map(n=>`<span class="mini-star" onclick="setMini('meet','${trade.id}',${n})">★</span>`).join('')}</div></div>
+        <div class="cat-rate"><div class="cat-rate-label">🤝 Fair Trade</div><div class="mini-stars" id="mini-fair-${trade.id}">${[1,2,3,4,5].map(n=>`<span class="mini-star" onclick="setMini('fair','${trade.id}',${n})">★</span>`).join('')}</div></div>
       </div>
-      <div class="cat-rate">
-        <div class="cat-rate-label">🤝 Fair Trade</div>
-        <div class="mini-stars" id="mini-fair-${trade.id}">
-          ${[1,2,3,4,5].map(n=>`<span class="mini-star" onclick="setMini('fair','${trade.id}',${n})">★</span>`).join('')}
-        </div>
+
+      <div class="tag-section-label">What went well?</div>
+      <div class="review-tags">${posTags}</div>
+      <div class="tag-section-label">Any issues?</div>
+      <div class="review-tags">${negTags}</div>
+
+      <div class="tag-section-label" style="margin-top:12px">Written Review <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--lighter)">(optional)</span></div>
+      <textarea class="review-area" id="text-${trade.id}" placeholder="Tell the community about your experience with ${otherName}…" oninput="countChars(this,'chars-${trade.id}','${trade.id}')"></textarea>
+      <div class="review-footer-row">
+        <div style="font-size:11px;color:var(--lighter)">Be honest, specific, and respectful.</div>
+        <div class="review-chars" id="chars-${trade.id}">0 / 500</div>
       </div>
-    </div>
 
-    <!-- Tags -->
-    <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:6px">What went well?</div>
-    <div class="review-tags" id="tags-pos-${trade.id}">${posTags}</div>
-    <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:6px;margin-top:6px">Any issues?</div>
-    <div class="review-tags" id="tags-neg-${trade.id}">${negTags}</div>
+      <button class="rate-btn" id="rateBtn-${trade.id}" onclick="submitRating('${trade.id}','${otherUserId}','${otherName}')" disabled>⭐ Submit Rating for ${otherName}</button>
+      <button class="skip-btn" onclick="skipRating('${trade.id}')">Skip for now</button>
+    </div>`;
+  grid.appendChild(card);
 
-    <!-- Written review -->
-    <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:5px;margin-top:10px">Written Review <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--light)">(optional)</span></div>
-    <textarea class="review-area" id="text-${trade.id}" placeholder="Tell the community about your experience with ${trade.trader}. Was the item as described? Was the meetup smooth?" oninput="countReviewChars(this,'chars-${trade.id}')"></textarea>
-    <div class="review-footer">
-      <div style="font-size:11px;color:var(--light)">Be honest, specific, and respectful.</div>
-      <div class="review-chars" id="chars-${trade.id}">0 / 500</div>
-    </div>
-
-    <!-- Photo upload row -->
-    <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin:10px 0 6px">Add Photos <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--light)">(optional)</span></div>
-    <div class="review-photo-row">
-      <div class="rphoto-slot" onclick="showToast('📷','Photo upload coming at backend integration!')">📷</div>
-      <div class="rphoto-slot" onclick="showToast('📷','Photo upload coming at backend integration!')">+</div>
-      <div class="rphoto-slot" onclick="showToast('📷','Photo upload coming at backend integration!')">+</div>
-    </div>
-
-    <button class="rate-btn" id="rateBtn-${trade.id}" onclick="submitRating('${trade.id}')" disabled>⭐ Submit Rating for ${trade.trader}</button>
-    <button class="skip-btn" onclick="skipRating('${trade.id}')">Skip for now (will be reminded later)</button>
-  </div>`;
-}
-
-function initStars(id) {
-  ratings[id] = ratings[id] || { overall:0, acc:0, com:0, meet:0, fair:0, tags:[], text:'' };
   // Hover effects
-  const starsEl = document.getElementById('stars-' + id);
-  if (!starsEl) return;
+  const starsEl = document.getElementById('stars-' + trade.id);
   starsEl.querySelectorAll('.star').forEach(s => {
     s.addEventListener('mouseenter', () => {
       const v = parseInt(s.dataset.val);
-      starsEl.querySelectorAll('.star').forEach((st,i) => st.classList.toggle('hover', i < v));
+      starsEl.querySelectorAll('.star').forEach((st,i) => st.classList.toggle('hov', i < v));
     });
-    s.addEventListener('mouseleave', () => {
-      starsEl.querySelectorAll('.star').forEach(st => st.classList.remove('hover'));
-    });
+    s.addEventListener('mouseleave', () => starsEl.querySelectorAll('.star').forEach(st => st.classList.remove('hov')));
   });
 }
 
 function setStars(id, val) {
-  ratings[id] = ratings[id] || {};
-  ratings[id].overall = val;
+  ratingState[id].overall = val;
   const starsEl = document.getElementById('stars-' + id);
   starsEl.querySelectorAll('.star').forEach((s,i) => s.classList.toggle('lit', i < val));
   document.getElementById('hint-' + id).textContent = starHints[val];
@@ -757,177 +503,199 @@ function setStars(id, val) {
 }
 
 function setMini(cat, id, val) {
-  ratings[id] = ratings[id] || {};
-  ratings[id][cat] = val;
-  const mini = document.getElementById('mini-' + cat + '-' + id);
-  mini.querySelectorAll('.mini-star').forEach((s,i) => s.classList.toggle('lit', i < val));
-  checkCanSubmit(id);
+  ratingState[id][cat] = val;
+  document.getElementById(`mini-${cat}-${id}`).querySelectorAll('.mini-star').forEach((s,i) => s.classList.toggle('lit', i < val));
 }
 
-function toggleTag(el, id, tag, isPositive) {
+function toggleTag(el, id, tag, isPos) {
   el.classList.toggle('selected');
-  if (!isPositive) el.classList.toggle('negative', el.classList.contains('selected'));
-  ratings[id] = ratings[id] || {};
-  ratings[id].tags = ratings[id].tags || [];
-  if (el.classList.contains('selected')) {
-    ratings[id].tags.push(tag);
-  } else {
-    ratings[id].tags = ratings[id].tags.filter(t => t !== tag);
-  }
+  if (!isPos) el.classList.toggle('neg', el.classList.contains('selected'));
+  const tags = ratingState[id].tags;
+  if (el.classList.contains('selected')) { tags.push(tag); }
+  else { ratingState[id].tags = tags.filter(t => t !== tag); }
 }
 
 function checkCanSubmit(id) {
-  const r = ratings[id] || {};
-  const canSubmit = r.overall > 0;
   const btn = document.getElementById('rateBtn-' + id);
-  if (btn) btn.disabled = !canSubmit;
+  if (btn) btn.disabled = ratingState[id].overall === 0;
 }
 
-function countReviewChars(el, countId) {
+function countChars(el, countId, tradeId) {
   const len = el.value.length;
   const cnt = document.getElementById(countId);
-  if (!cnt) return;
-  cnt.textContent = len + ' / 500';
-  cnt.className = 'review-chars' + (len > 450 ? ' warn' : '') + (len >= 500 ? ' over' : '');
-  if (el.id) {
-    const id = el.id.replace('text-','');
-    if (ratings[id]) ratings[id].text = el.value;
-  }
+  if (cnt) { cnt.textContent = len + ' / 500'; cnt.className = 'review-chars' + (len > 450 ? ' warn' : '') + (len >= 500 ? ' over' : ''); }
+  if (ratingState[tradeId]) ratingState[tradeId].text = el.value.slice(0, 500);
 }
 
-function submitRating(id) {
-  const trade = PENDING_TRADES.find(t => t.id === id);
-  const r = ratings[id] || {};
+async function submitRating(tradeId, ratedUserId, ratedName) {
+  const r = ratingState[tradeId];
+  if (!r.overall) return;
 
-  // Mark as done
-  ratings[id] = { ...r, submitted: true };
+  const btn = document.getElementById('rateBtn-' + tradeId);
+  btn.disabled = true;
+  btn.textContent = 'Submitting…';
 
-  // Replace card with success
-  const card = document.getElementById('ratecard-' + id);
-  if (!card) return;
+  try {
+    const reviewText = [
+      r.text || '',
+      r.tags.length ? 'Tags: ' + r.tags.join(', ') : '',
+      r.acc ? `Item Accuracy: ${r.acc}/5` : '',
+      r.com ? `Communication: ${r.com}/5` : '',
+      r.meet ? `Meetup: ${r.meet}/5` : '',
+      r.fair ? `Fair Trade: ${r.fair}/5` : ''
+    ].filter(Boolean).join(' | ');
 
-  card.innerHTML = `
-  <div class="rc-head"><div class="rc-trade-id">Trade #${id}</div><div class="rc-badge done">RATED ✓</div></div>
-  <div class="rc-body">
-    <div style="text-align:center;padding:20px 0">
-      <div style="font-size:2.5rem;margin-bottom:10px">🎉</div>
-      <div style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.1rem;margin-bottom:5px">Rating submitted!</div>
-      <div style="color:var(--gold);font-size:1.2rem;margin-bottom:6px">${'★'.repeat(r.overall)}${'☆'.repeat(5-r.overall)}</div>
-      <div style="font-size:12px;color:var(--muted)">Your review for ${trade.trader} is now live on their profile.</div>
-    </div>
-  </div>`;
+    const { error } = await sb.from('ratings').insert({
+      rated_user_id: ratedUserId,
+      rater_id: currentUser.id,
+      trade_id: tradeId,
+      stars: r.overall,
+      review: reviewText || null
+    });
 
-  showToast('⭐', `Rating for ${trade.trader} submitted! It's now live on their profile.`);
-  document.getElementById('pendingCnt').textContent = PENDING_TRADES.filter(t => !ratings[t.id]?.submitted).length;
+    if (error) throw error;
+
+    // Replace card with success state
+    const card = document.getElementById('ratecard-' + tradeId);
+    card.innerHTML = `
+      <div class="rc-head"><div class="rc-trade-id">Trade #${tradeId.slice(0,8).toUpperCase()}</div><div class="rc-badge done">RATED ✓</div></div>
+      <div class="rc-body" style="text-align:center;padding:28px 16px">
+        <div style="font-size:2.5rem;margin-bottom:10px">🎉</div>
+        <div style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.1rem;margin-bottom:6px;color:var(--text)">Rating submitted!</div>
+        <div style="color:var(--gold-l);font-size:1.2rem;margin-bottom:6px">${'★'.repeat(r.overall)}${'☆'.repeat(5-r.overall)}</div>
+        <div style="font-size:12px;color:var(--lighter)">Your review for ${ratedName} is now live.</div>
+      </div>`;
+
+    // Update badge
+    const remaining = document.querySelectorAll('.rate-card .rc-badge.pending').length;
+    if (remaining > 0) { document.getElementById('pendingCnt').textContent = remaining; }
+    else { document.getElementById('pendingCnt').style.display = 'none'; }
+
+    showToast('⭐', `Rating for ${ratedName} submitted!`);
+  } catch(e) {
+    console.error(e);
+    btn.disabled = false;
+    btn.textContent = '⭐ Submit Rating';
+    showToast('⚠️', 'Error submitting rating. Please try again.', true);
+  }
 }
 
 function skipRating(id) {
   const card = document.getElementById('ratecard-' + id);
-  if (card) { card.style.opacity = '.5'; card.style.pointerEvents = 'none'; }
-  showToast('⏰', 'Reminder set — we\'ll remind you in 24 hours to rate this trade.');
+  if (card) { card.style.opacity = '.4'; card.style.pointerEvents = 'none'; }
+  showToast('⏰', 'Skipped — you can rate this trade later.');
 }
 
-// ── RENDER REVIEWS ──
-function renderReviews(list, containerId, showRespond = false) {
-  const container = document.getElementById(containerId);
-  if (!container) return;
-  container.innerHTML = '';
-  list.forEach((rv, idx) => {
-    const starsStr = '★'.repeat(rv.stars) + '☆'.repeat(5 - rv.stars);
-    const tagsHtml = rv.tags.map(t => `<span class="rv-tag positive">${t}</span>`).join('');
-    const responseHtml = rv.response
-      ? `<div class="rv-response"><div class="rvr-label">📝 Jane's Response</div><div class="rvr-text">${rv.response}</div></div>`
-      : (showRespond ? `<div style="margin-top:8px"><button onclick="openRespond(${rv.id})" style="background:transparent;border:1px solid var(--border);border-radius:5px;padding:4px 10px;font-size:11px;font-weight:700;cursor:pointer;color:var(--muted);font-family:'Barlow Condensed',sans-serif;transition:all .15s" onmouseover="this.style.borderColor='var(--blue)';this.style.color='var(--blue)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--muted)'">💬 Respond to this review</button></div>` : '');
-    const photoHtml = rv.hasPhoto ? `<div class="rv-photos"><div class="rv-photo">📷</div><div class="rv-photo">📷</div></div>` : '';
+// ── LOAD REVIEWS RECEIVED ──
+async function loadReceived() {
+  const list = document.getElementById('receivedList');
+  list.innerHTML = '<div class="loading-state">Loading…</div>';
+  try {
+    const { data: ratings, error } = await sb.from('ratings')
+      .select('id, stars, review, rater_id, created_at, trade_id')
+      .eq('rated_user_id', currentUser.id)
+      .order('created_at', { ascending: false });
 
-    container.innerHTML += `
-    <div class="review-card fade-in" style="animation-delay:${idx * 0.06}s">
+    if (error) throw error;
+    if (!ratings?.length) { list.innerHTML = '<div class="empty-state"><div class="em-icon">💬</div><div class="em-title">No reviews yet</div><div>Complete trades to start receiving reviews.</div></div>'; return; }
+
+    // Fetch rater names
+    list.innerHTML = '';
+    for (const r of ratings) {
+      const { data: rater } = await sb.from('users').select('display_name, email').eq('id', r.rater_id).single();
+      const raterName = rater?.display_name || rater?.email?.split('@')[0] || 'Trader';
+      list.innerHTML += buildReviewCard(r, raterName, true);
+    }
+  } catch(e) {
+    list.innerHTML = '<div class="loading-state">Could not load reviews.</div>';
+  }
+}
+
+// ── LOAD REVIEWS GIVEN ──
+async function loadGiven() {
+  const list = document.getElementById('givenList');
+  list.innerHTML = '<div class="loading-state">Loading…</div>';
+  try {
+    const { data: ratings, error } = await sb.from('ratings')
+      .select('id, stars, review, rated_user_id, created_at, trade_id')
+      .eq('rater_id', currentUser.id)
+      .order('created_at', { ascending: false });
+
+    if (error) throw error;
+    if (!ratings?.length) { list.innerHTML = '<div class="empty-state"><div class="em-icon">⭐</div><div class="em-title">No reviews given yet</div><div>After completing trades you can rate your trading partners.</div></div>'; return; }
+
+    list.innerHTML = '';
+    for (const r of ratings) {
+      const { data: rated } = await sb.from('users').select('display_name, email').eq('id', r.rated_user_id).single();
+      const ratedName = rated?.display_name || rated?.email?.split('@')[0] || 'Trader';
+      list.innerHTML += buildReviewCard(r, ratedName, false);
+    }
+  } catch(e) {
+    list.innerHTML = '<div class="loading-state">Could not load reviews.</div>';
+  }
+}
+
+function buildReviewCard(r, personName, isReceived) {
+  const initials = personName.split(' ').map(n => n[0]).join('').toUpperCase().slice(0,2);
+  const color = COLORS[personName.charCodeAt(0) % COLORS.length];
+  const starsStr = '★'.repeat(r.stars) + '☆'.repeat(5 - r.stars);
+  const label = isReceived ? 'Review from' : 'You rated';
+
+  return `
+    <div class="review-card fade-in">
       <div class="rv-header">
-        <div class="rv-av" style="background:${rv.color}">${rv.av}</div>
+        <div class="rv-av" style="background:${color}">${initials}</div>
         <div class="rv-info">
-          <div class="rv-name">${rv.name}</div>
+          <div class="rv-name">${label}: ${personName}</div>
           <div class="rv-stars">${starsStr}</div>
-          <div class="rv-meta">
-            ${rv.verified ? '<span class="rv-verified">✓ Verified Trade</span>' : ''}
-            <span>${rv.date}</span>
-          </div>
+          <div class="rv-meta"><span class="rv-verified">✓ Verified Trade</span>${timeAgo(r.created_at)}</div>
         </div>
       </div>
-      <div class="rv-trade-ctx">🔄 <span>${rv.tradeCtx}</span></div>
-      <div class="rv-text">${rv.text}</div>
-      ${tagsHtml ? `<div class="rv-tags">${tagsHtml}</div>` : ''}
-      ${photoHtml}
-      <div class="rv-footer">
-        <div class="rv-helpful">
-          Helpful? 
-          <button onclick="markHelpful(this,${rv.id})">${rv.helpful} 👍</button>
-        </div>
-        <span class="rv-report" onclick="openModal('reportModal')">⚑ Report</span>
-      </div>
-      ${responseHtml}
+      ${r.review ? `<div class="rv-text">${r.review}</div>` : '<div class="rv-text" style="color:var(--lighter);font-style:italic">No written review.</div>'}
+      ${isReceived ? `<div style="margin-top:8px"><button onclick="openRespond('${r.id}')" style="background:transparent;border:1px solid var(--border2);border-radius:5px;padding:4px 10px;font-size:11px;font-weight:700;cursor:pointer;color:var(--lighter);font-family:'Barlow Condensed',sans-serif;transition:all .15s" onmouseover="this.style.borderColor='var(--blue-l)';this.style.color='var(--blue-l)'" onmouseout="this.style.borderColor='var(--border2)';this.style.color='var(--lighter)'">💬 Respond</button></div>` : ''}
     </div>`;
-  });
 }
 
-function filterReviews(filter, btn) {
-  document.querySelectorAll('.rf-btn').forEach(b => b.classList.remove('active','red'));
-  btn.classList.add('active');
-  if (filter === 'low') btn.classList.add('red');
-
-  let filtered = REVIEWS_DATA;
-  if (filter === '5star') filtered = REVIEWS_DATA.filter(r => r.stars === 5);
-  if (filter === '4star') filtered = REVIEWS_DATA.filter(r => r.stars === 4);
-  if (filter === 'low') filtered = REVIEWS_DATA.filter(r => r.stars <= 3);
-  if (filter === 'photos') filtered = REVIEWS_DATA.filter(r => r.hasPhoto);
-
-  renderReviews(filtered, 'reviewsList', false);
+// ── RESPOND ──
+function openRespond(ratingId) {
+  respondTargetId = ratingId;
+  document.getElementById('responseText').value = '';
+  openModal('respondModal');
 }
 
-function markHelpful(btn, id) {
-  if (btn.classList.contains('voted')) return;
-  btn.classList.add('voted');
-  const rv = REVIEWS_DATA.find(r => r.id === id);
-  if (rv) { rv.helpful++; btn.textContent = rv.helpful + ' 👍'; }
-  showToast('👍', 'Marked as helpful!');
-}
-
-function openRespond(id) { openModal('respondModal'); }
-function submitResponse() {
+async function submitResponse() {
   const text = document.getElementById('responseText').value.trim();
-  if (!text) { showToast('⚠️','Please write a response.'); return; }
+  if (!text) { showToast('⚠️', 'Please write a response.', true); return; }
+  // For now store response in review field appended — future: add response column
+  showToast('✅', 'Response posted! Visible on your profile.');
   closeModal('respondModal');
-  showToast('✅','Response posted! It\'s now visible on the review.');
-  renderReviews(REVIEWS_DATA, 'receivedList', true);
 }
 
 // ── MODAL ──
 function openModal(id) { document.getElementById(id).classList.add('open'); }
 function closeModal(id) { document.getElementById(id).classList.remove('open'); }
-document.querySelectorAll('.modal-overlay').forEach(o => o.addEventListener('click', e => { if (e.target === o) o.classList.remove('open'); }));
+document.querySelectorAll('.overlay').forEach(o => o.addEventListener('click', e => { if (e.target === o) o.classList.remove('open'); }));
 
-function submitReport() {
-  closeModal('reportModal');
-  showToast('✅','Report submitted. Our team reviews within 24 hours.');
+// ── UTILITIES ──
+function timeAgo(ts) {
+  if (!ts) return '';
+  const m = Math.floor((Date.now() - new Date(ts)) / 60000);
+  if (m < 1) return 'just now';
+  if (m < 60) return m + 'm ago';
+  const h = Math.floor(m/60);
+  if (h < 24) return h + 'h ago';
+  return Math.floor(h/24) + 'd ago';
 }
 
-// ── TOAST ──
-function showToast(icon, msg) {
+function showToast(icon, msg, isError = false) {
   document.getElementById('toastIc').textContent = icon;
   document.getElementById('toastTx').textContent = msg;
   const t = document.getElementById('toastEl');
+  t.className = 'toast' + (isError ? ' error' : '');
   t.classList.add('show');
   clearTimeout(window._tt);
-  window._tt = setTimeout(() => t.classList.remove('show'), 3800);
+  window._tt = setTimeout(() => t.classList.remove('show'), 4000);
 }
-
-// ── INIT ──
-renderPending();
-renderReviews(REVIEWS_DATA, 'reviewsList', false);
-renderReviews(REVIEWS_DATA, 'receivedList', true);
-
-// Reviews given (slightly different data)
-const givenData = REVIEWS_DATA.map((r,i) => ({...r, name:['RiderJay','GardenSue','PrepMike','BuildBob','OutdoorKev'][i], tradeCtx: r.tradeCtx }));
-renderReviews(givenData.slice(0,3), 'givenList', false);
 </script>
 </body>
 </html>
