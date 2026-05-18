@@ -172,7 +172,6 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
 .mbtn.red{background:var(--red);color:#fff;}
 .mbtn.outline{background:transparent;border:1.5px solid var(--border);color:var(--muted);}
 .mbtn.outline:hover{border-color:#999;color:var(--text);}
-/* offer detail modal specific */
 .od-listing{display:flex;align-items:center;gap:12px;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:11px;margin-bottom:14px;}
 .od-listing-img{width:52px;height:52px;border-radius:8px;object-fit:cover;background:var(--border);display:flex;align-items:center;justify-content:center;font-size:1.5rem;flex-shrink:0;overflow:hidden;}
 .od-listing-img img{width:100%;height:100%;object-fit:cover;border-radius:8px;}
@@ -185,10 +184,21 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
 .od-section-lbl{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:6px;}
 .od-val-box{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:10px 13px;font-size:13px;}
 .od-item-photos{display:flex;gap:7px;flex-wrap:wrap;margin-top:8px;}
-.od-item-photo{width:60px;height:60px;border-radius:7px;object-fit:cover;border:1px solid var(--border);}
+.od-item-photo{width:60px;height:60px;border-radius:7px;object-fit:cover;border:1px solid var(--border);cursor:pointer;transition:transform .15s;}
+.od-item-photo:hover{transform:scale(1.05);border-color:var(--blue);}
 .od-message{background:#fffbeb;border:1px solid #fde68a;border-radius:8px;padding:10px 13px;font-size:13px;font-style:italic;color:#92400e;line-height:1.5;}
 .od-actions{display:flex;gap:8px;margin-top:16px;}
 .od-actions .mbtn{margin-bottom:0;}
+/* lightbox */
+.offer-lightbox{display:none;position:fixed;inset:0;background:rgba(0,0,0,.93);z-index:900;align-items:center;justify-content:center;}
+.offer-lightbox.open{display:flex;}
+.offer-lightbox img{max-width:90vw;max-height:88vh;border-radius:10px;object-fit:contain;}
+.lb-close{position:absolute;top:16px;right:20px;background:rgba(255,255,255,.12);border:none;color:#fff;font-size:1.4rem;width:40px;height:40px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.lb-close:hover{background:rgba(255,255,255,.25);}
+.lb-nav{position:absolute;top:50%;transform:translateY(-50%);background:rgba(255,255,255,.12);border:none;color:#fff;font-size:1.4rem;width:44px;height:44px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.lb-nav:hover{background:rgba(255,255,255,.25);}
+.lb-prev{left:16px;}.lb-next{right:16px;}
+.lb-counter{position:absolute;bottom:16px;left:50%;transform:translateX(-50%);color:rgba(255,255,255,.7);font-size:13px;font-family:'Barlow Condensed',sans-serif;font-weight:700;}
 .empty-state{text-align:center;padding:32px 20px;color:var(--muted);}
 .empty-icon{font-size:2.5rem;margin-bottom:10px;}
 .empty-txt{font-size:13px;line-height:1.5;}
@@ -259,7 +269,7 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
     </div>
   </div>
 
-  <!-- MAIN CONTENT -->
+  <!-- MAIN -->
   <div class="main">
     <div class="welcome-bar">
       <div>
@@ -283,14 +293,12 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
       <div class="stat-card sc-red"><div class="sc-icon">💰</div><div class="sc-num" id="statValue" style="color:var(--orange)">—</div><div class="sc-lbl">Trade Value (30d)</div><div class="sc-change" id="statValueSub">Loading…</div></div>
     </div>
 
-    <!-- OFFERS -->
     <div class="sec-hdr">
       <div class="sec-ttl">📨 Incoming Offers <span class="sec-cnt" id="offerCount">0</span></div>
       <div class="sec-lnk" onclick="window.location.href='alltrades-messages.html'">View all →</div>
     </div>
     <div class="panel" id="offersPanel"><div class="loading">Loading offers…</div></div>
 
-    <!-- TRADES + MESSAGES -->
     <div class="two-col">
       <div>
         <div class="sec-hdr"><div class="sec-ttl">🔄 Active Trades <span class="sec-cnt green" id="tradeCount">0</span></div><div class="sec-lnk">View all →</div></div>
@@ -302,14 +310,12 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
       </div>
     </div>
 
-    <!-- LISTINGS -->
     <div class="sec-hdr">
       <div class="sec-ttl">📦 My Listings <span class="sec-cnt gold" id="listingCount">0</span></div>
       <div class="sec-lnk" onclick="window.location.href='alltrades-post.html'">+ Add New →</div>
     </div>
     <div class="listings-panel" id="listingsPanel"><div class="loading">Loading listings…</div></div>
 
-    <!-- VALUE + RATINGS -->
     <div class="two-col-bot">
       <div>
         <div class="sec-hdr"><div class="sec-ttl">💰 Trade Value Summary</div></div>
@@ -372,6 +378,15 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
   </div>
 </div>
 
+<!-- OFFER PHOTO LIGHTBOX -->
+<div class="offer-lightbox" id="offerLightbox" onclick="closeLightbox()">
+  <button class="lb-close" onclick="closeLightbox()">✕</button>
+  <button class="lb-nav lb-prev" onclick="event.stopPropagation();lbNav(-1)">‹</button>
+  <img id="lbImg" src="" alt="offer photo" onclick="event.stopPropagation()">
+  <button class="lb-nav lb-next" onclick="event.stopPropagation();lbNav(1)">›</button>
+  <div class="lb-counter" id="lbCounter"></div>
+</div>
+
 <div class="toast" id="toastEl"><span id="toastIc">✅</span><span id="toastTx">Done!</span></div>
 
 <script>
@@ -383,6 +398,8 @@ const sb = window.supabase.createClient(
 let currentUser    = null;
 let currentTradeId = null;
 let currentOfferId = null;
+let lbPhotos       = [];
+let lbIndex        = 0;
 
 const CAT_EMOJI = {'Food & Water':'🥫','Garden':'🌱','Electronics':'⚡','Tools':'🔧','Sports':'🚲','Music':'🎵','Gaming':'🎮','Clothing':'👗','Books':'📚','Trading Cards':'🃏','Other':'📦'};
 const AV_COLORS = ['var(--blue)','var(--green)','var(--orange)','var(--gold)','#64748b'];
@@ -492,9 +509,8 @@ async function openOfferModal(offerId) {
       .eq('id', offerId)
       .single();
 
-    // Get offerer display name
     const { data: offerer } = await sb.from('users').select('display_name').eq('id', o.offerer_id).single();
-    const offererName = offerer?.display_name || 'Trader';
+    const offererName     = offerer?.display_name || 'Trader';
     const offererInitials = offererName.split(' ').map(n => n[0]).join('').toUpperCase().slice(0,2);
 
     const listingTitle = o.listing?.title || 'Listing';
@@ -504,7 +520,6 @@ async function openOfferModal(offerId) {
       ? `<img src="${firstPhoto}" alt="${listingTitle}">`
       : `<span style="font-size:1.5rem">${CAT_EMOJI[cat] || '📦'}</span>`;
 
-    // Build offer content based on type
     let offerContent = '';
     if (o.offer_type === 'cash') {
       offerContent = `
@@ -515,7 +530,6 @@ async function openOfferModal(offerId) {
           </div>
         </div>`;
     } else if (o.offer_type === 'item' || o.offer_type === 'tc') {
-      const itemPhotos = o.offered_photos || [];
       offerContent = `
         <div class="od-section">
           <div class="od-section-lbl">Offered Item</div>
@@ -523,7 +537,6 @@ async function openOfferModal(offerId) {
             <div style="font-weight:700;margin-bottom:4px">${o.offered_item_title || 'Item'}</div>
             ${o.offered_item_value ? `<div style="font-size:12px;color:var(--muted)">Est. value: ~$${Number(o.offered_item_value).toFixed(0)}</div>` : ''}
             ${o.offered_condition ? `<div style="font-size:12px;color:var(--muted)">Condition: ${o.offered_condition}</div>` : ''}
-            ${itemPhotos.length ? `<div class="od-item-photos">${itemPhotos.map(p => `<img class="od-item-photo" src="${p}" alt="offered item">`).join('')}</div>` : ''}
           </div>
         </div>
         ${Number(o.cash_amount) > 0 ? `
@@ -548,11 +561,16 @@ async function openOfferModal(offerId) {
         </div>` : ''}`;
     }
 
-    const photosHtml = (o.offered_photos && o.offered_photos.length) ? `
-  <div class="od-section">
-    <div class="od-section-lbl">Photos of offered item</div>
-    <div class="od-item-photos">${o.offered_photos.map((p,i) => `<img class="od-item-photo" src="${p}" alt="offered item" onclick="openLightboxModal(${JSON.stringify(o.offered_photos)},${i})" style="cursor:pointer">`).join('')}</div>
-  </div>` : '';
+    // Photos section — always show if photos exist, with lightbox onclick
+    const photos = o.offered_photos || [];
+    const photosHtml = photos.length ? `
+      <div class="od-section">
+        <div class="od-section-lbl">Photos of offered item</div>
+        <div class="od-item-photos">
+          ${photos.map((p, i) => `<img class="od-item-photo" src="${p}" alt="offered item" onclick="openLightbox(${JSON.stringify(photos)},${i})" title="Click to expand">`).join('')}
+        </div>
+      </div>` : '';
+
     const messageHtml = o.message ? `
       <div class="od-section">
         <div class="od-section-lbl">Message from ${offererName}</div>
@@ -585,6 +603,33 @@ async function openOfferModal(offerId) {
     document.getElementById('offerModalBody').innerHTML = `<div class="empty-state"><div class="empty-txt">Could not load offer details.</div></div>`;
   }
 }
+
+/* ── Lightbox ── */
+function openLightbox(photos, index) {
+  lbPhotos = photos;
+  lbIndex  = index;
+  document.getElementById('lbImg').src = photos[index];
+  document.getElementById('lbCounter').textContent = photos.length > 1 ? `${index+1} / ${photos.length}` : '';
+  document.getElementById('offerLightbox').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  document.querySelector('.lb-prev').style.display = photos.length > 1 ? 'flex' : 'none';
+  document.querySelector('.lb-next').style.display = photos.length > 1 ? 'flex' : 'none';
+}
+function closeLightbox() {
+  document.getElementById('offerLightbox').classList.remove('open');
+  document.body.style.overflow = '';
+}
+function lbNav(dir) {
+  lbIndex = (lbIndex + dir + lbPhotos.length) % lbPhotos.length;
+  document.getElementById('lbImg').src = lbPhotos[lbIndex];
+  document.getElementById('lbCounter').textContent = `${lbIndex+1} / ${lbPhotos.length}`;
+}
+document.addEventListener('keydown', e => {
+  if (!document.getElementById('offerLightbox').classList.contains('open')) return;
+  if (e.key === 'Escape')      closeLightbox();
+  if (e.key === 'ArrowLeft')   lbNav(-1);
+  if (e.key === 'ArrowRight')  lbNav(1);
+});
 
 async function loadTrades() {
   try {
@@ -694,8 +739,6 @@ async function loadMessages() {
       .or(`sender_id.eq.${currentUser.id},receiver_id.eq.${currentUser.id}`)
       .order('created_at', { ascending: false })
       .limit(50);
-
-    // Deduplicate — one thread per conversation partner
     const seen = new Set();
     const uniqueMessages = (messages || []).filter(m => {
       const otherId = m.sender_id === currentUser.id ? m.receiver_id : m.sender_id;
@@ -703,19 +746,16 @@ async function loadMessages() {
       seen.add(otherId);
       return true;
     }).slice(0, 5);
-
     if (!uniqueMessages.length) {
       const empty = `<div class="empty-state"><div class="empty-icon">💬</div><div class="empty-txt">No messages yet.</div></div>`;
       document.getElementById('msgsPanel').innerHTML    = empty;
       document.getElementById('msgModalBody').innerHTML = empty;
       return;
     }
-
     const otherIds = [...new Set(uniqueMessages.map(m => m.sender_id === currentUser.id ? m.receiver_id : m.sender_id))];
     const { data: userRows } = await sb.from('users').select('id,display_name').in('id', otherIds);
     const nameMap = {};
     (userRows || []).forEach(u => { nameMap[u.id] = u.display_name || 'Trader'; });
-
     const unread      = uniqueMessages.filter(m => m.receiver_id === currentUser.id && !m.read_at);
     const unreadCount = unread.length;
     document.getElementById('msgCount').textContent = unreadCount;
@@ -725,7 +765,6 @@ async function loadMessages() {
         document.getElementById(id).style.display = 'inline';
       });
     }
-
     const msgHtml = uniqueMessages.map((m, i) => {
       const isUnread = m.receiver_id === currentUser.id && !m.read_at;
       const otherId  = m.sender_id === currentUser.id ? m.receiver_id : m.sender_id;
@@ -741,7 +780,6 @@ async function loadMessages() {
           <div class="mi-time">${timeAgo(m.created_at)}</div>
         </div>`;
     }).join('');
-
     document.getElementById('msgsPanel').innerHTML    = msgHtml;
     document.getElementById('msgModalBody').innerHTML = msgHtml;
   } catch(e) {
