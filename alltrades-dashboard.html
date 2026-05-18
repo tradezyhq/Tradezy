@@ -535,8 +535,17 @@ async function openOfferModal(offerId) {
       offerContent = `
         <div class="od-section">
           <div class="od-section-lbl">Trade Offer</div>
-          <div class="od-val-box">${o.offered_item_title || 'Item trade'}</div>
-        </div>`;
+          <div class="od-val-box">
+            <div style="font-weight:700">${o.offered_item_title || 'Item trade'}</div>
+            ${o.offered_condition ? `<div style="font-size:12px;color:var(--muted)">Condition: ${o.offered_condition}</div>` : ''}
+            ${o.offered_item_value ? `<div style="font-size:12px;color:var(--muted)">Est. value: ~$${Number(o.offered_item_value).toFixed(0)}</div>` : ''}
+          </div>
+        </div>
+        ${Number(o.cash_amount) > 0 ? `
+        <div class="od-section">
+          <div class="od-section-lbl">+ Cash Add-on</div>
+          <div class="od-val-box" style="color:var(--green);font-weight:700">+$${Number(o.cash_amount).toFixed(2)}</div>
+        </div>` : ''}`;
     }
 
     const photosHtml = (o.offered_photos && o.offered_photos.length) ? `
