@@ -567,7 +567,7 @@ async function openOfferModal(offerId) {
       <div class="od-section">
         <div class="od-section-lbl">Photos of offered item</div>
         <div class="od-item-photos">
-          ${photos.map((p, i) => `<img class="od-item-photo" src="${p}" alt="offered item" onclick="openLightbox(${JSON.stringify(photos)},${i})" title="Click to expand">`).join('')}
+          ${photos.map((p, i) => `<img class="od-item-photo" src="${p}" alt="offered item" onclick="openLightbox(this)" data-photos='${JSON.stringify(photos)}' data-index="${i}" title="Click to expand">`).join('')}
         </div>
       </div>` : '';
 
@@ -605,15 +605,15 @@ async function openOfferModal(offerId) {
 }
 
 /* ── Lightbox ── */
-function openLightbox(photos, index) {
-  lbPhotos = photos;
-  lbIndex  = index;
-  document.getElementById('lbImg').src = photos[index];
-  document.getElementById('lbCounter').textContent = photos.length > 1 ? `${index+1} / ${photos.length}` : '';
+function openLightbox(el) {
+  lbPhotos = JSON.parse(el.dataset.photos);
+  lbIndex  = parseInt(el.dataset.index);
+  document.getElementById('lbImg').src = lbPhotos[lbIndex];
+  document.getElementById('lbCounter').textContent = lbPhotos.length > 1 ? `${lbIndex+1} / ${lbPhotos.length}` : '';
   document.getElementById('offerLightbox').classList.add('open');
   document.body.style.overflow = 'hidden';
-  document.querySelector('.lb-prev').style.display = photos.length > 1 ? 'flex' : 'none';
-  document.querySelector('.lb-next').style.display = photos.length > 1 ? 'flex' : 'none';
+  document.querySelector('.lb-prev').style.display = lbPhotos.length > 1 ? 'flex' : 'none';
+  document.querySelector('.lb-next').style.display = lbPhotos.length > 1 ? 'flex' : 'none';
 }
 function closeLightbox() {
   document.getElementById('offerLightbox').classList.remove('open');
