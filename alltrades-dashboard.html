@@ -526,7 +526,7 @@ async function openOfferModal(offerId) {
             ${itemPhotos.length ? `<div class="od-item-photos">${itemPhotos.map(p => `<img class="od-item-photo" src="${p}" alt="offered item">`).join('')}</div>` : ''}
           </div>
         </div>
-        ${o.cash_amount > 0 ? `
+        ${Number(o.cash_amount) > 0 ? `
         <div class="od-section">
           <div class="od-section-lbl">+ Cash Add-on</div>
           <div class="od-val-box" style="color:var(--green);font-weight:700">+$${Number(o.cash_amount).toFixed(2)}</div>
