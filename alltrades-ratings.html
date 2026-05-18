@@ -362,7 +362,7 @@ async function loadPending() {
 
     // Get ratings already submitted by this user
     const { data: myRatings } = await sb.from('ratings')
-      .select('trade_id, rated_user_id, stars')
+      .select('trade_id, rated_id, stars')
       .eq('rater_id', currentUser.id);
 
     const ratedTradeIds = new Set((myRatings || []).map(r => r.trade_id));
