@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Tradezy — My Dashboard | Local Trading & Bartering</title>
-<meta name="description" content="Manage your Tradezy trades, listings, offers, and messages.">
+<meta name="description" content="Manage your Tradezy trades, listings, offers, and messages. Track your trade value and connect with local traders in your community.">
 <meta property="og:title" content="Tradezy — My Dashboard">
 <meta property="og:url" content="https://tradezyhq.com/alltrades-dashboard.html">
 <meta property="og:image" content="https://tradezyhq.com/tradezy-preview.png">
@@ -172,6 +172,23 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
 .mbtn.red{background:var(--red);color:#fff;}
 .mbtn.outline{background:transparent;border:1.5px solid var(--border);color:var(--muted);}
 .mbtn.outline:hover{border-color:#999;color:var(--text);}
+/* offer detail modal specific */
+.od-listing{display:flex;align-items:center;gap:12px;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:11px;margin-bottom:14px;}
+.od-listing-img{width:52px;height:52px;border-radius:8px;object-fit:cover;background:var(--border);display:flex;align-items:center;justify-content:center;font-size:1.5rem;flex-shrink:0;overflow:hidden;}
+.od-listing-img img{width:100%;height:100%;object-fit:cover;border-radius:8px;}
+.od-listing-info{flex:1;min-width:0;}
+.od-listing-ttl{font-weight:700;font-size:14px;margin-bottom:2px;}
+.od-listing-meta{font-size:11px;color:var(--muted);}
+.od-from{display:flex;align-items:center;gap:8px;margin-bottom:14px;padding:9px 12px;background:#eff6ff;border-radius:8px;font-size:13px;}
+.od-from-av{width:28px;height:28px;border-radius:50%;background:var(--blue);color:#fff;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.75rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.od-section{margin-bottom:14px;}
+.od-section-lbl{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:6px;}
+.od-val-box{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:10px 13px;font-size:13px;}
+.od-item-photos{display:flex;gap:7px;flex-wrap:wrap;margin-top:8px;}
+.od-item-photo{width:60px;height:60px;border-radius:7px;object-fit:cover;border:1px solid var(--border);}
+.od-message{background:#fffbeb;border:1px solid #fde68a;border-radius:8px;padding:10px 13px;font-size:13px;font-style:italic;color:#92400e;line-height:1.5;}
+.od-actions{display:flex;gap:8px;margin-top:16px;}
+.od-actions .mbtn{margin-bottom:0;}
 .empty-state{text-align:center;padding:32px 20px;color:var(--muted);}
 .empty-icon{font-size:2.5rem;margin-bottom:10px;}
 .empty-txt{font-size:13px;line-height:1.5;}
@@ -186,6 +203,8 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
   .stat-card,.panel,.msg-panel,.listings-panel,.trade-card,.modal{background:#1e293b !important;border-color:rgba(255,255,255,.08) !important;}
   input,select,textarea{background:#162032 !important;border-color:rgba(255,255,255,.12) !important;color:#f1f5f9 !important;}
   .mbody{background:#1e293b !important;}
+  .od-listing,.od-val-box{background:#162032 !important;}
+  .od-from{background:rgba(59,130,246,.1) !important;}
 }
 </style>
 </head>
@@ -264,12 +283,14 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
       <div class="stat-card sc-red"><div class="sc-icon">💰</div><div class="sc-num" id="statValue" style="color:var(--orange)">—</div><div class="sc-lbl">Trade Value (30d)</div><div class="sc-change" id="statValueSub">Loading…</div></div>
     </div>
 
+    <!-- OFFERS -->
     <div class="sec-hdr">
       <div class="sec-ttl">📨 Incoming Offers <span class="sec-cnt" id="offerCount">0</span></div>
       <div class="sec-lnk" onclick="window.location.href='alltrades-messages.html'">View all →</div>
     </div>
     <div class="panel" id="offersPanel"><div class="loading">Loading offers…</div></div>
 
+    <!-- TRADES + MESSAGES -->
     <div class="two-col">
       <div>
         <div class="sec-hdr"><div class="sec-ttl">🔄 Active Trades <span class="sec-cnt green" id="tradeCount">0</span></div><div class="sec-lnk">View all →</div></div>
@@ -281,12 +302,14 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
       </div>
     </div>
 
+    <!-- LISTINGS -->
     <div class="sec-hdr">
       <div class="sec-ttl">📦 My Listings <span class="sec-cnt gold" id="listingCount">0</span></div>
       <div class="sec-lnk" onclick="window.location.href='alltrades-post.html'">+ Add New →</div>
     </div>
     <div class="listings-panel" id="listingsPanel"><div class="loading">Loading listings…</div></div>
 
+    <!-- VALUE + RATINGS -->
     <div class="two-col-bot">
       <div>
         <div class="sec-hdr"><div class="sec-ttl">💰 Trade Value Summary</div></div>
@@ -315,7 +338,15 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
   </div>
 </div>
 
-<!-- CONFIRM MODAL -->
+<!-- OFFER DETAIL MODAL -->
+<div class="modal-overlay" id="offerModal">
+  <div class="modal" style="max-width:500px">
+    <div class="mhd"><div class="mhd-ttl">📨 Offer Details</div><button class="mhd-close" onclick="closeModal('offerModal')">✕</button></div>
+    <div class="mbody" id="offerModalBody"><div class="loading">Loading…</div></div>
+  </div>
+</div>
+
+<!-- CONFIRM TRADE MODAL -->
 <div class="modal-overlay" id="confirmModal">
   <div class="modal">
     <div class="mhd"><div class="mhd-ttl">✅ Confirm Trade Complete</div><button class="mhd-close" onclick="closeModal('confirmModal')">✕</button></div>
@@ -351,6 +382,7 @@ const sb = window.supabase.createClient(
 
 let currentUser    = null;
 let currentTradeId = null;
+let currentOfferId = null;
 
 const CAT_EMOJI = {'Food & Water':'🥫','Garden':'🌱','Electronics':'⚡','Tools':'🔧','Sports':'🚲','Music':'🎵','Gaming':'🎮','Clothing':'👗','Books':'📚','Trading Cards':'🃏','Other':'📦'};
 const AV_COLORS = ['var(--blue)','var(--green)','var(--orange)','var(--gold)','#64748b'];
@@ -396,11 +428,11 @@ async function loadOffers() {
     if (listingIds.length > 0) {
       const { data } = await sb
         .from('offers')
-        .select('*, listing:listing_id(title, photos, category)')
+        .select('*, listing:listing_id(title, photos, category, estimated_value, condition)')
         .in('listing_id', listingIds)
         .eq('status', 'pending')
         .order('created_at', { ascending: false })
-        .limit(5);
+        .limit(10);
       offers = data || [];
     }
     const count = offers.length;
@@ -426,7 +458,7 @@ async function loadOffers() {
                          : o.offer_type === 'item' ? `Item trade: ${o.offered_item_title || 'Item'}`
                          : `Trade offer`;
       return `
-        <div class="offer-row" onclick="window.location.href='alltrades-item.html?id=${o.listing_id}'">
+        <div class="offer-row" onclick="openOfferModal('${o.id}')">
           <div class="or-em">${thumbHtml}</div>
           <div class="or-info">
             <div class="or-ttl">${listingTitle}</div>
@@ -446,6 +478,96 @@ async function loadOffers() {
     }).join('');
   } catch(e) {
     document.getElementById('offersPanel').innerHTML = `<div class="empty-state"><div class="empty-txt">Could not load offers.</div></div>`;
+  }
+}
+
+async function openOfferModal(offerId) {
+  currentOfferId = offerId;
+  openModal('offerModal');
+  document.getElementById('offerModalBody').innerHTML = '<div class="loading">Loading offer details…</div>';
+  try {
+    const { data: o } = await sb
+      .from('offers')
+      .select('*, listing:listing_id(title, photos, category, estimated_value, condition)')
+      .eq('id', offerId)
+      .single();
+
+    // Get offerer display name
+    const { data: offerer } = await sb.from('users').select('display_name').eq('id', o.offerer_id).single();
+    const offererName = offerer?.display_name || 'Trader';
+    const offererInitials = offererName.split(' ').map(n => n[0]).join('').toUpperCase().slice(0,2);
+
+    const listingTitle = o.listing?.title || 'Listing';
+    const firstPhoto   = o.listing?.photos?.[0];
+    const cat          = o.listing?.category || '';
+    const thumbHtml    = firstPhoto
+      ? `<img src="${firstPhoto}" alt="${listingTitle}">`
+      : `<span style="font-size:1.5rem">${CAT_EMOJI[cat] || '📦'}</span>`;
+
+    // Build offer content based on type
+    let offerContent = '';
+    if (o.offer_type === 'cash') {
+      offerContent = `
+        <div class="od-section">
+          <div class="od-section-lbl">Cash Offer</div>
+          <div class="od-val-box" style="font-size:1.4rem;font-family:'Barlow Condensed',sans-serif;font-weight:900;color:var(--green)">
+            $${Number(o.cash_amount||0).toFixed(2)}
+          </div>
+        </div>`;
+    } else if (o.offer_type === 'item') {
+      const itemPhotos = o.offered_photos || [];
+      offerContent = `
+        <div class="od-section">
+          <div class="od-section-lbl">Offered Item</div>
+          <div class="od-val-box">
+            <div style="font-weight:700;margin-bottom:4px">${o.offered_item_title || 'Item'}</div>
+            ${o.offered_item_value ? `<div style="font-size:12px;color:var(--muted)">Est. value: ~$${Number(o.offered_item_value).toFixed(0)}</div>` : ''}
+            ${o.offered_condition ? `<div style="font-size:12px;color:var(--muted)">Condition: ${o.offered_condition}</div>` : ''}
+            ${itemPhotos.length ? `<div class="od-item-photos">${itemPhotos.map(p => `<img class="od-item-photo" src="${p}" alt="offered item">`).join('')}</div>` : ''}
+          </div>
+        </div>
+        ${o.cash_amount > 0 ? `
+        <div class="od-section">
+          <div class="od-section-lbl">+ Cash Add-on</div>
+          <div class="od-val-box" style="color:var(--green);font-weight:700">+$${Number(o.cash_amount).toFixed(2)}</div>
+        </div>` : ''}`;
+    } else {
+      offerContent = `
+        <div class="od-section">
+          <div class="od-section-lbl">Trade Offer</div>
+          <div class="od-val-box">${o.offered_item_title || 'Item trade'}</div>
+        </div>`;
+    }
+
+    const messageHtml = o.message ? `
+      <div class="od-section">
+        <div class="od-section-lbl">Message from ${offererName}</div>
+        <div class="od-message">"${o.message}"</div>
+      </div>` : '';
+
+    document.getElementById('offerModalBody').innerHTML = `
+      <div class="od-listing">
+        <div class="od-listing-img">${thumbHtml}</div>
+        <div class="od-listing-info">
+          <div class="od-listing-ttl">${listingTitle}</div>
+          <div class="od-listing-meta">${cat}${o.listing?.condition ? ' · '+o.listing.condition : ''}${o.listing?.estimated_value ? ' · ~$'+Number(o.listing.estimated_value).toFixed(0) : ''}</div>
+        </div>
+      </div>
+      <div class="od-from">
+        <div class="od-from-av">${offererInitials}</div>
+        <div><strong>${offererName}</strong> wants to trade · <span style="color:var(--muted)">${timeAgo(o.created_at)}</span></div>
+      </div>
+      ${offerContent}
+      ${messageHtml}
+      <div class="od-actions">
+        <button class="mbtn green" style="margin-bottom:0" onclick="closeModal('offerModal');acceptOffer('${o.id}')">✓ Accept Offer</button>
+        <button class="mbtn outline" style="margin-bottom:0;flex:0.5" onclick="closeModal('offerModal');declineOfferById('${o.id}')">✕ Decline</button>
+      </div>
+      <div style="text-align:center;margin-top:10px">
+        <a href="alltrades-item.html?id=${o.listing_id}" style="font-size:12px;color:var(--blue);font-weight:700;text-decoration:none">View full listing →</a>
+      </div>`;
+  } catch(e) {
+    document.getElementById('offerModalBody').innerHTML = `<div class="empty-state"><div class="empty-txt">Could not load offer details.</div></div>`;
   }
 }
 
@@ -623,7 +745,7 @@ async function loadTradeValue() {
     const t30   = (allTrades||[]).filter(t => new Date(t.created_at) > ago30);
     const sum   = (arr, fn) => arr.reduce((s,t) => s + (fn(t)||0), 0);
     const myFee = t => t.trader_a_id === currentUser.id ? (t.fee_a||0) : (t.fee_b||0);
-    const v30  = sum(t30, t => t.total_value||0),       f30  = sum(t30, myFee);
+    const v30  = sum(t30, t => t.total_value||0),           f30  = sum(t30, myFee);
     const vAll = sum(allTrades||[], t => t.total_value||0), fAll = sum(allTrades||[], myFee);
     document.getElementById('statValue').textContent    = '$' + v30.toFixed(0);
     document.getElementById('statValueSub').textContent = t30.length > 0 ? `${t30.length} trade${t30.length>1?'s':''} this month` : 'No completed trades yet';
@@ -672,9 +794,7 @@ async function acceptOffer(id) {
   try {
     const { data: offer } = await sb.from('offers').select('*').eq('id', id).single();
     if (!offer) throw new Error('Offer not found');
-
     await sb.from('offers').update({ status: 'accepted' }).eq('id', id);
-
     await sb.from('trades').insert({
       offer_id:    offer.id,
       listing_id:  offer.listing_id,
@@ -682,7 +802,6 @@ async function acceptOffer(id) {
       trader_b_id: offer.offerer_id,
       status:      'accepted',
     });
-
     showToast('🎉', 'Offer accepted! Trade created.');
     loadOffers();
     loadTrades();
@@ -697,6 +816,14 @@ async function declineOffer(id, btn) {
     await sb.from('offers').update({ status: 'declined' }).eq('id', id);
     btn.closest('.offer-row').style.opacity = '.4';
     showToast('👋', 'Offer declined.');
+  } catch(e) { showToast('⚠️', 'Error declining offer.'); }
+}
+
+async function declineOfferById(id) {
+  try {
+    await sb.from('offers').update({ status: 'declined' }).eq('id', id);
+    showToast('👋', 'Offer declined.');
+    loadOffers();
   } catch(e) { showToast('⚠️', 'Error declining offer.'); }
 }
 
