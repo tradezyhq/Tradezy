@@ -3,8 +3,6 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<!-- SEO — dynamic, updated by JS after listing loads -->
 <title>Tradezy — View Listing | Local Trading & Bartering</title>
 <meta name="description" content="View this listing and make a trade offer on Tradezy — the safe local peer-to-peer trading marketplace.">
 <meta property="og:title" content="Tradezy — View Listing">
@@ -12,17 +10,10 @@
 <meta property="og:url" content="https://tradezyhq.com/alltrades-item.html">
 <meta property="og:image" content="https://tradezyhq.com/tradezy-preview.png">
 <link rel="canonical" href="https://tradezyhq.com/alltrades-item.html">
-
 <script src="supabase.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Lato:ital,wght@0,300;0,400;0,700;1,300&display=swap" rel="stylesheet">
 <style>
-:root {
-  --navy:#0a1628; --navy2:#112240; --blue:#1a56db; --blue-l:#2563eb;
-  --gold:#f59e0b; --gold-l:#fbbf24; --green:#16a34a; --green-l:#22c55e;
-  --red:#dc2626; --orange:#ea580c;
-  --text:#1a1a2e; --muted:#475569; --border:#e2e8f0;
-  --bg:#f1f5f9; --white:#fff; --surface:#f8fafc;
-}
+:root{--navy:#0a1628;--navy2:#112240;--blue:#1a56db;--blue-l:#2563eb;--gold:#f59e0b;--gold-l:#fbbf24;--green:#16a34a;--green-l:#22c55e;--red:#dc2626;--orange:#ea580c;--text:#1a1a2e;--muted:#475569;--border:#e2e8f0;--bg:#f1f5f9;--white:#fff;--surface:#f8fafc;}
 *{margin:0;padding:0;box-sizing:border-box;}
 body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);}
 .nav{background:var(--navy);padding:11px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;}
@@ -38,47 +29,19 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);}
 .breadcrumb a{color:var(--blue);cursor:pointer;font-weight:700;text-decoration:none;}
 .breadcrumb span{margin:0 6px;color:#cbd5e1;}
 .page{max-width:1180px;margin:0 auto;padding:24px 20px;display:grid;grid-template-columns:1fr 400px;gap:24px;align-items:start;}
-
-/* ── GALLERY ── */
 .img-gallery{background:var(--white);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px;}
-
-/* KEY FIX: aspect-ratio instead of fixed height so portrait images aren't cropped */
-.main-img-wrap{
-  position:relative;
-  width:100%;
-  aspect-ratio:4/3;          /* fills square-ish but shows full portrait card */
-  background:linear-gradient(135deg,#1e293b,#0f172a);
-  display:flex;align-items:center;justify-content:center;
-  overflow:hidden;
-}
-.main-img-wrap img{
-  width:100%;
-  height:100%;
-  object-fit:contain;         /* contain = full image visible, no crop */
-  object-position:center;
-  background:#0f172a;
-}
+.main-img-wrap{position:relative;width:100%;aspect-ratio:4/3;background:linear-gradient(135deg,#1e293b,#0f172a);display:flex;align-items:center;justify-content:center;overflow:hidden;}
+.main-img-wrap img{width:100%;height:100%;object-fit:contain;object-position:center;background:#0f172a;}
 .main-img-emoji{font-size:7rem;}
 .img-badges{position:absolute;top:12px;left:12px;display:flex;gap:6px;z-index:2;}
 .ibadge{font-size:11px;font-weight:800;padding:3px 9px;border-radius:4px;letter-spacing:.4px;}
-.ibadge.local{background:var(--blue);color:#fff;}
-.ibadge.tcg{background:#7c3aed;color:#fff;}
-.ibadge.cash{background:var(--gold);color:var(--navy);}
-.ibadge.ess{background:var(--green);color:#fff;}
+.ibadge.local{background:var(--blue);color:#fff;}.ibadge.tcg{background:#7c3aed;color:#fff;}.ibadge.cash{background:var(--gold);color:var(--navy);}.ibadge.ess{background:var(--green);color:#fff;}
 .watch-btn{position:absolute;top:12px;right:12px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);color:#fff;border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center;font-size:1rem;cursor:pointer;transition:all .2s;z-index:2;}
 .watch-btn:hover,.watch-btn.on{background:rgba(239,68,68,.25);border-color:rgba(239,68,68,.6);color:#fca5a5;}
 .thumbs{display:flex;gap:8px;padding:12px;overflow-x:auto;}
-.thumb{
-  width:64px;height:64px;border-radius:8px;
-  background:var(--surface);border:2px solid transparent;
-  display:flex;align-items:center;justify-content:center;
-  font-size:1.6rem;cursor:pointer;transition:all .15s;
-  flex-shrink:0;overflow:hidden;
-}
+.thumb{width:64px;height:64px;border-radius:8px;background:var(--surface);border:2px solid transparent;display:flex;align-items:center;justify-content:center;font-size:1.6rem;cursor:pointer;transition:all .15s;flex-shrink:0;overflow:hidden;}
 .thumb img{width:100%;height:100%;object-fit:cover;}
 .thumb:hover,.thumb.active{border-color:var(--blue);}
-
-/* ── DETAIL ── */
 .detail-card{background:var(--white);border:1px solid var(--border);border-radius:14px;padding:22px;margin-bottom:16px;}
 .item-category{font-size:11px;font-weight:700;color:var(--blue);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;}
 .item-title{font-family:'Barlow Condensed',sans-serif;font-size:1.8rem;font-weight:900;line-height:1.1;margin-bottom:10px;letter-spacing:-.3px;}
@@ -97,8 +60,6 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);}
 .wants-text{font-size:13px;color:var(--blue);font-weight:700;}
 .wants-tags{display:flex;gap:5px;flex-wrap:wrap;margin-top:7px;}
 .wants-tag{font-size:11px;background:#eff6ff;color:var(--blue);border:1px solid #bfdbfe;border-radius:99px;padding:2px 9px;font-weight:700;}
-
-/* ── SELLER ── */
 .seller-card{background:var(--white);border:1px solid var(--border);border-radius:14px;padding:18px 20px;margin-bottom:16px;}
 .seller-row{display:flex;align-items:center;gap:12px;margin-bottom:12px;}
 .seller-av{width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--navy));color:#fff;font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.1rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
@@ -112,7 +73,8 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);}
 .offers-list{background:var(--white);border:1px solid var(--border);border-radius:14px;padding:18px 20px;}
 .ol-title{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1rem;margin-bottom:12px;display:flex;align-items:center;gap:8px;}
 .ol-count{background:var(--red);color:#fff;font-size:11px;font-weight:800;padding:2px 7px;border-radius:99px;}
-.offer-item{display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--surface);border:1px solid var(--border);border-radius:8px;margin-bottom:7px;}
+.offer-item{padding:12px;background:var(--surface);border:1px solid var(--border);border-radius:8px;margin-bottom:9px;}
+.offer-item-top{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
 .oi-av{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.85rem;color:#fff;flex-shrink:0;background:var(--blue);}
 .oi-info{flex:1;min-width:0;}
 .oi-name{font-weight:700;font-size:13px;margin-bottom:1px;}
@@ -120,8 +82,21 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);}
 .oi-right{text-align:right;flex-shrink:0;}
 .oi-val{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.95rem;color:var(--blue);}
 .oi-time{font-size:10px;color:var(--muted);margin-top:1px;}
-
-/* ── OFFER PANEL ── */
+.oi-photos{display:flex;gap:6px;flex-wrap:wrap;}
+.oi-photo{width:56px;height:56px;border-radius:6px;object-fit:cover;border:1px solid var(--border);cursor:pointer;transition:all .15s;}
+.oi-photo:hover{border-color:var(--blue);transform:scale(1.05);}
+/* lightbox */
+.lightbox{display:none;position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:900;align-items:center;justify-content:center;}
+.lightbox.open{display:flex;}
+.lightbox img{max-width:90vw;max-height:88vh;border-radius:10px;object-fit:contain;}
+.lightbox-close{position:absolute;top:16px;right:20px;background:rgba(255,255,255,.12);border:none;color:#fff;font-size:1.4rem;width:38px;height:38px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.lightbox-close:hover{background:rgba(255,255,255,.25);}
+.lightbox-nav{position:absolute;top:50%;transform:translateY(-50%);background:rgba(255,255,255,.12);border:none;color:#fff;font-size:1.3rem;width:44px;height:44px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .15s;}
+.lightbox-nav:hover{background:rgba(255,255,255,.25);}
+.lightbox-prev{left:16px;}
+.lightbox-next{right:16px;}
+.lightbox-counter{position:absolute;bottom:16px;left:50%;transform:translateX(-50%);color:rgba(255,255,255,.7);font-size:13px;font-family:'Barlow Condensed',sans-serif;font-weight:700;}
+/* offer panel */
 .offer-panel{background:var(--white);border:1px solid var(--border);border-radius:14px;overflow:hidden;position:sticky;top:72px;}
 .op-head{background:linear-gradient(135deg,var(--navy),#1a3a6b);padding:18px 20px;}
 .op-head-title{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.15rem;color:#fff;margin-bottom:2px;}
@@ -140,16 +115,25 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);}
 .field label{display:block;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px;}
 .field input,.field select,.field textarea{width:100%;border:1.5px solid var(--border);border-radius:7px;padding:9px 12px;font-size:13px;font-family:'Lato',sans-serif;color:var(--text);outline:none;transition:all .15s;background:#fff;}
 .field input:focus,.field select:focus,.field textarea:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(26,86,219,.08);}
+/* photo upload */
+.photo-upload-area{border:2px dashed var(--border);border-radius:10px;padding:14px;text-align:center;cursor:pointer;transition:all .15s;background:#fff;}
+.photo-upload-area:hover{border-color:var(--blue);background:#eff6ff;}
+.photo-upload-area.has-photos{border-color:var(--green);background:#f0fdf4;}
+.pua-icon{font-size:1.6rem;margin-bottom:5px;}
+.pua-text{font-size:11px;color:var(--muted);line-height:1.4;}
+.pua-text strong{color:var(--blue);}
+.photo-previews{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;}
+.photo-preview-item{position:relative;width:58px;height:58px;}
+.photo-preview-item img{width:58px;height:58px;border-radius:7px;object-fit:cover;border:1.5px solid var(--border);}
+.photo-preview-remove{position:absolute;top:-5px;right:-5px;background:var(--red);color:#fff;border:none;border-radius:50%;width:16px;height:16px;font-size:9px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:800;line-height:1;}
 .trade-compare{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:14px;}
 .tc-title{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.85rem;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:10px;}
 .tc-bars{display:flex;align-items:stretch;gap:8px;margin-bottom:8px;}
 .tc-side{flex:1;background:var(--white);border:1px solid var(--border);border-radius:8px;padding:10px;text-align:center;}
-.tc-side.theirs{border-top:3px solid var(--blue);}
-.tc-side.yours{border-top:3px solid var(--gold);}
+.tc-side.theirs{border-top:3px solid var(--blue);}.tc-side.yours{border-top:3px solid var(--gold);}
 .tc-who{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:4px;}
 .tc-amount{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.3rem;}
-.tc-amount.theirs{color:var(--blue);}
-.tc-amount.yours{color:var(--gold);}
+.tc-amount.theirs{color:var(--blue);}.tc-amount.yours{color:var(--gold);}
 .tc-item-name{font-size:10px;color:var(--muted);margin-top:2px;}
 .tc-arrow{display:flex;align-items:center;font-size:1.2rem;color:#94a3b8;flex-shrink:0;}
 .tc-balance{text-align:center;padding:8px;border-radius:6px;font-size:12px;font-weight:700;}
@@ -187,10 +171,8 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);}
 .modal-close:hover{background:rgba(255,255,255,.2);color:#fff;}
 .modal-body{padding:24px;}
 .modal-btn{width:100%;padding:12px;border:none;border-radius:8px;font-family:'Barlow Condensed',sans-serif;font-size:1.05rem;font-weight:900;cursor:pointer;transition:all .15s;margin-bottom:7px;}
-.modal-btn.gold{background:var(--gold);color:var(--navy);}
-.modal-btn.gold:hover{background:var(--gold-l);}
-.modal-btn.outline{background:transparent;border:1.5px solid var(--border);color:var(--muted);}
-.modal-btn.outline:hover{border-color:#999;color:var(--text);}
+.modal-btn.gold{background:var(--gold);color:var(--navy);}.modal-btn.gold:hover{background:var(--gold-l);}
+.modal-btn.outline{background:transparent;border:1.5px solid var(--border);color:var(--muted);}.modal-btn.outline:hover{border-color:#999;color:var(--text);}
 .loading-state{text-align:center;padding:60px 20px;}
 .loading-spinner{font-size:2rem;margin-bottom:12px;animation:spin 1s linear infinite;}
 @keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
@@ -203,6 +185,7 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);}
   body{background:#0f172a !important;color:#f1f5f9 !important;}
   .detail-card,.seller-card,.img-gallery,.offers-list,.offer-panel,.modal{background:#1e293b !important;border-color:rgba(255,255,255,.08) !important;}
   input,select,textarea{background:#162032 !important;border-color:rgba(255,255,255,.12) !important;color:#f1f5f9 !important;}
+  .photo-upload-area{background:#162032 !important;}
   .main-img-wrap img{background:#0f172a;}
 }
 </style>
@@ -219,20 +202,16 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);}
 </div>
 
 <div class="breadcrumb">
-  <a href="alltrades.html">Home</a>
-  <span>›</span>
-  <a href="alltrades-dashboard.html" id="bcCategory">Listings</a>
-  <span>›</span>
+  <a href="alltrades.html">Home</a><span>›</span>
+  <a href="alltrades-dashboard.html" id="bcCategory">Listings</a><span>›</span>
   <span id="bcTitle">Loading…</span>
 </div>
 
-<!-- Loading state -->
 <div id="loadingState" class="loading-state">
   <div class="loading-spinner">⏳</div>
   <div style="font-size:14px;color:var(--muted)">Loading listing…</div>
 </div>
 
-<!-- Not found state -->
 <div id="notFoundState" class="not-found" style="display:none">
   <div style="font-size:3rem;margin-bottom:12px">🔍</div>
   <div style="font-family:'Barlow Condensed',sans-serif;font-size:1.5rem;font-weight:900;margin-bottom:8px">Listing Not Found</div>
@@ -240,25 +219,19 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);}
   <button class="btn-submit" style="max-width:200px;margin:0 auto" onclick="window.location.href='alltrades.html'">← Back to Home</button>
 </div>
 
-<!-- Main page content -->
 <div class="page" id="pageContent" style="display:none">
-
-  <!-- LEFT: ITEM DETAIL -->
   <div>
     <!-- GALLERY -->
     <div class="img-gallery">
-      <!-- badges and watch button sit OUTSIDE the swappable image area so they're never wiped -->
       <div style="position:relative;">
         <div class="img-badges" id="imgBadges"></div>
         <button class="watch-btn" id="watchBtn" onclick="toggleWatch()">♡</button>
-        <div class="main-img-wrap" id="mainImgWrap">
-          <span class="main-img-emoji" id="mainEmoji">📦</span>
-        </div>
+        <div class="main-img-wrap" id="mainImgWrap"><span class="main-img-emoji">📦</span></div>
       </div>
       <div class="thumbs" id="thumbsRow"></div>
     </div>
 
-    <!-- DETAIL CARD -->
+    <!-- DETAIL -->
     <div class="detail-card">
       <div class="item-category" id="itemCategory">Category</div>
       <div class="item-title" id="itemTitle">Loading…</div>
@@ -268,7 +241,6 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);}
         <div class="meta-chip" id="metaViews" style="display:none">—</div>
         <div class="meta-chip" id="metaQty" style="display:none">—</div>
       </div>
-
       <div class="value-banner">
         <div class="vb-icon">📊</div>
         <div class="vb-text">
@@ -280,9 +252,7 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);}
           <div class="vb-label">Seller Estimate</div>
         </div>
       </div>
-
       <div class="item-desc" id="itemDesc">Loading description…</div>
-
       <div class="wants-box" id="wantsBox" style="display:none">
         <div class="wants-title">🤝 Seller is Looking For</div>
         <div class="wants-text" id="wantsText">—</div>
@@ -290,7 +260,7 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);}
       </div>
     </div>
 
-    <!-- SELLER CARD -->
+    <!-- SELLER -->
     <div class="seller-card">
       <div class="seller-row">
         <div class="seller-av" id="sellerAv">?</div>
@@ -310,28 +280,25 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);}
       </div>
     </div>
 
-    <!-- SAFETY -->
     <div class="safety-box">
       <span>🛡️</span>
       <div><strong>Safety tip:</strong> Always meet in a public place — parking lots, libraries, or police station community lots. Never share your home address. Tradezy never asks for payment outside this platform.</div>
     </div>
 
-    <!-- CURRENT OFFERS -->
+    <!-- OFFERS LIST -->
     <div class="offers-list">
       <div class="ol-title">Current Offers <span class="ol-count" id="offersCount">0</span></div>
       <div id="offersList"><div style="font-size:13px;color:var(--muted);text-align:center;padding:16px">No offers yet — be the first!</div></div>
     </div>
   </div>
 
-  <!-- RIGHT: OFFER PANEL -->
+  <!-- OFFER PANEL -->
   <div class="offer-panel" id="offerPanel">
     <div class="op-head">
       <div class="op-head-title">🤝 Make a Trade Offer</div>
       <div class="op-head-sub" id="opSub">Loading seller info…</div>
     </div>
     <div class="op-body">
-
-      <!-- Own listing notice -->
       <div class="own-listing-notice" id="ownListingNotice" style="display:none">
         <div style="font-size:1.5rem;margin-bottom:8px">📦</div>
         <div style="font-weight:700;margin-bottom:4px">This is your listing</div>
@@ -339,32 +306,49 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);}
         <button class="btn-submit" style="max-width:180px;margin:12px auto 0" onclick="window.location.href='alltrades-dashboard.html'">← My Dashboard</button>
       </div>
 
-      <!-- Offer form -->
       <div id="offerForm">
         <div class="offer-tabs">
           <div class="otab active" id="tab-trade" onclick="setOfferType('trade')">
-            <div class="otab-icon">🔄</div>
-            <div class="otab-label">Trade Only</div>
+            <div class="otab-icon">🔄</div><div class="otab-label">Trade Only</div>
           </div>
           <div class="otab" id="tab-tc" onclick="setOfferType('tc')">
-            <div class="otab-icon">🔄💵</div>
-            <div class="otab-label">Trade+Cash</div>
+            <div class="otab-icon">🔄💵</div><div class="otab-label">Trade+Cash</div>
           </div>
           <div class="otab" id="tab-cash" onclick="setOfferType('cash')">
-            <div class="otab-icon">💵</div>
-            <div class="otab-label">Cash Only</div>
+            <div class="otab-icon">💵</div><div class="otab-label">Cash Only</div>
           </div>
         </div>
 
+        <!-- Item fields -->
         <div class="your-item-box" id="yourItemSection">
           <div class="yib-title">Your Item to Trade</div>
           <div class="field">
-            <label>What are you offering?</label>
-            <input type="text" id="offerItem" placeholder="e.g. 25lb bag of rice, cordless drill…" oninput="updateComparison();updateFees()">
+            <label>What are you offering? *</label>
+            <input type="text" id="offerItem" placeholder="e.g. Charizard Base Set, cordless drill…" oninput="updateComparison();updateFees()">
           </div>
           <div class="field">
-            <label>Your estimated value ($)</label>
+            <label>Condition *</label>
+            <select id="offerCondition">
+              <option value="">Select condition…</option>
+              <option>Mint</option><option>Near Mint</option><option>Lightly Played</option>
+              <option>Moderately Played</option><option>Heavily Played</option><option>Damaged</option>
+              <option>New</option><option>Like New</option><option>Good</option><option>Fair</option><option>Poor</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Your estimated value ($) *</label>
             <input type="number" id="offerVal" placeholder="0.00" min="0" step="0.01" oninput="updateComparison();updateFees()">
+          </div>
+
+          <!-- Photo upload -->
+          <div class="field">
+            <label>Photos of your item * <span style="color:var(--orange);font-size:10px">(up to 4 — front, back, or multiple items)</span></label>
+            <div class="photo-upload-area" id="photoUploadArea" onclick="document.getElementById('offerPhotoInput').click()">
+              <div class="pua-icon">📸</div>
+              <div class="pua-text"><strong>Tap to add photos</strong><br>Show front &amp; back, or all items being traded<br>JPG/PNG · up to 5MB each · max 4</div>
+            </div>
+            <input type="file" id="offerPhotoInput" accept="image/*" multiple style="display:none" onchange="handlePhotoSelect(event)">
+            <div class="photo-previews" id="photoPreviews"></div>
           </div>
         </div>
 
@@ -387,7 +371,7 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);}
           <div class="tc-balance" id="tcBalance">Enter your item value to see balance</div>
         </div>
 
-        <!-- Cash add-on for trade+cash -->
+        <!-- Cash add-on -->
         <div class="cash-box" id="cashBox">
           <div style="font-size:12px;font-weight:700;color:#92400e;margin-bottom:7px">💵 Cash to add on top</div>
           <div class="cash-wrap">
@@ -407,7 +391,7 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);}
           </div>
         </div>
 
-        <!-- Fee breakdown -->
+        <!-- Fee -->
         <div class="fee-box">
           <div class="fee-title">🏦 Tradezy Platform Fee</div>
           <div class="fee-row"><span class="fee-label">Your item/cash value</span><span class="fee-amount" id="feeBase">$0.00</span></div>
@@ -420,16 +404,14 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);}
           <div class="fee-note">💡 Fee only charged when accepted. Sending this offer is free.</div>
         </div>
 
-        <!-- Message -->
         <div class="field">
           <label>Message to Seller (optional)</label>
           <textarea id="offerMsg" placeholder="Introduce yourself or explain why it's a fair trade…" style="width:100%;border:1.5px solid var(--border);border-radius:7px;padding:9px 12px;font-size:13px;font-family:'Lato',sans-serif;outline:none;resize:vertical;min-height:70px;" onfocus="this.style.borderColor='var(--blue)'" onblur="this.style.borderColor='var(--border)'"></textarea>
         </div>
 
-        <button class="btn-submit" id="submitOfferBtn" onclick="submitOffer()">
-          🤝 Send Trade Offer
-        </button>
-<button class="btn-secondary" onclick="messageSeller()">💬 Message Seller First</button>      </div>
+        <button class="btn-submit" id="submitOfferBtn" onclick="submitOffer()">🤝 Send Trade Offer</button>
+        <button class="btn-secondary" onclick="messageSeller()">💬 Message Seller First</button>
+      </div>
     </div>
   </div>
 </div>
@@ -451,6 +433,15 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);}
   </div>
 </div>
 
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+  <button class="lightbox-nav lightbox-prev" onclick="event.stopPropagation();lightboxNav(-1)">‹</button>
+  <img id="lightboxImg" src="" alt="offer photo" onclick="event.stopPropagation()">
+  <button class="lightbox-nav lightbox-next" onclick="event.stopPropagation();lightboxNav(1)">›</button>
+  <div class="lightbox-counter" id="lightboxCounter"></div>
+</div>
+
 <div class="toast" id="toastEl"><span id="toastIc">✅</span><span id="toastTx">Done!</span></div>
 
 <script>
@@ -459,18 +450,16 @@ const sb = window.supabase.createClient(
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVxdXZ3YXNwY29lZXRmc2V4cWtpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgyNzc2MjQsImV4cCI6MjA5Mzg1MzYyNH0.TP6Kk3pzHW1PYMUu5D9Vu2lJrazIEagzu5csYhqkrfI'
 );
 
-let currentUser = null;
-let listing     = null;
-let offerType   = 'trade';
-let watching    = false;
+let currentUser    = null;
+let listing        = null;
+let offerType      = 'trade';
+let watching       = false;
+let selectedPhotos = [];
+let lightboxPhotos = [];
+let lightboxIndex  = 0;
 
-const CAT_EMOJI = {
-  'Food & Water':'🥫','Garden':'🌱','Electronics':'⚡','Tools':'🔧',
-  'Sports':'🚲','Music':'🎵','Gaming':'🎮','Clothing':'👗',
-  'Books':'📚','Trading Cards':'🃏','Other':'📦'
-};
+const CAT_EMOJI = {'Food & Water':'🥫','Garden':'🌱','Electronics':'⚡','Tools':'🔧','Sports':'🚲','Music':'🎵','Gaming':'🎮','Clothing':'👗','Books':'📚','Trading Cards':'🃏','Other':'📦'};
 
-/* ── Session ── */
 (async () => {
   const { data: { session } } = await sb.auth.getSession();
   if (!session) { window.location.href = 'alltrades-auth.html'; return; }
@@ -478,67 +467,46 @@ const CAT_EMOJI = {
   loadListing();
 })();
 
-function getListingId() {
-  return new URLSearchParams(window.location.search).get('id');
-}
+function getListingId() { return new URLSearchParams(window.location.search).get('id'); }
 
-/* ── Load listing ── */
 async function loadListing() {
   const id = getListingId();
   if (!id) { showNotFound(); return; }
-
   try {
     const { data, error } = await sb.from('listings').select('*').eq('id', id).single();
     if (error || !data) { showNotFound(); return; }
     listing = data;
-
-    // increment view count (fire-and-forget, don't block render)
-    sb.from('listings')
-      .update({ view_count: (data.view_count || 0) + 1 })
-      .eq('id', id)
-      .then(() => {});
-
+    sb.from('listings').update({ view_count: (data.view_count||0)+1 }).eq('id', id).then(()=>{});
     await Promise.all([loadSeller(data.user_id), loadOffers(id)]);
     renderListing(data);
-  } catch(e) {
-    showNotFound();
-  }
+  } catch(e) { showNotFound(); }
 }
 
-/* ── Load seller ── */
 async function loadSeller(userId) {
   try {
-    const [
-      { data: user },
-      { count: tradeCount },
-      { count: listingCount },
-      { data: ratings }
-    ] = await Promise.all([
+    const [{ data: user },{ count: tradeCount },{ count: listingCount },{ data: ratings }] = await Promise.all([
       sb.from('users').select('display_name,created_at').eq('id', userId).single(),
-      sb.from('trades').select('*', { count:'exact', head:true }).or(`trader_a_id.eq.${userId},trader_b_id.eq.${userId}`).eq('status','completed'),
-      sb.from('listings').select('*', { count:'exact', head:true }).eq('user_id', userId).eq('status','active'),
-      sb.from('ratings').select('stars').eq('rated_user_id', userId)
+      sb.from('trades').select('*',{count:'exact',head:true}).or(`trader_a_id.eq.${userId},trader_b_id.eq.${userId}`).eq('status','completed'),
+      sb.from('listings').select('*',{count:'exact',head:true}).eq('user_id',userId).eq('status','active'),
+      sb.from('ratings').select('stars').eq('rated_id', userId)
     ]);
-
     const name     = user?.display_name || 'Trader';
-    const initials = name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0,2);
-    const avg      = ratings?.length ? (ratings.reduce((s,r) => s+r.stars, 0) / ratings.length).toFixed(1) : null;
-    const stars    = avg ? '★'.repeat(Math.round(avg)) + '☆'.repeat(5-Math.round(avg)) : '—';
-    const joined   = user?.created_at ? new Date(user.created_at).toLocaleDateString('en-US', { month:'short', year:'numeric' }) : '—';
-
-    document.getElementById('sellerAv').textContent         = initials;
-    document.getElementById('sellerName').textContent       = name;
-    document.getElementById('sellerSince').textContent      = `📍 Member since ${joined}`;
-    document.getElementById('sellerStars').textContent      = stars;
-    document.getElementById('sellerRating').textContent     = avg ? `${avg} · ${ratings.length} ratings` : 'No ratings yet';
-    document.getElementById('sellerTrades').textContent     = tradeCount  || 0;
-    document.getElementById('sellerRatingNum').textContent  = avg ? avg + '★' : '—';
-    document.getElementById('sellerListings').textContent   = listingCount || 0;
-    document.getElementById('opSub').textContent            = `${tradeCount || 0} completed trades · ${avg ? avg+'★ rating' : 'No ratings yet'}`;
+    const initials = name.split(' ').map(n=>n[0]).join('').toUpperCase().slice(0,2);
+    const avg      = ratings?.length ? (ratings.reduce((s,r)=>s+r.stars,0)/ratings.length).toFixed(1) : null;
+    const stars    = avg ? '★'.repeat(Math.round(avg))+'☆'.repeat(5-Math.round(avg)) : '—';
+    const joined   = user?.created_at ? new Date(user.created_at).toLocaleDateString('en-US',{month:'short',year:'numeric'}) : '—';
+    document.getElementById('sellerAv').textContent        = initials;
+    document.getElementById('sellerName').textContent      = name;
+    document.getElementById('sellerSince').textContent     = `📍 Member since ${joined}`;
+    document.getElementById('sellerStars').textContent     = stars;
+    document.getElementById('sellerRating').textContent    = avg ? `${avg} · ${ratings.length} ratings` : 'No ratings yet';
+    document.getElementById('sellerTrades').textContent    = tradeCount  || 0;
+    document.getElementById('sellerRatingNum').textContent = avg ? avg+'★' : '—';
+    document.getElementById('sellerListings').textContent  = listingCount || 0;
+    document.getElementById('opSub').textContent           = `${tradeCount||0} completed trades · ${avg?avg+'★ rating':'No ratings yet'}`;
   } catch(e) {}
 }
 
-/* ── Load offers — join users table for real display names ── */
 async function loadOffers(listingId) {
   try {
     const { data: offers, count } = await sb
@@ -552,200 +520,230 @@ async function loadOffers(listingId) {
     document.getElementById('offersCount').textContent = count || 0;
 
     if (!offers?.length) {
-      document.getElementById('offersList').innerHTML =
-        '<div style="font-size:13px;color:var(--muted);text-align:center;padding:16px">No offers yet — be the first!</div>';
+      document.getElementById('offersList').innerHTML = '<div style="font-size:13px;color:var(--muted);text-align:center;padding:16px">No offers yet — be the first!</div>';
       return;
     }
 
     const colors = ['#1a56db','#16a34a','#ea580c','#f59e0b','#7c3aed'];
     document.getElementById('offersList').innerHTML = offers.map((o, i) => {
       const name     = o.offerer?.display_name || 'Trader';
-      const initials = name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0,2);
-      const offerDesc = o.offer_type === 'cash'
+      const initials = name.split(' ').map(n=>n[0]).join('').toUpperCase().slice(0,2);
+      const desc     = o.offer_type === 'cash'
         ? `💵 Cash offer: $${Number(o.cash_amount).toFixed(2)}`
         : o.offer_type === 'tc'
-        ? `🔄💵 ${o.offered_item_title || 'Item'} + $${Number(o.cash_amount||0).toFixed(2)}`
-        : `🔄 ${o.offered_item_title || 'Item trade'}`;
+        ? `🔄💵 ${o.offered_item_title||'Item'} + $${Number(o.cash_amount||0).toFixed(2)}`
+        : `🔄 ${o.offered_item_title||'Item trade'}`;
+
+      // Build photo thumbnails if offer has photos
+      const photos = o.offered_photos || [];
+      const photosHtml = photos.length
+        ? `<div class="oi-photos">${photos.map((p, pi) =>
+            `<img class="oi-photo" src="${p}" alt="offer photo" onclick="openLightbox(${JSON.stringify(photos)},${pi})" title="Click to expand">`
+          ).join('')}</div>`
+        : '';
+
+      const condHtml = o.offered_condition
+        ? `<span style="font-size:10px;background:#eff6ff;color:var(--blue);border:1px solid #bfdbfe;border-radius:99px;padding:1px 6px;font-weight:700;margin-left:4px">${o.offered_condition}</span>`
+        : '';
+
       return `
         <div class="offer-item">
-          <div class="oi-av" style="background:${colors[i % colors.length]}">${initials}</div>
-          <div class="oi-info">
-            <div class="oi-name">${name}</div>
-            <div class="oi-detail">${offerDesc}</div>
+          <div class="offer-item-top">
+            <div class="oi-av" style="background:${colors[i%colors.length]}">${initials}</div>
+            <div class="oi-info">
+              <div class="oi-name">${name}${condHtml}</div>
+              <div class="oi-detail">${desc}</div>
+            </div>
+            <div class="oi-right">
+              <div class="oi-val">~$${Number(o.offered_item_value||o.cash_amount||0).toFixed(0)}</div>
+              <div class="oi-time">${timeAgo(o.created_at)}</div>
+            </div>
           </div>
-          <div class="oi-right">
-            <div class="oi-val">~$${Number(o.offered_item_value || o.cash_amount || 0).toFixed(0)}</div>
-            <div class="oi-time">${timeAgo(o.created_at)}</div>
-          </div>
+          ${photosHtml}
         </div>`;
     }).join('');
   } catch(e) {}
 }
 
-/* ── Render listing ── */
+/* ── Lightbox ── */
+function openLightbox(photos, index) {
+  lightboxPhotos = photos;
+  lightboxIndex  = index;
+  document.getElementById('lightboxImg').src = photos[index];
+  document.getElementById('lightboxCounter').textContent = photos.length > 1 ? `${index+1} / ${photos.length}` : '';
+  document.getElementById('lightbox').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  // show/hide nav arrows
+  document.querySelector('.lightbox-prev').style.display = photos.length > 1 ? 'flex' : 'none';
+  document.querySelector('.lightbox-next').style.display = photos.length > 1 ? 'flex' : 'none';
+}
+
+function closeLightbox() {
+  document.getElementById('lightbox').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function lightboxNav(dir) {
+  lightboxIndex = (lightboxIndex + dir + lightboxPhotos.length) % lightboxPhotos.length;
+  document.getElementById('lightboxImg').src = lightboxPhotos[lightboxIndex];
+  document.getElementById('lightboxCounter').textContent = `${lightboxIndex+1} / ${lightboxPhotos.length}`;
+}
+
+document.addEventListener('keydown', e => {
+  if (!document.getElementById('lightbox').classList.contains('open')) return;
+  if (e.key === 'Escape') closeLightbox();
+  if (e.key === 'ArrowLeft')  lightboxNav(-1);
+  if (e.key === 'ArrowRight') lightboxNav(1);
+});
+
 function renderListing(l) {
-  const emoji = CAT_EMOJI[l.category] || '📦';
-  const isTCG = l.category === 'Trading Cards';
-
-  // SEO
+  const emoji = CAT_EMOJI[l.category]||'📦';
+  const isTCG = l.category==='Trading Cards';
   document.title = `Tradezy — ${l.title} | Local Trading`;
-  document.querySelector('meta[name="description"]').content =
-    `${l.title} — ${l.description?.slice(0,120) || 'View this listing on Tradezy and make a trade offer.'}`;
-
-  // Breadcrumb
-  document.getElementById('bcCategory').textContent = l.category || 'Browse';
+  document.querySelector('meta[name="description"]').content = `${l.title} — ${l.description?.slice(0,120)||'View this listing on Tradezy.'}`;
+  document.getElementById('bcCategory').textContent = l.category||'Browse';
   document.getElementById('bcTitle').textContent    = l.title;
-
-  // Badges (built once, sit above the image wrap — never wiped)
-  const hasCash = l.trade_type === 'cash' || l.trade_type === 'item_plus_cash';
+  const hasCash = l.trade_type==='cash'||l.trade_type==='item_plus_cash';
   const isEss   = ['Food & Water','Garden'].includes(l.category);
   document.getElementById('imgBadges').innerHTML = [
     '<span class="ibadge local">LOCAL</span>',
-    isEss   ? '<span class="ibadge ess">ESSENTIAL</span>'  : '',
-    isTCG   ? '<span class="ibadge tcg">🃏 TCG</span>'    : '',
-    hasCash ? '<span class="ibadge cash">💵 CASH OK</span>' : ''
+    isEss  ?'<span class="ibadge ess">ESSENTIAL</span>'  :'',
+    isTCG  ?'<span class="ibadge tcg">🃏 TCG</span>'    :'',
+    hasCash?'<span class="ibadge cash">💵 CASH OK</span>':''
   ].join('');
-
-  // Photos — only touch the inner wrap, badges/watch stay put
   const wrap = document.getElementById('mainImgWrap');
-  if (l.photos?.length > 0) {
-    // show first photo; contain so full card is visible
+  if (l.photos?.length>0) {
     wrap.innerHTML = `<img src="${l.photos[0]}" alt="${l.title}">`;
-
-    // thumbnails
-    document.getElementById('thumbsRow').innerHTML = l.photos.slice(0,6).map((p, i) =>
-      `<div class="thumb ${i===0?'active':''}" onclick="switchPhoto('${p}',this)">
-         <img src="${p}" alt="photo ${i+1}" loading="lazy">
-       </div>`
+    document.getElementById('thumbsRow').innerHTML = l.photos.slice(0,6).map((p,i)=>
+      `<div class="thumb ${i===0?'active':''}" onclick="switchPhoto('${p}',this)"><img src="${p}" alt="photo ${i+1}" loading="lazy"></div>`
     ).join('');
   } else {
     wrap.innerHTML = `<span class="main-img-emoji">${emoji}</span>`;
-    document.getElementById('thumbsRow').innerHTML =
-      `<div class="thumb active">${emoji}</div>`;
+    document.getElementById('thumbsRow').innerHTML = `<div class="thumb active">${emoji}</div>`;
   }
-
-  // Detail card
   document.getElementById('itemCategory').textContent = `${emoji} ${l.category}${isTCG?' · Trading Cards':''}`;
   document.getElementById('itemTitle').textContent    = l.title;
-  document.getElementById('metaCondition').innerHTML  = `<span>✨</span> ${l.condition || 'Condition not specified'}`;
+  document.getElementById('metaCondition').innerHTML  = `<span>✨</span> ${l.condition||'Condition not specified'}`;
   document.getElementById('metaTime').innerHTML       = `<span>⏰</span> ${timeAgo(l.created_at)}`;
-
-  // View count chip
-  const views = l.view_count || 0;
-  const viewChip = document.getElementById('metaViews');
-  viewChip.innerHTML = `<span>👁</span> ${views + 1} view${views !== 0 ? 's' : ''}`;
-  viewChip.style.display = 'flex';
-
-  if (l.quantity > 1) {
-    document.getElementById('metaQty').innerHTML = `<span>📦</span> Qty: ${l.quantity}`;
-    document.getElementById('metaQty').style.display = 'flex';
-  }
-
-  document.getElementById('itemValue').textContent = l.estimated_value ? `$${Number(l.estimated_value).toFixed(0)}` : '—';
-  document.getElementById('itemDesc').textContent  = l.description || 'No description provided.';
-
-  // Wants
+  const vc = document.getElementById('metaViews');
+  vc.innerHTML = `<span>👁</span> ${(l.view_count||0)+1} views`;
+  vc.style.display = 'flex';
+  if (l.quantity>1) { document.getElementById('metaQty').innerHTML=`<span>📦</span> Qty: ${l.quantity}`; document.getElementById('metaQty').style.display='flex'; }
+  document.getElementById('itemValue').textContent = l.estimated_value?`$${Number(l.estimated_value).toFixed(0)}`:'—';
+  document.getElementById('itemDesc').textContent  = l.description||'No description provided.';
   if (l.wants) {
-    document.getElementById('wantsBox').style.display = 'block';
-    document.getElementById('wantsText').textContent  = `"${l.wants}"`;
-    if (l.tags?.length) {
-      document.getElementById('wantsTags').innerHTML = l.tags.map(t =>
-        `<span class="wants-tag">${t}</span>`).join('');
-    }
+    document.getElementById('wantsBox').style.display='block';
+    document.getElementById('wantsText').textContent=`"${l.wants}"`;
+    if (l.tags?.length) document.getElementById('wantsTags').innerHTML=l.tags.map(t=>`<span class="wants-tag">${t}</span>`).join('');
   }
-
-  // Trade comparison seed values
-  document.getElementById('theirAmt').textContent      = l.estimated_value ? `$${Number(l.estimated_value).toFixed(0)}` : '$—';
+  document.getElementById('theirAmt').textContent       = l.estimated_value?`$${Number(l.estimated_value).toFixed(0)}`:'$—';
   document.getElementById('theirItemLabel').textContent = l.title.slice(0,25);
-
-  // Own listing check
-  if (l.user_id === currentUser.id) {
-    document.getElementById('ownListingNotice').style.display = 'block';
-    document.getElementById('offerForm').style.display        = 'none';
+  if (l.user_id===currentUser.id) {
+    document.getElementById('ownListingNotice').style.display='block';
+    document.getElementById('offerForm').style.display='none';
   }
-
-  // Hide tabs that don't apply to this listing's trade_type
-  if (l.trade_type === 'cash') {
-    setOfferType('cash');
-    document.getElementById('tab-trade').style.display = 'none';
-    document.getElementById('tab-tc').style.display    = 'none';
-  } else if (l.trade_type === 'item') {
-    document.getElementById('tab-cash').style.display  = 'none';
-  }
-
-  // Show page
-  document.getElementById('loadingState').style.display  = 'none';
-  document.getElementById('pageContent').style.display   = 'grid';
+  if (l.trade_type==='cash') { setOfferType('cash'); document.getElementById('tab-trade').style.display='none'; document.getElementById('tab-tc').style.display='none'; }
+  else if (l.trade_type==='item') { document.getElementById('tab-cash').style.display='none'; }
+  document.getElementById('loadingState').style.display='none';
+  document.getElementById('pageContent').style.display='grid';
 }
 
-/* ── Photo switcher — only swaps src, no innerHTML rebuild ── */
 function switchPhoto(src, el) {
-  document.querySelectorAll('.thumb').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.thumb').forEach(t=>t.classList.remove('active'));
   el.classList.add('active');
   const img = document.getElementById('mainImgWrap').querySelector('img');
   if (img) img.src = src;
 }
 
-/* ── Watch toggle ── */
 function toggleWatch() {
   watching = !watching;
   const btn = document.getElementById('watchBtn');
-  btn.textContent = watching ? '♥' : '♡';
+  btn.textContent = watching?'♥':'♡';
   btn.classList.toggle('on', watching);
-  showToast(watching ? '♥' : '♡', watching ? 'Added to watchlist!' : 'Removed from watchlist');
+  showToast(watching?'♥':'♡', watching?'Added to watchlist!':'Removed from watchlist');
 }
 
-/* ── Offer type ── */
 function setOfferType(type) {
   offerType = type;
-  document.querySelectorAll('.otab').forEach(t => t.classList.remove('active'));
-  const tab = document.getElementById('tab-' + type);
+  document.querySelectorAll('.otab').forEach(t=>t.classList.remove('active'));
+  const tab = document.getElementById('tab-'+type);
   if (tab) tab.classList.add('active');
-  document.getElementById('yourItemSection').style.display  = type === 'cash' ? 'none' : 'block';
-  document.getElementById('cashBox').classList.toggle('show', type === 'tc');
-  document.getElementById('cashOnlySection').style.display  = type === 'cash' ? 'block' : 'none';
-  if (type !== 'trade') document.getElementById('compareBox').style.display = 'none';
+  document.getElementById('yourItemSection').style.display  = type==='cash'?'none':'block';
+  document.getElementById('cashBox').classList.toggle('show', type==='tc');
+  document.getElementById('cashOnlySection').style.display  = type==='cash'?'block':'none';
+  if (type!=='trade') document.getElementById('compareBox').style.display='none';
   updateFees();
 }
 
-/* ── Trade comparison ── */
-function updateComparison() {
-  const yourVal  = parseFloat(document.getElementById('offerVal')?.value) || 0;
-  const theirVal = listing?.estimated_value ? Number(listing.estimated_value) : 0;
-  const itemText = document.getElementById('offerItem')?.value || 'Your offer';
-
-  if (yourVal > 0 && offerType !== 'cash' && theirVal > 0) {
-    document.getElementById('compareBox').style.display = 'block';
-    document.getElementById('yourAmt').textContent      = `$${yourVal.toFixed(0)}`;
-    document.getElementById('yourItemLabel').textContent = itemText.slice(0,22);
-
-    const diff = theirVal - yourVal;
-    const bal  = document.getElementById('tcBalance');
-    if (Math.abs(diff) <= 3) {
-      bal.className   = 'tc-balance fair';
-      bal.textContent = '✅ Even trade — fair for both sides!';
-    } else if (diff > 0) {
-      bal.className   = 'tc-balance you-pay';
-      bal.textContent = `⚖️ Their item is worth ~$${diff.toFixed(0)} more — consider adding cash`;
-    } else {
-      bal.className   = 'tc-balance they-pay';
-      bal.textContent = `⚖️ Your item is worth ~$${Math.abs(diff).toFixed(0)} more — great deal for them!`;
-    }
-  } else {
-    document.getElementById('compareBox').style.display = 'none';
-  }
+/* ── Photo upload ── */
+function handlePhotoSelect(event) {
+  const files     = Array.from(event.target.files);
+  const remaining = 4 - selectedPhotos.length;
+  selectedPhotos  = [...selectedPhotos, ...files.slice(0, remaining)];
+  renderPhotoPreviews();
+  event.target.value = '';
 }
 
-/* ── Fee calc ── */
+function renderPhotoPreviews() {
+  const area = document.getElementById('photoUploadArea');
+  const prev = document.getElementById('photoPreviews');
+  const n    = selectedPhotos.length;
+  area.classList.toggle('has-photos', n > 0);
+  if (n > 0) {
+    area.querySelector('.pua-icon').textContent = n >= 4 ? '✅' : '📸';
+    area.querySelector('.pua-text').innerHTML   = n >= 4
+      ? '<strong>4 photos added</strong><br>Maximum reached'
+      : `<strong>${n} photo${n>1?'s':''} added</strong><br>Tap to add more (${4-n} remaining)`;
+  } else {
+    area.querySelector('.pua-icon').textContent = '📸';
+    area.querySelector('.pua-text').innerHTML   = '<strong>Tap to add photos</strong><br>Show front &amp; back, or all items being traded<br>JPG/PNG · up to 5MB each · max 4';
+  }
+  prev.innerHTML = selectedPhotos.map((f,i) => {
+    const url = URL.createObjectURL(f);
+    return `<div class="photo-preview-item">
+      <img src="${url}" alt="preview">
+      <button class="photo-preview-remove" onclick="removePhoto(${i})">✕</button>
+    </div>`;
+  }).join('');
+}
+
+function removePhoto(index) { selectedPhotos.splice(index,1); renderPhotoPreviews(); }
+
+async function uploadPhotos() {
+  const urls = [];
+  for (const file of selectedPhotos) {
+    const ext  = file.name.split('.').pop();
+    const path = `${currentUser.id}/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
+    const { error } = await sb.storage.from('offer-photos').upload(path, file, { upsert: false });
+    if (error) throw error;
+    const { data: { publicUrl } } = sb.storage.from('offer-photos').getPublicUrl(path);
+    urls.push(publicUrl);
+  }
+  return urls;
+}
+
+function updateComparison() {
+  const yourVal  = parseFloat(document.getElementById('offerVal')?.value)||0;
+  const theirVal = listing?.estimated_value ? Number(listing.estimated_value) : 0;
+  const itemText = document.getElementById('offerItem')?.value||'Your offer';
+  if (yourVal>0 && offerType!=='cash' && theirVal>0) {
+    document.getElementById('compareBox').style.display='block';
+    document.getElementById('yourAmt').textContent       = `$${yourVal.toFixed(0)}`;
+    document.getElementById('yourItemLabel').textContent = itemText.slice(0,22);
+    const diff = theirVal-yourVal;
+    const bal  = document.getElementById('tcBalance');
+    if (Math.abs(diff)<=3) { bal.className='tc-balance fair'; bal.textContent='✅ Even trade — fair for both sides!'; }
+    else if (diff>0) { bal.className='tc-balance you-pay'; bal.textContent=`⚖️ Their item is worth ~$${diff.toFixed(0)} more — consider adding cash`; }
+    else { bal.className='tc-balance they-pay'; bal.textContent=`⚖️ Your item is worth ~$${Math.abs(diff).toFixed(0)} more — great deal for them!`; }
+  } else { document.getElementById('compareBox').style.display='none'; }
+}
+
 function updateFees() {
   let base = 0;
-  if (offerType === 'trade') base = parseFloat(document.getElementById('offerVal')?.value)     || 0;
-  if (offerType === 'tc')    base = (parseFloat(document.getElementById('offerVal')?.value) || 0)
-                                  + (parseFloat(document.getElementById('cashAmt')?.value)  || 0);
-  if (offerType === 'cash')  base = parseFloat(document.getElementById('cashOnlyAmt')?.value)  || 0;
-
-  const fee   = base * 0.05;
-  const total = base + fee;
+  if (offerType==='trade') base = parseFloat(document.getElementById('offerVal')?.value)||0;
+  if (offerType==='tc')    base = (parseFloat(document.getElementById('offerVal')?.value)||0)+(parseFloat(document.getElementById('cashAmt')?.value)||0);
+  if (offerType==='cash')  base = parseFloat(document.getElementById('cashOnlyAmt')?.value)||0;
+  const fee=base*0.05, total=base+fee;
   document.getElementById('feeBase').textContent  = `$${base.toFixed(2)}`;
   document.getElementById('feePct').textContent   = `$${fee.toFixed(2)}`;
   document.getElementById('feeTotal').textContent = `$${total.toFixed(2)}`;
@@ -754,85 +752,82 @@ function updateFees() {
 function messageSeller() {
   if (!listing) return;
   window.location.href = `alltrades-messages.html?user=${listing.user_id}&listing=${listing.id}`;
-}/*
- ── Submit offer ── */
+}
+
 async function submitOffer() {
   if (!listing) return;
-
   const itemTitle = document.getElementById('offerItem')?.value.trim();
-  const itemVal   = parseFloat(document.getElementById('offerVal')?.value)      || 0;
-  const cashAdd   = parseFloat(document.getElementById('cashAmt')?.value)       || 0;
-  const cashOnly  = parseFloat(document.getElementById('cashOnlyAmt')?.value)   || 0;
+  const itemCond  = document.getElementById('offerCondition')?.value;
+  const itemVal   = parseFloat(document.getElementById('offerVal')?.value)||0;
+  const cashAdd   = parseFloat(document.getElementById('cashAmt')?.value)||0;
+  const cashOnly  = parseFloat(document.getElementById('cashOnlyAmt')?.value)||0;
   const msg       = document.getElementById('offerMsg')?.value.trim();
 
-  if (offerType !== 'cash' && !itemTitle) {
-    showToast('⚠️', 'Please describe what you are offering to trade.');
-    return;
+  if (offerType!=='cash') {
+    if (!itemTitle) { showToast('⚠️','Please describe what you are offering.'); return; }
+    if (!itemCond)  { showToast('⚠️','Please select your item condition.'); return; }
+    if (!itemVal)   { showToast('⚠️','Please enter your item\'s estimated value.'); return; }
+    if (selectedPhotos.length===0) { showToast('📸','Please add at least 1 photo of your item.'); return; }
   }
-  if (offerType === 'cash' && !cashOnly) {
-    showToast('⚠️', 'Please enter your cash offer amount.');
-    return;
-  }
+  if (offerType==='cash'&&!cashOnly) { showToast('⚠️','Please enter your cash offer amount.'); return; }
 
   const btn = document.getElementById('submitOfferBtn');
-  btn.textContent = '⏳ Sending…';
-  btn.disabled    = true;
+  btn.disabled = true;
 
   try {
+    let photoUrls = [];
+    if (offerType!=='cash' && selectedPhotos.length>0) {
+      btn.textContent = '⏳ Uploading photos…';
+      photoUrls = await uploadPhotos();
+    }
+    btn.textContent = '⏳ Sending offer…';
     const { error } = await sb.from('offers').insert({
-      listing_id:          listing.id,
-      offerer_id:          currentUser.id,
-      status:              'pending',
-      offer_type:          offerType,
-      offered_item_title:  offerType !== 'cash' ? itemTitle  : null,
-      offered_item_value:  offerType !== 'cash' ? itemVal    : cashOnly,
-      cash_amount:         offerType === 'tc'   ? cashAdd    : offerType === 'cash' ? cashOnly : 0,
-      message:             msg || null,
-      offered_condition:   null,
-      offered_photos:      null
+      listing_id:         listing.id,
+      offerer_id:         currentUser.id,
+      status:             'pending',
+      offer_type:         offerType,
+      offered_item_title: offerType!=='cash' ? itemTitle : null,
+      offered_item_value: offerType!=='cash' ? itemVal   : cashOnly,
+      offered_condition:  offerType!=='cash' ? itemCond  : null,
+      offered_photos:     photoUrls.length>0 ? photoUrls : null,
+      cash_amount:        offerType==='tc' ? cashAdd : offerType==='cash' ? cashOnly : 0,
+      message:            msg||null,
     });
-
     if (error) throw error;
-
     openModal('successModal');
-    loadOffers(listing.id); // refresh count + list
+    selectedPhotos = [];
+    renderPhotoPreviews();
+    loadOffers(listing.id);
   } catch(e) {
-    showToast('⚠️', 'Error sending offer. Please try again.');
+    showToast('⚠️','Error sending offer. Please try again.');
+    console.error(e);
   } finally {
     btn.textContent = '🤝 Send Trade Offer';
     btn.disabled    = false;
   }
 }
 
-/* ── Helpers ── */
-function showNotFound() {
-  document.getElementById('loadingState').style.display  = 'none';
-  document.getElementById('notFoundState').style.display = 'block';
-}
+function showNotFound() { document.getElementById('loadingState').style.display='none'; document.getElementById('notFoundState').style.display='block'; }
 
 function timeAgo(ts) {
   if (!ts) return '';
-  const m = Math.floor((Date.now() - new Date(ts)) / 60000);
-  if (m < 1)  return 'just now';
-  if (m < 60) return m + 'm ago';
-  const h = Math.floor(m/60);
-  if (h < 24) return h + 'h ago';
-  return Math.floor(h/24) + 'd ago';
+  const m=Math.floor((Date.now()-new Date(ts))/60000);
+  if (m<1) return 'just now'; if (m<60) return m+'m ago';
+  const h=Math.floor(m/60);
+  if (h<24) return h+'h ago';
+  return Math.floor(h/24)+'d ago';
 }
 
 function openModal(id)  { document.getElementById(id).classList.add('open'); }
 function closeModal(id) { document.getElementById(id).classList.remove('open'); }
-document.querySelectorAll('.modal-overlay').forEach(o =>
-  o.addEventListener('click', e => { if (e.target === o) o.classList.remove('open'); })
-);
+document.querySelectorAll('.modal-overlay').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('open');}));
 
 function showToast(icon, msg) {
-  document.getElementById('toastIc').textContent = icon;
-  document.getElementById('toastTx').textContent = msg;
-  const t = document.getElementById('toastEl');
-  t.classList.add('show');
-  clearTimeout(window._tt);
-  window._tt = setTimeout(() => t.classList.remove('show'), 3500);
+  document.getElementById('toastIc').textContent=icon;
+  document.getElementById('toastTx').textContent=msg;
+  const t=document.getElementById('toastEl');
+  t.classList.add('show'); clearTimeout(window._tt);
+  window._tt=setTimeout(()=>t.classList.remove('show'),3500);
 }
 
 updateFees();
