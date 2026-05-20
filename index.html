@@ -1,1263 +1,623 @@
 <!DOCTYPE html>
-
-<html lang="en" style="background:#060e1c;color-scheme:dark;">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tradezy — Coming Soon · Trade Local. Live Better.</title>
-<link rel="icon" type="image/svg+xml" href="/favicon.svg">
-  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-  <link rel="apple-touch-icon-precomposed" href="/apple-touch-icon-precomposed.png">
-  <link rel="manifest" href="/site.webmanifest">
-  <meta name="theme-color" content="#0f1f38">
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="Tradezy">
-  <meta name="description" content="Tradezy is a hyperlocal bartering marketplace. Soft launch July 17th in Meriden, CT — then nationwide July 31st, 2026.">
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,300;0,400;0,600;0,700;0,800;0,900;1,700;1,900&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
+<title>Tradezy — Trade Local. Live Better.</title>
+<meta name="description" content="Tradezy is a free local peer-to-peer trading platform launching July 17, 2026 in Connecticut and Ohio. Trade items safely with verified traders near you.">
+<meta property="og:title" content="Tradezy — Trade Local. Live Better.">
+<meta property="og:description" content="Safe, local item trading launching July 17 in Connecticut & Ohio. Sign up now to lock in Founding Trader status.">
+<meta property="og:url" content="https://tradezyhq.com">
+<script src="supabase.min.js"></script>
+
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-0NSDNDFP0H"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-0NSDNDFP0H');
+</script>
+
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Lato:ital,wght@0,300;0,400;0,700;1,300&display=swap" rel="stylesheet">
 <style>
-/* ── RESET & ROOT ── */
-*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
-
 :root {
-–navy: #060e1c;
-–navy2: #0a1628;
-–navy3: #0f1f38;
-–blue: #1a56db;
-–blue-l: #3b82f6;
-–blue-glow: rgba(59,130,246,.35);
-–gold: #f59e0b;
-–gold-l: #fcd34d;
-–gold-glow: rgba(245,158,11,.3);
-–green: #16a34a;
-–green-l: #22c55e;
-–text: #e2e8f0;
-–muted: #64748b;
-–border: rgba(255,255,255,.08);
-–border2: rgba(255,255,255,.14);
+  --navy:#0a1628;--navy2:#112240;--blue:#1a56db;--blue-l:#2563eb;
+  --gold:#f59e0b;--gold-l:#fbbf24;--green:#16a34a;--green-l:#22c55e;
+  --red:#dc2626;--orange:#ea580c;--text:#1a1a2e;--muted:#475569;
+  --light:#94a3b8;--border:#e2e8f0;--bg:#f8fafc;--white:#fff;--surface:#f8fafc;
 }
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);font-size:14px;}
+a{text-decoration:none;color:inherit;}
 
-html { scroll-behavior: smooth; }
+/* ── LAUNCH BANNER ── */
+.launch-banner{background:linear-gradient(90deg,#1e3a8a,#1a56db,#1e3a8a);padding:10px 20px;text-align:center;font-size:13px;color:#fff;display:flex;align-items:center;justify-content:center;gap:10px;position:relative;}
+.launch-banner strong{color:var(--gold-l);}
+.lb-badge{background:var(--gold);color:var(--navy);font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:11px;padding:2px 10px;border-radius:3px;letter-spacing:.5px;animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.8}}
+.lb-cta{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);color:#fff;padding:4px 14px;border-radius:4px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:12px;cursor:pointer;transition:all .15s;white-space:nowrap;}
+.lb-cta:hover{background:rgba(255,255,255,.25);}
 
-body {
-font-family: ‘Barlow’, sans-serif;
-background: #060e1c !important;
-color: #e2e8f0 !important;
-min-height: 100vh;
-overflow-x: hidden;
-position: relative;
-}
+/* ── NAV ── */
+header{background:var(--white);border-bottom:2px solid var(--border);position:sticky;top:0;z-index:200;box-shadow:0 2px 12px rgba(0,0,0,.07);}
+.nav-main{display:flex;align-items:center;gap:16px;padding:10px 20px;max-width:1280px;margin:0 auto;}
+.logo{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:2rem;letter-spacing:-1px;white-space:nowrap;flex-shrink:0;}
+.logo .a{color:var(--navy);}.logo .t{color:var(--blue);}.logo .d{color:var(--gold);font-size:2.2rem;}
+.nav-cta-area{display:flex;align-items:center;gap:8px;margin-left:auto;}
+.nav-launch-chip{display:flex;align-items:center;gap:6px;background:#eff6ff;border:1px solid #bfdbfe;border-radius:99px;padding:5px 14px;font-size:12px;color:#1e3a8a;font-weight:700;}
+.nav-launch-dot{width:7px;height:7px;background:var(--green);border-radius:50%;animation:pulse 1.5s infinite;}
+.btn-nav-signup{background:var(--gold);color:var(--navy);border:none;padding:8px 20px;border-radius:7px;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.95rem;cursor:pointer;transition:all .15s;}
+.btn-nav-signup:hover{background:var(--gold-l);transform:translateY(-1px);}
+.btn-nav-login{background:transparent;color:var(--muted);border:1px solid var(--border);padding:8px 16px;border-radius:7px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.88rem;cursor:pointer;transition:all .15s;}
+.btn-nav-login:hover{border-color:var(--blue);color:var(--blue);}
 
-/* ── CANVAS BACKGROUND ── */
-#bgCanvas {
-position: fixed;
-inset: 0;
-width: 100%;
-height: 100%;
-z-index: 0;
-opacity: .6;
-}
+/* ── HERO ── */
+.hero{background:linear-gradient(135deg,var(--navy) 0%,#0f2547 50%,#0a3060 100%);min-height:520px;display:flex;align-items:center;position:relative;overflow:hidden;padding:60px 20px;}
+.hero::before{content:'';position:absolute;top:-100px;right:-100px;width:500px;height:500px;background:radial-gradient(circle,rgba(245,158,11,.12) 0%,transparent 65%);pointer-events:none;}
+.hero::after{content:'⇄';position:absolute;right:5%;bottom:-20px;font-size:18rem;color:rgba(255,255,255,.025);font-family:'Barlow Condensed',sans-serif;pointer-events:none;}
+.hero-inner{max-width:1280px;margin:0 auto;width:100%;display:grid;grid-template-columns:1fr 420px;gap:48px;align-items:center;position:relative;z-index:1;}
+.hero-tag{display:inline-flex;align-items:center;gap:6px;background:rgba(245,158,11,.15);border:1px solid rgba(245,158,11,.3);color:var(--gold-l);font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:5px 14px;border-radius:4px;margin-bottom:18px;}
+.hero h1{font-family:'Barlow Condensed',sans-serif;font-size:clamp(2.2rem,5vw,3.8rem);font-weight:900;color:#fff;line-height:1.02;letter-spacing:-.5px;margin-bottom:14px;}
+.hero h1 .hl{color:var(--gold-l);}
+.hero-sub{color:#94a3b8;font-size:15px;line-height:1.6;max-width:480px;margin-bottom:10px;}
+.hero-sub strong{color:#cbd5e1;}
+.launch-states{display:flex;align-items:center;gap:8px;margin-bottom:28px;flex-wrap:wrap;}
+.state-chip{display:flex;align-items:center;gap:5px;background:rgba(22,163,74,.12);border:1px solid rgba(22,163,74,.25);color:var(--green-l);font-size:12px;font-weight:700;padding:4px 12px;border-radius:99px;}
+.launch-date-chip{display:flex;align-items:center;gap:5px;background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.25);color:var(--gold-l);font-size:12px;font-weight:700;padding:4px 12px;border-radius:99px;}
+.hero-stats{display:flex;gap:24px;margin-top:28px;padding-top:22px;border-top:1px solid rgba(255,255,255,.08);}
+.hstat-num{font-family:'Barlow Condensed',sans-serif;font-size:1.5rem;font-weight:900;color:var(--gold-l);}
+.hstat-label{font-size:11px;color:#475569;text-transform:uppercase;letter-spacing:.5px;margin-top:1px;}
 
-/* ── MESH GRADIENT OVERLAY ── */
-.mesh {
-position: fixed;
-inset: 0;
-z-index: 1;
-background:
-radial-gradient(ellipse 80% 60% at 20% 20%, rgba(26,86,219,.18) 0%, transparent 60%),
-radial-gradient(ellipse 60% 80% at 80% 80%, rgba(245,158,11,.12) 0%, transparent 60%),
-radial-gradient(ellipse 50% 50% at 50% 50%, rgba(22,163,74,.06) 0%, transparent 70%);
-pointer-events: none;
-}
-
-/* ── GRAIN OVERLAY ── */
-.grain {
-position: fixed;
-inset: 0;
-z-index: 2;
-opacity: .025;
-background-image: url(“data:image/svg+xml,%3Csvg viewBox=‘0 0 256 256’ xmlns=‘http://www.w3.org/2000/svg’%3E%3Cfilter id=‘noise’%3E%3CfeTurbulence type=‘fractalNoise’ baseFrequency=‘0.9’ numOctaves=‘4’ stitchTiles=‘stitch’/%3E%3C/filter%3E%3Crect width=‘100%25’ height=‘100%25’ filter=‘url(%23noise)’/%3E%3C/svg%3E”);
-pointer-events: none;
-}
-
-/* ── MAIN CONTENT ── */
-.page {
-position: relative;
-z-index: 10;
-min-height: 100vh;
-display: flex;
-flex-direction: column;
-align-items: center;
-justify-content: center;
-padding: 40px 24px 60px;
-}
-
-/* ── LOGO ── */
-.logo-wrap {
-margin-bottom: 16px;
-animation: fadeDown .8s ease both;
-}
-.logo {
-font-family: ‘Barlow Condensed’, sans-serif;
-font-weight: 900;
-font-size: clamp(2.8rem, 8vw, 4.5rem);
-letter-spacing: -2px;
-line-height: 1;
-display: flex;
-align-items: center;
-gap: 2px;
-}
-.logo .l-trade { color: #fff; }
-.logo .l-zy { color: var(–blue-l); }
-.logo .l-dot { color: var(–gold); }
-
-/* TAGLINE PILL */
-.tagline-pill {
-display: inline-flex;
-align-items: center;
-gap: 8px;
-background: rgba(26,86,219,.12);
-border: 1px solid rgba(26,86,219,.25);
-border-radius: 99px;
-padding: 6px 16px;
-font-family: ‘Barlow Condensed’, sans-serif;
-font-weight: 700;
-font-size: .85rem;
-letter-spacing: 1.5px;
-text-transform: uppercase;
-color: var(–blue-l);
-margin-bottom: 28px;
-animation: fadeDown .8s .1s ease both;
-}
-.tagline-pill::before { content: ‘’; width: 6px; height: 6px; border-radius: 50%; background: var(–green-l); animation: blink 1.5s infinite; }
-@keyframes blink { 0%,100%{opacity:1}50%{opacity:.3} }
-
-/* ── HEADLINE ── */
-.headline {
-text-align: center;
-margin-bottom: 14px;
-animation: fadeDown .8s .15s ease both;
-}
-.hl-main {
-font-family: ‘Barlow Condensed’, sans-serif;
-font-weight: 900;
-font-size: clamp(2.6rem, 7vw, 5.2rem);
-line-height: .95;
-letter-spacing: -1.5px;
-color: #fff;
-display: block;
-margin-bottom: 8px;
-}
-.hl-main em {
-font-style: italic;
-color: var(–gold-l);
-display: inline-block;
-position: relative;
-}
-.hl-main em::after {
-content: ‘’;
-position: absolute;
-bottom: 4px;
-left: 0;
-right: 0;
-height: 3px;
-background: var(–gold);
-border-radius: 2px;
-opacity: .5;
-}
-.hl-sub {
-font-size: clamp(1rem, 2.5vw, 1.25rem);
-color: var(–muted);
-font-weight: 400;
-line-height: 1.5;
-max-width: 500px;
-margin: 0 auto;
-}
+/* ── SIGNUP CARD ── */
+.signup-card{background:rgba(255,255,255,.97);border-radius:16px;padding:28px;box-shadow:0 20px 60px rgba(0,0,0,.35);position:relative;}
+.sc-header{margin-bottom:20px;}
+.sc-title{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.4rem;color:var(--navy);margin-bottom:4px;}
+.sc-sub{font-size:12px;color:var(--muted);line-height:1.5;}
+.founding-perks{background:#fffbeb;border:1px solid #fde68a;border-radius:9px;padding:12px 14px;margin-bottom:18px;}
+.fp-title{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.82rem;color:#92400e;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;}
+.fp-item{display:flex;align-items:center;gap:7px;font-size:12px;color:#78350f;margin-bottom:5px;font-weight:700;}
+.fp-item:last-child{margin-bottom:0;}
+.signup-form{display:flex;flex-direction:column;gap:10px;}
+.sf-input{width:100%;border:1.5px solid var(--border);border-radius:8px;padding:11px 14px;font-size:14px;font-family:'Lato',sans-serif;color:var(--text);outline:none;transition:border-color .15s;}
+.sf-input:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(26,86,219,.08);}
+.sf-input::placeholder{color:var(--light);}
+.btn-signup-main{width:100%;padding:13px;background:linear-gradient(135deg,var(--gold),#d97706);color:var(--navy);border:none;border-radius:8px;font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.05rem;cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center;gap:7px;}
+.btn-signup-main:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(245,158,11,.4);}
+.btn-signup-main:disabled{background:#94a3b8;cursor:not-allowed;transform:none;box-shadow:none;}
+.sc-terms{font-size:11px;color:var(--light);text-align:center;line-height:1.5;margin-top:8px;}
+.sc-terms a{color:var(--blue);}
+.success-state{display:none;text-align:center;padding:20px 0;}
+.ss-icon{font-size:3rem;margin-bottom:12px;}
+.ss-title{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.3rem;color:var(--navy);margin-bottom:6px;}
+.ss-sub{font-size:13px;color:var(--muted);line-height:1.5;}
 
 /* ── COUNTDOWN ── */
-.countdown-section {
-margin: 32px 0;
-text-align: center;
-animation: fadeUp .9s .25s ease both;
-}
-.countdown-label {
-font-family: ‘Barlow Condensed’, sans-serif;
-font-size: .8rem;
-font-weight: 700;
-text-transform: uppercase;
-letter-spacing: 2px;
-color: var(–muted);
-margin-bottom: 14px;
-}
-.countdown-grid {
-display: flex;
-align-items: flex-start;
-justify-content: center;
-gap: 10px;
-}
-.cd-unit {
-display: flex;
-flex-direction: column;
-align-items: center;
-}
-.cd-box {
-position: relative;
-width: clamp(72px, 18vw, 110px);
-height: clamp(72px, 18vw, 110px);
-background: #0f1f38 !important;
-border: 1px solid var(–border2);
-border-radius: 12px;
-display: flex;
-align-items: center;
-justify-content: center;
-overflow: hidden;
-box-shadow: 0 4px 24px rgba(0,0,0,.4), inset 0 1px 0 rgba(255,255,255,.06);
-}
-.cd-box::before {
-content: ‘’;
-position: absolute;
-top: 0;
-left: 0;
-right: 0;
-height: 50%;
-background: rgba(255,255,255,.03);
-border-radius: 12px 12px 0 0;
-}
-.cd-box::after {
-content: ‘’;
-position: absolute;
-top: 49%;
-left: 10%;
-right: 10%;
-height: 1px;
-background: rgba(0,0,0,.4);
-}
-.cd-num {
-font-family: ‘Barlow Condensed’, sans-serif;
-font-weight: 900;
-font-size: clamp(2rem, 7vw, 3.5rem);
-line-height: 1;
-color: #fff;
-letter-spacing: -2px;
-position: relative;
-z-index: 1;
-transition: all .3s cubic-bezier(.34,1.56,.64,1);
-}
-.cd-num.flip {
-transform: scale(.85) translateY(-4px);
-opacity: .6;
-}
-.cd-lbl {
-font-family: ‘Barlow Condensed’, sans-serif;
-font-size: .72rem;
-font-weight: 700;
-text-transform: uppercase;
-letter-spacing: 1.5px;
-color: var(–muted);
-margin-top: 8px;
-}
-.cd-sep {
-font-family: ‘Barlow Condensed’, sans-serif;
-font-size: clamp(2rem, 6vw, 3rem);
-font-weight: 900;
-color: rgba(255,255,255,.12);
-line-height: 1;
-padding-top: 10px;
-align-self: flex-start;
-}
+.countdown-section{background:var(--navy);padding:28px 20px;text-align:center;}
+.countdown-inner{max-width:800px;margin:0 auto;}
+.cd-label{font-size:13px;color:#64748b;text-transform:uppercase;letter-spacing:1px;font-weight:700;margin-bottom:16px;}
+.cd-units{display:flex;align-items:center;justify-content:center;gap:8px;}
+.cd-unit{text-align:center;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:14px 20px;min-width:80px;}
+.cd-num{font-family:'Barlow Condensed',sans-serif;font-size:2.5rem;font-weight:900;color:var(--gold-l);line-height:1;}
+.cd-lbl{font-size:10px;color:#475569;text-transform:uppercase;letter-spacing:.5px;margin-top:3px;}
+.cd-sep{font-family:'Barlow Condensed',sans-serif;font-size:2rem;font-weight:900;color:#1e3a5f;margin-top:-8px;}
 
-/* Glow ring on days box */
-.cd-unit:first-child .cd-box {
-background: #0f1f38 !important;
-border-color: rgba(245,158,11,.3);
-box-shadow: 0 4px 24px rgba(0,0,0,.4), 0 0 30px rgba(245,158,11,.12), inset 0 1px 0 rgba(255,255,255,.06);
-}
-.cd-unit:first-child .cd-num { color: var(–gold-l); }
+/* ── HOW IT WORKS ── */
+.section{max-width:1280px;margin:0 auto;padding:48px 20px;}
+.section-label{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;color:var(--blue);margin-bottom:8px;}
+.section-title{font-family:'Barlow Condensed',sans-serif;font-size:clamp(1.6rem,3vw,2.2rem);font-weight:900;color:var(--text);margin-bottom:6px;}
+.section-sub{font-size:14px;color:var(--muted);max-width:520px;line-height:1.6;margin-bottom:36px;}
+.steps-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;}
+.step-card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:22px 18px;text-align:center;transition:all .2s;position:relative;}
+.step-card:hover{box-shadow:0 8px 28px rgba(0,0,0,.1);transform:translateY(-3px);}
+.step-num{position:absolute;top:14px;right:14px;font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.8rem;color:rgba(26,86,219,.08);}
+.step-icon{width:56px;height:56px;background:#eff6ff;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.6rem;margin:0 auto 14px;border:1px solid #dbeafe;}
+.step-title{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1rem;margin-bottom:6px;}
+.step-desc{font-size:12px;color:var(--muted);line-height:1.6;}
 
-/* ── LAUNCH DATE BADGE ── */
-.launch-badge {
-display: inline-flex;
-align-items: center;
-gap: 8px;
-background: rgba(245,158,11,.1);
-border: 1px solid rgba(245,158,11,.25);
-border-radius: 8px;
-padding: 8px 16px;
-font-family: ‘Barlow Condensed’, sans-serif;
-font-weight: 700;
-font-size: .88rem;
-color: var(–gold-l);
-margin-top: 14px;
-letter-spacing: .5px;
-}
+/* ── CATEGORIES ── */
+.cats-bg{background:linear-gradient(180deg,#f8fafc,#fff);}
+.cats-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;}
+.cat-card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:16px 10px;text-align:center;cursor:pointer;transition:all .18s;}
+.cat-card:hover{border-color:var(--blue);box-shadow:0 4px 16px rgba(26,86,219,.1);transform:translateY(-2px);}
+.cat-card.new{border-color:var(--gold);background:#fffbeb;}
+.cat-em{font-size:2rem;margin-bottom:7px;}
+.cat-name{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.85rem;color:var(--text);}
+.cat-badge{display:inline-block;background:var(--red);color:#fff;font-size:9px;font-weight:800;padding:1px 5px;border-radius:3px;margin-top:3px;letter-spacing:.3px;}
 
-/* ── EMAIL SIGNUP ── */
-.signup-section {
-width: 100%;
-max-width: 520px;
-margin: 0 auto 28px;
-animation: fadeUp .9s .35s ease both;
-}
-.signup-title {
-font-family: ‘Barlow Condensed’, sans-serif;
-font-weight: 800;
-font-size: 1.1rem;
-color: #fff;
-margin-bottom: 6px;
-text-align: center;
-}
-.signup-sub {
-font-size: 13px;
-color: var(–muted);
-text-align: center;
-margin-bottom: 16px;
-line-height: 1.5;
-}
-.email-form {
-display: flex;
-gap: 8px;
-background: rgba(255,255,255,.05);
-border: 1.5px solid var(–border2);
-border-radius: 12px;
-padding: 6px 6px 6px 16px;
-transition: border-color .2s, box-shadow .2s;
-}
-.email-form:focus-within {
-border-color: var(–blue);
-box-shadow: 0 0 0 3px var(–blue-glow);
-}
-.email-input {
-flex: 1;
-background: transparent;
-border: none;
-outline: none;
-font-family: ‘Barlow’, sans-serif;
-font-size: 14px;
-color: var(–text);
-padding: 4px 0;
-min-width: 0;
-}
-.email-input::placeholder { color: var(–muted); }
-.email-btn {
-padding: 11px 22px;
-background: linear-gradient(135deg, var(–blue), #1d4ed8);
-border: none;
-border-radius: 8px;
-font-family: ‘Barlow Condensed’, sans-serif;
-font-weight: 800;
-font-size: .95rem;
-color: #fff;
-cursor: pointer;
-transition: all .2s;
-white-space: nowrap;
-letter-spacing: .3px;
-position: relative;
-overflow: hidden;
-}
-.email-btn::before {
-content: ‘’;
-position: absolute;
-top: 0; left: -100%;
-width: 100%; height: 100%;
-background: linear-gradient(90deg, transparent, rgba(255,255,255,.15), transparent);
-transition: left .4s;
-}
-.email-btn:hover::before { left: 100%; }
-.email-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 16px var(–blue-glow); }
-.email-btn:active { transform: translateY(0); }
+/* ── FOUNDING TRADER SECTION ── */
+.founding-bg{background:linear-gradient(135deg,var(--navy),#0f3460);}
+.founding-inner{max-width:1280px;margin:0 auto;padding:56px 20px;display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;}
+.founding-title{font-family:'Barlow Condensed',sans-serif;font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:900;color:#fff;line-height:1.05;margin-bottom:14px;}
+.founding-sub{color:#94a3b8;font-size:14px;line-height:1.7;margin-bottom:24px;}
+.perks-list{display:flex;flex-direction:column;gap:12px;}
+.perk-item{display:flex;align-items:flex-start;gap:12px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:13px 15px;}
+.perk-icon{font-size:1.3rem;flex-shrink:0;margin-top:1px;}
+.perk-text{flex:1;}
+.perk-title{font-weight:700;font-size:13px;color:#fff;margin-bottom:2px;}
+.perk-desc{font-size:11px;color:#64748b;line-height:1.5;}
+.founding-cta{text-align:center;}
+.founding-cta-card{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:28px;}
+.fcc-num{font-family:'Barlow Condensed',sans-serif;font-size:3rem;font-weight:900;color:var(--gold-l);margin-bottom:4px;}
+.fcc-label{font-size:13px;color:#94a3b8;margin-bottom:20px;}
+.fcc-spots{background:rgba(220,38,38,.1);border:1px solid rgba(220,38,38,.2);border-radius:8px;padding:9px;font-size:12px;color:#fca5a5;font-weight:700;margin-bottom:18px;}
+.btn-founding{width:100%;padding:13px;background:var(--gold);color:var(--navy);border:none;border-radius:8px;font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.05rem;cursor:pointer;transition:all .15s;}
+.btn-founding:hover{background:var(--gold-l);transform:translateY(-1px);}
 
-/* Success state */
-.email-success {
-display: none;
-text-align: center;
-padding: 16px;
-background: rgba(22,163,74,.1);
-border: 1px solid rgba(22,163,74,.25);
-border-radius: 10px;
-animation: popIn .4s ease;
-}
-.email-success.show { display: block; }
-.es-emoji { font-size: 2.5rem; margin-bottom: 8px; }
-.es-title { font-family: ‘Barlow Condensed’, sans-serif; font-weight: 800; font-size: 1.1rem; color: var(–green-l); margin-bottom: 4px; }
-.es-sub { font-size: 13px; color: #86efac; }
-@keyframes popIn { from{opacity:0;transform:scale(.9)} to{opacity:1;transform:scale(1)} }
+/* ── SAFETY SECTION ── */
+.safety-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+.safety-card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:22px 18px;}
+.safety-icon{font-size:2rem;margin-bottom:10px;}
+.safety-title{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1rem;margin-bottom:6px;}
+.safety-desc{font-size:12px;color:var(--muted);line-height:1.6;}
 
-/* Privacy note */
-.privacy-note {
-text-align: center;
-font-size: 11px;
-color: var(–muted);
-margin-top: 10px;
-display: flex;
-align-items: center;
-justify-content: center;
-gap: 5px;
-}
+/* ── LAUNCH CITIES ── */
+.cities-section{background:var(--navy);padding:48px 20px;}
+.cities-inner{max-width:1280px;margin:0 auto;text-align:center;}
+.cities-title{font-family:'Barlow Condensed',sans-serif;font-size:clamp(1.6rem,3vw,2.2rem);font-weight:900;color:#fff;margin-bottom:8px;}
+.cities-sub{color:#64748b;font-size:14px;margin-bottom:36px;}
+.cities-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;max-width:700px;margin:0 auto 32px;}
+.city-card{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:24px;text-align:center;transition:all .2s;}
+.city-card:hover{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.2);}
+.city-em{font-size:2.5rem;margin-bottom:10px;}
+.city-name{font-family:'Barlow Condensed',sans-serif;font-size:1.3rem;font-weight:900;color:#fff;margin-bottom:4px;}
+.city-desc{font-size:12px;color:#64748b;line-height:1.5;}
+.city-badge{display:inline-block;background:rgba(22,163,74,.15);border:1px solid rgba(22,163,74,.3);color:var(--green-l);font-size:10px;font-weight:800;padding:2px 10px;border-radius:3px;margin-top:8px;letter-spacing:.3px;}
 
-/* ── EARLY SIGNUP COUNTER ── */
-.counter-section {
-display: flex;
-align-items: center;
-justify-content: center;
-gap: 10px;
-margin-bottom: 32px;
-animation: fadeUp .9s .4s ease both;
-}
-.counter-avatars {
-display: flex;
-}
-.c-av {
-width: 32px;
-height: 32px;
-border-radius: 50%;
-border: 2px solid var(–navy);
-display: flex;
-align-items: center;
-justify-content: center;
-font-size: .75rem;
-font-weight: 700;
-font-family: ‘Barlow Condensed’, sans-serif;
-margin-left: -8px;
-color: #fff;
-}
-.c-av:first-child { margin-left: 0; }
-.counter-text {
-font-size: 13px;
-color: var(–muted);
-}
-.counter-text strong {
-color: var(–gold-l);
-font-weight: 700;
-}
+/* ── BOTTOM CTA ── */
+.bottom-cta{background:linear-gradient(135deg,#f8fafc,#fff);padding:56px 20px;text-align:center;}
+.bc-inner{max-width:600px;margin:0 auto;}
+.bc-title{font-family:'Barlow Condensed',sans-serif;font-size:clamp(1.8rem,4vw,2.6rem);font-weight:900;color:var(--navy);margin-bottom:10px;}
+.bc-sub{font-size:14px;color:var(--muted);line-height:1.6;margin-bottom:28px;}
+.bc-email-wrap{display:flex;gap:8px;max-width:420px;margin:0 auto 14px;}
+.bc-email{flex:1;border:1.5px solid var(--border);border-radius:8px;padding:12px 14px;font-size:14px;font-family:'Lato',sans-serif;outline:none;transition:border-color .15s;}
+.bc-email:focus{border-color:var(--blue);}
+.bc-btn{background:var(--navy);color:#fff;border:none;padding:12px 22px;border-radius:8px;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.95rem;cursor:pointer;transition:all .15s;white-space:nowrap;}
+.bc-btn:hover{background:#0f2547;}
+.bc-note{font-size:11px;color:var(--light);}
 
-/* ── FEATURES STRIP ── */
-.features-strip {
-display: flex;
-gap: 6px;
-flex-wrap: wrap;
-justify-content: center;
-max-width: 560px;
-margin: 0 auto 32px;
-animation: fadeUp .9s .45s ease both;
-}
-.feature-chip {
-display: flex;
-align-items: center;
-gap: 6px;
-background: rgba(255,255,255,.04);
-border: 1px solid var(–border);
-border-radius: 99px;
-padding: 6px 14px;
-font-size: 12px;
-font-weight: 600;
-color: var(–muted);
-white-space: nowrap;
-transition: all .2s;
-}
-.feature-chip:hover {
-background: rgba(255,255,255,.07);
-border-color: var(–border2);
-color: var(–text);
-transform: translateY(-2px);
-}
-.feature-chip span { font-size: .9rem; }
-
-/* ── BOTTOM ESSENTIALS ── */
-.bottom-essentials {
-display: flex;
-flex-direction: column;
-align-items: center;
-gap: 12px;
-animation: fadeUp .9s .5s ease both;
-}
-.categories-row {
-display: flex;
-gap: 8px;
-align-items: center;
-font-size: 12px;
-color: var(–muted);
-flex-wrap: wrap;
-justify-content: center;
-}
-.cat-chip {
-display: flex;
-align-items: center;
-gap: 4px;
-background: rgba(255,255,255,.04);
-border: 1px solid var(–border);
-border-radius: 6px;
-padding: 4px 10px;
-font-size: 12px;
-color: var(–muted);
-}
-
-/* ── NOTIFICATION PREFERENCES ── */
-.notif-row {
-display: flex;
-gap: 8px;
-flex-wrap: wrap;
-justify-content: center;
-}
-.notif-check {
-display: flex;
-align-items: center;
-gap: 6px;
-font-size: 12px;
-color: var(–muted);
-cursor: pointer;
-}
-.notif-check input {
-accent-color: var(–blue);
-width: 14px;
-height: 14px;
-cursor: pointer;
-}
-
-/* ── SOCIAL LINKS ── */
-.social-row {
-display: flex;
-gap: 10px;
-align-items: center;
-}
-.social-link {
-width: 36px;
-height: 36px;
-border-radius: 8px;
-border: 1px solid var(–border);
-display: flex;
-align-items: center;
-justify-content: center;
-font-size: .9rem;
-cursor: pointer;
-transition: all .2s;
-background: rgba(255,255,255,.03);
-text-decoration: none;
-}
-.social-link:hover {
-border-color: var(–blue);
-background: rgba(26,86,219,.1);
-transform: translateY(-2px);
-}
-
-/* ── COPYRIGHT ── */
-.copyright {
-font-size: 11px;
-color: #1e3a5f;
-text-align: center;
-}
-
-/* ── ANIMATIONS ── */
-@keyframes fadeDown {
-from { opacity: 0; transform: translateY(-20px); }
-to   { opacity: 1; transform: translateY(0); }
-}
-@keyframes fadeUp {
-from { opacity: 0; transform: translateY(20px); }
-to   { opacity: 1; transform: translateY(0); }
-}
+/* ── FOOTER ── */
+footer{background:var(--navy);color:#64748b;padding:36px 20px 20px;}
+.footer-inner{max-width:1280px;margin:0 auto;}
+.footer-top{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:32px;margin-bottom:28px;}
+.footer-brand .logo{font-size:1.6rem;margin-bottom:10px;display:block;}
+.footer-brand p{font-size:12px;line-height:1.6;color:#475569;max-width:240px;}
+.footer-col-title{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.9rem;color:#94a3b8;letter-spacing:.5px;text-transform:uppercase;margin-bottom:12px;}
+.footer-links{display:flex;flex-direction:column;gap:8px;}
+.footer-links a{font-size:13px;color:#475569;cursor:pointer;transition:color .15s;}
+.footer-links a:hover{color:#94a3b8;}
+.footer-bottom{border-top:1px solid #1e293b;padding-top:16px;display:flex;align-items:center;justify-content:space-between;font-size:12px;flex-wrap:wrap;gap:8px;}
+.footer-bottom-links{display:flex;gap:16px;}
+.footer-bottom-links a{color:#475569;cursor:pointer;}
+.footer-bottom-links a:hover{color:#94a3b8;}
 
 /* ── TOAST ── */
-.toast {
-position: fixed;
-bottom: 24px;
-right: 24px;
-background: var(–navy3);
-border: 1px solid var(–border2);
-border-left: 4px solid var(–green);
-border-radius: 10px;
-padding: 12px 18px;
-font-size: 13px;
-z-index: 9999;
-display: flex;
-align-items: center;
-gap: 10px;
-max-width: 300px;
-box-shadow: 0 8px 32px rgba(0,0,0,.5);
-transform: translateX(120%);
-transition: transform .3s ease;
-}
-.toast.show { transform: translateX(0); }
+.toast{position:fixed;bottom:20px;right:20px;background:var(--navy);color:#e2e8f0;border:1px solid #1e3a5f;border-left:4px solid var(--green);border-radius:8px;padding:10px 16px;font-size:13px;z-index:9999;display:flex;align-items:center;gap:9px;max-width:300px;box-shadow:0 8px 26px rgba(0,0,0,.3);transform:translateX(120%);transition:transform .3s ease;}
+.toast.show{transform:translateX(0);}
+.toast.error{border-left-color:var(--red);}
 
-/* ── LIVE TICKER ── */
-.ticker-wrap {
-display: flex;
-align-items: center;
-gap: 10px;
-background: rgba(255,255,255,.04);
-border: 1px solid rgba(255,255,255,.08);
-border-radius: 30px;
-padding: 8px 16px;
-margin: 12px auto;
-max-width: 500px;
-overflow: hidden;
+@media(max-width:900px){
+  .hero-inner{grid-template-columns:1fr;}.signup-card{max-width:460px;margin:0 auto;}
+  .steps-grid{grid-template-columns:repeat(2,1fr);}
+  .cats-grid{grid-template-columns:repeat(3,1fr);}
+  .founding-inner{grid-template-columns:1fr;}
+  .safety-grid{grid-template-columns:1fr;}
+  .cities-grid{grid-template-columns:1fr;}
+  .footer-top{grid-template-columns:1fr 1fr;}
+  .bc-email-wrap{flex-direction:column;}
 }
-.ticker-label {
-font-size: 11px;
-font-weight: 800;
-color: #ef4444;
-white-space: nowrap;
-letter-spacing: 1px;
-animation: pulse 1.5s infinite;
+@media(max-width:600px){
+  .cats-grid{grid-template-columns:repeat(2,1fr);}
+  .steps-grid{grid-template-columns:1fr;}
+  .footer-top{grid-template-columns:1fr;}
+  .cd-units{gap:4px;}.cd-unit{padding:10px 12px;min-width:60px;}
+  .cd-num{font-size:1.8rem;}
 }
-@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
-.ticker-track {
-font-size: 13px;
-color: rgba(255,255,255,.7);
-white-space: nowrap;
-overflow: hidden;
-animation: tickerScroll 18s linear infinite;
-}
-@keyframes tickerScroll {
-0% { transform: translateX(100%); }
-100% { transform: translateX(-100%); }
-}
-
-/* ── REFERRAL BOX ── */
-.referral-box {
-background: linear-gradient(135deg, rgba(26,86,219,.15), rgba(245,158,11,.08));
-border: 1px solid rgba(26,86,219,.3);
-border-radius: 16px;
-padding: 20px;
-margin: 16px auto;
-max-width: 500px;
-text-align: center;
-}
-.ref-title {
-font-family: ‘Barlow Condensed’, sans-serif;
-font-weight: 800;
-font-size: 1.2rem;
-color: #fff;
-margin-bottom: 6px;
-}
-.ref-sub {
-font-size: 13px;
-color: rgba(255,255,255,.65);
-margin-bottom: 14px;
-line-height: 1.5;
-}
-.ref-link-wrap {
-display: flex;
-gap: 8px;
-margin-bottom: 10px;
-}
-.ref-link-input {
-flex: 1;
-background: rgba(255,255,255,.08);
-border: 1px solid rgba(255,255,255,.15);
-border-radius: 8px;
-padding: 9px 12px;
-color: #fff;
-font-size: 13px;
-outline: none;
-}
-.ref-copy-btn {
-background: #1a56db;
-color: #fff;
-border: none;
-border-radius: 8px;
-padding: 9px 16px;
-font-weight: 700;
-font-size: 13px;
-cursor: pointer;
-}
-.ref-count {
-font-size: 13px;
-color: rgba(255,255,255,.6);
-margin-bottom: 12px;
-}
-.ref-share-row {
-display: flex;
-gap: 8px;
-justify-content: center;
-}
-.ref-share-btn {
-background: rgba(255,255,255,.08);
-border: 1px solid rgba(255,255,255,.15);
-border-radius: 8px;
-padding: 8px 14px;
-color: #fff;
-font-size: 12px;
-font-weight: 700;
-text-decoration: none;
-cursor: pointer;
-}
-
-/* ── RESPONSIVE ── */
-@media (max-width: 480px) {
-.countdown-grid { gap: 6px; }
-.cd-sep { font-size: 1.5rem; padding-top: 18px; }
-.email-form { flex-direction: column; padding: 10px; }
-.email-btn { width: 100%; }
-.features-strip { gap: 5px; }
-.feature-chip { font-size: 11px; padding: 5px 10px; }
-}
-
-/* ── DARK MODE (already dark, so keep consistent) ── */
-/* Force dark always */
-body, html { background: #060e1c !important; }
 </style>
-
 </head>
 <body>
 
-<!-- Netlify Form Detection -->
+<!-- LAUNCH BANNER -->
+<div class="launch-banner">
+  <span class="lb-badge">LAUNCHING JULY 17</span>
+  <span>Tradezy goes live in <strong>Connecticut & Ohio</strong> — Sign up now for <strong>Founding Trader</strong> perks</span>
+  <button class="lb-cta" onclick="scrollToSignup()">Claim Your Spot →</button>
+</div>
 
-<form name="waitlist" hidden>
-  <input type="email" name="email"/>
-</form>
-
-<canvas id="bgCanvas"></canvas>
-
-<div class="mesh"></div>
-<div class="grain"></div>
-
-<main class="page">
-
-  <!-- LOGO -->
-
-  <div class="logo-wrap">
-    <div class="logo">
-      <span class="l-trade">Trade</span><span class="l-zy">zy</span><span class="l-dot">.</span>
+<!-- NAV -->
+<header>
+  <div class="nav-main">
+    <div class="logo"><span class="a">Trade</span><span class="t">zy</span><span class="d">.</span></div>
+    <div class="nav-cta-area">
+      <div class="nav-launch-chip"><div class="nav-launch-dot"></div>July 17 Launch</div>
+      <button class="btn-nav-login" onclick="window.location.href='alltrades-auth.html'">Sign In</button>
+      <button class="btn-nav-signup" onclick="scrollToSignup()">⭐ Join Free</button>
     </div>
   </div>
+</header>
 
-  <!-- TAGLINE PILL -->
-
-  <div class="tagline-pill">
-    🌱 Soft Launch July 17th · Nationwide July 31st
-  </div>
-
-  <!-- HEADLINE -->
-
-  <div class="headline">
-    <span class="hl-main">Trade What You Have.<br><em>Get What You Need.</em></span>
-    <p class="hl-sub">Tradezy is a hyperlocal bartering marketplace for your community — food, water, tools, gear, and more. No cash required. Just neighbors helping neighbors.</p>
-  </div>
-
-  <!-- COUNTDOWN -->
-
-  <div class="countdown-section">
-    <div class="countdown-label">Launching in</div>
-    <div class="countdown-grid">
-      <div class="cd-unit">
-        <div class="cd-box"><div class="cd-num" id="cdDays">--</div></div>
-        <div class="cd-lbl">Days</div>
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-content">
+      <div class="hero-tag">🔄 Local Peer-to-Peer Trading Platform</div>
+      <h1>Trade What You Have<br>for <span class="hl">What You Need</span></h1>
+      <p class="hero-sub">
+        Tradezy connects you with real traders in your community for safe, verified, in-person swaps.
+        <strong>No shipping. No strangers from across the country. Just neighbors trading locally.</strong>
+      </p>
+      <div class="launch-states">
+        <div class="state-chip">📍 Connecticut — Statewide</div>
+        <div class="state-chip">📍 Ohio — Statewide</div>
+        <div class="launch-date-chip">🗓️ Launching July 17, 2026</div>
       </div>
+      <div class="hero-stats">
+        <div class="hstat"><div class="hstat-num">$0</div><div class="hstat-label">Listing Fee</div></div>
+        <div class="hstat"><div class="hstat-num">5%</div><div class="hstat-label">Only on Completed Trades</div></div>
+        <div class="hstat"><div class="hstat-num">3%</div><div class="hstat-label">Founding Trader Rate</div></div>
+        <div class="hstat"><div class="hstat-num">20+</div><div class="hstat-label">Founding Traders</div></div>
+      </div>
+    </div>
+
+    <!-- SIGNUP CARD -->
+    <div class="signup-card" id="signupCard">
+      <div class="sc-header">
+        <div class="sc-title">🏆 Become a Founding Trader</div>
+        <div class="sc-sub">Lock in lifetime perks before July 17 launch. Over 20 traders already signed up.</div>
+      </div>
+      <div class="founding-perks">
+        <div class="fp-title">⭐ Founding Trader Perks</div>
+        <div class="fp-item">💰 Lifetime 3% fee instead of 5% — locked in forever</div>
+        <div class="fp-item">🏅 Founding Trader badge on your profile</div>
+        <div class="fp-item">🚀 Early access to every new feature</div>
+        <div class="fp-item">🌟 Featured on the Tradezy homepage at launch</div>
+      </div>
+      <div class="signup-form" id="signupForm">
+        <input class="sf-input" type="email" id="heroEmail" placeholder="Your email address" required>
+        <button class="btn-signup-main" onclick="submitSignup()" id="signupBtn">
+          ⭐ Claim Founding Trader Status
+        </button>
+        <div class="sc-terms">By signing up you agree to our <a href="alltrades-terms.html">Terms of Service</a> and <a href="alltrades-privacy.html">Privacy Policy</a>. No spam, ever.</div>
+      </div>
+      <div class="success-state" id="successState">
+        <div class="ss-icon">🎉</div>
+        <div class="ss-title">You're In!</div>
+        <div class="ss-sub">Welcome to Tradezy. Your Founding Trader status is confirmed. We'll email you before July 17 launch with next steps.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COUNTDOWN -->
+<div class="countdown-section">
+  <div class="countdown-inner">
+    <div class="cd-label">⏳ Launch countdown — July 17, 2026</div>
+    <div class="cd-units">
+      <div class="cd-unit"><div class="cd-num" id="cdDays">--</div><div class="cd-lbl">Days</div></div>
       <div class="cd-sep">:</div>
-      <div class="cd-unit">
-        <div class="cd-box"><div class="cd-num" id="cdHours">--</div></div>
-        <div class="cd-lbl">Hours</div>
-      </div>
+      <div class="cd-unit"><div class="cd-num" id="cdHours">--</div><div class="cd-lbl">Hours</div></div>
       <div class="cd-sep">:</div>
-      <div class="cd-unit">
-        <div class="cd-box"><div class="cd-num" id="cdMins">--</div></div>
-        <div class="cd-lbl">Minutes</div>
-      </div>
+      <div class="cd-unit"><div class="cd-num" id="cdMins">--</div><div class="cd-lbl">Minutes</div></div>
       <div class="cd-sep">:</div>
-      <div class="cd-unit">
-        <div class="cd-box"><div class="cd-num" id="cdSecs">--</div></div>
-        <div class="cd-lbl">Seconds</div>
-      </div>
-    </div>
-    <div class="launch-badge">
-      📅 July 17th · Meriden CT Soft Launch | July 31st · Nationwide
+      <div class="cd-unit"><div class="cd-num" id="cdSecs">--</div><div class="cd-lbl">Seconds</div></div>
     </div>
   </div>
-
-  <!-- EMAIL SIGNUP -->
-
-  <div class="signup-section">
-    <div class="signup-title">🏅 Founding Trader Badges Close July 31st — Never Available Again</div>
-    <div class="signup-sub">Sign up FREE and get your <strong style="color:var(--gold-l)">Founding Trader</strong> badge — permanent proof you were here before launch. <strong style="color:#ef4444">Badges close forever July 31st.</strong></div>
-
-```
-<div class="email-form" id="emailForm">
-  <input type="email" class="email-input" id="emailInput" placeholder="your@email.com" onkeydown="if(event.key==='Enter')submitEmail()">
-  <button class="email-btn" onclick="submitEmail()">Notify Me 🚀</button>
 </div>
 
-<div class="email-success" id="emailSuccess">
-  <div class="es-emoji">🎉</div>
-  <div class="es-title">You're on the list!</div>
-  <div class="es-sub">We'll email you the moment Tradezy goes live. Get ready to trade.</div>
-</div>
-
-<div class="privacy-note" id="privacyNote">
-  🔒 No spam. Unsubscribe anytime. Your email is never shared.
-</div>
-
-<!-- Notification preferences -->
-<div class="notif-row" id="notifRow" style="margin-top:12px">
-  <label class="notif-check"><input type="checkbox" checked> Launch notification</label>
-  <label class="notif-check"><input type="checkbox" checked> Weekly updates</label>
-  <label class="notif-check"><input type="checkbox"> Founding Trader tips</label>
-</div>
-```
-
-  </div>
-
-  <!-- EARLY SIGNUP COUNTER -->
-
-  <div class="counter-section">
-    <div class="counter-avatars" id="counterAvatars"></div>
-    <div class="counter-text"><strong id="signupCount">0</strong> neighbors already signed up</div>
-  </div>
-
-  <!-- BENEFITS -->
-
-  <div style="max-width:500px;margin:0 auto 16px;padding:0 16px;">
-    <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:16px;">
-      <div style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1rem;color:#fff;margin-bottom:10px;text-align:center;">What Founding Traders Get</div>
-      <div style="display:flex;flex-direction:column;gap:8px;">
-        <div style="font-size:13px;color:rgba(255,255,255,.8);"><span style="color:#f59e0b;font-weight:800;margin-right:8px;">✓</span>Permanent Founding Trader badge on your profile — forever</div>
-        <div style="font-size:13px;color:rgba(255,255,255,.8);"><span style="color:#f59e0b;font-weight:800;margin-right:8px;">✓</span>First access the moment we go live</div>
-        <div style="font-size:13px;color:rgba(255,255,255,.8);"><span style="color:#f59e0b;font-weight:800;margin-right:8px;">✓</span>Priority placement in your neighborhood feed</div>
-        <div style="font-size:13px;color:rgba(255,255,255,.8);"><span style="color:#f59e0b;font-weight:800;margin-right:8px;">✓</span>Exclusive launch perks — only for early signups</div>
-
-```
-  </div>
-</div>
-```
-
-  </div>
-
-  <!-- TWO PHASE LAUNCH -->
-
-  <div style="max-width:500px;margin:0 auto 16px;padding:0 16px;">
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
-      <div style="background:rgba(26,86,219,.15);border:1px solid rgba(26,86,219,.4);border-radius:12px;padding:14px;text-align:center;">
-        <div style="font-size:10px;font-weight:800;color:#60a5fa;letter-spacing:1px;margin-bottom:4px;">PHASE 1</div>
-        <div style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.3rem;color:#fff;">July 17th</div>
-        <div style="font-size:11px;color:rgba(255,255,255,.6);margin-top:2px;">📍 Meriden, CT</div>
-        <div style="font-size:10px;color:rgba(255,255,255,.4);margin-top:4px;">Soft Launch · Founding Traders First</div>
+<!-- HOW IT WORKS -->
+<div style="background:var(--white);">
+  <div class="section">
+    <div class="section-label">Simple by design</div>
+    <div class="section-title">How Tradezy Works</div>
+    <div class="section-sub">Four steps from listing to trade — no complicated setup, no fees until you complete a trade.</div>
+    <div class="steps-grid">
+      <div class="step-card">
+        <div class="step-num">1</div>
+        <div class="step-icon">📦</div>
+        <div class="step-title">List What You Have</div>
+        <div class="step-desc">Post your item with photos, condition, and what you want in return. Free to list, no upfront cost.</div>
       </div>
-      <div style="background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.4);border-radius:12px;padding:14px;text-align:center;">
-        <div style="font-size:10px;font-weight:800;color:#f59e0b;letter-spacing:1px;margin-bottom:4px;">PHASE 2</div>
-        <div style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.3rem;color:#fff;">July 31st</div>
-        <div style="font-size:11px;color:rgba(255,255,255,.6);margin-top:2px;">🌎 Nationwide</div>
-        <div style="font-size:10px;color:rgba(255,255,255,.4);margin-top:4px;">Full Public Launch · Everyone</div>
+      <div class="step-card">
+        <div class="step-num">2</div>
+        <div class="step-icon">🔍</div>
+        <div class="step-title">Browse & Offer</div>
+        <div class="step-desc">Find listings near you. Make an offer with your item, add cash if needed, and negotiate freely.</div>
+      </div>
+      <div class="step-card">
+        <div class="step-num">3</div>
+        <div class="step-icon">📍</div>
+        <div class="step-title">Meet Locally</div>
+        <div class="step-desc">Agree on a safe public meetup spot. Both parties confirm the exchange through the app.</div>
+      </div>
+      <div class="step-card">
+        <div class="step-num">4</div>
+        <div class="step-icon">⭐</div>
+        <div class="step-title">Rate & Build Trust</div>
+        <div class="step-desc">Leave a rating after each trade. Build your reputation and unlock better trading opportunities.</div>
       </div>
     </div>
   </div>
-
-  <!-- LIVE TRADE TICKER -->
-
-  <div class="ticker-wrap">
-    <div class="ticker-label">🔴 LIVE</div>
-    <div class="ticker-track" id="tickerTrack"></div>
-  </div>
-
-  <!-- REFERRAL SECTION -->
-
-  <div class="referral-box" id="referralBox" style="display:none">
-    <div class="ref-title">🚀 Move Up the List!</div>
-    <div class="ref-sub">Share your unique link — every friend who signs up moves you closer to the front of the launch queue.</div>
-    <div class="ref-link-wrap">
-      <input type="text" class="ref-link-input" id="refLink" readonly value="tradezyhq.com">
-      <button class="ref-copy-btn" onclick="copyRefLink()">Copy</button>
-    </div>
-    <div class="ref-count">👥 <span id="refCount">0</span> friends referred</div>
-    <div class="ref-share-row">
-      <a class="ref-share-btn" id="shareX" href="#" onclick="shareX(event)">𝕏 Share</a>
-      <a class="ref-share-btn" id="shareFB" href="#" onclick="shareFB(event)">Facebook</a>
-      <a class="ref-share-btn" id="shareText" href="#" onclick="shareText(event)">📱 Text</a>
-    </div>
-  </div>
-
-  <!-- FEATURE CHIPS -->
-
-  <div class="features-strip">
-    <div class="feature-chip"><span>🥫</span> Food & Water Trading</div>
-    <div class="feature-chip"><span>🔧</span> Tools & Gear</div>
-    <div class="feature-chip"><span>🌱</span> Garden & Produce</div>
-    <div class="feature-chip"><span>⚡</span> Electronics</div>
-    <div class="feature-chip"><span>🛡️</span> Escrow Protected</div>
-    <div class="feature-chip"><span>🤖</span> AI Dispute Support</div>
-    <div class="feature-chip"><span>📍</span> Hyperlocal Radius</div>
-    <div class="feature-chip"><span>⭐</span> Verified Traders</div>
-  </div>
-
-  <!-- BOTTOM -->
-
-  <div class="bottom-essentials">
-    <div class="categories-row">
-      <span>Trading locally near you:</span>
-      <span class="cat-chip">🥫 Essentials</span>
-      <span class="cat-chip">🛠️ Tools</span>
-      <span class="cat-chip">📱 Tech</span>
-      <span class="cat-chip">🎸 Hobbies</span>
-      <span class="cat-chip">🌿 Garden</span>
-    </div>
-
-```
-<div class="social-row">
-  <a class="social-link" href="mailto:hello@tradezyhq.com" title="Email us">📧</a>
-  <a class="social-link" href="https://instagram.com/tradezyl.l.c" target="_blank" title="Instagram">📸</a>
-  <a class="social-link" href="https://x.com/tradyhq" target="_blank" title="X / Twitter">🐦</a>
-  <a class="social-link" href="https://tiktok.com/@tradezyhq" target="_blank" title="TikTok">🎵</a>
 </div>
 
-<div class="copyright">
-  © 2026 Tradezy LLC · Connecticut, USA · Trade Local. Live Better.<br>
-  <span style="color:#112240">Questions? <span style="color:#1e3a5f">hello@tradezyhq.com</span></span>
-</div>
-```
-
+<!-- CATEGORIES -->
+<div class="cats-bg">
+  <div class="section" style="padding-top:36px;">
+    <div class="section-label">Trade anything</div>
+    <div class="section-title">What People Trade on Tradezy</div>
+    <div class="section-sub">From Pokémon cards to power tools — if it has value, you can trade it.</div>
+    <div class="cats-grid">
+      <div class="cat-card new"><div class="cat-em">🃏</div><div class="cat-name">Sports Cards</div><div class="cat-badge">NEW</div></div>
+      <div class="cat-card new"><div class="cat-em">🎴</div><div class="cat-name">TCG Cards</div><div class="cat-badge">NEW</div></div>
+      <div class="cat-card"><div class="cat-em">⚡</div><div class="cat-name">Electronics</div></div>
+      <div class="cat-card"><div class="cat-em">🔧</div><div class="cat-name">Tools</div></div>
+      <div class="cat-card"><div class="cat-em">🎮</div><div class="cat-name">Gaming</div></div>
+      <div class="cat-card"><div class="cat-em">🚲</div><div class="cat-name">Sports & Outdoors</div></div>
+      <div class="cat-card"><div class="cat-em">🎵</div><div class="cat-name">Music</div></div>
+      <div class="cat-card"><div class="cat-em">👗</div><div class="cat-name">Clothing</div></div>
+      <div class="cat-card"><div class="cat-em">🪑</div><div class="cat-name">Furniture</div></div>
+      <div class="cat-card"><div class="cat-em">📚</div><div class="cat-name">Books & Media</div></div>
+      <div class="cat-card"><div class="cat-em">🌱</div><div class="cat-name">Garden & Farm</div></div>
+      <div class="cat-card"><div class="cat-em">👶</div><div class="cat-name">Kids & Baby</div></div>
+    </div>
   </div>
-
-</main>
-
-<div class="toast" id="toastEl">
-  <span id="toastIc">✅</span>
-  <span id="toastTx"></span>
 </div>
+
+<!-- FOUNDING TRADER -->
+<div class="founding-bg">
+  <div class="founding-inner">
+    <div>
+      <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(245,158,11,.15);border:1px solid rgba(245,158,11,.3);color:var(--gold-l);font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:4px 12px;border-radius:4px;margin-bottom:16px;">⭐ Limited Availability</div>
+      <div class="founding-title">Lock In 3% Fees<br>Before Launch Day</div>
+      <div class="founding-sub">Founding Traders get a lifetime reduced platform fee of 3% instead of 5% — locked in forever regardless of how the platform grows. Sign up before July 17 to qualify.</div>
+      <div class="perks-list">
+        <div class="perk-item"><div class="perk-icon">💰</div><div class="perk-text"><div class="perk-title">Lifetime 3% Platform Fee</div><div class="perk-desc">Standard rate is 5%. You pay 3% forever — even as Tradezy grows nationwide.</div></div></div>
+        <div class="perk-item"><div class="perk-icon">🏅</div><div class="perk-text"><div class="perk-title">Founding Trader Badge</div><div class="perk-desc">Permanent badge on your profile showing you were here from the start.</div></div></div>
+        <div class="perk-item"><div class="perk-icon">🚀</div><div class="perk-text"><div class="perk-title">Early Feature Access</div><div class="perk-desc">Test every new feature before it goes public. Your feedback shapes the platform.</div></div></div>
+        <div class="perk-item"><div class="perk-icon">🌟</div><div class="perk-text"><div class="perk-title">Homepage Featured Listing</div><div class="perk-desc">Your first listing gets featured on the Tradezy homepage at launch.</div></div></div>
+      </div>
+    </div>
+    <div class="founding-cta">
+      <div class="founding-cta-card">
+        <div class="fcc-num">20+</div>
+        <div class="fcc-label">Founding Traders already signed up</div>
+        <div class="fcc-spots">🔥 Founding Trader spots are limited — claim yours before July 17</div>
+        <input class="sf-input" type="email" id="foundingEmail" placeholder="Your email address" style="margin-bottom:10px;">
+        <button class="btn-founding" onclick="submitSignupFounding()">⭐ Claim My Founding Trader Spot</button>
+        <div style="font-size:11px;color:#475569;margin-top:10px;">No credit card. No spam. Just early access.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SAFETY -->
+<div style="background:var(--white);">
+  <div class="section">
+    <div class="section-label">Built for trust</div>
+    <div class="section-title">Trading That's Actually Safe</div>
+    <div class="section-sub">Every feature on Tradezy is designed to protect you from the first message to the final handshake.</div>
+    <div class="safety-grid">
+      <div class="safety-card">
+        <div class="safety-icon">✅</div>
+        <div class="safety-title">Verified Meetup Confirmation</div>
+        <div class="safety-desc">Both parties tap confirm in the app after the exchange. Creates a timestamped record and unlocks ratings — no more he-said-she-said.</div>
+      </div>
+      <div class="safety-card">
+        <div class="safety-icon">⚖️</div>
+        <div class="safety-title">Dispute Resolution</div>
+        <div class="safety-desc">If something goes wrong, our team steps in with SLA-guaranteed response times. CRITICAL issues resolved within 4 hours.</div>
+      </div>
+      <div class="safety-card">
+        <div class="safety-icon">🛡️</div>
+        <div class="safety-title">Content Screening</div>
+        <div class="safety-desc">Every message and listing is scanned in real-time for prohibited content and platform bypass attempts. Your safety is automatic.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- LAUNCH CITIES -->
+<div class="cities-section">
+  <div class="cities-inner">
+    <div class="cities-title">Launching July 17 in Two States</div>
+    <div class="cities-sub">Phase 1 soft launch — then nationwide July 31</div>
+    <div class="cities-grid">
+      <div class="city-card">
+        <div class="city-em">🌿</div>
+        <div class="city-name">Connecticut</div>
+        <div class="city-desc">Statewide — from Meriden to New Haven, Hartford to Stamford. All of CT on day one.</div>
+        <div class="city-badge">PHASE 1 LAUNCH</div>
+      </div>
+      <div class="city-card">
+        <div class="city-em">🌻</div>
+        <div class="city-name">Ohio</div>
+        <div class="city-desc">Statewide — Athens, Columbus, Cleveland, Cincinnati and everywhere in between.</div>
+        <div class="city-badge">PHASE 1 LAUNCH</div>
+      </div>
+    </div>
+    <div style="font-size:13px;color:#475569;">Nationwide expansion launches July 31, 2026 · Built in Connecticut by a Navy veteran</div>
+  </div>
+</div>
+
+<!-- BOTTOM CTA -->
+<div class="bottom-cta">
+  <div class="bc-inner">
+    <div class="bc-title">Ready to Start Trading?</div>
+    <div class="bc-sub">Join your neighbors in Connecticut and Ohio who are already signed up. Get notified the moment Tradezy goes live on July 17.</div>
+    <div class="bc-email-wrap">
+      <input class="bc-email" type="email" id="bottomEmail" placeholder="Enter your email address">
+      <button class="bc-btn" onclick="submitSignupBottom()">Notify Me →</button>
+    </div>
+    <div class="bc-note">Free forever to browse. 5% fee only on completed trades. Founding Traders pay 3% for life.</div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <span class="logo"><span class="a">Trade</span><span class="t">zy</span><span class="d">.</span></span>
+        <p>The free local trading marketplace. Trade items safely with verified traders in your community. Built by a Navy veteran in Connecticut.</p>
+      </div>
+      <div>
+        <div class="footer-col-title">Platform</div>
+        <div class="footer-links">
+          <a href="alltrades-auth.html">Sign Up Free</a>
+          <a href="alltrades-auth.html">Sign In</a>
+          <a href="alltrades-post.html">Post a Listing</a>
+          <a href="alltrades-dashboard.html">My Dashboard</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-title">Support</div>
+        <div class="footer-links">
+          <a>How It Works</a>
+          <a>Safety Tips</a>
+          <a href="alltrades-disputes.html">File a Dispute</a>
+          <a href="mailto:support@tradezyhq.com">Contact Us</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-title">Legal</div>
+        <div class="footer-links">
+          <a href="alltrades-privacy.html">Privacy Policy</a>
+          <a href="alltrades-terms.html">Terms of Service</a>
+          <a href="alltrades-terms.html#prohibited">Prohibited Items</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div>© 2026 Tradezy LLC · Meriden, CT · EIN obtained · tradezyhq.com</div>
+      <div class="footer-bottom-links">
+        <a href="alltrades-privacy.html">Privacy</a>
+        <a href="alltrades-terms.html">Terms</a>
+        <a href="mailto:hello@tradezyhq.com">hello@tradezyhq.com</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<div class="toast" id="toastEl"><span id="toastIc">✅</span><span id="toastTx"></span></div>
 
 <script>
-// ════════════════════════════════════════
-// PARTICLE CANVAS
-// ════════════════════════════════════════
-const canvas = document.getElementById('bgCanvas');
-const ctx = canvas.getContext('2d');
+/* ── Supabase ── */
+const sb = window.supabase.createClient(
+  'https://equvwaspcoeetfsexqki.supabase.co',
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVxdXZ3YXNwY29lZXRmc2V4cWtpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgyNzc2MjQsImV4cCI6MjA5Mzg1MzYyNH0.TP6Kk3pzHW1PYMUu5D9Vu2lJrazIEagzu5csYhqkrfI'
+);
 
-let W, H, particles = [], connections = [];
-const PARTICLE_COUNT = 55;
-const CONNECTION_DIST = 130;
-const COLORS = ['rgba(26,86,219,', 'rgba(245,158,11,', 'rgba(22,163,74,', 'rgba(59,130,246,'];
-
-function resize() {
-  W = canvas.width = window.innerWidth;
-  H = canvas.height = window.innerHeight;
-}
-
-function createParticle() {
-  return {
-    x: Math.random() * W,
-    y: Math.random() * H,
-    vx: (Math.random() - .5) * .4,
-    vy: (Math.random() - .5) * .4,
-    r: Math.random() * 2 + 1,
-    color: COLORS[Math.floor(Math.random() * COLORS.length)],
-    opacity: Math.random() * .5 + .2,
-    pulse: Math.random() * Math.PI * 2,
-    pulseSpeed: Math.random() * .02 + .01
-  };
-}
-
-function initParticles() {
-  particles = [];
-  for (let i = 0; i < PARTICLE_COUNT; i++) particles.push(createParticle());
-}
-
-function drawFrame() {
-  ctx.clearRect(0, 0, W, H);
-
-  // Draw connections
-  for (let i = 0; i < particles.length; i++) {
-    for (let j = i + 1; j < particles.length; j++) {
-      const p1 = particles[i], p2 = particles[j];
-      const dx = p1.x - p2.x, dy = p1.y - p2.y;
-      const dist = Math.sqrt(dx*dx + dy*dy);
-      if (dist < CONNECTION_DIST) {
-        const alpha = (1 - dist / CONNECTION_DIST) * .15;
-        ctx.beginPath();
-        ctx.moveTo(p1.x, p1.y);
-        ctx.lineTo(p2.x, p2.y);
-        ctx.strokeStyle = `rgba(59,130,246,${alpha})`;
-        ctx.lineWidth = .8;
-        ctx.stroke();
-      }
-    }
-  }
-
-  // Draw particles
-  particles.forEach(p => {
-    p.pulse += p.pulseSpeed;
-    const r = p.r + Math.sin(p.pulse) * .5;
-    const op = p.opacity + Math.sin(p.pulse) * .1;
-
-    // Glow
-    const grd = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, r * 4);
-    grd.addColorStop(0, p.color + op + ')');
-    grd.addColorStop(1, p.color + '0)');
-    ctx.beginPath();
-    ctx.arc(p.x, p.y, r * 4, 0, Math.PI * 2);
-    ctx.fillStyle = grd;
-    ctx.fill();
-
-    // Core dot
-    ctx.beginPath();
-    ctx.arc(p.x, p.y, r, 0, Math.PI * 2);
-    ctx.fillStyle = p.color + (op + .2) + ')';
-    ctx.fill();
-
-    // Move
-    p.x += p.vx;
-    p.y += p.vy;
-    if (p.x < -20) p.x = W + 20;
-    if (p.x > W + 20) p.x = -20;
-    if (p.y < -20) p.y = H + 20;
-    if (p.y > H + 20) p.y = -20;
-  });
-
-  requestAnimationFrame(drawFrame);
-}
-
-window.addEventListener('resize', () => { resize(); });
-
-// Wait for DOM before starting canvas
-window.addEventListener('load', function() {
-  resize();
-  initParticles();
-  drawFrame();
-  updateCountdown();
-  setInterval(updateCountdown, 1000);
-  renderAvatars();
-});
-
-// ════════════════════════════════════════
-// COUNTDOWN
-// ════════════════════════════════════════
-const LAUNCH_DATE = new Date('2026-07-31T09:00:00');
-
-function pad(n) { return String(n).padStart(2, '0'); }
-
+/* ── COUNTDOWN ── */
 function updateCountdown() {
+  const launch = new Date('2026-07-17T00:00:00-04:00');
   const now = new Date();
-  const diff = LAUNCH_DATE - now;
-
+  const diff = launch - now;
   if (diff <= 0) {
-    document.getElementById('cdDays').textContent = '00';
-    document.getElementById('cdHours').textContent = '00';
-    document.getElementById('cdMins').textContent = '00';
-    document.getElementById('cdSecs').textContent = '00';
+    document.getElementById('cdDays').textContent = '0';
+    document.getElementById('cdHours').textContent = '0';
+    document.getElementById('cdMins').textContent = '0';
+    document.getElementById('cdSecs').textContent = '0';
     return;
   }
-
-  const days  = Math.floor(diff / (1000 * 60 * 60 * 24));
-  const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-  const mins  = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-  const secs  = Math.floor((diff % (1000 * 60)) / 1000);
-
-  function setUnit(id, val) {
-    const el = document.getElementById(id);
-    const newVal = pad(val);
-    if (el.textContent !== newVal) {
-      el.classList.add('flip');
-      setTimeout(() => {
-        el.textContent = newVal;
-        el.classList.remove('flip');
-      }, 150);
-    }
-  }
-
-  setUnit('cdDays', days);
-  setUnit('cdHours', hours);
-  setUnit('cdMins', mins);
-  setUnit('cdSecs', secs);
+  const days  = Math.floor(diff / 86400000);
+  const hours = Math.floor((diff % 86400000) / 3600000);
+  const mins  = Math.floor((diff % 3600000) / 60000);
+  const secs  = Math.floor((diff % 60000) / 1000);
+  document.getElementById('cdDays').textContent  = days;
+  document.getElementById('cdHours').textContent = String(hours).padStart(2,'0');
+  document.getElementById('cdMins').textContent  = String(mins).padStart(2,'0');
+  document.getElementById('cdSecs').textContent  = String(secs).padStart(2,'0');
 }
+updateCountdown();
+setInterval(updateCountdown, 1000);
 
-
-// ════════════════════════════════════════
-// EMAIL SIGNUP
-// ════════════════════════════════════════
-let signupCount = 127; // Starting seed count - makes it feel alive
-const AV_COLORS = ['#1a56db','#16a34a','#f59e0b','#7c3aed','#ea580c','#0891b2'];
-const AV_INITIALS = ['JD','SM','RT','KL','AH','MP','GS','BW'];
-
-function renderAvatars() {
-  const wrap = document.getElementById('counterAvatars');
-  wrap.innerHTML = '';
-  const show = Math.min(5, Math.ceil(signupCount / 10));
-  for (let i = 0; i < show; i++) {
-    const av = document.createElement('div');
-    av.className = 'c-av';
-    av.style.background = AV_COLORS[i % AV_COLORS.length];
-    av.textContent = AV_INITIALS[i % AV_INITIALS.length];
-    wrap.appendChild(av);
+/* ── SIGNUP ── */
+async function doSignup(email, source) {
+  if (!email || !email.includes('@')) {
+    showToast('⚠️', 'Please enter a valid email address.', true);
+    return false;
   }
-  document.getElementById('signupCount').textContent = signupCount.toLocaleString();
-}
-
-renderAvatars();
-
-async function submitEmail() {
-  const input = document.getElementById('emailInput');
-  const email = input.value.trim();
-
-  if (!email || !email.includes('@') || !email.includes('.')) {
-    input.style.outline = '2px solid var(--red)';
-    setTimeout(() => input.style.outline = '', 2000);
-    showToast('⚠️', 'Please enter a valid email address.');
-    return;
-  }
-
-  const btn = document.querySelector('.email-btn');
-  btn.textContent = 'Adding you...';
-  btn.disabled = true;
-
   try {
-   await fetch('https://formspree.io/f/xwvydrkg', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email: email })
-    });
-
-    // ── SUCCESS ──
-    const form = document.getElementById('emailForm');
-    const success = document.getElementById('emailSuccess');
-    const privacy = document.getElementById('privacyNote');
-    const notifs = document.getElementById('notifRow');
-
-    form.style.display = 'none';
-    if (privacy) privacy.style.display = 'none';
-    if (notifs) notifs.style.display = 'none';
-    success.classList.add('show');
-
-    signupCount++;
-    renderAvatars();
-
-    showToast('🎉', "You're a Founding Trader! See you July 17th in Meriden or July 31st nationwide!");
-    setTimeout(showReferral, 1500);
-
-    setTimeout(() => {
-      const countEl = document.getElementById('signupCount');
-      if (countEl) {
-        countEl.style.transform = 'scale(1.2)';
-        countEl.style.color = 'var(--green-l)';
-        setTimeout(() => {
-          countEl.style.transform = '';
-          countEl.style.color = '';
-        }, 400);
+    const { error } = await sb.from('waitlist').insert({ email: email.trim().toLowerCase(), source });
+    if (error) {
+      if (error.code === '23505') {
+        showToast('✅', "You're already on the list! We'll see you July 17.");
+        return true;
       }
-    }, 500);
-
-  } catch (err) {
-    console.error('Error:', err);
-    showToast('⚠️', 'Something went wrong. Please try again.');
-    btn.textContent = 'Notify Me 🚀';
-    btn.disabled = false;
+      throw error;
+    }
+    // Track signup in Google Analytics
+    if (typeof gtag !== 'undefined') {
+      gtag('event', 'signup', { event_category: 'waitlist', event_label: source });
+    }
+    return true;
+  } catch(e) {
+    console.error(e);
+    showToast('⚠️', 'Something went wrong. Please try again.', true);
+    return false;
   }
 }
 
-// ════════════════════════════════════════
-// TOAST
-// ════════════════════════════════════════
-function showToast(icon, msg) {
+async function submitSignup() {
+  const email = document.getElementById('heroEmail').value.trim();
+  const btn = document.getElementById('signupBtn');
+  btn.disabled = true;
+  btn.textContent = 'Joining…';
+  const ok = await doSignup(email, 'hero');
+  if (ok) {
+    document.getElementById('signupForm').style.display = 'none';
+    document.getElementById('successState').style.display = 'block';
+    showToast('🎉', 'Welcome to Tradezy! Founding Trader status confirmed.');
+  } else {
+    btn.disabled = false;
+    btn.innerHTML = '⭐ Claim Founding Trader Status';
+  }
+}
+
+async function submitSignupFounding() {
+  const email = document.getElementById('foundingEmail').value.trim();
+  const btn = event.target;
+  btn.disabled = true;
+  btn.textContent = 'Joining…';
+  const ok = await doSignup(email, 'founding_section');
+  if (ok) {
+    btn.textContent = '✅ You\'re in!';
+    showToast('🎉', 'Founding Trader spot claimed! See you July 17.');
+  } else {
+    btn.disabled = false;
+    btn.textContent = '⭐ Claim My Founding Trader Spot';
+  }
+}
+
+async function submitSignupBottom() {
+  const email = document.getElementById('bottomEmail').value.trim();
+  const btn = event.target;
+  btn.disabled = true;
+  btn.textContent = 'Done!';
+  const ok = await doSignup(email, 'bottom_cta');
+  if (ok) {
+    showToast('✅', "You're on the list! We'll notify you July 17.");
+    document.getElementById('bottomEmail').value = '';
+  } else {
+    btn.disabled = false;
+    btn.textContent = 'Notify Me →';
+  }
+}
+
+function scrollToSignup() {
+  document.getElementById('signupCard').scrollIntoView({ behavior: 'smooth', block: 'center' });
+  setTimeout(() => document.getElementById('heroEmail').focus(), 600);
+}
+
+/* ── TOAST ── */
+function showToast(icon, msg, isError = false) {
   document.getElementById('toastIc').textContent = icon;
   document.getElementById('toastTx').textContent = msg;
   const t = document.getElementById('toastEl');
+  t.className = 'toast' + (isError ? ' error' : '');
   t.classList.add('show');
   clearTimeout(window._tt);
-  window._tt = setTimeout(() => t.classList.remove('show'), 4000);
+  window._tt = setTimeout(() => t.classList.remove('show'), 4500);
 }
-
-// ════════════════════════════════════════
-// SUBTLE MOUSE PARALLAX ON PARTICLES
-// ════════════════════════════════════════
-let mouseX = W / 2, mouseY = H / 2;
-document.addEventListener('mousemove', e => {
-  mouseX = e.clientX;
-  mouseY = e.clientY;
-  // Subtle push effect on nearby particles
-  particles.forEach(p => {
-    const dx = p.x - mouseX, dy = p.y - mouseY;
-    const dist = Math.sqrt(dx*dx + dy*dy);
-    if (dist < 80) {
-      p.vx += dx / dist * .08;
-      p.vy += dy / dist * .08;
-      // Cap velocity
-      const speed = Math.sqrt(p.vx*p.vx + p.vy*p.vy);
-      if (speed > 2) { p.vx = p.vx/speed*2; p.vy = p.vy/speed*2; }
-    }
-  });
-});
-
-
-
-// ════════════════════════════════════════
-// LIVE TRADE TICKER
-// ════════════════════════════════════════
-const trades = [
-  "🔧 Someone in Meriden just offered power tools",
-  "🚲 A bike listed near Hartford, CT",
-  "🌱 Fresh garden vegetables available in New Haven",
-  "📱 iPhone 12 up for trade in Bridgeport",
-  "🪑 Dining table listed in Waterbury",
-  "🎮 Gaming console trade in New Britain",
-  "🛋️ Couch available in Meriden — seeking appliances",
-  "🔨 Toolset listed near Middletown",
-  "👕 Kids clothes bundle in Rocky Hill",
-  "🎸 Guitar seeking electronics in Meriden",
-];
-
-function initTicker() {
-  const track = document.getElementById('tickerTrack');
-  if (!track) return;
-  const shuffled = trades.sort(() => Math.random() - 0.5);
-  track.textContent = shuffled.join('  •  ');
-}
-
-// ════════════════════════════════════════
-// REFERRAL SYSTEM
-// ════════════════════════════════════════
-function showReferral() {
-  const box = document.getElementById('referralBox');
-  if (box) {
-    box.style.display = 'block';
-    box.scrollIntoView({ behavior: 'smooth', block: 'center' });
-  }
-}
-
-function copyRefLink() {
-  const input = document.getElementById('refLink');
-  if (!input) return;
-  navigator.clipboard.writeText(input.value).then(() => {
-    showToast('✅', 'Link copied! Share it to move up the list!');
-  });
-}
-
-function shareX(e) {
-  e.preventDefault();
-  const text = encodeURIComponent("I just signed up for @tradyhq — a free bartering app launching July 31st! Trade what you have for what you need. No cash needed 🔄 tradezyhq.com");
-  window.open('https://x.com/intent/tweet?text=' + text, '_blank');
-}
-
-function shareFB(e) {
-  e.preventDefault();
-  const url = encodeURIComponent('https://tradezyhq.com');
-  window.open('https://www.facebook.com/sharer/sharer.php?u=' + url, '_blank');
-}
-
-function shareText(e) {
-  e.preventDefault();
-  if (navigator.share) {
-    navigator.share({
-      title: 'Tradezy — Trade Local',
-      text: 'Check out Tradezy — a free bartering app launching July 31st! Trade what you have for what you need. No cash needed!',
-      url: 'https://tradezyhq.com'
-    });
-  } else {
-    showToast('📱', 'Copy the link and send it via text!');
-  }
-}
-
-// Init ticker on load
-window.addEventListener('load', function() {
-  initTicker();
-});
-
-// ════════════════════════════════════════
-// ENTER KEY SUPPORT
-// ════════════════════════════════════════
-document.addEventListener('keydown', e => {
-  if (e.key === 'Enter' && document.activeElement === document.getElementById('emailInput')) {
-    submitEmail();
-  }
-});
 </script>
-
 </body>
 </html>
