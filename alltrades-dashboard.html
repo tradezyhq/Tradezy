@@ -399,7 +399,7 @@ async function loadOffers() {
     const listingIds = listings?.map(l => l.id) || [];
     let offers = [];
     if (listingIds.length > 0) {
-      const { data } = await sb.from('offers').select('*').in('listing_id', listingIds).eq('status', 'pending').order('created_at', { ascending: false }).limit(5);
+      const { data } = await sb.from('offers').select('*').in('listing_id', listingIds).eq('status', 'pending').order('created_at', { ascending: false }).limit(50);
       offers = data || [];
     }
     const count = offers.length;
@@ -424,7 +424,7 @@ async function loadOffers() {
 
 async function loadTrades() {
   try {
-    const { data: trades } = await sb.from('trades').select('*').or(`trader_a_id.eq.${currentUser.id},trader_b_id.eq.${currentUser.id}`).in('status', ['accepted','meetup_scheduled']).order('created_at', { ascending: false }).limit(5);
+    const { data: trades } = await sb.from('trades').select('*').or(`trader_a_id.eq.${currentUser.id},trader_b_id.eq.${currentUser.id}`).in('status', ['accepted','meetup_scheduled']).order('created_at', { ascending: false }).limit(50);
     const count = trades?.length || 0;
     document.getElementById('tradeCount').textContent = count;
     document.getElementById('statTrades').textContent = count;
@@ -467,7 +467,7 @@ async function loadListings() {
 
 async function loadMessages() {
   try {
-    const { data: messages } = await sb.from('messages').select('*').or(`sender_id.eq.${currentUser.id},receiver_id.eq.${currentUser.id}`).order('created_at', { ascending: false }).limit(5);
+    const { data: messages } = await sb.from('messages').select('*').or(`sender_id.eq.${currentUser.id},receiver_id.eq.${currentUser.id}`).order('created_at', { ascending: false }).limit(50);
     const unread = messages?.filter(m => m.receiver_id === currentUser.id && !m.read_at) || [];
     const count = unread.length;
     document.getElementById('msgCount').textContent = count;
