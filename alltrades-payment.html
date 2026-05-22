@@ -12,6 +12,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Tradezy — Secure Checkout</title>
+<script src="supabase.min.js"></script>
+<script src="https://js.stripe.com/v3/"></script>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -23,19 +25,27 @@
 *{margin:0;padding:0;box-sizing:border-box;}
 body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
 
-/* NAV */
 .nav{background:var(--navy);padding:0 24px;height:54px;display:flex;align-items:center;justify-content:space-between;}
 .logo{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.5rem;letter-spacing:-1px;}
 .logo .a{color:#fff;}.logo .t{color:var(--blue);}.logo .d{color:var(--gold);}
 .nav-secure{display:flex;align-items:center;gap:6px;color:#64748b;font-size:12px;}
 .nav-secure .lock{color:var(--green);font-size:1rem;}
 
-/* PAGE */
 .page{max-width:960px;margin:0 auto;padding:28px 20px;display:grid;grid-template-columns:1fr 360px;gap:24px;align-items:start;}
 
-/* ── LEFT: PAYMENT FORM ── */
-.pay-card{background:var(--white);border:1px solid var(--border);border-radius:16px;overflow:hidden;}
+/* Loading state */
+.page-loader{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:60vh;gap:16px;}
+.page-loader .spin{width:40px;height:40px;border:3px solid var(--border);border-top-color:var(--blue);border-radius:50%;animation:spin .7s linear infinite;}
+.page-loader p{color:var(--muted);font-size:14px;}
 
+/* Error state */
+.page-error{max-width:480px;margin:60px auto;text-align:center;padding:32px 24px;background:var(--white);border:1px solid var(--border);border-radius:16px;}
+.page-error .err-icon{font-size:3rem;margin-bottom:12px;}
+.page-error h2{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.4rem;margin-bottom:8px;color:var(--text);}
+.page-error p{font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:20px;}
+.page-error a{display:inline-block;padding:10px 22px;background:var(--blue);color:#fff;border-radius:8px;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.95rem;text-decoration:none;}
+
+.pay-card{background:var(--white);border:1px solid var(--border);border-radius:16px;overflow:hidden;}
 .pay-head{background:linear-gradient(135deg,var(--navy),#1a3a6b);padding:18px 22px;display:flex;align-items:center;gap:10px;}
 .ph-icon{width:38px;height:38px;background:rgba(245,158,11,.18);border:1px solid rgba(245,158,11,.3);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;}
 .ph-title{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.1rem;color:#fff;}
@@ -45,7 +55,6 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
 
 .pay-body{padding:22px;}
 
-/* Step tabs */
 .pay-steps{display:flex;align-items:center;margin-bottom:22px;}
 .ps-item{display:flex;align-items:center;gap:7px;flex:1;}
 .ps-dot{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.82rem;transition:all .3s;flex-shrink:0;}
@@ -59,106 +68,19 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
 .ps-line{flex:1;height:2px;background:var(--border);margin:0 8px;transition:background .3s;}
 .ps-line.done{background:var(--green);}
 
-/* Payment method grid */
-.method-section{margin-bottom:20px;}
-.ms-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:10px;}
+/* Stripe Element container */
+.stripe-element-wrap{border:1.5px solid var(--border);border-radius:8px;padding:12px 14px;background:var(--white);transition:border-color .15s;margin-bottom:14px;}
+.stripe-element-wrap.focused{border-color:var(--blue);box-shadow:0 0 0 3px rgba(26,86,219,.08);}
+.stripe-element-wrap.error{border-color:var(--red);}
+.stripe-element-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:8px;}
+#card-errors{color:var(--red);font-size:12px;margin-top:6px;min-height:16px;}
 
-.method-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:8px;}
-.method-grid.two{grid-template-columns:repeat(2,1fr);}
-
-.pay-method{border:1.5px solid var(--border);border-radius:10px;padding:11px 8px;text-align:center;cursor:pointer;transition:all .18s;position:relative;background:var(--white);}
-.pay-method:hover{border-color:var(--blue);background:#f8fbff;}
-.pay-method.active{border-color:var(--blue);background:#eff6ff;box-shadow:0 0 0 3px rgba(26,86,219,.1);}
-.pay-method.active::after{content:'✓';position:absolute;top:5px;right:7px;font-size:10px;color:var(--blue);font-weight:800;}
-.pm-logo{font-size:1.5rem;margin-bottom:4px;display:block;}
-.pm-name{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.82rem;color:var(--muted);}
-.pay-method.active .pm-name{color:var(--blue);}
-
-/* Express pay buttons */
-.express-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px;}
-.express-btn{padding:12px;border-radius:9px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.95rem;transition:all .15s;border:1.5px solid var(--border);}
-.express-btn.apple{background:#000;color:#fff;border-color:#000;}
-.express-btn.apple:hover{background:#1a1a1a;}
-.express-btn.google{background:var(--white);color:var(--text);border-color:var(--border);}
-.express-btn.google:hover{border-color:#999;background:#fafafa;}
-.express-icon{font-size:1.1rem;}
-
-.express-divider{display:flex;align-items:center;gap:10px;margin-bottom:16px;color:var(--muted);font-size:12px;}
-.express-divider::before,.express-divider::after{content:'';flex:1;height:1px;background:var(--border);}
-
-/* Saved cards */
-.saved-cards{margin-bottom:16px;}
-.sc-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:8px;}
-.saved-card{display:flex;align-items:center;gap:10px;padding:11px 13px;border:1.5px solid var(--border);border-radius:9px;cursor:pointer;transition:all .15s;margin-bottom:7px;}
-.saved-card:hover{border-color:var(--blue);}
-.saved-card.selected{border-color:var(--blue);background:#eff6ff;}
-.sc-radio{width:16px;height:16px;border-radius:50%;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s;}
-.saved-card.selected .sc-radio{border-color:var(--blue);background:var(--blue);}
-.saved-card.selected .sc-radio::after{content:'';width:6px;height:6px;background:#fff;border-radius:50%;}
-.sc-card-logo{width:36px;height:24px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:.65rem;font-weight:900;flex-shrink:0;}
-.sc-info{flex:1;}
-.sc-num{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.92rem;color:var(--text);}
-.sc-exp{font-size:11px;color:var(--muted);}
-.sc-default{font-size:10px;background:#f0fdf4;border:1px solid #bbf7d0;color:var(--green);padding:1px 6px;border-radius:3px;font-weight:700;}
-
-.add-new-toggle{font-size:12px;color:var(--blue);font-weight:700;cursor:pointer;display:flex;align-items:center;gap:5px;margin-bottom:14px;}
-.add-new-toggle:hover{text-decoration:underline;}
-
-/* Card form */
-.card-form{display:none;}
-.card-form.show{display:block;}
-
-/* Field */
-.field{margin-bottom:14px;}
-.field-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:5px;display:flex;align-items:center;justify-content:space-between;}
-.field-tooltip{font-size:10px;color:var(--blue);cursor:pointer;font-weight:700;text-transform:none;letter-spacing:0;}
-.field-tooltip:hover{text-decoration:underline;}
-
-.input-wrap{position:relative;}
-.field input,.field select{width:100%;border:1.5px solid var(--border);border-radius:8px;padding:11px 14px;font-size:14px;font-family:'Lato',sans-serif;color:var(--text);outline:none;transition:all .15s;background:var(--white);}
-.field input:focus,.field select:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(26,86,219,.08);}
-.field input.valid{border-color:var(--green);}
-.field input.invalid{border-color:var(--red);}
-.field-err{font-size:11px;color:var(--red);margin-top:3px;display:none;}
-.field-err.show{display:block;}
-.field-hint{font-size:11px;color:var(--muted);margin-top:3px;}
-
-/* Card number with logo */
-.card-input-wrap{position:relative;}
-.card-input-wrap input{padding-right:90px;}
-.card-logos{position:absolute;right:10px;top:50%;transform:translateY(-50%);display:flex;gap:4px;align-items:center;}
-.card-logo-chip{width:32px;height:20px;border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:.55rem;font-weight:900;border:1px solid var(--border);transition:all .2s;opacity:.3;}
-.card-logo-chip.active{opacity:1;transform:scale(1.05);}
-.visa{background:#1a1f71;color:#fff;}
-.mc{background:#eb001b;color:#fff;}
-.amex{background:#007bc1;color:#fff;}
-.disc{background:#ff6600;color:#fff;}
-.debit{background:#64748b;color:#fff;font-size:.45rem;}
-
-/* CVV field with icon */
-.cvv-wrap{position:relative;}
-.cvv-wrap input{padding-right:40px;}
-.cvv-icon{position:absolute;right:12px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:.9rem;cursor:help;}
-
-.field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
-.field-row.three{grid-template-columns:1fr 1fr 1fr;}
-
-/* Security badges */
-.security-badges{display:flex;align-items:center;gap:10px;padding:11px 13px;background:var(--surface);border:1px solid var(--border);border-radius:8px;margin-bottom:16px;}
+.security-badges{display:flex;align-items:center;gap:10px;padding:11px 13px;background:var(--surface);border:1px solid var(--border);border-radius:8px;margin-bottom:16px;flex-wrap:wrap;}
 .sec-badge{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--muted);}
-.sec-badge-icon{font-size:.95rem;}
 
-/* Save card checkbox */
-.save-row{display:flex;align-items:center;gap:8px;padding:10px 12px;background:var(--surface);border:1px solid var(--border);border-radius:7px;cursor:pointer;margin-bottom:14px;}
-.save-row input[type=checkbox]{width:15px;height:15px;accent-color:var(--blue);cursor:pointer;}
-.save-row-text{font-size:12px;color:var(--muted);}
-.save-row-text strong{color:var(--text);}
-
-/* Submit */
 .pay-btn{width:100%;padding:14px;background:linear-gradient(135deg,var(--green),#15803d);color:#fff;border:none;border-radius:9px;font-family:'Barlow Condensed',sans-serif;font-size:1.1rem;font-weight:900;letter-spacing:.3px;cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center;gap:8px;position:relative;overflow:hidden;}
-.pay-btn:hover{transform:translateY(-1px);box-shadow:0 4px 18px rgba(22,163,74,.35);}
-.pay-btn:active{transform:translateY(0);}
-.pay-btn:disabled{background:#94a3b8;cursor:not-allowed;transform:none;box-shadow:none;}
+.pay-btn:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 4px 18px rgba(22,163,74,.35);}
+.pay-btn:disabled{background:#94a3b8;cursor:not-allowed;}
 .pay-btn.loading{pointer-events:none;}
 .pay-btn.loading .btn-text{opacity:0;}
 .pay-btn-spinner{display:none;position:absolute;width:20px;height:20px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;}
@@ -168,7 +90,13 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
 .back-btn{width:100%;padding:11px;background:transparent;border:1.5px solid var(--border);border-radius:8px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.95rem;cursor:pointer;color:var(--muted);transition:all .15s;margin-top:7px;}
 .back-btn:hover{border-color:#999;color:var(--text);}
 
-/* ── RIGHT: ORDER SUMMARY ── */
+/* Already paid banner */
+.already-paid{background:#f0fdf4;border:1.5px solid #bbf7d0;border-radius:10px;padding:16px;text-align:center;margin-bottom:16px;}
+.already-paid .ap-icon{font-size:2rem;margin-bottom:6px;}
+.already-paid .ap-title{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.1rem;color:var(--green);}
+.already-paid .ap-sub{font-size:12px;color:#166534;margin-top:3px;}
+
+/* Summary */
 .summary-card{background:var(--white);border:1px solid var(--border);border-radius:16px;overflow:hidden;position:sticky;top:24px;}
 .sum-head{background:linear-gradient(135deg,var(--navy),#1a3a6b);padding:16px 18px;}
 .sum-title{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1rem;color:#fff;margin-bottom:1px;}
@@ -178,7 +106,7 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
 .trade-preview{display:flex;align-items:center;gap:8px;margin-bottom:16px;}
 .tp-item{flex:1;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:10px;text-align:center;}
 .tp-em{font-size:1.6rem;margin-bottom:3px;}
-.tp-nm{font-size:11px;font-weight:700;margin-bottom:2px;}
+.tp-nm{font-size:11px;font-weight:700;margin-bottom:2px;word-break:break-word;}
 .tp-who{font-size:10px;color:var(--muted);}
 .tp-val{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.92rem;margin-top:2px;}
 .tp-arrow{font-size:1rem;color:var(--muted);flex-shrink:0;}
@@ -190,7 +118,6 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
 .sum-row-val{font-weight:700;}
 .sum-row-val.green{color:var(--green);}
 .sum-row-val.gold{color:var(--gold);}
-.sum-row-val.blue{color:var(--blue);}
 
 .sum-total{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;background:linear-gradient(135deg,#fef3c7,#fffbeb);border:1.5px solid var(--gold);border-radius:8px;margin-bottom:12px;}
 .sum-total-label{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1rem;color:#92400e;}
@@ -207,160 +134,40 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
 .stripe-note{text-align:center;font-size:11px;color:var(--muted);display:flex;align-items:center;justify-content:center;gap:5px;}
 .stripe-badge{background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:2px 7px;font-size:10px;font-weight:700;color:var(--muted);}
 
-/* ── SUCCESS SCREEN ── */
+/* Success */
 .success-screen{display:none;padding:32px 22px;text-align:center;}
 .success-screen.show{display:block;animation:popIn .4s ease;}
 @keyframes popIn{0%{opacity:0;transform:scale(.95)}100%{opacity:1;transform:scale(1)}}
 .ss-emoji{font-size:4rem;margin-bottom:14px;}
-.ss-title{font-family:'Barlow Condensed',sans-serif;font-size:1.9rem;font-weight:900;margin-bottom:7px;color:var(--text);}
+.ss-title{font-family:'Barlow Condensed',sans-serif;font-size:1.9rem;font-weight:900;margin-bottom:7px;}
 .ss-desc{font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:20px;max-width:340px;margin-left:auto;margin-right:auto;}
 .receipt{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:18px;text-align:left;}
 .receipt-title{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.85rem;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:10px;}
 .receipt-row{display:flex;justify-content:space-between;font-size:12px;padding:5px 0;border-bottom:1px solid var(--border);}
 .receipt-row:last-child{border:none;font-weight:700;font-size:13px;padding-top:8px;}
 .ss-actions{display:flex;flex-direction:column;gap:8px;}
-.ss-btn{padding:11px;border-radius:8px;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.95rem;cursor:pointer;border:none;transition:all .15s;}
+.ss-btn{padding:11px;border-radius:8px;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.95rem;cursor:pointer;border:none;transition:all .15s;text-decoration:none;display:block;text-align:center;}
 .ss-btn.gold{background:var(--gold);color:var(--navy);}
 .ss-btn.gold:hover{background:var(--gold-l);}
 .ss-btn.outline{background:transparent;border:1.5px solid var(--border);color:var(--muted);}
 .ss-btn.outline:hover{border-color:#999;color:var(--text);}
 
-/* CVV tooltip */
-.cvv-tooltip{display:none;position:absolute;bottom:calc(100% + 8px);right:0;background:var(--navy);color:#e2e8f0;font-size:12px;padding:10px 13px;border-radius:8px;width:200px;z-index:10;line-height:1.5;box-shadow:0 4px 16px rgba(0,0,0,.3);}
-.cvv-tooltip.show{display:block;}
-.cvv-tooltip::after{content:'';position:absolute;top:100%;right:14px;border:6px solid transparent;border-top-color:var(--navy);}
-
-/* Toast */
-.toast{position:fixed;bottom:20px;right:20px;background:var(--navy);color:#e2e8f0;border:1px solid #1e3a5f;border-left:4px solid var(--green);border-radius:8px;padding:10px 16px;font-size:13px;z-index:999;display:flex;align-items:center;gap:9px;max-width:280px;box-shadow:0 8px 28px rgba(0,0,0,.25);transform:translateX(120%);transition:transform .3s ease;}
+.toast{position:fixed;bottom:20px;right:20px;background:var(--navy);color:#e2e8f0;border:1px solid #1e3a5f;border-left:4px solid var(--green);border-radius:8px;padding:10px 16px;font-size:13px;z-index:999;display:flex;align-items:center;gap:9px;max-width:300px;box-shadow:0 8px 28px rgba(0,0,0,.25);transform:translateX(120%);transition:transform .3s ease;}
 .toast.show{transform:translateX(0);}
+.toast.error{border-left-color:var(--red);}
 
 @media(max-width:860px){.page{grid-template-columns:1fr;}.summary-card{position:static;}}
-@media(max-width:500px){.method-grid{grid-template-columns:repeat(2,1fr);}.express-row{grid-template-columns:1fr;}.field-row{grid-template-columns:1fr;}}
 
-/* ── DARK MODE ── */
 @media (prefers-color-scheme: dark) {
-  :root {
-    --navy:#0a1628;
-    --blue:#3b82f6;
-    --blue-l:#60a5fa;
-    --gold:#fbbf24;
-    --gold-l:#fcd34d;
-    --green:#22c55e;
-    --green-l:#4ade80;
-    --red:#f87171;
-    --orange:#fb923c;
-    --text:#f1f5f9;
-    --muted:#94a3b8;
-    --light:#64748b;
-    --border:rgba(255,255,255,.1);
-    --bg:#0f172a;
-    --white:#1e293b;
-    --surface:#162032;
-    --card:#1e293b;
-  }
-  body { background:#0f172a !important; color:#f1f5f9 !important; }
-  /* Nav always dark - already fine */
-  /* Cards and panels */
-  .card, .panel, .pay-card, .summary-card, .rate-card, .review-card,
-  .profile-card, .rating-overview-card, .dispute-flow, .step-panel,
-  .step-list, .protection-hero ~ .panel, .stat-card, .fund-card,
-  .chart-card, .dq-item, .ai-panel { background:#1e293b !important; border-color:rgba(255,255,255,.08) !important; }
-  /* Text */
-  h1,h2,h3,h4,h5,h6 { color:#f1f5f9 !important; }
-  p, li, span:not(.logo *):not(.badge):not(.chip) { color:#94a3b8; }
-  strong { color:#e2e8f0 !important; }
-  /* Inputs */
-  input, select, textarea {
-    background:#162032 !important;
-    border-color:rgba(255,255,255,.12) !important;
-    color:#f1f5f9 !important;
-  }
-  input::placeholder, textarea::placeholder { color:#334155 !important; }
-  /* Surfaces */
-  .surface, [class*="surface"], [class*="-body"], [class*="-wrap"],
-  .pay-body, .sp-body, .panel-body, .mbody, .dq, .ai-chat,
-  .sum-body, .pc-body { background:#1e293b !important; }
-  /* Borders */
-  [class*="border"], hr { border-color:rgba(255,255,255,.08) !important; }
-  /* Table rows */
-  .trow:hover, .saved-card:hover, .step-item:hover { background:rgba(255,255,255,.05) !important; }
-  /* White backgrounds that need to go dark */
-  .white-bg, .bg-white, [style*="background:#fff"], [style*="background: #fff"],
-  [style*="background:white"], [style*="background: white"] { background:#1e293b !important; }
-  /* Legal pages specific */
-  .doc-header { background:transparent !important; }
-  .doc-title { color:#f1f5f9 !important; }
-  .doc-meta { color:#94a3b8 !important; }
-  .doc-meta strong { color:#e2e8f0 !important; }
-  .toc { background:#1e293b !important; border-color:rgba(255,255,255,.08) !important; }
-  .toc-title { color:#f1f5f9 !important; }
-  .section-title { color:#f1f5f9 !important; border-color:rgba(255,255,255,.08) !important; }
-  .section-num { color:#60a5fa !important; }
-  .section p, .section li { color:#94a3b8 !important; }
-  .section p strong, .section li strong { color:#e2e8f0 !important; }
-  /* Highlight boxes in legal pages — keep light backgrounds with dark text */
-  .hb-blue { background:#1e3a5f !important; border-color:#1d4ed8 !important; border-left-color:#3b82f6 !important; }
-  .hb-yellow { background:#422006 !important; border-color:#92400e !important; border-left-color:#fbbf24 !important; }
-  .hb-red { background:#450a0a !important; border-color:#991b1b !important; border-left-color:#f87171 !important; }
-  .hb-green { background:#052e16 !important; border-color:#166534 !important; border-left-color:#22c55e !important; }
-  .hb-blue .hb-text { color:#93c5fd !important; }
-  .hb-yellow .hb-text { color:#fcd34d !important; }
-  .hb-red .hb-text { color:#fca5a5 !important; }
-  .hb-green .hb-text { color:#86efac !important; }
-  .hb-text strong { color:inherit !important; }
-  /* Tables */
-  .fee-table th, .data-table th { background:#0f172a !important; color:#f1f5f9 !important; }
-  .fee-table td, .data-table td { color:#94a3b8 !important; background:#1e293b !important; }
-  .fee-table tr:nth-child(even) td, .data-table tr:nth-child(even) td { background:#162032 !important; }
-  .fee-table td:first-child, .data-table td:first-child { color:#e2e8f0 !important; }
-  /* Rights grid */
-  .right-card, .badge-card, .pf-card, .stat-card { background:#1e293b !important; border-color:rgba(255,255,255,.08) !important; }
-  .rc-title, .bc-name, .pf-title, .sc-lbl { color:#e2e8f0 !important; }
-  .rc-desc, .bc-desc, .pf-desc { color:#94a3b8 !important; }
-  /* Contact box stays dark - already fine */
-  /* Back buttons */
-  .back-btn { background:#1e3a8a !important; color:#fff !important; }
-  /* Nav links */
-  .nav-links a { color:#94a3b8 !important; }
-  .nav-links a:hover { color:#fff !important; }
-  /* Modal */
-  .modal, .overlay .modal { background:#1e293b !important; border-color:rgba(255,255,255,.1) !important; }
-  .mfield input, .mfield select, .mfield textarea { background:#0f172a !important; }
-  /* Chart bars already colored */
-  /* Star ratings */
-  .star, .mini-star { filter:none !important; }
-  /* OTP inputs */
-  .otp-input { background:#162032 !important; color:#f1f5f9 !important; }
-  .otp-input.filled { background:#052e16 !important; }
-  /* Upload zones */
-  .upload-zone, .upload-side, .ev-slot { background:#162032 !important; border-color:rgba(255,255,255,.1) !important; }
-  /* Step list sidebar */
-  .step-list { background:#1e293b !important; }
-  .step-item { background:transparent !important; }
-  .step-item.completed { background:rgba(22,163,74,.1) !important; }
-  .step-item.active { background:rgba(26,86,219,.1) !important; }
-  .si-title { color:#e2e8f0 !important; }
-  .si-meta { color:#64748b !important; }
-  /* Trust ring text */
-  .trust-num { color:#fff !important; }
-  /* Bypass rows */
-  .bp-msg, .br-msg { background:rgba(124,58,237,.15) !important; }
-  /* Summary card */
-  .sum-row-label { color:#94a3b8 !important; }
-  .sum-row-val { color:#e2e8f0 !important; }
-  /* Payment page */
-  .card-logo-chip { border-color:rgba(255,255,255,.15) !important; }
-  .express-btn.google { background:#1e293b !important; color:#f1f5f9 !important; border-color:rgba(255,255,255,.15) !important; }
-  /* Category cards */
-  .cat-rate, .cbd-item, .metric, .wb-stat, .phs-item { background:rgba(255,255,255,.05) !important; border-color:rgba(255,255,255,.08) !important; }
-  .wb-num, .metric-val, .sc-num { color:#fbbf24 !important; }
-  /* Payout rows */
-  .pay-row, .trow, .ur, .bp-row { border-color:rgba(255,255,255,.06) !important; }
-  /* Scrollbars */
-  ::-webkit-scrollbar { background:#0f172a; }
-  ::-webkit-scrollbar-thumb { background:#334155; border-radius:4px; }
+  :root{--text:#f1f5f9;--muted:#94a3b8;--border:rgba(255,255,255,.1);--bg:#0f172a;--white:#1e293b;--surface:#162032;}
+  body{background:#0f172a!important;color:#f1f5f9!important;}
+  .pay-card,.summary-card{background:#1e293b!important;border-color:rgba(255,255,255,.08)!important;}
+  .pay-body,.sum-body{background:#1e293b!important;}
+  .stripe-element-wrap{background:#162032!important;border-color:rgba(255,255,255,.12)!important;}
+  .security-badges,.tp-item,.other-party-box,.receipt{background:#162032!important;border-color:rgba(255,255,255,.08)!important;}
+  .sum-row-label{color:#94a3b8!important;}
+  .stripe-badge{background:#162032!important;}
 }
-
 </style>
 </head>
 <body>
@@ -370,15 +177,29 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
   <div class="nav-secure"><span class="lock">🔒</span> Secure Checkout — SSL Encrypted</div>
 </div>
 
-<div class="page">
+<!-- Loading state -->
+<div class="page-loader" id="pageLoader">
+  <div class="spin"></div>
+  <p>Loading your trade details…</p>
+</div>
 
-  <!-- ── LEFT: PAYMENT FORM ── -->
+<!-- Error state -->
+<div class="page-error" id="pageError" style="display:none">
+  <div class="err-icon">⚠️</div>
+  <h2 id="errTitle">Something went wrong</h2>
+  <p id="errMsg">We couldn't load this trade. It may have expired or you may not have access.</p>
+  <a href="alltrades-dashboard.html">← Back to Dashboard</a>
+</div>
+
+<!-- Main page (hidden until loaded) -->
+<div class="page" id="mainPage" style="display:none">
+
   <div class="pay-card" id="payCard">
     <div class="pay-head">
       <div class="ph-icon">💳</div>
       <div>
         <div class="ph-title">Complete Your Trade</div>
-        <div class="ph-sub">5% platform fee · Only charged on trade completion</div>
+        <div class="ph-sub" id="phSub">5% platform fee · Only charged on trade completion</div>
       </div>
       <div class="ph-secure">
         <span>🔒</span>
@@ -389,383 +210,120 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
     <div class="pay-body" id="payBody">
 
       <!-- Steps -->
-      <div class="pay-steps" id="paySteps">
+      <div class="pay-steps">
         <div class="ps-item">
-          <div class="ps-dot done" id="step1dot">✓</div>
+          <div class="ps-dot done">✓</div>
           <div class="ps-label done">Review</div>
         </div>
-        <div class="ps-line done" id="line1"></div>
+        <div class="ps-line done"></div>
         <div class="ps-item">
           <div class="ps-dot active" id="step2dot">2</div>
-          <div class="ps-label active">Payment</div>
+          <div class="ps-label active" id="step2lbl">Payment</div>
         </div>
         <div class="ps-line" id="line2"></div>
         <div class="ps-item">
           <div class="ps-dot pending" id="step3dot">3</div>
-          <div class="ps-label pending">Confirm</div>
+          <div class="ps-label pending" id="step3lbl">Confirm</div>
         </div>
       </div>
 
-      <!-- Express Pay -->
-      <div class="method-section">
-        <div class="ms-title">Express Checkout</div>
-        <div class="express-row">
-          <button class="express-btn apple" onclick="expressPayment('Apple Pay')">
-            <span class="express-icon">🍎</span> Apple Pay
-          </button>
-          <button class="express-btn google" onclick="expressPayment('Google Pay')">
-            <span class="express-icon">🔵</span> Google Pay
-          </button>
-        </div>
-        <div class="express-divider">or pay with</div>
+      <!-- Already paid banner (hidden by default) -->
+      <div class="already-paid" id="alreadyPaidBanner" style="display:none">
+        <div class="ap-icon">✅</div>
+        <div class="ap-title">Fee Already Paid</div>
+        <div class="ap-sub">Your platform fee for this trade has been received and is held in escrow.</div>
       </div>
 
-      <!-- Payment Methods -->
-      <div class="method-section">
-        <div class="ms-title">Payment Method</div>
-        <div class="method-grid">
-          <div class="pay-method active" id="method-card" onclick="selectMethod('card')">
-            <span class="pm-logo">💳</span>
-            <div class="pm-name">Credit / Debit</div>
-          </div>
-          <div class="pay-method" id="method-bank" onclick="selectMethod('bank')">
-            <span class="pm-logo">🏦</span>
-            <div class="pm-name">Bank Transfer</div>
-          </div>
-          <div class="pay-method" id="method-paypal" onclick="selectMethod('paypal')">
-            <span class="pm-logo">🅿️</span>
-            <div class="pm-name">PayPal</div>
-          </div>
-          <div class="pay-method" id="method-venmo" onclick="selectMethod('venmo')">
-            <span class="pm-logo">💙</span>
-            <div class="pm-name">Venmo</div>
-          </div>
-          <div class="pay-method" id="method-cashapp" onclick="selectMethod('cashapp')">
-            <span class="pm-logo">💚</span>
-            <div class="pm-name">Cash App</div>
-          </div>
-          <div class="pay-method" id="method-zelle" onclick="selectMethod('zelle')">
-            <span class="pm-logo">🟣</span>
-            <div class="pm-name">Zelle</div>
-          </div>
+      <!-- Stripe Card Element -->
+      <div id="stripeSection">
+        <div class="stripe-element-label">Card Details</div>
+        <div class="stripe-element-wrap" id="cardElementWrap">
+          <div id="card-element"></div>
         </div>
-      </div>
+        <div id="card-errors"></div>
 
-      <!-- CARD FORM -->
-      <div id="cardSection">
-        <!-- Saved Cards -->
-        <div class="saved-cards" id="savedCardsSection">
-          <div class="sc-title">Saved Payment Methods</div>
-          <div class="saved-card selected" id="savedCard1" onclick="selectSaved('savedCard1')">
-            <div class="sc-radio"></div>
-            <div class="sc-card-logo visa">VISA</div>
-            <div class="sc-info">
-              <div class="sc-num">Visa •••• •••• •••• 4242</div>
-              <div class="sc-exp">Expires 09/27</div>
-            </div>
-            <span class="sc-default">Default</span>
-          </div>
-          <div class="saved-card" id="savedCard2" onclick="selectSaved('savedCard2')">
-            <div class="sc-radio"></div>
-            <div class="sc-card-logo mc" style="background:#eb001b">MC</div>
-            <div class="sc-info">
-              <div class="sc-num">Mastercard •••• •••• •••• 8888</div>
-              <div class="sc-exp">Expires 03/26</div>
-            </div>
-          </div>
-          <div class="saved-card" id="savedCard3" onclick="selectSaved('savedCard3')">
-            <div class="sc-radio"></div>
-            <div class="sc-card-logo debit" style="background:#64748b">DEBIT</div>
-            <div class="sc-info">
-              <div class="sc-num">Debit •••• •••• •••• 1234</div>
-              <div class="sc-exp">Expires 11/25</div>
-            </div>
-          </div>
-          <div class="add-new-toggle" onclick="toggleNewCard()" id="addNewToggle">
-            <span>+</span> Use a different card
-          </div>
-        </div>
-
-        <!-- New Card Form -->
-        <div class="card-form" id="newCardForm">
-          <div class="field">
-            <div class="field-label">Card Number</div>
-            <div class="card-input-wrap">
-              <input type="text" id="cardNum" placeholder="0000 0000 0000 0000" maxlength="19" oninput="fmtCard(this)" autocomplete="cc-number">
-              <div class="card-logos">
-                <div class="card-logo-chip visa" id="logoVisa">VISA</div>
-                <div class="card-logo-chip mc" id="logoMC">MC</div>
-                <div class="card-logo-chip amex" id="logoAmex">AMEX</div>
-                <div class="card-logo-chip disc" id="logoDisc">DISC</div>
-              </div>
-            </div>
-            <div class="field-err" id="cardNumErr">Please enter a valid card number.</div>
-          </div>
-
-          <div class="field-row">
-            <div class="field">
-              <div class="field-label">Expiry Date</div>
-              <input type="text" id="cardExp" placeholder="MM / YY" maxlength="7" oninput="fmtExp(this)" autocomplete="cc-exp">
-              <div class="field-err" id="cardExpErr">Invalid expiry date.</div>
-            </div>
-            <div class="field">
-              <div class="field-label">
-                CVV / Security Code
-                <span class="field-tooltip" onclick="toggleCvvTip()">What's this?</span>
-              </div>
-              <div class="cvv-wrap">
-                <input type="text" id="cardCvv" placeholder="•••" maxlength="4" oninput="fmtCvv(this)" autocomplete="cc-csc">
-                <span class="cvv-icon" onclick="toggleCvvTip()">ℹ️</span>
-                <div class="cvv-tooltip" id="cvvTip">
-                  The 3-digit security code on the back of Visa/Mastercard, or 4-digit code on the front of Amex.
-                </div>
-              </div>
-              <div class="field-err" id="cardCvvErr">Invalid CVV.</div>
-            </div>
-          </div>
-
-          <div class="field">
-            <div class="field-label">Name on Card</div>
-            <input type="text" id="cardName" placeholder="Jane Smith" oninput="validateName(this)" autocomplete="cc-name">
-            <div class="field-err" id="cardNameErr">Please enter the cardholder name.</div>
-          </div>
-
-          <!-- Card type selector -->
-          <div class="field">
-            <div class="field-label">Card Type</div>
-            <select id="cardType" onchange="updateCardType()">
-              <option value="credit">Credit Card</option>
-              <option value="debit">Debit Card</option>
-              <option value="prepaid">Prepaid Card</option>
-            </select>
-          </div>
-
-          <!-- Billing Address -->
-          <div class="field">
-            <div class="field-label">Billing Address</div>
-            <input type="text" id="billingAddr" placeholder="123 Main Street" style="margin-bottom:7px" autocomplete="street-address">
-            <div class="field-row" style="margin-bottom:7px">
-              <input type="text" id="billingCity" placeholder="City" style="border:1.5px solid var(--border);border-radius:8px;padding:10px 13px;font-size:13px;font-family:'Lato',sans-serif;outline:none;transition:border-color .15s;width:100%" onfocus="this.style.borderColor='var(--blue)'" onblur="this.style.borderColor='var(--border)'" autocomplete="address-level2">
-              <input type="text" id="billingZip" placeholder="ZIP" maxlength="10" style="border:1.5px solid var(--border);border-radius:8px;padding:10px 13px;font-size:13px;font-family:'Lato',sans-serif;outline:none;transition:border-color .15s;width:100%" onfocus="this.style.borderColor='var(--blue)'" onblur="this.style.borderColor='var(--border)'" oninput="onZipChange(this)" autocomplete="postal-code">
-            </div>
-            <select id="billingState" onchange="onStateChange()" style="width:100%;border:1.5px solid var(--border);border-radius:8px;padding:10px 13px;font-size:13px;font-family:'Lato',sans-serif;outline:none;background:var(--white);cursor:pointer;transition:border-color .15s;margin-bottom:5px" onfocus="this.style.borderColor='var(--blue)'" onblur="this.style.borderColor='var(--border)'">
-              <option value="">Select State...</option>
-              <option value="AL">Alabama (4%)</option>
-              <option value="AK">Alaska (0% - no sales tax)</option>
-              <option value="AZ">Arizona (5.6%)</option>
-              <option value="AR">Arkansas (6.5%)</option>
-              <option value="CA">California (7.25%)</option>
-              <option value="CO">Colorado (2.9%)</option>
-              <option value="CT" selected>Connecticut (6.35%) - Your state</option>
-              <option value="DE">Delaware (0% - no sales tax)</option>
-              <option value="FL">Florida (6%)</option>
-              <option value="GA">Georgia (4%)</option>
-              <option value="HI">Hawaii (4%)</option>
-              <option value="ID">Idaho (6%)</option>
-              <option value="IL">Illinois (6.25%)</option>
-              <option value="IN">Indiana (7%)</option>
-              <option value="IA">Iowa (6%)</option>
-              <option value="KS">Kansas (6.5%)</option>
-              <option value="KY">Kentucky (6%)</option>
-              <option value="LA">Louisiana (4.45%)</option>
-              <option value="ME">Maine (5.5%)</option>
-              <option value="MD">Maryland (6%)</option>
-              <option value="MA">Massachusetts (6.25%)</option>
-              <option value="MI">Michigan (6%)</option>
-              <option value="MN">Minnesota (6.875%)</option>
-              <option value="MS">Mississippi (7%)</option>
-              <option value="MO">Missouri (4.225%)</option>
-              <option value="MT">Montana (0% - no sales tax)</option>
-              <option value="NE">Nebraska (5.5%)</option>
-              <option value="NV">Nevada (6.85%)</option>
-              <option value="NH">New Hampshire (0% - no sales tax)</option>
-              <option value="NJ">New Jersey (6.625%)</option>
-              <option value="NM">New Mexico (5%)</option>
-              <option value="NY">New York (4%)</option>
-              <option value="NC">North Carolina (4.75%)</option>
-              <option value="ND">North Dakota (5%)</option>
-              <option value="OH">Ohio (5.75%)</option>
-              <option value="OK">Oklahoma (4.5%)</option>
-              <option value="OR">Oregon (0% - no sales tax)</option>
-              <option value="PA">Pennsylvania (6%)</option>
-              <option value="RI">Rhode Island (7%)</option>
-              <option value="SC">South Carolina (6%)</option>
-              <option value="SD">South Dakota (4.5%)</option>
-              <option value="TN">Tennessee (7%)</option>
-              <option value="TX">Texas (6.25%)</option>
-              <option value="UT">Utah (4.85%)</option>
-              <option value="VT">Vermont (6%)</option>
-              <option value="VA">Virginia (5.3%)</option>
-              <option value="WA">Washington (6.5%)</option>
-              <option value="WV">West Virginia (6%)</option>
-              <option value="WI">Wisconsin (5%)</option>
-              <option value="WY">Wyoming (4%)</option>
-            </select>
-            <div class="field-hint" id="taxHint">Tax calculated by Stripe Tax based on your billing state. Rates shown are base state rates - local rates may apply.</div>
-          </div>
-
-          <!-- Tax Exempt -->
-          <div class="field">
-            <div class="field-label" style="display:flex;align-items:center;gap:8px;text-transform:none;letter-spacing:0;font-size:12px;color:var(--muted);font-weight:400">
-              <input type="checkbox" id="taxExemptCheck" onchange="toggleTaxExempt()" style="accent-color:var(--blue);width:14px;height:14px;flex-shrink:0">
-              I have a tax exemption certificate (businesses/nonprofits)
-            </div>
-            <div id="taxExemptFields" style="display:none;margin-top:8px">
-              <input type="text" id="taxExemptId" placeholder="Tax Exempt ID / Certificate Number" style="width:100%;border:1.5px solid var(--border);border-radius:8px;padding:10px 13px;font-size:13px;font-family:'Lato',sans-serif;outline:none;margin-bottom:6px;transition:border-color .15s" onfocus="this.style.borderColor='var(--blue)'" onblur="this.style.borderColor='var(--border)'">
-              <div style="background:#fffbeb;border:1px solid #fde68a;border-radius:7px;padding:9px 11px;font-size:11px;color:#92400e">Warning: Tax exempt status will be verified. Providing a false ID violates our Terms of Service.</div>
-            </div>
-          </div>
-
-          <label class="save-row" onclick="document.getElementById('saveCard').click()">
-            <input type="checkbox" id="saveCard" checked>
-            <div class="save-row-text"><strong>Save this card</strong> for future trades — stored securely via Stripe</div>
-          </label>
-
-          <div class="add-new-toggle" onclick="toggleNewCard()" style="color:var(--muted)">
-            ← Use a saved card instead
-          </div>
-        </div>
-
-        <!-- Security badges -->
         <div class="security-badges">
-          <div class="sec-badge"><span class="sec-badge-icon">🔒</span> SSL Encrypted</div>
-          <div class="sec-badge"><span class="sec-badge-icon">🛡️</span> PCI Compliant</div>
-          <div class="sec-badge"><span class="sec-badge-icon">💳</span> Stripe Secured</div>
-          <div class="sec-badge"><span class="sec-badge-icon">🏦</span> Escrow Hold</div>
+          <div class="sec-badge">🔒 SSL Encrypted</div>
+          <div class="sec-badge">🛡️ PCI Compliant</div>
+          <div class="sec-badge">💳 Stripe Secured</div>
+          <div class="sec-badge">🏦 Escrow Hold</div>
         </div>
-      </div>
 
-      <!-- BANK TRANSFER SECTION -->
-      <div id="bankSection" style="display:none">
-        <div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:9px;padding:14px;margin-bottom:14px;font-size:13px;color:#1e3a8a;line-height:1.6">
-          <strong>ACH Bank Transfer</strong> — Connect your bank account securely via Plaid. Transfers take 1–3 business days. Your trade will be held pending until funds clear.
-        </div>
-        <button class="pay-btn" style="background:linear-gradient(135deg,var(--blue),var(--blue-l));margin-bottom:8px" onclick="expressPayment('Bank Transfer')">
-          <span>🏦</span> <span class="btn-text">Connect Bank Account</span>
-          <div class="pay-btn-spinner"></div>
-        </button>
-      </div>
-
-      <!-- PAYPAL / VENMO / CASHAPP / ZELLE -->
-      <div id="walletSection" style="display:none">
-        <div style="background:var(--surface);border:1px solid var(--border);border-radius:9px;padding:14px;margin-bottom:14px;text-align:center">
-          <div style="font-size:2rem;margin-bottom:8px" id="walletIcon">🅿️</div>
-          <div style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1rem;margin-bottom:5px" id="walletName">PayPal</div>
-          <div style="font-size:12px;color:var(--muted);line-height:1.5" id="walletDesc">You'll be redirected to PayPal to complete your payment securely. Return here to confirm your trade.</div>
-        </div>
-        <button class="pay-btn" id="walletPayBtn" style="margin-bottom:8px" onclick="expressPayment('')">
-          <span id="walletBtnIcon">🅿️</span>
-          <span class="btn-text" id="walletBtnText">Continue to PayPal</span>
-          <div class="pay-btn-spinner"></div>
-        </button>
-      </div>
-
-      <!-- SUBMIT (card/saved) -->
-      <div id="submitSection">
         <button class="pay-btn" id="payBtn" onclick="submitPayment()">
           <span>🔒</span>
-          <span class="btn-text" id="payBtnText">Pay $30.45 Securely</span>
+          <span class="btn-text" id="payBtnText">Pay $0.00 Securely</span>
           <div class="pay-btn-spinner"></div>
         </button>
-        <button class="back-btn" onclick="goBack()">← Back to Review</button>
+        <button class="back-btn" onclick="window.history.back()">← Back to Dashboard</button>
         <div style="text-align:center;font-size:11px;color:var(--muted);margin-top:10px;line-height:1.5">
-          By completing payment you agree to Tradezy's <span style="color:var(--blue);cursor:pointer">Terms of Service</span>. Your payment is held in escrow and only released when both parties confirm the trade is complete.
+          By completing payment you agree to Tradezy's <a href="alltrades-terms.html" style="color:var(--blue)">Terms of Service</a>. Your payment is held in escrow and only released when both parties confirm the trade is complete.
         </div>
       </div>
 
     </div>
 
-    <!-- SUCCESS -->
+    <!-- Success -->
     <div class="success-screen" id="successScreen">
       <div class="ss-emoji">🎉</div>
       <div class="ss-title">Payment Authorized!</div>
-      <div class="ss-desc">Your $30.45 is held securely in escrow. RiderJay has been notified. Once both of you confirm the trade is complete, funds will be processed.</div>
+      <div class="ss-desc" id="ssDesc">Your fee is held securely in escrow. The other trader has been notified. Once both of you confirm the meetup is complete, funds will be processed.</div>
       <div class="receipt">
         <div class="receipt-title">📋 Payment Receipt</div>
-        <div class="receipt-row"><span>Trade ID</span><span style="color:var(--blue);font-weight:700">#AT-2847</span></div>
-        <div class="receipt-row"><span>Your item value</span><span>$29.00</span></div>
-        <div class="receipt-row"><span>5% Tradezy fee</span><span>$1.45</span></div>
-        <div class="receipt-row"><span>Payment method</span><span id="receiptMethod">Visa •••• 4242</span></div>
-        <div class="receipt-row"><span>Sales tax</span><span id="receiptTax">$0.09</span></div>
-        <div class="receipt-row"><span>Status</span><span style="color:var(--green)">&#10003; Held in Escrow</span></div>
-        <div class="receipt-row"><span>Your total paid</span><span style="color:var(--gold)" id="receiptTotal">$30.54</span></div>
+        <div class="receipt-row"><span>Trade ID</span><span style="color:var(--blue);font-weight:700" id="rcTradeId">—</span></div>
+        <div class="receipt-row"><span>Platform fee (5%)</span><span id="rcFee">—</span></div>
+        <div class="receipt-row"><span>Payment method</span><span>Card via Stripe</span></div>
+        <div class="receipt-row"><span>Status</span><span style="color:var(--green)">✓ Held in Escrow</span></div>
+        <div class="receipt-row"><span>Total charged</span><span style="color:var(--gold)" id="rcTotal">—</span></div>
       </div>
       <div class="ss-actions">
-        <button class="ss-btn gold" onclick="showToast('📋','Going to your active trades…')">📋 View My Active Trades</button>
-        <button class="ss-btn outline" onclick="showToast('💬','Opening chat with RiderJay…')">💬 Message RiderJay</button>
-        <button class="ss-btn outline" href="alltrades.html">← Back to Homepage</button>
+        <a class="ss-btn gold" href="alltrades-dashboard.html">📋 View My Active Trades</a>
+        <a class="ss-btn outline" id="ssMessageBtn" href="alltrades-messages.html">💬 Message Your Trader</a>
       </div>
     </div>
   </div>
 
-  <!-- ── RIGHT: SUMMARY ── -->
+  <!-- Summary -->
   <div class="summary-card">
     <div class="sum-head">
       <div class="sum-title">📋 Order Summary</div>
-      <div class="sum-sub">Trade #AT-2847</div>
+      <div class="sum-sub" id="sumTradeId">Trade #—</div>
     </div>
     <div class="sum-body">
       <div class="trade-preview">
         <div class="tp-item">
-          <div class="tp-em">🥫</div>
-          <div class="tp-nm">Canned Goods (24)</div>
+          <div class="tp-em">📦</div>
+          <div class="tp-nm" id="sumMyItem">Your Item</div>
           <div class="tp-who">Your item</div>
-          <div class="tp-val" style="color:var(--gold)">~$29</div>
+          <div class="tp-val" style="color:var(--gold)" id="sumMyVal">—</div>
         </div>
         <div class="tp-arrow">⇄</div>
         <div class="tp-item">
-          <div class="tp-em">🔧</div>
-          <div class="tp-nm">DeWalt Drill Set</div>
-          <div class="tp-who">RiderJay</div>
-          <div class="tp-val" style="color:var(--blue)">~$140</div>
+          <div class="tp-em">📦</div>
+          <div class="tp-nm" id="sumTheirItem">Their Item</div>
+          <div class="tp-who" id="sumTheirWho">Other trader</div>
+          <div class="tp-val" style="color:var(--blue)" id="sumTheirVal">—</div>
         </div>
       </div>
 
       <div class="sum-rows">
-        <div class="sum-row"><span class="sum-row-label">Your item value</span><span class="sum-row-val" id="sumItemVal">$29.00</span></div>
-        <div class="sum-row"><span class="sum-row-label">Cash add-on</span><span class="sum-row-val green" id="sumCash">$0.00</span></div>
-        <div class="sum-row"><span class="sum-row-label">5% platform fee</span><span class="sum-row-val gold" id="sumFee">$1.45</span></div>
-        <div class="sum-row" id="sumTaxRow">
-          <span class="sum-row-label" id="sumTaxLabel">Sales Tax (CT 6.35%)</span>
-          <span class="sum-row-val" id="sumTax">$0.09</span>
-        </div>
-        <div class="sum-row" id="sumExemptRow" style="display:none">
-          <span class="sum-row-label">Tax Exempt</span>
-          <span class="sum-row-val green">Applied</span>
-        </div>
-        <div class="sum-row" id="sumNoTaxRow" style="display:none">
-          <span class="sum-row-label" id="sumNoTaxLabel">Sales Tax</span>
-          <span class="sum-row-val green">$0.00 (no tax state)</span>
-        </div>
-      </div>
-
-      <!-- Tax notice box -->
-      <div id="taxNoticeBox" style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;padding:9px 12px;margin-bottom:10px;font-size:11px;color:#1e3a8a;display:flex;gap:6px;line-height:1.4">
-        <span>📋</span>
-        <span id="taxNoticeText">CT sales tax (6.35%) applies to the platform fee only. Food items may be exempt — Stripe Tax handles this automatically at launch.</span>
+        <div class="sum-row"><span class="sum-row-label">Your fee (5%)</span><span class="sum-row-val gold" id="sumFee">—</span></div>
+        <div class="sum-row" id="sumCashRow" style="display:none"><span class="sum-row-label">Cash add-on</span><span class="sum-row-val green" id="sumCash">—</span></div>
       </div>
 
       <div class="sum-total">
-        <span class="sum-total-label">Your Total</span>
-        <span class="sum-total-amount" id="sumGrandTotal">$30.54</span>
+        <span class="sum-total-label">You Pay Today</span>
+        <span class="sum-total-amount" id="sumTotal">—</span>
       </div>
 
       <div class="escrow-note">
         <span>🏦</span>
-        <span><strong>Escrow protected:</strong> Your payment is held safely and only released when both traders confirm the swap is done. Full refund if declined.</span>
+        <span><strong>Escrow protected:</strong> Your payment is held safely and only released when both traders confirm the swap is done.</span>
       </div>
 
       <div class="other-party-box">
-        <div class="opb-title">RiderJay Also Pays</div>
-        <div class="opb-row"><span class="opb-label">Their item value</span><span class="opb-val">$140.00</span></div>
-        <div class="opb-row"><span class="opb-label">Their 5% fee</span><span class="opb-val">$7.00</span></div>
-        <div class="opb-row"><span class="opb-label">Their sales tax</span><span class="opb-val" id="theirTax">~$0.44</span></div>
-        <div class="opb-row" style="font-weight:700"><span class="opb-label">Their total</span><span class="opb-val" id="theirTotal">$147.44</span></div>
-      </div>
-
-      <div class="sum-rows" style="margin-bottom:10px">
-        <div class="sum-row"><span class="sum-row-label">Platform fee revenue</span><span class="sum-row-val" style="color:var(--navy);font-weight:800">$8.45</span></div>
-        <div class="sum-row"><span class="sum-row-label">Tax collected (remitted)</span><span class="sum-row-val" style="color:var(--navy)" id="totalTaxCollected">~$0.53</span></div>
+        <div class="opb-title" id="opbTitle">Other Trader Also Pays</div>
+        <div class="opb-row"><span class="opb-label">Their fee (5%)</span><span class="opb-val" id="opbFee">—</span></div>
+        <div class="opb-row"><span class="opb-label">Status</span><span class="opb-val" id="opbStatus">Pending</span></div>
       </div>
 
       <div class="stripe-note">
@@ -781,192 +339,214 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
 <div class="toast" id="toastEl"><span id="toastIc">✅</span><span id="toastTx">Done!</span></div>
 
 <script>
-let selectedMethod = 'card';
-let usingSavedCard = true;
-let selectedSavedCard = 'savedCard1';
-let cvvTipVisible = false;
+// ── CONFIG ──
+const SUPABASE_URL = 'https://equvwaspcoeetfsexqki.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVxdXZ3YXNwY29lZXRmc2V4cWtpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgyNzc2MjQsImV4cCI6MjA5Mzg1MzYyNH0.eQ3F4MnSqMCkpFEKqjsKVWQxRmc2V4cWtpliwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgyNzc2MjR9';
+const STRIPE_PK = 'pk_live_51TW2NZGxBDyKEkW0gHznu2bH4q5EUKhWMOz4Lns3yFwitMRLNLEC9dwFk8yuVg6pRnOJesxuw8yQKyen6Trd0XyO00ikOdXldY';
+const EDGE_URL = SUPABASE_URL + '/functions/v1/create-payment-intent';
 
-// ── PAYMENT METHOD ──
-const WALLET_INFO = {
-  paypal: { icon:'🅿️', name:'PayPal', desc:"You'll be redirected to PayPal to complete payment securely.", btnIcon:'🅿️', btnText:'Continue to PayPal' },
-  venmo:  { icon:'💙', name:'Venmo',  desc:"You'll be redirected to Venmo to complete payment securely.", btnIcon:'💙', btnText:'Continue to Venmo' },
-  cashapp:{ icon:'💚', name:'Cash App', desc:"You'll be redirected to Cash App to complete payment securely.", btnIcon:'💚', btnText:'Continue to Cash App' },
-  zelle:  { icon:'🟣', name:'Zelle',  desc:"You'll complete payment via Zelle. Enter your bank-linked phone or email.", btnIcon:'🟣', btnText:'Continue with Zelle' },
-};
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+const stripe = Stripe(STRIPE_PK);
 
-function selectMethod(method) {
-  document.querySelectorAll('.pay-method').forEach(m => m.classList.remove('active'));
-  document.getElementById('method-' + method).classList.add('active');
-  selectedMethod = method;
+let tradeData = null;
+let currentUser = null;
+let isTraderA = false;
+let cardElement = null;
+let clientSecret = null;
 
-  // Show/hide sections
-  document.getElementById('cardSection').style.display = method === 'card' ? 'block' : 'none';
-  document.getElementById('bankSection').style.display = method === 'bank' ? 'block' : 'none';
-  document.getElementById('walletSection').style.display = ['paypal','venmo','cashapp','zelle'].includes(method) ? 'block' : 'none';
-  document.getElementById('submitSection').style.display = method === 'card' ? 'block' : 'none';
-
-  if (WALLET_INFO[method]) {
-    const info = WALLET_INFO[method];
-    document.getElementById('walletIcon').textContent = info.icon;
-    document.getElementById('walletName').textContent = info.name;
-    document.getElementById('walletDesc').textContent = info.desc;
-    document.getElementById('walletBtnIcon').textContent = info.btnIcon;
-    document.getElementById('walletBtnText').textContent = info.btnText;
-    document.getElementById('walletPayBtn').onclick = () => expressPayment(info.name);
+// ── INIT ──
+window.addEventListener('DOMContentLoaded', async () => {
+  // Auth check
+  const { data: { session } } = await sb.auth.getSession();
+  if (!session) {
+    window.location.href = 'alltrades-auth.html?redirect=alltrades-payment.html' + window.location.search;
+    return;
   }
-}
+  currentUser = session.user;
 
-// ── SAVED CARDS ──
-function selectSaved(id) {
-  document.querySelectorAll('.saved-card').forEach(c => c.classList.remove('selected'));
-  document.getElementById(id).classList.add('selected');
-  selectedSavedCard = id;
-}
-
-function toggleNewCard() {
-  const form = document.getElementById('newCardForm');
-  const saved = document.getElementById('savedCardsSection');
-  const isShowing = form.classList.contains('show');
-  form.classList.toggle('show', !isShowing);
-  saved.style.display = isShowing ? 'block' : 'none';
-  usingSavedCard = isShowing;
-}
-
-// ── CARD DETECTION ──
-const CARD_PATTERNS = {
-  visa:  /^4/,
-  mc:    /^5[1-5]|^2[2-7]/,
-  amex:  /^3[47]/,
-  disc:  /^6(?:011|5)/,
-};
-
-function detectCard(num) {
-  const clean = num.replace(/\s/g, '');
-  for (const [type, pattern] of Object.entries(CARD_PATTERNS)) {
-    if (pattern.test(clean)) return type;
-  }
-  return null;
-}
-
-function fmtCard(inp) {
-  let v = inp.value.replace(/\D/g, '');
-  const type = detectCard(v);
-
-  // Amex: 4-6-5, others: 4-4-4-4
-  if (type === 'amex') {
-    v = v.slice(0, 15);
-    v = v.replace(/(\d{4})(\d{0,6})(\d{0,5})/, (_, a, b, c) => [a, b, c].filter(Boolean).join(' '));
-  } else {
-    v = v.slice(0, 16);
-    v = v.match(/.{1,4}/g)?.join(' ') || v;
+  // Get trade_id from URL
+  const params = new URLSearchParams(window.location.search);
+  const tradeId = params.get('trade_id');
+  if (!tradeId) {
+    showError('No Trade Found', 'No trade ID was provided. Please go back to your dashboard and try again.');
+    return;
   }
 
-  inp.value = v;
-
-  // Update logo highlights
-  ['visa','mc','amex','disc'].forEach(t => {
-    document.getElementById('logo' + t.charAt(0).toUpperCase() + t.slice(1)).classList.toggle('active', t === type);
-  });
-
-  // Validate length
-  const clean = v.replace(/\s/g, '');
-  const validLen = type === 'amex' ? clean.length === 15 : clean.length === 16;
-  inp.classList.toggle('valid', validLen && clean.length > 0);
-  inp.classList.toggle('invalid', !validLen && clean.length > 0);
-  document.getElementById('cardNumErr').classList.toggle('show', !validLen && clean.length > 12);
-}
-
-function fmtExp(inp) {
-  let v = inp.value.replace(/\D/g, '').slice(0, 4);
-  if (v.length >= 2) v = v.slice(0, 2) + ' / ' + v.slice(2);
-  inp.value = v;
-
-  // Validate
-  if (v.length === 7) {
-    const [mm, yy] = v.split(' / ').map(Number);
-    const now = new Date();
-    const expDate = new Date(2000 + yy, mm - 1);
-    const valid = mm >= 1 && mm <= 12 && expDate > now;
-    inp.classList.toggle('valid', valid);
-    inp.classList.toggle('invalid', !valid);
-    document.getElementById('cardExpErr').classList.toggle('show', !valid);
-  }
-}
-
-function fmtCvv(inp) {
-  const cardType = detectCard(document.getElementById('cardNum')?.value || '');
-  const maxLen = cardType === 'amex' ? 4 : 3;
-  inp.value = inp.value.replace(/\D/g, '').slice(0, maxLen);
-  const valid = inp.value.length === maxLen;
-  inp.classList.toggle('valid', valid && inp.value.length > 0);
-  inp.classList.toggle('invalid', !valid && inp.value.length > 0);
-  document.getElementById('cardCvvErr').classList.toggle('show', !valid && inp.value.length > 0);
-}
-
-function validateName(inp) {
-  const valid = inp.value.trim().split(' ').length >= 2 && inp.value.length > 3;
-  inp.classList.toggle('valid', valid);
-  inp.classList.toggle('invalid', !valid && inp.value.length > 2);
-  document.getElementById('cardNameErr').classList.toggle('show', !valid && inp.value.length > 2);
-}
-
-function updateCardType() {
-  const val = document.getElementById('cardType').value;
-  const chip = document.querySelector('.card-logo-chip.debit');
-  // In production: send card type to Stripe for proper processing
-}
-
-function toggleCvvTip() {
-  cvvTipVisible = !cvvTipVisible;
-  document.getElementById('cvvTip').classList.toggle('show', cvvTipVisible);
-}
-
-document.addEventListener('click', e => {
-  if (!e.target.closest('.cvv-wrap')) {
-    cvvTipVisible = false;
-    document.getElementById('cvvTip').classList.remove('show');
-  }
+  await loadTrade(tradeId, session);
 });
 
-// ── EXPRESS PAYMENT ──
-function expressPayment(method) {
-  const btn = event.currentTarget || event.target.closest('button');
-  if (!btn) return;
-  const originalText = btn.innerHTML;
-  btn.classList.add('loading');
-  btn.disabled = true;
+async function loadTrade(tradeId, session) {
+  try {
+    // Load trade with offer and listing data
+    const { data: trade, error } = await sb
+      .from('trades')
+      .select(`
+        *,
+        offer:offer_id (
+          id, offer_type, offered_item_title, offered_item_value, cash_amount, offerer_id
+        ),
+        listing:listing_id (
+          id, title, estimated_value, user_id
+        )
+      `)
+      .eq('id', tradeId)
+      .single();
 
-  setTimeout(() => {
-    btn.classList.remove('loading');
-    btn.disabled = false;
-    btn.innerHTML = originalText;
-    showSuccess(method);
-  }, 2200);
+    if (error || !trade) {
+      showError('Trade Not Found', 'This trade could not be found or has been removed.');
+      return;
+    }
+
+    // Verify user is part of this trade
+    isTraderA = trade.trader_a_id === currentUser.id;
+    const isTraderB = trade.trader_b_id === currentUser.id;
+
+    if (!isTraderA && !isTraderB) {
+      showError('Access Denied', 'You are not a participant in this trade.');
+      return;
+    }
+
+    tradeData = trade;
+
+    // Check if already paid
+    const alreadyPaid = isTraderA ? trade.stripe_payment_intent_a : trade.stripe_payment_intent_b;
+    if (alreadyPaid) {
+      renderSummary(trade);
+      showAlreadyPaid(trade, alreadyPaid);
+      showMainPage();
+      return;
+    }
+
+    // Load other trader's display name
+    const otherTraderId = isTraderA ? trade.trader_b_id : trade.trader_a_id;
+    const { data: otherUser } = await sb
+      .from('users')
+      .select('display_name')
+      .eq('id', otherTraderId)
+      .single();
+
+    const otherName = otherUser?.display_name || 'Other Trader';
+
+    renderSummary(trade, otherName);
+    await initStripe(trade, session);
+    showMainPage();
+
+  } catch (err) {
+    console.error(err);
+    showError('Error Loading Trade', err.message || 'An unexpected error occurred.');
+  }
 }
 
-// ── VALIDATION ──
-function validateCardForm() {
-  if (usingSavedCard) return true;
+function renderSummary(trade, otherName) {
+  const myFee = isTraderA ? trade.fee_a : trade.fee_b;
+  const theirFee = isTraderA ? trade.fee_b : trade.fee_a;
+  const theirPaid = isTraderA ? trade.stripe_payment_intent_b : trade.stripe_payment_intent_a;
 
-  const num = document.getElementById('cardNum').value.replace(/\s/g, '');
-  const exp = document.getElementById('cardExp').value;
-  const cvv = document.getElementById('cardCvv').value;
-  const name = document.getElementById('cardName').value.trim();
-  const cardType = detectCard(num);
-  const validNumLen = cardType === 'amex' ? num.length === 15 : num.length === 16;
+  // Trade ID
+  const shortId = '#AT-' + trade.id.slice(0, 6).toUpperCase();
+  document.getElementById('sumTradeId').textContent = 'Trade ' + shortId;
+  document.getElementById('rcTradeId').textContent = shortId;
 
-  let valid = true;
-  if (!validNumLen) { document.getElementById('cardNumErr').classList.add('show'); valid = false; }
-  if (exp.length < 7) { document.getElementById('cardExpErr').classList.add('show'); valid = false; }
-  if (cvv.length < 3) { document.getElementById('cardCvvErr').classList.add('show'); valid = false; }
-  if (name.split(' ').length < 2) { document.getElementById('cardNameErr').classList.add('show'); valid = false; }
-  return valid;
+  // Items
+  const myTitle = trade.listing?.title || 'Your Item';
+  const theirTitle = trade.offer?.offered_item_title || 'Their Item';
+  const myVal = trade.listing?.estimated_value || 0;
+  const theirVal = trade.offer?.offered_item_value || 0;
+  const cashAddon = trade.cash_amount || trade.offer?.cash_amount || 0;
+
+  document.getElementById('sumMyItem').textContent = myTitle;
+  document.getElementById('sumTheirItem').textContent = theirTitle;
+  document.getElementById('sumMyVal').textContent = myVal ? '$' + parseFloat(myVal).toFixed(2) : '—';
+  document.getElementById('sumTheirVal').textContent = theirVal ? '$' + parseFloat(theirVal).toFixed(2) : '—';
+  document.getElementById('sumTheirWho').textContent = otherName || 'Other Trader';
+
+  // Fees
+  const feeAmt = myFee ? '$' + parseFloat(myFee).toFixed(2) : '—';
+  document.getElementById('sumFee').textContent = feeAmt;
+  document.getElementById('sumTotal').textContent = feeAmt;
+  document.getElementById('payBtnText').textContent = 'Pay ' + feeAmt + ' Securely';
+  document.getElementById('rcFee').textContent = feeAmt;
+  document.getElementById('rcTotal').textContent = feeAmt;
+
+  // Cash addon
+  if (cashAddon && parseFloat(cashAddon) > 0) {
+    document.getElementById('sumCashRow').style.display = 'flex';
+    document.getElementById('sumCash').textContent = '$' + parseFloat(cashAddon).toFixed(2);
+  }
+
+  // Other party
+  document.getElementById('opbTitle').textContent = (otherName || 'Other Trader') + ' Also Pays';
+  document.getElementById('opbFee').textContent = theirFee ? '$' + parseFloat(theirFee).toFixed(2) : '—';
+  document.getElementById('opbStatus').textContent = theirPaid ? '✓ Paid' : 'Awaiting Payment';
+  document.getElementById('opbStatus').style.color = theirPaid ? 'var(--green)' : 'var(--gold)';
+
+  // Sub heading
+  document.getElementById('phSub').textContent = isTraderA ? 'Trader A fee · Escrow held until meetup confirmed' : 'Trader B fee · Escrow held until meetup confirmed';
+
+  // Success screen
+  document.getElementById('ssDesc').textContent = 'Your ' + feeAmt + ' is held securely in escrow. ' + (otherName || 'The other trader') + ' has been notified. Once both of you confirm the meetup is complete, funds will be processed.';
 }
 
-// ── SUBMIT ──
-function submitPayment() {
-  if (selectedMethod === 'card' && !validateCardForm()) {
-    showToast('⚠️', 'Please complete all payment fields correctly.');
+async function initStripe(trade, session) {
+  // Create PaymentIntent via Edge Function
+  try {
+    const res = await fetch(EDGE_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + session.access_token,
+      },
+      body: JSON.stringify({ trade_id: trade.id }),
+    });
+
+    const data = await res.json();
+    if (data.error) throw new Error(data.error);
+    clientSecret = data.client_secret;
+
+  } catch (err) {
+    showError('Payment Setup Failed', err.message || 'Could not initialize payment. Please try again.');
+    return;
+  }
+
+  // Mount Stripe Card Element
+  const elements = stripe.elements();
+  cardElement = elements.create('card', {
+    style: {
+      base: {
+        fontFamily: "'Lato', sans-serif",
+        fontSize: '15px',
+        color: '#1a1a2e',
+        '::placeholder': { color: '#94a3b8' },
+      },
+      invalid: { color: '#dc2626' },
+    },
+  });
+
+  cardElement.mount('#card-element');
+
+  cardElement.on('focus', () => {
+    document.getElementById('cardElementWrap').classList.add('focused');
+  });
+  cardElement.on('blur', () => {
+    document.getElementById('cardElementWrap').classList.remove('focused');
+  });
+  cardElement.on('change', (e) => {
+    const errEl = document.getElementById('card-errors');
+    const wrap = document.getElementById('cardElementWrap');
+    if (e.error) {
+      errEl.textContent = e.error.message;
+      wrap.classList.add('error');
+    } else {
+      errEl.textContent = '';
+      wrap.classList.remove('error');
+    }
+  });
+}
+
+// ── SUBMIT PAYMENT ──
+async function submitPayment() {
+  if (!clientSecret || !cardElement) {
+    showToast('⚠️', 'Payment not ready yet. Please wait.', true);
     return;
   }
 
@@ -974,200 +554,108 @@ function submitPayment() {
   btn.classList.add('loading');
   btn.disabled = true;
 
-  // Advance step indicator
+  // Advance step UI
   document.getElementById('step2dot').textContent = '✓';
   document.getElementById('step2dot').className = 'ps-dot done';
-  document.querySelector('.ps-label.active').className = 'ps-label done';
+  document.getElementById('step2lbl').className = 'ps-label done';
   document.getElementById('line2').classList.add('done');
   document.getElementById('step3dot').className = 'ps-dot active';
-  document.getElementById('step3dot').textContent = '3';
+  document.getElementById('step3lbl').className = 'ps-label active';
 
-  setTimeout(() => {
+  try {
+    const { paymentIntent, error } = await stripe.confirmCardPayment(clientSecret, {
+      payment_method: { card: cardElement },
+    });
+
+    if (error) {
+      document.getElementById('card-errors').textContent = error.message;
+      document.getElementById('cardElementWrap').classList.add('error');
+      btn.classList.remove('loading');
+      btn.disabled = false;
+      // Reset step UI
+      document.getElementById('step2dot').textContent = '2';
+      document.getElementById('step2dot').className = 'ps-dot active';
+      document.getElementById('step2lbl').className = 'ps-label active';
+      document.getElementById('line2').classList.remove('done');
+      document.getElementById('step3dot').className = 'ps-dot pending';
+      document.getElementById('step3lbl').className = 'ps-label pending';
+      showToast('❌', error.message, true);
+      return;
+    }
+
+    // Payment confirmed — write PaymentIntent ID to trades table
+    const updateField = isTraderA ? 'stripe_payment_intent_a' : 'stripe_payment_intent_b';
+    const { error: updateError } = await sb
+      .from('trades')
+      .update({
+        [updateField]: paymentIntent.id,
+        escrow_status: 'partial', // will become 'full' when both pay
+      })
+      .eq('id', tradeData.id);
+
+    if (updateError) {
+      console.error('DB update error:', updateError);
+      // Payment went through even if DB update fails — log it but still show success
+    }
+
+    // Check if other party already paid — if so update escrow to full
+    const otherField = isTraderA ? 'stripe_payment_intent_b' : 'stripe_payment_intent_a';
+    if (tradeData[otherField]) {
+      await sb.from('trades').update({ escrow_status: 'full' }).eq('id', tradeData.id);
+    }
+
+    showSuccess();
+
+  } catch (err) {
+    document.getElementById('card-errors').textContent = err.message;
     btn.classList.remove('loading');
     btn.disabled = false;
-    const method = usingSavedCard
-      ? (selectedSavedCard === 'savedCard1' ? 'Visa •••• 4242' : selectedSavedCard === 'savedCard2' ? 'Mastercard •••• 8888' : 'Debit •••• 1234')
-      : (detectCard(document.getElementById('cardNum')?.value || '') || 'Card') + ' (new)';
-    showSuccess(method);
-  }, 2400);
+    showToast('❌', 'Payment failed: ' + err.message, true);
+  }
 }
 
-function showSuccess(method) {
+function showSuccess() {
   document.getElementById('payBody').style.display = 'none';
   document.getElementById('successScreen').classList.add('show');
-  document.getElementById('receiptMethod').textContent = method || 'Express Pay';
-  showToast('🎉', 'Payment authorized! Trade is live.');
+  showToast('🎉', 'Payment authorized! Trade is in escrow.');
 }
 
-function goBack() {
-  showToast('← ', 'Returning to trade review…');
+function showAlreadyPaid(trade, intentId) {
+  document.getElementById('alreadyPaidBanner').style.display = 'block';
+  document.getElementById('stripeSection').style.display = 'none';
+  // Still show receipt info
+  const shortId = '#AT-' + trade.id.slice(0, 6).toUpperCase();
+  document.getElementById('rcTradeId').textContent = shortId;
+  const myFee = isTraderA ? trade.fee_a : trade.fee_b;
+  if (myFee) {
+    document.getElementById('rcFee').textContent = '$' + parseFloat(myFee).toFixed(2);
+    document.getElementById('rcTotal').textContent = '$' + parseFloat(myFee).toFixed(2);
+  }
 }
 
-function resetForm() {
-  document.getElementById('payBody').style.display = 'block';
-  document.getElementById('successScreen').classList.remove('show');
+// ── UI HELPERS ──
+function showMainPage() {
+  document.getElementById('pageLoader').style.display = 'none';
+  document.getElementById('pageError').style.display = 'none';
+  document.getElementById('mainPage').style.display = 'grid';
 }
 
-// ── TOAST ──
-function showToast(icon, msg) {
+function showError(title, msg) {
+  document.getElementById('pageLoader').style.display = 'none';
+  document.getElementById('errTitle').textContent = title;
+  document.getElementById('errMsg').textContent = msg;
+  document.getElementById('pageError').style.display = 'block';
+}
+
+function showToast(icon, msg, isError) {
+  const t = document.getElementById('toastEl');
   document.getElementById('toastIc').textContent = icon;
   document.getElementById('toastTx').textContent = msg;
-  const t = document.getElementById('toastEl');
+  t.className = 'toast' + (isError ? ' error' : '');
   t.classList.add('show');
   clearTimeout(window._tt);
-  window._tt = setTimeout(() => t.classList.remove('show'), 3800);
+  window._tt = setTimeout(() => t.classList.remove('show'), 4000);
 }
-
-// ══════════════════════════════════════════════
-// TAX ENGINE
-// Base state rates only. In production, Stripe Tax
-// handles exact rates including county/city/special
-// districts and product-specific exemptions.
-// ══════════════════════════════════════════════
-
-const TAX_RATES = {
-  AL:0.04,AK:0,AZ:0.056,AR:0.065,CA:0.0725,CO:0.029,
-  CT:0.0635,DE:0,FL:0.06,GA:0.04,HI:0.04,ID:0.06,
-  IL:0.0625,IN:0.07,IA:0.06,KS:0.065,KY:0.06,LA:0.0445,
-  ME:0.055,MD:0.06,MA:0.0625,MI:0.06,MN:0.06875,MS:0.07,
-  MO:0.04225,MT:0,NE:0.055,NV:0.0685,NH:0,NJ:0.06625,
-  NM:0.05,NY:0.04,NC:0.0475,ND:0.05,OH:0.0575,OK:0.045,
-  OR:0,PA:0.06,RI:0.07,SC:0.06,SD:0.045,TN:0.07,
-  TX:0.0625,UT:0.0485,VT:0.06,VA:0.053,WA:0.065,
-  WV:0.06,WI:0.05,WY:0.04
-};
-
-const NO_TAX_STATES = ['AK','DE','MT','NH','OR'];
-
-const FOOD_EXEMPT_STATES = ['CA','TX','NY','PA','NJ','ME','VT','MD','VA','MA','MN','AZ','FL','NV','WA'];
-
-const ITEM_VAL = 29.00;
-const PLATFORM_FEE = 1.45;
-const CASH_ADD = 0.00;
-const THEIR_ITEM_VAL = 140.00;
-const THEIR_FEE = 7.00;
-
-let taxExempt = false;
-let currentState = 'CT';
-let currentTaxRate = 0.0635;
-let currentTaxAmount = 0;
-
-const STATE_NOTICES = {
-  CT: 'CT 6.35%: Tax applies to the platform fee. Food/grocery items are generally exempt from CT sales tax — Stripe Tax handles this automatically.',
-  CA: 'CA 7.25%: Food for home consumption is generally exempt. Platform fee is taxable. Local rates may add up to 3.25% more.',
-  TX: 'TX 6.25%: Most food and food ingredients are exempt. Platform fee is taxable. Local rates may add up to 2% more.',
-  NY: 'NY 4%: Unprepared food is exempt. Platform fee is taxable. Local rates may apply (NYC total is 8.875%).',
-  PA: 'PA 6%: Food (not prepared/ready-to-eat) is exempt. Platform fee is taxable.',
-  OR: 'OR 0%: Oregon has NO sales tax. No tax will be collected on this transaction.',
-  AK: 'AK 0%: Alaska has no state sales tax. Some local jurisdictions may apply small rates.',
-  DE: 'DE 0%: Delaware has NO sales tax. No tax will be collected.',
-  MT: 'MT 0%: Montana has NO sales tax. No tax will be collected.',
-  NH: 'NH 0%: New Hampshire has NO sales tax. No tax will be collected.',
-  FL: 'FL 6%: Most groceries are exempt. Platform fee is taxable. Local rates may apply.',
-  default: 'Tax applies to the platform service fee. Food and essential items may be exempt depending on state — Stripe Tax handles this automatically at launch.'
-};
-
-function onStateChange() {
-  const sel = document.getElementById('billingState');
-  currentState = sel.value;
-  if (!currentState) return;
-  currentTaxRate = TAX_RATES[currentState] || 0;
-  recalcTax();
-}
-
-function onZipChange(inp) {
-  const zip = inp.value.replace(/\D/g,'');
-  if (zip.length === 5) {
-    const hint = document.getElementById('taxHint');
-    if (hint) hint.textContent = 'ZIP ' + zip + ' detected. Stripe Tax will calculate your exact local rate including county and city taxes at launch.';
-  }
-}
-
-function recalcTax() {
-  const isNoTax = NO_TAX_STATES.includes(currentState) || currentTaxRate === 0;
-  const isFoodExempt = FOOD_EXEMPT_STATES.includes(currentState);
-
-  // Tax on platform fee (service fees are taxable in most states)
-  const taxableAmount = taxExempt ? 0 : PLATFORM_FEE;
-  currentTaxAmount = taxExempt ? 0 : taxableAmount * currentTaxRate;
-
-  const theirTaxAmt = currentTaxRate * THEIR_FEE;
-  const grandTotal = ITEM_VAL + CASH_ADD + PLATFORM_FEE + currentTaxAmount;
-  const theirTotal = THEIR_ITEM_VAL + THEIR_FEE + theirTaxAmt;
-  const totalTax = currentTaxAmount + theirTaxAmt;
-
-  const taxRow = document.getElementById('sumTaxRow');
-  const noTaxRow = document.getElementById('sumNoTaxRow');
-  const exemptRow = document.getElementById('sumExemptRow');
-
-  if (taxExempt) {
-    if (taxRow) taxRow.style.display = 'none';
-    if (noTaxRow) noTaxRow.style.display = 'none';
-    if (exemptRow) exemptRow.style.display = 'flex';
-  } else if (isNoTax) {
-    if (taxRow) taxRow.style.display = 'none';
-    if (exemptRow) exemptRow.style.display = 'none';
-    if (noTaxRow) noTaxRow.style.display = 'flex';
-    const lbl = document.getElementById('sumNoTaxLabel');
-    if (lbl) lbl.textContent = 'Sales Tax (' + currentState + ' 0%)';
-  } else {
-    if (taxRow) taxRow.style.display = 'flex';
-    if (exemptRow) exemptRow.style.display = 'none';
-    if (noTaxRow) noTaxRow.style.display = 'none';
-    const lbl = document.getElementById('sumTaxLabel');
-    if (lbl) lbl.textContent = 'Sales Tax (' + currentState + ' ' + (currentTaxRate * 100).toFixed(2) + '%)*';
-    const amt = document.getElementById('sumTax');
-    if (amt) amt.textContent = '$' + currentTaxAmount.toFixed(2);
-  }
-
-  const noticeBox = document.getElementById('taxNoticeBox');
-  const noticeText = document.getElementById('taxNoticeText');
-  if (noticeBox && noticeText) {
-    let msg = STATE_NOTICES[currentState] || STATE_NOTICES.default;
-    if (taxExempt) {
-      msg = 'Tax exemption applied. Your certificate will be verified before processing.';
-      noticeBox.style.background='#f0fdf4'; noticeBox.style.borderColor='#bbf7d0'; noticeBox.style.color='#14532d';
-      noticeBox.querySelector('span').textContent = '\u2705';
-    } else {
-      noticeBox.style.background='#eff6ff'; noticeBox.style.borderColor='#bfdbfe'; noticeBox.style.color='#1e3a8a';
-      noticeBox.querySelector('span').textContent = '\ud83d\udccb';
-      if (isFoodExempt && !isNoTax) msg += ' Food items likely exempt from item tax — confirmed at Stripe checkout.';
-    }
-    noticeText.textContent = msg;
-  }
-
-  const gt = document.getElementById('sumGrandTotal');
-  if (gt) gt.textContent = '$' + grandTotal.toFixed(2);
-
-  const tt = document.getElementById('theirTax');
-  if (tt) tt.textContent = isNoTax ? '$0.00' : '~$' + theirTaxAmt.toFixed(2);
-
-  const ttt = document.getElementById('theirTotal');
-  if (ttt) ttt.textContent = '$' + theirTotal.toFixed(2);
-
-  const ttc = document.getElementById('totalTaxCollected');
-  if (ttc) ttc.textContent = isNoTax ? '$0.00' : '~$' + totalTax.toFixed(2);
-
-  const pbtext = document.getElementById('payBtnText');
-  if (pbtext) pbtext.textContent = 'Pay $' + grandTotal.toFixed(2) + ' Securely';
-
-  const rtax = document.getElementById('receiptTax');
-  if (rtax) rtax.textContent = '$' + currentTaxAmount.toFixed(2);
-
-  const rtotal = document.getElementById('receiptTotal');
-  if (rtotal) rtotal.textContent = '$' + grandTotal.toFixed(2);
-}
-
-function toggleTaxExempt() {
-  taxExempt = document.getElementById('taxExemptCheck').checked;
-  const fields = document.getElementById('taxExemptFields');
-  if (fields) fields.style.display = taxExempt ? 'block' : 'none';
-  recalcTax();
-}
-
-window.addEventListener('DOMContentLoaded', function() {
-  recalcTax();
-});
 </script>
 </body>
 </html>
