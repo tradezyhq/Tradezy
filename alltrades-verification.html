@@ -1,20 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tradezy — Identity Verification</title>
+<script src="supabase.min.js"></script>
 <!-- Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-0NSDNDFP0H"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
-  gtag("js", new Date());
-  gtag("config", "G-0NSDNDFP0H");
+  gtag('js', new Date());
+  gtag('config', 'G-0NSDNDFP0H');
 </script>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tradezy — Identity Verification</title>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
 <style>
-:root {
+:root{
   --navy:#0a1628;--navy2:#112240;--blue:#1a56db;--blue-l:#2563eb;
   --gold:#f59e0b;--gold-l:#fbbf24;--green:#16a34a;--green-l:#22c55e;
   --red:#dc2626;--orange:#ea580c;--purple:#7c3aed;
@@ -24,58 +25,56 @@
 *{margin:0;padding:0;box-sizing:border-box;}
 body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
 
-/* NAV */
 .nav{background:var(--navy);padding:0 24px;height:54px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;}
-.logo{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.5rem;letter-spacing:-1px;cursor:pointer;}
+.logo{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.5rem;letter-spacing:-1px;text-decoration:none;}
 .logo .a{color:#fff;}.logo .t{color:var(--blue);}.logo .d{color:var(--gold);}
 .nav-right{display:flex;align-items:center;gap:8px;}
-.nav-btn{padding:6px 14px;border-radius:6px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.88rem;cursor:pointer;border:1px solid rgba(255,255,255,.1);background:transparent;color:#94a3b8;transition:all .15s;}
+.nav-btn{padding:6px 14px;border-radius:6px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.88rem;cursor:pointer;border:1px solid rgba(255,255,255,.1);background:transparent;color:#94a3b8;transition:all .15s;text-decoration:none;display:inline-flex;align-items:center;}
 .nav-btn:hover{color:#fff;}
-.u-av{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--orange));color:var(--navy);font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:.8rem;display:flex;align-items:center;justify-content:center;cursor:pointer;}
+.u-av{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--orange));color:var(--navy);font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:.8rem;display:flex;align-items:center;justify-content:center;}
+.user-chip{display:flex;align-items:center;gap:7px;}
+.u-name{font-size:13px;color:#cbd5e1;font-weight:700;}
 
-/* PAGE */
 .page{max-width:960px;margin:0 auto;padding:28px 20px;}
 
-/* ── TRUST SCORE HERO ── */
+/* LOADING */
+.loading-screen{display:flex;align-items:center;justify-content:center;min-height:60vh;font-size:14px;color:var(--muted);}
+
+/* HERO */
 .hero{background:linear-gradient(135deg,var(--navy) 0%,#1a3a6b 55%,#0f2a50 100%);border-radius:16px;padding:28px 32px;margin-bottom:24px;display:grid;grid-template-columns:1fr auto;gap:24px;align-items:center;position:relative;overflow:hidden;}
 .hero::before{content:'🛡️';position:absolute;right:-10px;top:50%;transform:translateY(-50%);font-size:10rem;opacity:.04;pointer-events:none;}
 .hero-tag{display:inline-flex;align-items:center;gap:5px;background:rgba(124,58,237,.2);border:1px solid rgba(124,58,237,.35);color:#c4b5fd;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:4px 12px;border-radius:4px;margin-bottom:12px;width:fit-content;}
-.hero-title{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.9rem;color:#fff;line-height:1.05;margin-bottom:8px;letter-spacing:-.3px;}
+.hero-title{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.9rem;color:#fff;line-height:1.05;margin-bottom:8px;}
 .hero-desc{font-size:13px;color:#64748b;line-height:1.6;max-width:420px;}
 
-/* Trust score ring */
+/* TRUST RING */
 .trust-score-wrap{flex-shrink:0;text-align:center;}
 .trust-ring{width:130px;height:130px;position:relative;margin:0 auto 10px;}
 .trust-ring svg{width:130px;height:130px;transform:rotate(-90deg);}
 .trust-ring circle{fill:none;stroke-width:10;stroke-linecap:round;}
 .tr-bg{stroke:rgba(255,255,255,.08);}
-.tr-fill{stroke:url(#trustGrad);stroke-dasharray:339;stroke-dashoffset:100;transition:stroke-dashoffset 1.2s cubic-bezier(.4,0,.2,1);}
+.tr-fill{stroke:url(#trustGrad);stroke-dasharray:339;stroke-dashoffset:339;transition:stroke-dashoffset 1.2s cubic-bezier(.4,0,.2,1);}
 .trust-inner{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;}
 .trust-num{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:2rem;color:#fff;line-height:1;}
 .trust-label{font-size:10px;color:#64748b;text-transform:uppercase;letter-spacing:.5px;margin-top:2px;}
 .trust-score-title{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.88rem;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px;}
 .trust-score-sub{font-size:11px;color:#475569;margin-top:2px;}
 
-/* ── VERIFICATION STEPS ── */
+/* STEPS LAYOUT */
 .steps-layout{display:grid;grid-template-columns:280px 1fr;gap:20px;align-items:start;}
-
-/* Left: step list */
 .step-list{background:var(--white);border:1px solid var(--border);border-radius:14px;overflow:hidden;position:sticky;top:78px;}
 .sl-head{background:linear-gradient(135deg,var(--navy),#1a3a6b);padding:14px 16px;}
 .sl-title{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.95rem;color:#fff;}
 .sl-sub{font-size:11px;color:#475569;margin-top:1px;}
 
-.step-item{display:flex;align-items:center;gap:12px;padding:13px 16px;cursor:pointer;transition:all .15s;border-bottom:1px solid var(--border);position:relative;}
+.step-item{display:flex;align-items:center;gap:12px;padding:13px 16px;cursor:pointer;transition:all .15s;border-bottom:1px solid var(--border);}
 .step-item:last-child{border-bottom:none;}
 .step-item:hover{background:var(--surface);}
 .step-item.active{background:#eff6ff;border-left:3px solid var(--blue);}
 .step-item.completed{background:#f0fdf4;}
-.step-item.completed .si-icon-wrap{background:#f0fdf4;border-color:#bbf7d0;}
-
 .si-icon-wrap{width:36px;height:36px;border-radius:50%;background:var(--surface);border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0;transition:all .3s;}
 .step-item.active .si-icon-wrap{background:#eff6ff;border-color:var(--blue);}
 .step-item.completed .si-icon-wrap{background:#f0fdf4;border-color:var(--green);}
-
 .si-info{flex:1;min-width:0;}
 .si-title{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.9rem;margin-bottom:1px;}
 .si-meta{font-size:11px;color:var(--muted);}
@@ -83,16 +82,15 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
 .sib-done{background:#f0fdf4;color:#14532d;border:1px solid #bbf7d0;}
 .sib-active{background:#eff6ff;color:#1e3a8a;border:1px solid #bfdbfe;}
 .sib-pending{background:var(--surface);color:var(--muted);border:1px solid var(--border);}
-.sib-reward{background:#fffbeb;color:#92400e;border:1px solid #fde68a;}
+.sib-soon{background:#f5f3ff;color:#5b21b6;border:1px solid #ddd6fe;}
 
-/* Points bar in step list */
 .sl-points{padding:12px 16px;background:var(--surface);border-top:1px solid var(--border);}
 .slp-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:5px;}
 .slp-bar-track{height:6px;background:var(--border);border-radius:3px;overflow:hidden;margin-bottom:4px;}
 .slp-bar-fill{height:100%;background:linear-gradient(90deg,var(--blue),var(--purple));border-radius:3px;transition:width .8s ease;}
 .slp-text{font-size:11px;color:var(--muted);display:flex;justify-content:space-between;}
 
-/* Right: step content */
+/* STEP PANELS */
 .step-content{display:flex;flex-direction:column;gap:16px;}
 .step-panel{background:var(--white);border:1px solid var(--border);border-radius:14px;overflow:hidden;display:none;animation:fadeUp .3s ease;}
 .step-panel.active{display:block;}
@@ -107,7 +105,7 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
 .sp-reward-label{font-size:10px;color:var(--muted);}
 .sp-body{padding:20px;}
 
-/* Completed banner */
+/* BANNERS */
 .completed-banner{background:linear-gradient(135deg,#14532d,#166534);border-radius:10px;padding:14px 16px;display:flex;align-items:center;gap:12px;margin-bottom:16px;}
 .cb-icon{font-size:1.5rem;flex-shrink:0;}
 .cb-text{flex:1;}
@@ -115,94 +113,39 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
 .cb-sub{font-size:11px;color:#86efac;}
 .cb-pts{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.1rem;color:var(--gold-l);}
 
-/* Phone verification */
-.phone-wrap{max-width:380px;}
-.phone-input-row{display:flex;gap:8px;margin-bottom:10px;}
-.country-select{width:90px;border:1.5px solid var(--border);border-radius:8px;padding:10px 8px;font-family:'Lato',sans-serif;font-size:13px;outline:none;cursor:pointer;background:var(--white);transition:border-color .15s;flex-shrink:0;}
-.country-select:focus{border-color:var(--blue);}
-.phone-input{flex:1;border:1.5px solid var(--border);border-radius:8px;padding:10px 13px;font-family:'Lato',sans-serif;font-size:14px;outline:none;transition:all .15s;background:var(--white);}
-.phone-input:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(26,86,219,.07);}
-.phone-input.valid{border-color:var(--green);}
+.coming-soon-banner{background:linear-gradient(135deg,#2e1065,#4c1d95);border-radius:10px;padding:18px 20px;display:flex;align-items:center;gap:14px;margin-bottom:16px;}
+.csb-icon{font-size:2rem;flex-shrink:0;}
+.csb-text{flex:1;}
+.csb-title{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.05rem;color:#fff;margin-bottom:4px;}
+.csb-sub{font-size:12px;color:#c4b5fd;line-height:1.5;}
+.csb-badge{background:rgba(167,139,250,.2);border:1px solid rgba(167,139,250,.4);color:#c4b5fd;font-size:10px;font-weight:800;padding:3px 10px;border-radius:3px;letter-spacing:.5px;white-space:nowrap;flex-shrink:0;}
 
-/* OTP input */
-.otp-wrap{display:flex;gap:8px;margin-bottom:14px;}
-.otp-input{width:46px;height:52px;border:1.5px solid var(--border);border-radius:8px;text-align:center;font-family:'Barlow Condensed',sans-serif;font-size:1.5rem;font-weight:700;outline:none;transition:all .2s;background:var(--white);}
-.otp-input:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(26,86,219,.1);}
-.otp-input.filled{border-color:var(--green);background:#f0fdf4;}
+/* INFO BOXES */
+.info-box{border-radius:9px;padding:11px 13px;margin-bottom:13px;display:flex;gap:8px;font-size:12px;line-height:1.5;}
+.ib-blue{background:#eff6ff;border:1px solid #bfdbfe;color:#1e3a8a;}
+.ib-green{background:#f0fdf4;border:1px solid #bbf7d0;color:#14532d;}
+.ib-purple{background:#f5f3ff;border:1px solid #ddd6fe;color:#5b21b6;}
 
-/* ID upload */
-.id-options{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px;}
-.id-option{border:1.5px solid var(--border);border-radius:10px;padding:14px 8px;text-align:center;cursor:pointer;transition:all .15s;}
-.id-option:hover{border-color:var(--blue);}
-.id-option.selected{border-color:var(--blue);background:#eff6ff;}
-.ido-icon{font-size:1.6rem;margin-bottom:6px;}
-.ido-title{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.82rem;margin-bottom:2px;}
-.ido-desc{font-size:10px;color:var(--muted);}
-
-.upload-zone{border:2px dashed var(--border);border-radius:12px;padding:28px;text-align:center;cursor:pointer;transition:all .2s;margin-bottom:12px;}
-.upload-zone:hover{border-color:var(--blue);background:#f8fbff;}
-.upload-zone.has-file{border-style:solid;border-color:var(--green);background:#f0fdf4;}
-.uz-icon{font-size:2.5rem;margin-bottom:10px;}
-.uz-title{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.95rem;margin-bottom:4px;}
-.uz-sub{font-size:12px;color:var(--muted);}
-.uz-file-name{font-size:13px;font-weight:700;color:var(--green);margin-top:6px;}
-
-.upload-sides{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;}
-.upload-side{border:2px dashed var(--border);border-radius:10px;padding:20px;text-align:center;cursor:pointer;transition:all .2s;}
-.upload-side:hover{border-color:var(--blue);}
-.upload-side.done{border-style:solid;border-color:var(--green);background:#f0fdf4;}
-.us-icon{font-size:1.8rem;margin-bottom:6px;}
-.us-label{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.82rem;margin-bottom:2px;}
-.us-sub{font-size:11px;color:var(--muted);}
-
-/* Selfie */
-.selfie-camera{background:var(--navy);border-radius:12px;aspect-ratio:4/3;max-width:340px;margin:0 auto 14px;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;overflow:hidden;}
-.sc-overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;}
-.sc-face-outline{width:160px;height:160px;border:3px solid rgba(255,255,255,.4);border-radius:50%;margin-bottom:12px;position:relative;animation:facePulse 2s ease-in-out infinite;}
-@keyframes facePulse{0%,100%{border-color:rgba(255,255,255,.4)}50%{border-color:rgba(22,163,74,.7)}}
-.sc-instructions{font-size:12px;color:rgba(255,255,255,.7);text-align:center;padding:0 20px;line-height:1.5;}
-.sc-status{position:absolute;top:12px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.6);color:#fff;font-size:11px;font-weight:700;padding:4px 12px;border-radius:99px;white-space:nowrap;}
-
-.selfie-checks{display:flex;flex-direction:column;gap:6px;margin-bottom:14px;}
-.sc-check{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted);}
-.sc-check-dot{width:16px;height:16px;border-radius:50%;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:.55rem;flex-shrink:0;transition:all .3s;}
-.sc-check.pass .sc-check-dot{background:var(--green);border-color:var(--green);color:#fff;}
-.sc-check.fail .sc-check-dot{background:var(--red);border-color:var(--red);color:#fff;}
-
-/* Privacy */
-.privacy-points{display:flex;flex-direction:column;gap:8px;margin-bottom:14px;}
-.pp-item{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;background:var(--surface);border:1px solid var(--border);border-radius:8px;font-size:12px;color:var(--muted);line-height:1.4;}
-.pp-icon{flex-shrink:0;font-size:.95rem;margin-top:1px;}
-
-/* Action buttons */
+/* BUTTONS */
 .verify-btn{width:100%;padding:12px;border:none;border-radius:8px;font-family:'Barlow Condensed',sans-serif;font-size:1rem;font-weight:800;cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center;gap:7px;letter-spacing:.3px;}
 .vbtn-blue{background:var(--blue);color:#fff;}
 .vbtn-blue:hover{background:var(--blue-l);transform:translateY(-1px);}
 .vbtn-green{background:var(--green);color:#fff;}
 .vbtn-green:hover{background:var(--green-l);transform:translateY(-1px);}
-.vbtn-gold{background:var(--gold);color:var(--navy);}
-.vbtn-gold:hover{background:var(--gold-l);}
 .vbtn-outline{background:transparent;border:1.5px solid var(--border);color:var(--muted);margin-top:8px;}
 .vbtn-outline:hover{border-color:#999;color:var(--text);}
-.vbtn-loading{opacity:.7;pointer-events:none;}
+.vbtn-outline:disabled{opacity:.4;cursor:not-allowed;}
 
-/* Field */
+/* FIELDS */
 .field{margin-bottom:13px;}
 .field label{display:block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:5px;}
-.field input,.field select{width:100%;border:1.5px solid var(--border);border-radius:8px;padding:10px 13px;font-size:13px;font-family:'Lato',sans-serif;outline:none;transition:all .15s;background:var(--white);}
+.field input,.field select{width:100%;border:1.5px solid var(--border);border-radius:8px;padding:10px 13px;font-size:13px;font-family:'Lato',sans-serif;outline:none;transition:all .15s;background:var(--white);color:var(--text);}
 .field input:focus,.field select:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(26,86,219,.07);}
 .field input.valid{border-color:var(--green);}
 .field-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
 
-/* Info / warning boxes */
-.info-box{border-radius:9px;padding:11px 13px;margin-bottom:13px;display:flex;gap:8px;font-size:12px;line-height:1.5;}
-.ib-blue{background:#eff6ff;border:1px solid #bfdbfe;color:#1e3a8a;}
-.ib-green{background:#f0fdf4;border:1px solid #bbf7d0;color:#14532d;}
-.ib-yellow{background:#fffbeb;border:1px solid #fde68a;color:#92400e;}
-.ib-purple{background:#f5f3ff;border:1px solid #ddd6fe;color:#5b21b6;}
-
-/* Badge showcase */
-.badge-showcase{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:16px;}
+/* BADGE SHOWCASE */
+.badge-showcase{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;}
 .badge-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px;display:flex;align-items:center;gap:10px;transition:all .2s;}
 .badge-card.earned{background:var(--white);border-color:#bfdbfe;box-shadow:0 2px 10px rgba(26,86,219,.08);}
 .badge-card.locked{opacity:.5;}
@@ -211,186 +154,64 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
 .bc-icon.green{background:#f0fdf4;border:2px solid #bbf7d0;}
 .bc-icon.gold{background:#fffbeb;border:2px solid #fde68a;}
 .bc-icon.purple{background:#f5f3ff;border:2px solid #ddd6fe;}
-.bc-icon.red{background:#fef2f2;border:2px solid #fecaca;}
 .bc-info{flex:1;min-width:0;}
 .bc-name{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.9rem;margin-bottom:2px;}
 .bc-desc{font-size:11px;color:var(--muted);}
 .bc-pts{font-size:10px;font-weight:700;color:var(--gold);}
 .bc-lock{font-size:1rem;color:var(--muted);}
 
-/* Verification status card (top right of overview) */
-.status-overview{background:var(--white);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:20px;}
-.so-title{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.95rem;margin-bottom:12px;}
-.so-items{display:flex;flex-direction:column;gap:7px;}
-.so-item{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:7px;background:var(--surface);border:1px solid var(--border);}
-.so-item.done{background:#f0fdf4;border-color:#bbf7d0;}
-.so-item.active{background:#eff6ff;border-color:#bfdbfe;}
-.so-check{font-size:1rem;flex-shrink:0;}
-.so-name{font-size:13px;font-weight:700;flex:1;}
-.so-pts{font-size:11px;font-weight:700;color:var(--gold);}
+/* TRADE LIMITS TABLE */
+.limits-table{width:100%;border-collapse:collapse;font-size:13px;}
+.limits-table th{background:var(--surface);color:var(--muted);padding:8px 10px;text-align:left;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;border-bottom:2px solid var(--border);}
+.limits-table td{padding:9px 10px;border-bottom:1px solid var(--border);}
+.limits-table tr:last-child td{border-bottom:none;}
+.tier-badge{display:inline-block;font-size:10px;font-weight:800;padding:2px 7px;border-radius:3px;}
+.tb-active{background:#dcfce7;color:#166534;}
+.tb-next{background:#dbeafe;color:#1e40af;}
+.tb-locked{background:#f1f5f9;color:#475569;}
 
-/* OTP timer */
-.otp-timer{font-size:12px;color:var(--muted);margin-top:6px;}
-.otp-timer span{color:var(--blue);font-weight:700;cursor:pointer;}
-.otp-timer span:hover{text-decoration:underline;}
-
-/* Simulated camera loading */
-.camera-loading{display:flex;flex-direction:column;align-items:center;gap:8px;color:rgba(255,255,255,.6);}
-.cam-spinner{width:32px;height:32px;border:3px solid rgba(255,255,255,.2);border-top-color:#fff;border-radius:50%;animation:spin .8s linear infinite;}
-@keyframes spin{to{transform:rotate(360deg)}}
-
-/* Toast */
+/* TOAST */
 .toast{position:fixed;bottom:20px;right:20px;background:var(--navy);color:#e2e8f0;border:1px solid #1e3a5f;border-left:4px solid var(--green);border-radius:8px;padding:10px 16px;font-size:13px;z-index:9999;display:flex;align-items:center;gap:9px;max-width:290px;box-shadow:0 8px 26px rgba(0,0,0,.25);transform:translateX(120%);transition:transform .3s ease;}
 .toast.show{transform:translateX(0);}
+.toast.error{border-left-color:var(--red);}
 
-@media(max-width:800px){.steps-layout{grid-template-columns:1fr;}.step-list{position:static;}.hero{grid-template-columns:1fr;}.trust-score-wrap{display:none;}.id-options{grid-template-columns:1fr 1fr;}.badge-showcase{grid-template-columns:1fr;}}
-@media(max-width:480px){.otp-wrap{gap:5px;}.otp-input{width:38px;height:44px;font-size:1.2rem;}.upload-sides{grid-template-columns:1fr;}}
+@media(max-width:800px){.steps-layout{grid-template-columns:1fr;}.step-list{position:static;}.hero{grid-template-columns:1fr;}.trust-score-wrap{display:none;}.badge-showcase{grid-template-columns:1fr;}.field-row{grid-template-columns:1fr;}}
 
-/* ── DARK MODE ── */
-@media (prefers-color-scheme: dark) {
-  :root {
-    --navy:#0a1628;
-    --blue:#3b82f6;
-    --blue-l:#60a5fa;
-    --gold:#fbbf24;
-    --gold-l:#fcd34d;
-    --green:#22c55e;
-    --green-l:#4ade80;
-    --red:#f87171;
-    --orange:#fb923c;
-    --text:#f1f5f9;
-    --muted:#94a3b8;
-    --light:#64748b;
-    --border:rgba(255,255,255,.1);
-    --bg:#0f172a;
-    --white:#1e293b;
-    --surface:#162032;
-    --card:#1e293b;
-  }
-  body { background:#0f172a !important; color:#f1f5f9 !important; }
-  /* Nav always dark - already fine */
-  /* Cards and panels */
-  .card, .panel, .pay-card, .summary-card, .rate-card, .review-card,
-  .profile-card, .rating-overview-card, .dispute-flow, .step-panel,
-  .step-list, .protection-hero ~ .panel, .stat-card, .fund-card,
-  .chart-card, .dq-item, .ai-panel { background:#1e293b !important; border-color:rgba(255,255,255,.08) !important; }
-  /* Text */
-  h1,h2,h3,h4,h5,h6 { color:#f1f5f9 !important; }
-  p, li, span:not(.logo *):not(.badge):not(.chip) { color:#94a3b8; }
-  strong { color:#e2e8f0 !important; }
-  /* Inputs */
-  input, select, textarea {
-    background:#162032 !important;
-    border-color:rgba(255,255,255,.12) !important;
-    color:#f1f5f9 !important;
-  }
-  input::placeholder, textarea::placeholder { color:#334155 !important; }
-  /* Surfaces */
-  .surface, [class*="surface"], [class*="-body"], [class*="-wrap"],
-  .pay-body, .sp-body, .panel-body, .mbody, .dq, .ai-chat,
-  .sum-body, .pc-body { background:#1e293b !important; }
-  /* Borders */
-  [class*="border"], hr { border-color:rgba(255,255,255,.08) !important; }
-  /* Table rows */
-  .trow:hover, .saved-card:hover, .step-item:hover { background:rgba(255,255,255,.05) !important; }
-  /* White backgrounds that need to go dark */
-  .white-bg, .bg-white, [style*="background:#fff"], [style*="background: #fff"],
-  [style*="background:white"], [style*="background: white"] { background:#1e293b !important; }
-  /* Legal pages specific */
-  .doc-header { background:transparent !important; }
-  .doc-title { color:#f1f5f9 !important; }
-  .doc-meta { color:#94a3b8 !important; }
-  .doc-meta strong { color:#e2e8f0 !important; }
-  .toc { background:#1e293b !important; border-color:rgba(255,255,255,.08) !important; }
-  .toc-title { color:#f1f5f9 !important; }
-  .section-title { color:#f1f5f9 !important; border-color:rgba(255,255,255,.08) !important; }
-  .section-num { color:#60a5fa !important; }
-  .section p, .section li { color:#94a3b8 !important; }
-  .section p strong, .section li strong { color:#e2e8f0 !important; }
-  /* Highlight boxes in legal pages — keep light backgrounds with dark text */
-  .hb-blue { background:#1e3a5f !important; border-color:#1d4ed8 !important; border-left-color:#3b82f6 !important; }
-  .hb-yellow { background:#422006 !important; border-color:#92400e !important; border-left-color:#fbbf24 !important; }
-  .hb-red { background:#450a0a !important; border-color:#991b1b !important; border-left-color:#f87171 !important; }
-  .hb-green { background:#052e16 !important; border-color:#166534 !important; border-left-color:#22c55e !important; }
-  .hb-blue .hb-text { color:#93c5fd !important; }
-  .hb-yellow .hb-text { color:#fcd34d !important; }
-  .hb-red .hb-text { color:#fca5a5 !important; }
-  .hb-green .hb-text { color:#86efac !important; }
-  .hb-text strong { color:inherit !important; }
-  /* Tables */
-  .fee-table th, .data-table th { background:#0f172a !important; color:#f1f5f9 !important; }
-  .fee-table td, .data-table td { color:#94a3b8 !important; background:#1e293b !important; }
-  .fee-table tr:nth-child(even) td, .data-table tr:nth-child(even) td { background:#162032 !important; }
-  .fee-table td:first-child, .data-table td:first-child { color:#e2e8f0 !important; }
-  /* Rights grid */
-  .right-card, .badge-card, .pf-card, .stat-card { background:#1e293b !important; border-color:rgba(255,255,255,.08) !important; }
-  .rc-title, .bc-name, .pf-title, .sc-lbl { color:#e2e8f0 !important; }
-  .rc-desc, .bc-desc, .pf-desc { color:#94a3b8 !important; }
-  /* Contact box stays dark - already fine */
-  /* Back buttons */
-  .back-btn { background:#1e3a8a !important; color:#fff !important; }
-  /* Nav links */
-  .nav-links a { color:#94a3b8 !important; }
-  .nav-links a:hover { color:#fff !important; }
-  /* Modal */
-  .modal, .overlay .modal { background:#1e293b !important; border-color:rgba(255,255,255,.1) !important; }
-  .mfield input, .mfield select, .mfield textarea { background:#0f172a !important; }
-  /* Chart bars already colored */
-  /* Star ratings */
-  .star, .mini-star { filter:none !important; }
-  /* OTP inputs */
-  .otp-input { background:#162032 !important; color:#f1f5f9 !important; }
-  .otp-input.filled { background:#052e16 !important; }
-  /* Upload zones */
-  .upload-zone, .upload-side, .ev-slot { background:#162032 !important; border-color:rgba(255,255,255,.1) !important; }
-  /* Step list sidebar */
-  .step-list { background:#1e293b !important; }
-  .step-item { background:transparent !important; }
-  .step-item.completed { background:rgba(22,163,74,.1) !important; }
-  .step-item.active { background:rgba(26,86,219,.1) !important; }
-  .si-title { color:#e2e8f0 !important; }
-  .si-meta { color:#64748b !important; }
-  /* Trust ring text */
-  .trust-num { color:#fff !important; }
-  /* Bypass rows */
-  .bp-msg, .br-msg { background:rgba(124,58,237,.15) !important; }
-  /* Summary card */
-  .sum-row-label { color:#94a3b8 !important; }
-  .sum-row-val { color:#e2e8f0 !important; }
-  /* Payment page */
-  .card-logo-chip { border-color:rgba(255,255,255,.15) !important; }
-  .express-btn.google { background:#1e293b !important; color:#f1f5f9 !important; border-color:rgba(255,255,255,.15) !important; }
-  /* Category cards */
-  .cat-rate, .cbd-item, .metric, .wb-stat, .phs-item { background:rgba(255,255,255,.05) !important; border-color:rgba(255,255,255,.08) !important; }
-  .wb-num, .metric-val, .sc-num { color:#fbbf24 !important; }
-  /* Payout rows */
-  .pay-row, .trow, .ur, .bp-row { border-color:rgba(255,255,255,.06) !important; }
-  /* Scrollbars */
-  ::-webkit-scrollbar { background:#0f172a; }
-  ::-webkit-scrollbar-thumb { background:#334155; border-radius:4px; }
+@media(prefers-color-scheme:dark){
+  :root{--text:#f1f5f9;--muted:#94a3b8;--border:rgba(255,255,255,.1);--bg:#0f172a;--white:#1e293b;--surface:#162032;}
+  body{background:#0f172a !important;color:#f1f5f9 !important;}
+  .step-list,.step-panel,.badge-card{background:#1e293b !important;border-color:rgba(255,255,255,.08) !important;}
+  input,select{background:#162032 !important;color:#f1f5f9 !important;}
+  .step-item:hover{background:rgba(255,255,255,.04) !important;}
+  .step-item.active{background:rgba(26,86,219,.15) !important;}
+  .step-item.completed{background:rgba(22,163,74,.08) !important;}
 }
-
 </style>
 </head>
 <body>
 
-<!-- NAV -->
 <div class="nav">
-  <a href="alltrades.html" style="text-decoration:none"><div class="logo"><span class="a">Trade</span><span class="t">zy</span><span class="d">.</span></div></a>
+  <a href="alltrades.html" class="logo"><span class="a">Trade</span><span class="t">zy</span><span class="d">.</span></a>
   <div class="nav-right">
-    <button class="nav-btn" onclick="showToast('🏠','Going to dashboard…')">← Dashboard</button>
-    <div class="u-av">JD</div>
+    <a href="alltrades-dashboard.html" class="nav-btn">← Dashboard</a>
+    <div class="user-chip">
+      <div class="u-av" id="navAv">?</div>
+      <div class="u-name" id="navName">Loading…</div>
+    </div>
   </div>
 </div>
 
-<div class="page">
+<!-- LOADING -->
+<div class="loading-screen" id="loadingScreen">⏳ Loading verification status…</div>
+
+<div class="page" id="mainPage" style="display:none">
 
   <!-- HERO -->
   <div class="hero">
     <div>
       <div class="hero-tag">🛡️ Trader Verification</div>
       <div class="hero-title">Build Trust,<br>Trade More</div>
-      <div class="hero-desc">Verified traders get more offers, higher trade values, and access to premium features. Takes less than 5 minutes — your data is encrypted and never shared publicly.</div>
+      <div class="hero-desc">Verified traders get more offers, higher trade values, and access to premium features. Complete each step to increase your trust score.</div>
     </div>
     <div class="trust-score-wrap">
       <div class="trust-ring">
@@ -405,18 +226,18 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
           <circle class="tr-fill" id="trustCircle" cx="60" cy="60" r="54"/>
         </svg>
         <div class="trust-inner">
-          <div class="trust-num" id="trustNum">62</div>
+          <div class="trust-num" id="trustNum">10</div>
           <div class="trust-label">Trust Score</div>
         </div>
       </div>
-      <div class="trust-score-title">GOOD</div>
-      <div class="trust-score-sub">2 steps remaining</div>
+      <div class="trust-score-title" id="trustTitle">BASIC</div>
+      <div class="trust-score-sub" id="trustSub">Complete steps below</div>
     </div>
   </div>
 
   <div class="steps-layout">
 
-    <!-- LEFT: STEP LIST -->
+    <!-- STEP LIST -->
     <div class="step-list">
       <div class="sl-head">
         <div class="sl-title">Verification Steps</div>
@@ -427,36 +248,27 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
         <div class="si-icon-wrap">✅</div>
         <div class="si-info">
           <div class="si-title">Email Address</div>
-          <div class="si-meta">jane@email.com</div>
+          <div class="si-meta" id="emailMeta">Verified</div>
         </div>
         <div class="si-badge sib-done">+10 pts</div>
       </div>
 
-      <div class="step-item active" id="nav-phone" onclick="showStep('phone')">
+      <div class="step-item" id="nav-phone" onclick="showStep('phone')">
         <div class="si-icon-wrap">📱</div>
         <div class="si-info">
           <div class="si-title">Phone Number</div>
-          <div class="si-meta">SMS code verification</div>
+          <div class="si-meta">SMS verification</div>
         </div>
-        <div class="si-badge sib-active">+20 pts</div>
+        <div class="si-badge sib-soon">Coming Soon</div>
       </div>
 
       <div class="step-item" id="nav-id" onclick="showStep('id')">
         <div class="si-icon-wrap">🪪</div>
         <div class="si-info">
           <div class="si-title">Government ID</div>
-          <div class="si-meta">Driver's license or passport</div>
+          <div class="si-meta">Stripe Identity</div>
         </div>
-        <div class="si-badge sib-reward">+40 pts</div>
-      </div>
-
-      <div class="step-item" id="nav-selfie" onclick="showStep('selfie')">
-        <div class="si-icon-wrap">🤳</div>
-        <div class="si-info">
-          <div class="si-title">Selfie Check</div>
-          <div class="si-meta">Match face to ID photo</div>
-        </div>
-        <div class="si-badge sib-reward">+20 pts</div>
+        <div class="si-badge sib-soon">Coming Soon</div>
       </div>
 
       <div class="step-item" id="nav-address" onclick="showStep('address')">
@@ -465,31 +277,31 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
           <div class="si-title">Address Confirmation</div>
           <div class="si-meta">Confirm your local area</div>
         </div>
-        <div class="si-badge sib-pending">+10 pts</div>
+        <div class="si-badge sib-pending" id="addressBadge">+10 pts</div>
       </div>
 
       <div class="sl-points">
         <div class="slp-label">Your Trust Score Progress</div>
         <div class="slp-bar-track">
-          <div class="slp-bar-fill" id="progressBar" style="width:62%"></div>
+          <div class="slp-bar-fill" id="progressBar" style="width:10%"></div>
         </div>
         <div class="slp-text">
-          <span id="ptsEarned">62 / 100 pts</span>
-          <span id="ptsLabel" style="color:var(--blue);font-weight:700">GOOD</span>
+          <span id="ptsEarned">10 / 100 pts</span>
+          <span id="ptsLabel" style="color:var(--blue);font-weight:700">BASIC</span>
         </div>
       </div>
     </div>
 
-    <!-- RIGHT: STEP CONTENT -->
+    <!-- STEP CONTENT -->
     <div class="step-content">
 
-      <!-- ══ EMAIL (completed) ══ -->
+      <!-- EMAIL -->
       <div class="step-panel active" id="panel-email">
         <div class="sp-head">
           <div class="sp-head-icon" style="background:#f0fdf4;border:1px solid #bbf7d0">✅</div>
           <div>
             <div class="sp-head-title">Email Verified</div>
-            <div class="sp-head-sub">jane@email.com · Verified Jan 15, 2026</div>
+            <div class="sp-head-sub" id="emailPanelSub">Verified</div>
           </div>
           <div class="sp-reward" style="margin-left:auto">
             <div class="sp-reward-pts">+10 pts</div>
@@ -507,19 +319,19 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
           </div>
           <div class="info-box ib-blue">
             <span>ℹ️</span>
-            <div>Email verification gives you access to trade notifications, dispute updates, and account recovery. Want to change your email? Go to <strong>Settings → Account</strong>.</div>
+            <div>Email verification gives you access to trade notifications, dispute updates, and account recovery.</div>
           </div>
-          <button class="verify-btn vbtn-outline" onclick="showStep('phone')">Next: Verify Phone Number →</button>
+          <button class="verify-btn vbtn-outline" onclick="showStep('phone')">Next: Phone Verification →</button>
         </div>
       </div>
 
-      <!-- ══ PHONE ══ -->
+      <!-- PHONE (coming soon) -->
       <div class="step-panel" id="panel-phone">
         <div class="sp-head">
-          <div class="sp-head-icon" style="background:#eff6ff;border:1px solid #bfdbfe">📱</div>
+          <div class="sp-head-icon" style="background:#f5f3ff;border:1px solid #ddd6fe">📱</div>
           <div>
             <div class="sp-head-title">Phone Verification</div>
-            <div class="sp-head-sub">We'll send a 6-digit code via SMS</div>
+            <div class="sp-head-sub">SMS code verification — coming soon</div>
           </div>
           <div class="sp-reward">
             <div class="sp-reward-pts">+20 pts</div>
@@ -527,54 +339,33 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
           </div>
         </div>
         <div class="sp-body">
-          <div class="info-box ib-blue">
-            <span>📱</span>
-            <div>Your phone number is used for trade safety only. It is <strong>never shown publicly</strong> or shared with other traders. Standard SMS rates may apply.</div>
+          <div class="coming-soon-banner">
+            <span class="csb-icon">📱</span>
+            <div class="csb-text">
+              <div class="csb-title">Phone Verification — Coming Soon</div>
+              <div class="csb-sub">We're setting up SMS verification. This will be available before July 17 launch. Phone verification unlocks trades up to $150 and adds +20 to your trust score.</div>
+            </div>
+            <div class="csb-badge">PHASE 1</div>
           </div>
-
-          <!-- Phone entry -->
-          <div id="phoneEntrySection">
-            <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:8px">Your Phone Number</div>
-            <div class="phone-wrap">
-              <div class="phone-input-row">
-                <select class="country-select" id="countryCode">
-                  <option value="+1">🇺🇸 +1</option>
-                  <option value="+1ca">🇨🇦 +1</option>
-                  <option value="+44">🇬🇧 +44</option>
-                  <option value="+52">🇲🇽 +52</option>
-                  <option value="+61">🇦🇺 +61</option>
-                </select>
-                <input type="tel" class="phone-input" id="phoneInput" placeholder="(555) 000-0000" maxlength="14" oninput="fmtPhone(this)" autocomplete="tel">
-              </div>
-              <button class="verify-btn vbtn-blue" id="sendSmsBtn" onclick="sendSMS()" style="max-width:380px">📱 Send Verification Code</button>
+          <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px;margin-bottom:14px;">
+            <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.88rem;margin-bottom:8px;">What phone verification unlocks:</div>
+            <div style="font-size:13px;color:var(--muted);display:flex;flex-direction:column;gap:6px;">
+              <div>✅ Trade values up to <strong style="color:var(--blue)">$150</strong></div>
+              <div>✅ +20 trust score points</div>
+              <div>✅ Phone Verified badge on your profile</div>
             </div>
           </div>
-
-          <!-- OTP entry -->
-          <div id="otpSection" style="display:none">
-            <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:8px">Enter the 6-digit code sent to <span id="phoneMask" style="color:var(--blue)"></span></div>
-            <div class="otp-wrap">
-              <input type="text" class="otp-input" maxlength="1" oninput="otpInput(this,0)" id="otp0">
-              <input type="text" class="otp-input" maxlength="1" oninput="otpInput(this,1)" id="otp1">
-              <input type="text" class="otp-input" maxlength="1" oninput="otpInput(this,2)" id="otp2">
-              <input type="text" class="otp-input" maxlength="1" oninput="otpInput(this,3)" id="otp3">
-              <input type="text" class="otp-input" maxlength="1" oninput="otpInput(this,4)" id="otp4">
-              <input type="text" class="otp-input" maxlength="1" oninput="otpInput(this,5)" id="otp5">
-            </div>
-            <div class="otp-timer">Didn't get it? <span onclick="resendOTP()">Resend code</span> · Expires in <span id="otpCountdown">4:59</span></div>
-            <button class="verify-btn vbtn-green" id="verifyOtpBtn" onclick="verifyOTP()" style="max-width:380px;margin-top:12px" disabled>✓ Verify Code</button>
-            <button class="verify-btn vbtn-outline" onclick="resetPhone()" style="max-width:380px">← Change Number</button>
-          </div>
+          <button class="verify-btn vbtn-outline" onclick="showStep('id')">Next: Government ID →</button>
         </div>
       </div>
 
-      <!-- ══ GOVERNMENT ID ══ -->
+      <!-- ID (coming soon) -->
       <div class="step-panel" id="panel-id">
         <div class="sp-head">
           <div class="sp-head-icon" style="background:#fffbeb;border:1px solid #fde68a">🪪</div>
           <div>
             <div class="sp-head-title">Government ID</div>
-            <div class="sp-head-sub">Driver's license, passport, or state ID</div>
+            <div class="sp-head-sub">Stripe Identity verification — coming soon</div>
           </div>
           <div class="sp-reward">
             <div class="sp-reward-pts">+40 pts</div>
@@ -582,172 +373,116 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
           </div>
         </div>
         <div class="sp-body">
+          <div class="coming-soon-banner">
+            <span class="csb-icon">🪪</span>
+            <div class="csb-text">
+              <div class="csb-title">ID Verification — Coming Soon</div>
+              <div class="csb-sub">We're integrating Stripe Identity for secure document verification. This launches with payment processing before July 17. ID verification unlocks trades up to $500.</div>
+            </div>
+            <div class="csb-badge">PHASE 1</div>
+          </div>
           <div class="info-box ib-purple">
             <span>🔒</span>
-            <div><strong>Your ID is encrypted and never stored long-term.</strong> We use Stripe Identity to verify — your document is processed securely and deleted after verification. Tradezy only retains your verification status (pass/fail), not the actual ID images.</div>
+            <div><strong>Your ID will be encrypted and never stored long-term.</strong> We use Stripe Identity — the same system used by banks. Only your pass/fail status is retained.</div>
           </div>
-
-          <!-- ID type selection -->
-          <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:8px">Select ID Type</div>
-          <div class="id-options">
-            <div class="id-option selected" id="id-dl" onclick="selectIdType('dl',this)">
-              <div class="ido-icon">🚗</div>
-              <div class="ido-title">Driver's License</div>
-              <div class="ido-desc">Most common</div>
-            </div>
-            <div class="id-option" id="id-passport" onclick="selectIdType('passport',this)">
-              <div class="ido-icon">📒</div>
-              <div class="ido-title">Passport</div>
-              <div class="ido-desc">Front page only</div>
-            </div>
-            <div class="id-option" id="id-state" onclick="selectIdType('state',this)">
-              <div class="ido-icon">🪪</div>
-              <div class="ido-title">State ID</div>
-              <div class="ido-desc">Non-driver ID</div>
+          <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px;margin-bottom:14px;">
+            <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.88rem;margin-bottom:8px;">What ID verification unlocks:</div>
+            <div style="font-size:13px;color:var(--muted);display:flex;flex-direction:column;gap:6px;">
+              <div>✅ Trade values up to <strong style="color:var(--gold)">$500</strong></div>
+              <div>✅ +40 trust score points</div>
+              <div>✅ ID Verified badge on your profile</div>
             </div>
           </div>
-
-          <!-- Upload both sides (for DL/state ID) -->
-          <div id="uploadBothSides">
-            <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:8px">Upload Both Sides</div>
-            <div class="upload-sides">
-              <div class="upload-side" id="frontUpload" onclick="simulateUpload('frontUpload','Front Side ✓')">
-                <div class="us-icon">🪪</div>
-                <div class="us-label">Front Side</div>
-                <div class="us-sub">Full name, photo, DOB visible</div>
-              </div>
-              <div class="upload-side" id="backUpload" onclick="simulateUpload('backUpload','Back Side ✓')">
-                <div class="us-icon">🔄</div>
-                <div class="us-label">Back Side</div>
-                <div class="us-sub">Barcode / magnetic strip</div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Upload single (passport) -->
-          <div id="uploadSingle" style="display:none">
-            <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:8px">Upload Passport Photo Page</div>
-            <div class="upload-zone" id="passportUpload" onclick="simulateUpload('passportUpload','Passport Uploaded ✓')">
-              <div class="uz-icon">📒</div>
-              <div class="uz-title">Tap to Upload Passport</div>
-              <div class="uz-sub">JPG, PNG or PDF · Max 10MB</div>
-            </div>
-          </div>
-
-          <div class="privacy-points">
-            <div class="pp-item"><span class="pp-icon">🔒</span><span><strong>Encrypted transit:</strong> Document is sent over SSL/TLS and processed by Stripe Identity — the same system used by banks.</span></div>
-            <div class="pp-item"><span class="pp-icon">🗑️</span><span><strong>Auto-deleted:</strong> ID images are permanently deleted after verification is complete. We only store your pass/fail status.</span></div>
-            <div class="pp-item"><span class="pp-icon">👁️</span><span><strong>Never public:</strong> Your ID is never visible to other traders, admins, or anyone outside the verification system.</span></div>
-          </div>
-
-          <button class="verify-btn vbtn-gold" id="submitIdBtn" onclick="submitID()">🪪 Submit for Verification</button>
-          <button class="verify-btn vbtn-outline">I'll do this later</button>
+          <button class="verify-btn vbtn-outline" onclick="showStep('address')">Next: Address Confirmation →</button>
         </div>
       </div>
 
-      <!-- ══ SELFIE ══ -->
-      <div class="step-panel" id="panel-selfie">
-        <div class="sp-head">
-          <div class="sp-head-icon" style="background:#f5f3ff;border:1px solid #ddd6fe">🤳</div>
-          <div>
-            <div class="sp-head-title">Selfie Check</div>
-            <div class="sp-head-sub">Matches your face to your government ID</div>
-          </div>
-          <div class="sp-reward">
-            <div class="sp-reward-pts">+20 pts</div>
-            <div class="sp-reward-label">Reward</div>
-          </div>
-        </div>
-        <div class="sp-body">
-          <div class="info-box ib-purple">
-            <span>🤖</span>
-            <div><strong>AI-powered face match:</strong> We use Stripe Identity's liveness detection to confirm you're a real person and match your face to your ID. This cannot be fooled by photos or videos.</div>
-          </div>
-
-          <!-- Camera UI -->
-          <div class="selfie-camera" id="selfieCamera">
-            <div class="sc-overlay" id="cameraIdle">
-              <div class="camera-loading">
-                <div style="font-size:3rem;margin-bottom:8px">🤳</div>
-                <div style="font-size:13px;color:rgba(255,255,255,.7);text-align:center;padding:0 20px">Tap the button below to<br>open your camera</div>
-              </div>
-            </div>
-            <div class="sc-overlay" id="cameraActive" style="display:none">
-              <div class="sc-face-outline"></div>
-              <div class="sc-instructions">Position your face inside the circle<br>Look directly at the camera</div>
-            </div>
-            <div class="sc-status" id="cameraStatus" style="display:none">📷 Camera Active</div>
-          </div>
-
-          <!-- Checks -->
-          <div class="selfie-checks" id="selfieChecks">
-            <div class="sc-check" id="chk-light"><div class="sc-check-dot">○</div>Good lighting</div>
-            <div class="sc-check" id="chk-face"><div class="sc-check-dot">○</div>Face clearly visible</div>
-            <div class="sc-check" id="chk-match"><div class="sc-check-dot">○</div>Matches ID photo</div>
-            <div class="sc-check" id="chk-live"><div class="sc-check-dot">○</div>Liveness confirmed</div>
-          </div>
-
-          <button class="verify-btn vbtn-blue" id="startCameraBtn" onclick="startCamera()">📷 Open Camera &amp; Take Selfie</button>
-          <button class="verify-btn vbtn-outline" onclick="showToast('📷','Camera not available — upload a selfie photo instead')">📁 Upload a Photo Instead</button>
-        </div>
-      </div>
-
-      <!-- ══ ADDRESS ══ -->
+      <!-- ADDRESS (fully wired) -->
       <div class="step-panel" id="panel-address">
         <div class="sp-head">
           <div class="sp-head-icon" style="background:#f0fdf4;border:1px solid #bbf7d0">🏠</div>
           <div>
             <div class="sp-head-title">Address Confirmation</div>
-            <div class="sp-head-sub">Confirms you trade in your listed area</div>
+            <div class="sp-head-sub" id="addrPanelSub">Confirms you trade in your listed area</div>
           </div>
           <div class="sp-reward">
             <div class="sp-reward-pts">+10 pts</div>
             <div class="sp-reward-label">Reward</div>
           </div>
         </div>
-        <div class="sp-body">
-          <div class="info-box ib-green">
-            <span>📍</span>
-            <div>Your <strong>exact address is never shown</strong> to other traders. We only confirm you are in the general area you listed — this prevents people from claiming to be local when they're not.</div>
+        <div class="sp-body" id="addrPanelBody">
+
+          <!-- Already verified state -->
+          <div id="addrVerifiedState" style="display:none">
+            <div class="completed-banner">
+              <span class="cb-icon">📍</span>
+              <div class="cb-text">
+                <div class="cb-title">Address Confirmed!</div>
+                <div class="cb-sub" id="addrVerifiedSub">Your local area is verified.</div>
+              </div>
+              <div class="cb-pts">+10</div>
+            </div>
+            <div class="info-box ib-green">
+              <span>✅</span>
+              <div>Your address area is confirmed. This badge displays on your profile and listings to show local traders you're nearby.</div>
+            </div>
           </div>
 
-          <div class="field">
-            <label>Street Address</label>
-            <input type="text" id="addrStreet" placeholder="123 Main Street" autocomplete="street-address" oninput="checkAddr()">
-          </div>
-          <div class="field-row">
+          <!-- Form state -->
+          <div id="addrFormState">
+            <div class="info-box ib-green">
+              <span>📍</span>
+              <div>Your <strong>exact address is never shown</strong> to other traders. We only confirm you are in the general area you listed.</div>
+            </div>
             <div class="field">
               <label>City</label>
-              <input type="text" id="addrCity" placeholder="Austin" autocomplete="address-level2" oninput="checkAddr()">
+              <input type="text" id="addrCity" placeholder="Meriden" oninput="checkAddr()">
             </div>
-            <div class="field">
-              <label>State</label>
-              <select id="addrState" onchange="checkAddr()">
-                <option value="">Select…</option>
-                <option value="CT" selected>Connecticut</option>
-                <option value="TX">Texas</option>
-                <option value="CA">California</option>
-                <option value="NY">New York</option>
-                <option value="FL">Florida</option>
-              </select>
+            <div class="field-row">
+              <div class="field">
+                <label>State</label>
+                <select id="addrState" onchange="checkAddr()">
+                  <option value="">Select state…</option>
+                  <option value="CT">Connecticut</option>
+                  <option value="OH">Ohio</option>
+                  <option value="AL">Alabama</option><option value="AK">Alaska</option>
+                  <option value="AZ">Arizona</option><option value="AR">Arkansas</option>
+                  <option value="CA">California</option><option value="CO">Colorado</option>
+                  <option value="DE">Delaware</option><option value="FL">Florida</option>
+                  <option value="GA">Georgia</option><option value="HI">Hawaii</option>
+                  <option value="ID">Idaho</option><option value="IL">Illinois</option>
+                  <option value="IN">Indiana</option><option value="IA">Iowa</option>
+                  <option value="KS">Kansas</option><option value="KY">Kentucky</option>
+                  <option value="LA">Louisiana</option><option value="ME">Maine</option>
+                  <option value="MD">Maryland</option><option value="MA">Massachusetts</option>
+                  <option value="MI">Michigan</option><option value="MN">Minnesota</option>
+                  <option value="MS">Mississippi</option><option value="MO">Missouri</option>
+                  <option value="MT">Montana</option><option value="NE">Nebraska</option>
+                  <option value="NV">Nevada</option><option value="NH">New Hampshire</option>
+                  <option value="NJ">New Jersey</option><option value="NM">New Mexico</option>
+                  <option value="NY">New York</option><option value="NC">North Carolina</option>
+                  <option value="ND">North Dakota</option><option value="OK">Oklahoma</option>
+                  <option value="OR">Oregon</option><option value="PA">Pennsylvania</option>
+                  <option value="RI">Rhode Island</option><option value="SC">South Carolina</option>
+                  <option value="SD">South Dakota</option><option value="TN">Tennessee</option>
+                  <option value="TX">Texas</option><option value="UT">Utah</option>
+                  <option value="VT">Vermont</option><option value="VA">Virginia</option>
+                  <option value="WA">Washington</option><option value="WV">West Virginia</option>
+                  <option value="WI">Wisconsin</option><option value="WY">Wyoming</option>
+                </select>
+              </div>
+              <div class="field">
+                <label>ZIP Code</label>
+                <input type="text" id="addrZip" placeholder="06450" maxlength="10" oninput="checkAddr()">
+              </div>
             </div>
+            <button class="verify-btn vbtn-green" id="confirmAddrBtn" onclick="confirmAddress()" disabled>📍 Confirm My Address</button>
+            <div style="font-size:11px;color:var(--light);margin-top:8px;text-align:center;">Your exact address is never stored or shown to other traders.</div>
           </div>
-          <div class="field">
-            <label>ZIP Code</label>
-            <input type="text" id="addrZip" placeholder="06001" maxlength="10" autocomplete="postal-code" oninput="checkAddr()">
-          </div>
-
-          <div class="info-box ib-yellow">
-            <span>📬</span>
-            <div>We may send a <strong>verification postcard</strong> with a 6-digit code to confirm your address. This is optional — you can also verify using your government ID address if it matches.</div>
-          </div>
-
-          <button class="verify-btn vbtn-green" id="confirmAddrBtn" onclick="confirmAddress()" disabled>📍 Confirm My Address</button>
-          <button class="verify-btn vbtn-outline" onclick="showToast('📬','Postcard verification selected — allow 3–5 days for delivery')">📬 Send Me a Verification Postcard Instead</button>
         </div>
       </div>
 
-      <!-- ── BADGE SHOWCASE (always visible below panels) ── -->
+      <!-- BADGE SHOWCASE -->
       <div style="background:var(--white);border:1px solid var(--border);border-radius:14px;overflow:hidden;">
         <div style="padding:14px 18px;border-bottom:1px solid var(--border);">
           <div style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1rem;">🏆 Verification Badges</div>
@@ -763,12 +498,12 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
                 <div class="bc-pts">+10 pts · Earned ✓</div>
               </div>
             </div>
-            <div class="badge-card" id="phoneBadge">
+            <div class="badge-card locked" id="phoneBadge">
               <div class="bc-icon green">📱</div>
               <div class="bc-info">
                 <div class="bc-name">Phone Verified</div>
                 <div class="bc-desc">SMS confirmed number</div>
-                <div class="bc-pts">+20 pts · Pending</div>
+                <div class="bc-pts">+20 pts · Coming Soon</div>
               </div>
               <span class="bc-lock">🔒</span>
             </div>
@@ -777,16 +512,7 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
               <div class="bc-info">
                 <div class="bc-name">ID Verified</div>
                 <div class="bc-desc">Government ID confirmed</div>
-                <div class="bc-pts">+40 pts · Locked</div>
-              </div>
-              <span class="bc-lock">🔒</span>
-            </div>
-            <div class="badge-card locked" id="selfieBadge">
-              <div class="bc-icon purple">🤳</div>
-              <div class="bc-info">
-                <div class="bc-name">Face Verified</div>
-                <div class="bc-desc">Liveness confirmed</div>
-                <div class="bc-pts">+20 pts · Locked</div>
+                <div class="bc-pts">+40 pts · Coming Soon</div>
               </div>
               <span class="bc-lock">🔒</span>
             </div>
@@ -795,408 +521,261 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
               <div class="bc-info">
                 <div class="bc-name">Local Confirmed</div>
                 <div class="bc-desc">Address area verified</div>
-                <div class="bc-pts">+10 pts · Locked</div>
+                <div class="bc-pts" id="addrBadgePts">+10 pts · Pending</div>
               </div>
-              <span class="bc-lock">🔒</span>
-            </div>
-            <div class="badge-card locked" id="topBadge">
-              <div class="bc-icon red">⭐</div>
-              <div class="bc-info">
-                <div class="bc-name">Fully Verified Trader</div>
-                <div class="bc-desc">All steps complete — 100/100</div>
-                <div class="bc-pts">Bonus badge · All steps required</div>
-              </div>
-              <span class="bc-lock">🔒</span>
+              <span class="bc-lock" id="addrBadgeLock">🔒</span>
             </div>
           </div>
         </div>
       </div>
 
-    </div><!-- /step-content -->
-  </div><!-- /steps-layout -->
+      <!-- TRADE LIMITS -->
+      <div style="background:var(--white);border:1px solid var(--border);border-radius:14px;overflow:hidden;">
+        <div style="padding:14px 18px;border-bottom:1px solid var(--border);">
+          <div style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1rem;">📊 Trade Value Limits by Verification Level</div>
+          <div style="font-size:11px;color:var(--muted);margin-top:2px">Higher verification = higher trade values unlocked</div>
+        </div>
+        <div style="padding:14px 16px;">
+          <table class="limits-table">
+            <thead>
+              <tr><th>Level</th><th>Trust Score</th><th>Max Trade Value</th><th>Status</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>✉️ Email Only</td>
+                <td>10 pts</td>
+                <td style="font-weight:700;color:var(--muted);">$50</td>
+                <td><span class="tier-badge tb-active" id="emailTierBadge">ACTIVE</span></td>
+              </tr>
+              <tr>
+                <td>📱 Phone Verified</td>
+                <td>30 pts</td>
+                <td style="font-weight:700;color:var(--blue);">$150</td>
+                <td><span class="tier-badge tb-next">COMING SOON</span></td>
+              </tr>
+              <tr>
+                <td>🪪 ID Verified</td>
+                <td>70 pts</td>
+                <td style="font-weight:700;color:var(--gold);">$500</td>
+                <td><span class="tier-badge tb-locked">COMING SOON</span></td>
+              </tr>
+              <tr>
+                <td>⭐ Fully Verified</td>
+                <td>100 pts</td>
+                <td style="font-weight:700;color:var(--green);">Unlimited</td>
+                <td><span class="tier-badge tb-locked">LOCKED</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
 
-  <!-- Trade Value Limits -->
-  <div style="max-width:700px;margin:0 auto 32px;padding:0 16px;">
-    <div style="background:#fff;border:1px solid #e2e8f0;border-radius:14px;overflow:hidden;">
-      <div style="padding:14px 16px;border-bottom:1px solid #e2e8f0;">
-        <div style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1rem;">📊 Trade Value Limits by Verification Level</div>
-        <div style="font-size:11px;color:#64748b;margin-top:2px">Higher verification = higher trade values unlocked</div>
-      </div>
-      <div style="padding:14px 16px;">
-        <table style="width:100%;border-collapse:collapse;font-size:13px;">
-          <thead>
-            <tr style="background:#f8fafc;">
-              <th style="text-align:left;padding:8px 10px;border-bottom:1px solid #e2e8f0;color:#475569;">Level</th>
-              <th style="text-align:left;padding:8px 10px;border-bottom:1px solid #e2e8f0;color:#475569;">Trust Score</th>
-              <th style="text-align:left;padding:8px 10px;border-bottom:1px solid #e2e8f0;color:#475569;">Max Trade Value</th>
-              <th style="text-align:left;padding:8px 10px;border-bottom:1px solid #e2e8f0;color:#475569;">Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td style="padding:9px 10px;border-bottom:1px solid #f1f5f9;">✉️ Email Only</td>
-              <td style="padding:9px 10px;border-bottom:1px solid #f1f5f9;">10 pts</td>
-              <td style="padding:9px 10px;border-bottom:1px solid #f1f5f9;font-weight:700;color:#64748b;">$50</td>
-              <td style="padding:9px 10px;border-bottom:1px solid #f1f5f9;"><span style="background:#dcfce7;color:#166534;font-size:10px;font-weight:700;padding:2px 7px;border-radius:4px;">ACTIVE</span></td>
-            </tr>
-            <tr>
-              <td style="padding:9px 10px;border-bottom:1px solid #f1f5f9;">📱 Phone Verified</td>
-              <td style="padding:9px 10px;border-bottom:1px solid #f1f5f9;">30 pts</td>
-              <td style="padding:9px 10px;border-bottom:1px solid #f1f5f9;font-weight:700;color:#1d4ed8;">$150</td>
-              <td style="padding:9px 10px;border-bottom:1px solid #f1f5f9;"><span style="background:#dbeafe;color:#1e40af;font-size:10px;font-weight:700;padding:2px 7px;border-radius:4px;">VERIFY PHONE →</span></td>
-            </tr>
-            <tr>
-              <td style="padding:9px 10px;border-bottom:1px solid #f1f5f9;">🪪 ID Verified</td>
-              <td style="padding:9px 10px;border-bottom:1px solid #f1f5f9;">70 pts</td>
-              <td style="padding:9px 10px;border-bottom:1px solid #f1f5f9;font-weight:700;color:#d97706;">$500</td>
-              <td style="padding:9px 10px;border-bottom:1px solid #f1f5f9;"><span style="background:#fef3c7;color:#92400e;font-size:10px;font-weight:700;padding:2px 7px;border-radius:4px;">LOCKED</span></td>
-            </tr>
-            <tr>
-              <td style="padding:9px 10px;">⭐ Fully Verified</td>
-              <td style="padding:9px 10px;">100 pts</td>
-              <td style="padding:9px 10px;font-weight:700;color:#059669;">Unlimited</td>
-              <td style="padding:9px 10px;"><span style="background:#f1f5f9;color:#475569;font-size:10px;font-weight:700;padding:2px 7px;border-radius:4px;">LOCKED</span></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
     </div>
   </div>
-
-</div><!-- /page -->
+</div>
 
 <div class="toast" id="toastEl"><span id="toastIc">✅</span><span id="toastTx">Done!</span></div>
 
 <script>
-// ── STATE ──
-let currentStep = 'email';
-let trustScore = 62;
-let phoneVerified = false;
-let idVerified = false;
-let selfieVerified = false;
-let addrVerified = false;
-let otpTimer = null;
-let otpSeconds = 299;
+const sb = window.supabase.createClient(
+  'https://equvwaspcoeetfsexqki.supabase.co',
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVxdXZ3YXNwY29lZXRmc2V4cWtpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgyNzc2MjQsImV4cCI6MjA5Mzg1MzYyNH0.TP6Kk3pzHW1PYMUu5D9Vu2lJrazIEagzu5csYhqkrfI'
+);
 
-const scoreMap = { email:10, phone:20, id:40, selfie:20, address:10 };
+let currentUser = null;
+let userData = null;
+let trustScore = 10;
 
-// ── STEP NAVIGATION ──
+/* ── INIT ── */
+(async () => {
+  const { data: { session } } = await sb.auth.getSession();
+  if (!session) { window.location.href = 'alltrades-auth.html'; return; }
+  currentUser = session.user;
+  await loadUserData();
+})();
+
+async function loadUserData() {
+  try {
+    const { data, error } = await sb.from('users')
+      .select('display_name, email, trust_score, address_city, address_state, address_zip, address_verified, phone_verified, id_verified')
+      .eq('id', currentUser.id)
+      .single();
+
+    if (error) throw error;
+    userData = data;
+
+    // Set nav
+    const name = data.display_name || currentUser.email?.split('@')[0] || 'Trader';
+    const initials = name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
+    document.getElementById('navAv').textContent = initials;
+    document.getElementById('navName').textContent = name;
+    document.getElementById('emailMeta').textContent = currentUser.email;
+    document.getElementById('emailPanelSub').textContent = currentUser.email + ' · Verified';
+
+    // Set trust score
+    trustScore = data.trust_score || 10;
+    updateTrustDisplay(trustScore);
+
+    // If address already verified, show completed state
+    if (data.address_verified) {
+      document.getElementById('addrFormState').style.display = 'none';
+      document.getElementById('addrVerifiedState').style.display = 'block';
+      document.getElementById('addrVerifiedSub').textContent =
+        `${data.address_city || ''}, ${data.address_state || ''} ${data.address_zip || ''}`.trim();
+      document.getElementById('addrPanelSub').textContent = 'Address confirmed ✓';
+
+      // Mark step done in sidebar
+      const navAddr = document.getElementById('nav-address');
+      navAddr.classList.add('completed');
+      navAddr.querySelector('.si-icon-wrap').textContent = '✅';
+      navAddr.querySelector('.si-badge').className = 'si-badge sib-done';
+      navAddr.querySelector('.si-badge').textContent = '+10 pts';
+
+      // Mark badge earned
+      document.getElementById('addrBadge').classList.remove('locked');
+      document.getElementById('addrBadge').classList.add('earned');
+      document.getElementById('addrBadgePts').textContent = '+10 pts · Earned ✓';
+      document.getElementById('addrBadgeLock').remove();
+    }
+
+    // Pre-fill address fields if data exists
+    if (data.address_city) document.getElementById('addrCity').value = data.address_city;
+    if (data.address_state) document.getElementById('addrState').value = data.address_state;
+    if (data.address_zip) document.getElementById('addrZip').value = data.address_zip;
+    checkAddr();
+
+  } catch(e) {
+    console.error(e);
+    showToast('⚠️', 'Error loading verification status.', true);
+  } finally {
+    document.getElementById('loadingScreen').style.display = 'none';
+    document.getElementById('mainPage').style.display = 'block';
+  }
+}
+
+/* ── STEP NAVIGATION ── */
 function showStep(step) {
-  // Panels
   document.querySelectorAll('.step-panel').forEach(p => p.classList.remove('active'));
-  const panel = document.getElementById('panel-' + step);
-  if (panel) panel.classList.add('active');
-
-  // Nav items
+  document.getElementById('panel-' + step).classList.add('active');
   document.querySelectorAll('.step-item').forEach(i => {
-    i.classList.remove('active');
-    if (!i.classList.contains('completed')) i.style.opacity = '';
+    if (!i.classList.contains('completed')) i.classList.remove('active');
   });
   const nav = document.getElementById('nav-' + step);
   if (nav) nav.classList.add('active');
-
-  currentStep = step;
 }
 
-// ── PHONE FLOW ──
-function fmtPhone(inp) {
-  let v = inp.value.replace(/\D/g,'').slice(0,10);
-  if (v.length >= 6) v = '(' + v.slice(0,3) + ') ' + v.slice(3,6) + '-' + v.slice(6);
-  else if (v.length >= 3) v = '(' + v.slice(0,3) + ') ' + v.slice(3);
-  inp.value = v;
-  inp.classList.toggle('valid', v.replace(/\D/g,'').length === 10);
-}
-
-function sendSMS() {
-  const phone = document.getElementById('phoneInput').value;
-  if (phone.replace(/\D/g,'').length < 10) {
-    showToast('⚠️', 'Please enter a valid 10-digit phone number.');
-    return;
-  }
-  const btn = document.getElementById('sendSmsBtn');
-  btn.textContent = '⏳ Sending…';
-  btn.classList.add('vbtn-loading');
-  setTimeout(() => {
-    document.getElementById('phoneEntrySection').style.display = 'none';
-    document.getElementById('otpSection').style.display = 'block';
-    const masked = phone.slice(0,6) + '•••' + phone.slice(-4);
-    document.getElementById('phoneMask').textContent = masked;
-    document.getElementById('otp0').focus();
-    startOtpTimer();
-    showToast('📱', 'Code sent! Check your SMS. (Use: 1 2 3 4 5 6 to demo)');
-  }, 1400);
-}
-
-function otpInput(inp, idx) {
-  inp.value = inp.value.replace(/\D/g,'').slice(-1);
-  if (inp.value) {
-    inp.classList.add('filled');
-    const next = document.getElementById('otp' + (idx + 1));
-    if (next) next.focus();
-  } else {
-    inp.classList.remove('filled');
-  }
-  // Check if all filled
-  const allFilled = [0,1,2,3,4,5].every(i => document.getElementById('otp'+i).value);
-  document.getElementById('verifyOtpBtn').disabled = !allFilled;
-}
-
-function verifyOTP() {
-  const code = [0,1,2,3,4,5].map(i => document.getElementById('otp'+i).value).join('');
-  const btn = document.getElementById('verifyOtpBtn');
-  btn.textContent = '⏳ Verifying…';
-  btn.classList.add('vbtn-loading');
-
-  setTimeout(() => {
-    if (code === '123456' || code.length === 6) {
-      clearInterval(otpTimer);
-      phoneVerified = true;
-      addPoints(20);
-      unlockBadge('phoneBadge', 'Phone Verified', 'green');
-      markStepDone('nav-phone');
-      // Replace panel content
-      document.getElementById('otpSection').innerHTML = `
-        <div class="completed-banner" style="margin-top:0">
-          <span class="cb-icon">📱</span>
-          <div class="cb-text"><div class="cb-title">Phone Number Verified!</div><div class="cb-sub">+20 trust points earned</div></div>
-          <div class="cb-pts">+20</div>
-        </div>
-        <button class="verify-btn vbtn-blue" onclick="showStep('id')" style="max-width:380px">Next: Verify ID → +40 pts</button>`;
-      showToast('✅', 'Phone verified! +20 trust points earned.');
-    } else {
-      btn.textContent = '✓ Verify Code';
-      btn.classList.remove('vbtn-loading');
-      btn.disabled = false;
-      [0,1,2,3,4,5].forEach(i => {
-        const el = document.getElementById('otp'+i);
-        el.style.borderColor = 'var(--red)';
-        setTimeout(()=>el.style.borderColor='',2000);
-      });
-      showToast('❌', 'Incorrect code. Please try again.');
-    }
-  }, 1200);
-}
-
-function startOtpTimer() {
-  otpSeconds = 299;
-  clearInterval(otpTimer);
-  otpTimer = setInterval(() => {
-    otpSeconds--;
-    const m = Math.floor(otpSeconds / 60);
-    const s = otpSeconds % 60;
-    const el = document.getElementById('otpCountdown');
-    if (el) el.textContent = m + ':' + (s < 10 ? '0' : '') + s;
-    if (otpSeconds <= 0) { clearInterval(otpTimer); if (el) el.textContent = 'Expired'; }
-  }, 1000);
-}
-
-function resendOTP() {
-  otpSeconds = 299;
-  showToast('📱', 'New code sent!');
-}
-
-function resetPhone() {
-  document.getElementById('phoneEntrySection').style.display = 'block';
-  document.getElementById('otpSection').style.display = 'none';
-  const btn = document.getElementById('sendSmsBtn');
-  btn.textContent = '📱 Send Verification Code';
-  btn.classList.remove('vbtn-loading');
-  clearInterval(otpTimer);
-}
-
-// ── ID TYPE ──
-function selectIdType(type, el) {
-  document.querySelectorAll('.id-option').forEach(o => o.classList.remove('selected'));
-  el.classList.add('selected');
-  document.getElementById('uploadBothSides').style.display = type === 'passport' ? 'none' : 'block';
-  document.getElementById('uploadSingle').style.display = type === 'passport' ? 'block' : 'none';
-}
-
-function simulateUpload(elId, label) {
-  const el = document.getElementById(elId);
-  el.classList.add('done');
-  el.innerHTML = `<div class="us-icon">✅</div><div class="us-label" style="color:var(--green)">${label}</div><div class="us-sub" style="color:var(--green)">Uploaded successfully</div>`;
-  showToast('📄', label + ' — file ready for verification!');
-}
-
-function submitID() {
-  const btn = document.getElementById('submitIdBtn');
-  btn.textContent = '⏳ Submitting to Stripe Identity…';
-  btn.classList.add('vbtn-loading');
-  setTimeout(() => {
-    idVerified = true;
-    addPoints(40);
-    unlockBadge('idBadge', 'ID Verified', 'gold');
-    markStepDone('nav-id');
-    btn.textContent = '✅ ID Submitted — Under Review';
-    btn.style.background = 'var(--green)';
-    const bodyEl = document.querySelector('#panel-id .sp-body');
-    const banner = document.createElement('div');
-    banner.className = 'completed-banner';
-    banner.style.marginBottom = '12px';
-    banner.innerHTML = `<span class="cb-icon">🪪</span><div class="cb-text"><div class="cb-title">ID Submitted Successfully!</div><div class="cb-sub">Stripe Identity will verify within 1–2 minutes. +40 pts pending.</div></div><div class="cb-pts">+40</div>`;
-    bodyEl.insertBefore(banner, bodyEl.firstChild);
-    showToast('🪪', 'ID submitted! Verification takes 1–2 minutes via Stripe Identity.');
-    setTimeout(() => showStep('selfie'), 1500);
-  }, 2000);
-}
-
-// ── SELFIE ──
-let cameraStarted = false;
-function startCamera() {
-  const btn = document.getElementById('startCameraBtn');
-  const idle = document.getElementById('cameraIdle');
-  const active = document.getElementById('cameraActive');
-  const status = document.getElementById('cameraStatus');
-  btn.textContent = '⏳ Opening Camera…';
-  btn.classList.add('vbtn-loading');
-
-  // Show loading
-  idle.innerHTML = `<div class="camera-loading"><div class="cam-spinner"></div><div style="font-size:12px;color:rgba(255,255,255,.6)">Starting camera…</div></div>`;
-
-  setTimeout(() => {
-    idle.style.display = 'none';
-    active.style.display = 'flex';
-    status.style.display = 'block';
-    btn.textContent = '📸 Take Selfie Now';
-    btn.classList.remove('vbtn-loading');
-    btn.onclick = takeSelfie;
-    cameraStarted = true;
-    showToast('📷', 'Camera active — position your face in the circle');
-  }, 1800);
-}
-
-function takeSelfie() {
-  const btn = document.getElementById('startCameraBtn');
-  btn.textContent = '🤖 Analyzing…';
-  btn.classList.add('vbtn-loading');
-
-  // Animate checks
-  const checks = ['chk-light','chk-face','chk-match','chk-live'];
-  checks.forEach((id, i) => {
-    setTimeout(() => {
-      const el = document.getElementById(id);
-      el.classList.add('pass');
-      el.querySelector('.sc-check-dot').textContent = '✓';
-    }, i * 400);
-  });
-
-  setTimeout(() => {
-    selfieVerified = true;
-    addPoints(20);
-    unlockBadge('selfieBadge', 'Face Verified', 'purple');
-    markStepDone('nav-selfie');
-    document.getElementById('cameraActive').innerHTML = `<div style="text-align:center"><div style="font-size:3rem;margin-bottom:8px">✅</div><div style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.1rem;color:#fff">Selfie Verified!</div><div style="font-size:12px;color:rgba(255,255,255,.6)">Face matched to ID</div></div>`;
-    document.getElementById('cameraStatus').textContent = '✓ Verification Complete';
-    document.getElementById('cameraStatus').style.background = 'rgba(22,163,74,.8)';
-    btn.textContent = '✅ Verified — Next Step';
-    btn.classList.remove('vbtn-loading');
-    btn.style.background = 'var(--green)';
-    btn.onclick = () => showStep('address');
-    showToast('🤳', 'Selfie verified! +20 trust points earned.');
-  }, 2800);
-}
-
-// ── ADDRESS ──
+/* ── ADDRESS ── */
 function checkAddr() {
-  const street = document.getElementById('addrStreet').value.trim();
   const city = document.getElementById('addrCity').value.trim();
   const state = document.getElementById('addrState').value;
   const zip = document.getElementById('addrZip').value.trim();
-  document.getElementById('confirmAddrBtn').disabled = !(street && city && state && zip.length >= 5);
+  document.getElementById('confirmAddrBtn').disabled = !(city && state && zip.length >= 5);
 }
 
-function confirmAddress() {
+async function confirmAddress() {
+  const city = document.getElementById('addrCity').value.trim();
+  const state = document.getElementById('addrState').value;
+  const zip = document.getElementById('addrZip').value.trim();
+
+  if (!city || !state || !zip) return;
+
   const btn = document.getElementById('confirmAddrBtn');
   btn.textContent = '⏳ Confirming…';
   btn.disabled = true;
 
-  setTimeout(() => {
-    addrVerified = true;
-    addPoints(10);
-    unlockBadge('addrBadge', 'Local Confirmed', 'green');
-    markStepDone('nav-address');
-    btn.textContent = '✅ Address Confirmed';
-    btn.style.background = 'var(--green)';
+  try {
+    // Calculate new trust score
+    const newScore = Math.min(100, trustScore + 10);
 
-    // Check if fully verified
-    if (phoneVerified && idVerified && selfieVerified) {
-      unlockBadge('topBadge', 'Fully Verified Trader', 'gold');
-      setTimeout(() => showToast('🏆', 'You are now a Fully Verified Trader! Maximum trust score achieved!'), 800);
-    }
+    const { error } = await sb.from('users').update({
+      address_city: city,
+      address_state: state,
+      address_zip: zip,
+      address_verified: true,
+      trust_score: newScore
+    }).eq('id', currentUser.id);
+
+    if (error) throw error;
+
+    trustScore = newScore;
+
+    // Update UI
+    updateTrustDisplay(trustScore);
+
+    // Show verified state
+    document.getElementById('addrFormState').style.display = 'none';
+    document.getElementById('addrVerifiedState').style.display = 'block';
+    document.getElementById('addrVerifiedSub').textContent = `${city}, ${state} ${zip}`;
+    document.getElementById('addrPanelSub').textContent = 'Address confirmed ✓';
+
+    // Mark sidebar step done
+    const navAddr = document.getElementById('nav-address');
+    navAddr.classList.remove('active');
+    navAddr.classList.add('completed');
+    navAddr.querySelector('.si-icon-wrap').textContent = '✅';
+    const badge = navAddr.querySelector('.si-badge');
+    badge.className = 'si-badge sib-done';
+    badge.textContent = '+10 pts';
+
+    // Mark badge earned
+    const addrBadge = document.getElementById('addrBadge');
+    addrBadge.classList.remove('locked');
+    addrBadge.classList.add('earned');
+    document.getElementById('addrBadgePts').textContent = '+10 pts · Earned ✓';
+    const lockEl = document.getElementById('addrBadgeLock');
+    if (lockEl) lockEl.remove();
+
     showToast('📍', 'Address confirmed! +10 trust points earned.');
-  }, 1500);
+    if (typeof gtag !== 'undefined') {
+      gtag('event', 'address_verified', { event_category: 'verification' });
+    }
+
+  } catch(e) {
+    console.error(e);
+    showToast('⚠️', 'Error confirming address. Please try again.', true);
+    btn.textContent = '📍 Confirm My Address';
+    btn.disabled = false;
+    checkAddr();
+  }
 }
 
-// ── TRUST SCORE ──
-function addPoints(pts) {
-  trustScore = Math.min(100, trustScore + pts);
-  animateTrustScore(trustScore);
-  document.getElementById('ptsEarned').textContent = trustScore + ' / 100 pts';
-  const labels = [[0,'NEW'],[30,'BASIC'],[50,'GOOD'],[75,'TRUSTED'],[90,'VERIFIED'],[100,'FULLY VERIFIED']];
-  const label = labels.reduce((acc,l) => trustScore >= l[0] ? l[1] : acc, 'NEW');
-  document.getElementById('ptsLabel').textContent = label;
-  document.getElementById('progressBar').style.width = trustScore + '%';
-}
-
-function animateTrustScore(target) {
+/* ── TRUST SCORE ── */
+function updateTrustDisplay(score) {
   const numEl = document.getElementById('trustNum');
   const circleEl = document.getElementById('trustCircle');
-  let current = parseInt(numEl.textContent);
-  const step = (target - current) / 30;
+  const current = parseInt(numEl.textContent) || 0;
+  const step = (score - current) / 30;
+  let val = current;
   const interval = setInterval(() => {
-    current += step;
-    if ((step > 0 && current >= target) || (step < 0 && current <= target)) {
-      current = target;
+    val += step;
+    if ((step > 0 && val >= score) || (step < 0 && val <= score) || step === 0) {
+      val = score;
       clearInterval(interval);
     }
-    numEl.textContent = Math.round(current);
-    // circumference = 2 * PI * 54 ≈ 339
-    const dashOffset = 339 - (339 * current / 100);
-    circleEl.style.strokeDashoffset = dashOffset;
+    numEl.textContent = Math.round(val);
+    circleEl.style.strokeDashoffset = 339 - (339 * Math.round(val) / 100);
   }, 30);
+
+  document.getElementById('progressBar').style.width = score + '%';
+  document.getElementById('ptsEarned').textContent = score + ' / 100 pts';
+
+  const labels = [[0,'BASIC'],[30,'GOOD'],[50,'TRUSTED'],[75,'VERIFIED'],[100,'FULLY VERIFIED']];
+  const label = labels.reduce((acc, l) => score >= l[0] ? l[1] : acc, 'BASIC');
+  document.getElementById('ptsLabel').textContent = label;
+  document.getElementById('trustTitle').textContent = label;
+  document.getElementById('trustSub').textContent = score >= 100 ? 'Maximum trust achieved!' : `${100 - score} points to go`;
 }
 
-// ── HELPERS ──
-function markStepDone(navId) {
-  const nav = document.getElementById(navId);
-  if (!nav) return;
-  nav.classList.remove('active');
-  nav.classList.add('completed');
-  nav.querySelector('.si-icon-wrap').textContent = '✅';
-  const badge = nav.querySelector('.si-badge');
-  if (badge) { badge.className = 'si-badge sib-done'; }
-}
-
-function unlockBadge(badgeId, name, colorClass) {
-  const badge = document.getElementById(badgeId);
-  if (!badge) return;
-  badge.classList.remove('locked');
-  badge.classList.add('earned');
-  const lock = badge.querySelector('.bc-lock');
-  if (lock) lock.remove();
-  const pts = badge.querySelector('.bc-pts');
-  if (pts) pts.textContent = pts.textContent.replace('Locked','Earned ✓').replace('Pending','Earned ✓');
-}
-
-function showToast(icon, msg) {
+/* ── TOAST ── */
+function showToast(icon, msg, isError = false) {
   document.getElementById('toastIc').textContent = icon;
   document.getElementById('toastTx').textContent = msg;
   const t = document.getElementById('toastEl');
+  t.className = 'toast' + (isError ? ' error' : '');
   t.classList.add('show');
   clearTimeout(window._tt);
   window._tt = setTimeout(() => t.classList.remove('show'), 4000);
 }
-
-// ── INIT ──
-window.addEventListener('DOMContentLoaded', () => {
-  // Set initial trust ring position
-  const circle = document.getElementById('trustCircle');
-  if (circle) {
-    const dashOffset = 339 - (339 * 62 / 100);
-    circle.style.strokeDashoffset = dashOffset;
-  }
-});
 </script>
 </body>
 </html>
