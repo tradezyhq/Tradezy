@@ -513,11 +513,12 @@ async function initStripe(trade, session) {
   cardElement = elements.create('card', {
     style: {
       base: {
-        fontFamily: "'Lato', sans-serif",
-        fontSize: '15px',
-        color: '#1a1a2e',
-        '::placeholder': { color: '#94a3b8' },
-      },
+  fontFamily: "'Lato', sans-serif",
+  fontSize: '15px',
+  color: window.matchMedia('(prefers-color-scheme: dark)').matches ? '#f1f5f9' : '#1a1a2e',
+  '::placeholder': { color: '#64748b' },
+  backgroundColor: 'transparent',
+},
       invalid: { color: '#dc2626' },
     },
   });
