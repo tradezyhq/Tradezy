@@ -583,27 +583,18 @@ async function submitPayment() {
       return;
     }
 
-    // Payment confirmed — write PaymentIntent ID to trades table
-    const updateField = isTraderA ? 'stripe_payment_intent_a' : 'stripe_payment_intent_b';
-    const { error: updateError } = await sb
-      .from('trades')
-      .update({
-        [updateField]: paymentIntent.id,
-        escrow_status: 'partial', // will become 'full' when both pay
-      })
-      .eq('id', tradeData.id);
-
-    if (updateError) {
-      console.error('DB update error:', updateError);
-      // Payment went through even if DB update fails — log it but still show success
-    }
-
-    // Check if other party already paid — if so update escrow to full
-    const otherField = isTraderA ? 'stripe_payment_intent_b' : 'stripe_payment_intent_a';
-    if (tradeData[otherField]) {
-      await sb.from('trades').update({ escrow_status: 'full' }).eq('id', tradeData.id);
-    }
-
+    // Write PaymentIntent ID via Edge Function (uses service role to bypass RLS)
+    const { data: { session } } = await sb.auth.getSession();
+    const writeRes = await fetch(EDGE_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + session.access_token,
+      },
+      body: JSON.stringify({ trade_id: tradeData.id, payment_intent_id: paymentIntent.id }),
+    });
+    const writeData = await writeRes.json();
+    if (writeData.error) console.error('DB write error:', writeData.error);
     showSuccess();
 
   } catch (err) {
