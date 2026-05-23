@@ -37,7 +37,6 @@ body{font-family:'Lato',sans-serif;background:var(--navy);color:var(--text);min-
 .top-right{display:flex;align-items:center;gap:5px;}
 .ti{position:relative;padding:6px 9px;border-radius:6px;cursor:pointer;color:var(--light);font-size:1rem;transition:all .15s;}
 .ti:hover{background:var(--surface2);color:var(--text);}
-.ti .badge{position:absolute;top:3px;right:3px;background:var(--red);color:#fff;font-size:9px;font-weight:800;border-radius:99px;padding:1px 4px;}
 .admin-av{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--red),var(--orange));color:#fff;font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:.78rem;display:flex;align-items:center;justify-content:center;border:2px solid rgba(220,38,38,.4);cursor:pointer;margin-left:4px;}
 .layout{display:flex;flex:1;min-height:0;}
 .sidebar{width:196px;background:var(--navy3);border-right:1px solid var(--border);display:flex;flex-direction:column;flex-shrink:0;position:sticky;top:52px;height:calc(100vh - 52px);overflow-y:auto;}
@@ -81,10 +80,10 @@ body{font-family:'Lato',sans-serif;background:var(--navy);color:var(--text);min-
 .ph{padding:12px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
 .ph-title{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.88rem;}
 .pb-tag{font-size:9px;font-weight:800;padding:2px 7px;border-radius:3px;letter-spacing:.3px;}
-.pb-red{background:rgba(220,38,38,.2);border:1px solid rgba(220,38,38,.3);color:#fca5a5;}
-.pb-gold{background:rgba(245,158,11,.15);border:1px solid rgba(245,158,11,.3);color:var(--gold-l);}
 .pb-green{background:rgba(22,163,74,.15);border:1px solid rgba(22,163,74,.3);color:var(--green-l);}
+.pb-gold{background:rgba(245,158,11,.15);border:1px solid rgba(245,158,11,.3);color:var(--gold-l);}
 .pb-blue{background:rgba(26,86,219,.15);border:1px solid rgba(26,86,219,.3);color:#93c5fd;}
+.pb-red{background:rgba(220,38,38,.2);border:1px solid rgba(220,38,38,.3);color:#fca5a5;}
 .trow{display:flex;align-items:center;gap:10px;padding:9px 14px;border-bottom:1px solid var(--border);transition:background .15s;}
 .trow:last-child{border:none;}
 .trow:hover{background:var(--surface2);}
@@ -117,11 +116,9 @@ body{font-family:'Lato',sans-serif;background:var(--navy);color:var(--text);min-
 .urb2-ban{background:rgba(220,38,38,.12);border:1px solid rgba(220,38,38,.25);color:#fca5a5;}
 .urb2-unban{background:rgba(22,163,74,.12);border:1px solid rgba(22,163,74,.25);color:var(--green-l);}
 .dq-item{background:rgba(255,255,255,.03);border:1px solid var(--border2);border-radius:10px;padding:13px;margin-bottom:10px;}
-.dq-item.esc{border-color:rgba(220,38,38,.35);background:rgba(220,38,38,.04);}
 .dq-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:7px;}
 .dq-id{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.82rem;color:var(--lighter);}
 .dq-sev{font-size:9px;font-weight:800;padding:2px 7px;border-radius:3px;letter-spacing:.3px;}
-.sev-lo{background:rgba(22,163,74,.15);border:1px solid rgba(22,163,74,.3);color:var(--green-l);}
 .sev-md{background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.25);color:var(--gold-l);}
 .sev-hi{background:rgba(220,38,38,.15);border:1px solid rgba(220,38,38,.3);color:#fca5a5;}
 .dq-issue{font-size:11px;color:var(--lighter);margin-bottom:8px;line-height:1.5;}
@@ -131,6 +128,38 @@ body{font-family:'Lato',sans-serif;background:var(--navy);color:var(--text);min-
 .dqa-ok:hover{background:rgba(22,163,74,.25);}
 .dqa-esc{background:rgba(220,38,38,.12);border:1px solid rgba(220,38,38,.25);color:#fca5a5;}
 .two-col{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:18px;}
+
+/* ── PAYOUT PANEL ── */
+.balance-hero{background:linear-gradient(135deg,#052e16,#064e3b);border:1px solid rgba(22,163,74,.25);border-radius:12px;padding:22px 24px;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between;gap:16px;}
+.bh-left{}
+.bh-label{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:#6ee7b7;margin-bottom:4px;}
+.bh-amount{font-family:'Barlow Condensed',sans-serif;font-size:2.8rem;font-weight:900;color:#fff;line-height:1;margin-bottom:4px;}
+.bh-sub{font-size:11px;color:#6ee7b7;}
+.bh-right{display:flex;flex-direction:column;gap:8px;flex-shrink:0;}
+.payout-btn{padding:11px 20px;border-radius:9px;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.95rem;cursor:pointer;border:none;transition:all .15s;display:flex;align-items:center;gap:7px;}
+.payout-btn.primary{background:var(--green);color:#fff;}
+.payout-btn.primary:hover{background:#15803d;transform:translateY(-1px);}
+.payout-btn.primary:disabled{background:#334155;cursor:not-allowed;transform:none;}
+.payout-btn.secondary{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);color:var(--text);}
+.payout-btn.secondary:hover{background:rgba(255,255,255,.14);}
+.balance-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px;}
+.bal-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px 16px;}
+.bal-label{font-size:10px;color:var(--lighter);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px;}
+.bal-amount{font-family:'Barlow Condensed',sans-serif;font-size:1.4rem;font-weight:900;}
+.bal-sub{font-size:10px;color:var(--lighter);margin-top:2px;}
+.payout-row{display:flex;align-items:center;gap:12px;padding:11px 16px;border-bottom:1px solid var(--border);}
+.payout-row:last-child{border:none;}
+.pr-icon{width:32px;height:32px;border-radius:50%;background:rgba(22,163,74,.15);border:1px solid rgba(22,163,74,.3);display:flex;align-items:center;justify-content:center;font-size:.9rem;flex-shrink:0;}
+.pr-info{flex:1;}
+.pr-name{font-weight:700;font-size:12px;margin-bottom:1px;}
+.pr-meta{font-size:10px;color:var(--lighter);}
+.pr-rt{text-align:right;}
+.pr-amount{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.95rem;color:var(--green-l);}
+.pr-status{font-size:9px;font-weight:800;padding:2px 6px;border-radius:3px;display:inline-block;margin-top:2px;}
+.prs-paid{background:rgba(22,163,74,.15);border:1px solid rgba(22,163,74,.3);color:var(--green-l);}
+.prs-pend{background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.25);color:var(--gold-l);}
+.prs-fail{background:rgba(220,38,38,.15);border:1px solid rgba(220,38,38,.3);color:#fca5a5;}
+
 .overlay{display:none;position:fixed;inset:0;background:rgba(4,10,22,.88);z-index:500;align-items:center;justify-content:center;padding:20px;}
 .overlay.open{display:flex;}
 .modal{background:#0f2341;border:1px solid var(--border2);border-radius:14px;width:100%;max-width:480px;max-height:90vh;overflow-y:auto;animation:slideUp .25s ease;}
@@ -161,7 +190,9 @@ body{font-family:'Lato',sans-serif;background:var(--navy);color:var(--text);min-
 .toast.show{transform:translateX(0);}
 .ai-dot{width:7px;height:7px;border-radius:50%;background:var(--green-l);animation:aipulse 1.5s infinite;display:inline-block;}
 @keyframes aipulse{0%,100%{opacity:1}50%{opacity:.3}}
-@media(max-width:760px){.sidebar{display:none;}.stats-grid{grid-template-columns:1fr 1fr;}.two-col{grid-template-columns:1fr;}.wb-stats{display:none;}}
+@keyframes spin{to{transform:rotate(360deg)}}
+.spin{display:inline-block;animation:spin .7s linear infinite;}
+@media(max-width:760px){.sidebar{display:none;}.stats-grid{grid-template-columns:1fr 1fr;}.two-col{grid-template-columns:1fr;}.wb-stats{display:none;}.balance-grid{grid-template-columns:1fr;}.balance-hero{flex-direction:column;align-items:flex-start;}}
 </style>
 </head>
 <body>
@@ -204,7 +235,8 @@ body{font-family:'Lato',sans-serif;background:var(--navy);color:var(--text);min-
     </div>
     <div class="sb-div"></div>
     <div class="sb-sec">
-      <div class="sb-lbl">Platform</div>
+      <div class="sb-lbl">Finance</div>
+      <div class="ni" id="nav-payouts" onclick="switchView('payouts')"><span class="ni-ic">💸</span>Payouts</div>
       <div class="ni" id="nav-settings" onclick="switchView('settings')"><span class="ni-ic">⚙️</span>Settings</div>
     </div>
     <div style="padding:10px;margin-top:auto">
@@ -278,7 +310,7 @@ body{font-family:'Lato',sans-serif;background:var(--navy);color:var(--text);min-
     <!-- DISPUTES -->
     <div id="view-disputes" style="display:none">
       <div class="sec-hdr"><div class="sec-title">⚖️ Open Disputes</div></div>
-      <div class="ib blue"><span>ℹ️</span><div>All open disputes filed by users. Review and resolve each one. Your response time targets: Critical 4hr, High 24hr, Medium 48hr, Low 72hr.</div></div>
+      <div class="ib blue"><span>ℹ️</span><div>All open disputes filed by users. Review and resolve each one. Response time targets: Critical 4hr, High 24hr, Medium 48hr, Low 72hr.</div></div>
       <div id="disputesPanel"><div class="loading">Loading disputes…</div></div>
     </div>
 
@@ -288,10 +320,60 @@ body{font-family:'Lato',sans-serif;background:var(--navy);color:var(--text);min-
       <div class="panel" id="bannedPanel"><div class="loading">Loading…</div></div>
     </div>
 
+    <!-- PAYOUTS -->
+    <div id="view-payouts" style="display:none">
+      <div class="sec-hdr">
+        <div class="sec-title">💸 Stripe Payouts — Mercury Bank</div>
+        <button class="payout-btn secondary" onclick="loadPayouts()" style="font-size:.78rem;padding:6px 12px">🔄 Refresh</button>
+      </div>
+
+      <div class="ib gold"><span>⚠️</span><div>Payouts transfer your available Stripe balance to your Mercury bank account. Only available balance (not pending) can be paid out. Standard transfer time is 2 business days.</div></div>
+
+      <!-- Balance hero -->
+      <div class="balance-hero" id="balanceHero">
+        <div class="bh-left">
+          <div class="bh-label">Available Balance</div>
+          <div class="bh-amount" id="balAvailable">—</div>
+          <div class="bh-sub" id="balSub">Loading Stripe balance…</div>
+        </div>
+        <div class="bh-right">
+          <button class="payout-btn primary" id="payoutAllBtn" onclick="openPayoutModal('all')" disabled>
+            💸 Pay Out All to Mercury
+          </button>
+          <button class="payout-btn secondary" onclick="openPayoutModal('custom')">
+            ✏️ Custom Amount
+          </button>
+        </div>
+      </div>
+
+      <!-- Balance breakdown -->
+      <div class="balance-grid" id="balanceGrid">
+        <div class="bal-card">
+          <div class="bal-label">Available</div>
+          <div class="bal-amount" id="balAvail2" style="color:var(--green-l)">—</div>
+          <div class="bal-sub">Ready to pay out</div>
+        </div>
+        <div class="bal-card">
+          <div class="bal-label">Pending</div>
+          <div class="bal-amount" id="balPending" style="color:var(--gold-l)">—</div>
+          <div class="bal-sub">Clearing (2-7 days)</div>
+        </div>
+        <div class="bal-card">
+          <div class="bal-label">Total Held</div>
+          <div class="bal-amount" id="balTotal" style="color:var(--blue-l)">—</div>
+          <div class="bal-sub">Available + Pending</div>
+        </div>
+      </div>
+
+      <!-- Recent payouts -->
+      <div class="sec-hdr" style="margin-top:4px"><div class="sec-title">Recent Payouts</div></div>
+      <div class="panel" id="payoutsPanel"><div class="loading">Loading payout history…</div></div>
+    </div>
+
     <!-- SETTINGS -->
     <div id="view-settings" style="display:none">
       <div class="sec-hdr"><div class="sec-title">⚙️ Platform Settings</div></div>
-      <div class="ib gold"><span>⚠️</span><div>Fee settings and platform configuration will connect to Stripe PaymentIntent in Phase 2. For now these are informational.</div></div>
+      <div class="ib gold"><span>⚠️</span><div>Fee settings connect to Stripe PaymentIntent. For now these are informational.</div></div>
       <div class="two-col">
         <div class="panel">
           <div class="ph"><div class="ph-title">💸 Current Fee Structure</div></div>
@@ -373,58 +455,79 @@ body{font-family:'Lato',sans-serif;background:var(--navy);color:var(--text);min-
   </div>
 </div>
 
+<!-- PAYOUT MODAL -->
+<div class="overlay" id="payoutModal">
+  <div class="modal">
+    <div class="mhd"><div class="mhd-ttl">💸 Confirm Payout to Mercury</div><button class="mhd-x" onclick="closeModal('payoutModal')">✕</button></div>
+    <div class="mbody">
+      <div class="ib green"><span>🏦</span><div>Funds will be transferred to your Mercury bank account (routing 121145433). Standard transfer time is 2 business days.</div></div>
+      <div class="mfield" id="customAmountField" style="display:none">
+        <label>Payout Amount ($)</label>
+        <input type="number" id="payoutAmount" placeholder="0.00" min="1" step="0.01">
+      </div>
+      <div id="payoutSummary" style="background:rgba(255,255,255,.04);border:1px solid var(--border2);border-radius:8px;padding:12px;margin-bottom:14px;font-size:13px;color:var(--light)">
+        <div style="display:flex;justify-content:space-between;margin-bottom:4px"><span>Payout amount</span><span style="color:var(--green-l);font-weight:700" id="modalPayoutAmt">—</span></div>
+        <div style="display:flex;justify-content:space-between"><span>Destination</span><span style="color:var(--text);font-weight:700">Mercury Bank</span></div>
+      </div>
+      <button class="mbtn green" id="confirmPayoutBtn" onclick="confirmPayout()">💸 Confirm Payout</button>
+      <button class="mbtn outline" onclick="closeModal('payoutModal')">Cancel</button>
+    </div>
+  </div>
+</div>
+
 <div class="toast" id="toastEl"><span id="toastIc">✅</span><span id="toastTx"></span></div>
 
 <script>
-/* ── Supabase ── */
-const sb = window.supabase.createClient(
-  'https://equvwaspcoeetfsexqki.supabase.co',
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVxdXZ3YXNwY29lZXRmc2V4cWtpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgyNzc2MjQsImV4cCI6MjA5Mzg1MzYyNH0.TP6Kk3pzHW1PYMUu5D9Vu2lJrazIEagzu5csYhqkrfI'
-);
+const SUPABASE_URL = 'https://equvwaspcoeetfsexqki.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVxdXZ3YXNwY29lZXRmc2V4cWtpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgyNzc2MjQsImV4cCI6MjA5Mzg1MzYyNH0.TP6Kk3pzHW1PYMUu5D9Vu2lJrazIEagzu5csYhqkrfI';
+const PAYOUT_EDGE_URL = SUPABASE_URL + '/functions/v1/trigger-payout';
+
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 let currentUser = null;
+let currentSession = null;
 let banTargetUserId = null;
 let resolveTargetDisputeId = null;
+let payoutMode = 'all';
+let availableBalance = 0;
 
-/* ── Session + Admin Check ── */
+/* ── SESSION + ADMIN CHECK ── */
 (async () => {
   const { data: { session } } = await sb.auth.getSession();
   if (!session) { window.location.href = 'alltrades-auth.html'; return; }
   currentUser = session.user;
+  currentSession = session;
 
   const { data: user } = await sb.from('users').select('is_admin, display_name').eq('id', currentUser.id).single();
-  if (!user?.is_admin) {
-    window.location.href = 'alltrades-dashboard.html';
-    return;
-  }
+  if (!user?.is_admin) { window.location.href = 'alltrades-dashboard.html'; return; }
 
   const name = user.display_name || currentUser.email?.split('@')[0] || 'Admin';
   const initials = name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0,2);
   document.getElementById('adminAv').textContent = initials;
 
-  initAdmin();
+  await Promise.all([loadStats(), loadRecentUsers(), loadRecentTrades()]);
 })();
 
-async function initAdmin() {
-  await Promise.all([
-    loadStats(),
-    loadRecentUsers(),
-    loadRecentTrades()
-  ]);
+/* ── EDGE FUNCTION CALL ── */
+async function callEdge(url, body) {
+  const res = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + currentSession.access_token,
+    },
+    body: JSON.stringify(body),
+  });
+  return res.json();
 }
 
 /* ── STATS ── */
 async function loadStats() {
   try {
     const [
-      { count: userCount },
-      { count: listingCount },
-      { count: tradeCount },
-      { count: disputeCount },
-      { count: bannedCount },
-      { count: offerCount },
-      { count: msgCount },
-      { count: ratingCount }
+      { count: userCount }, { count: listingCount }, { count: tradeCount },
+      { count: disputeCount }, { count: bannedCount }, { count: offerCount },
+      { count: msgCount }, { count: ratingCount }
     ] = await Promise.all([
       sb.from('users').select('*', { count: 'exact', head: true }),
       sb.from('listings').select('*', { count: 'exact', head: true }).eq('status', 'active'),
@@ -444,13 +547,11 @@ async function loadStats() {
     document.getElementById('statOffers').textContent = offerCount || 0;
     document.getElementById('statMessages').textContent = msgCount || 0;
     document.getElementById('statRatings').textContent = ratingCount || 0;
-
     document.getElementById('wbUsers').textContent = userCount || 0;
     document.getElementById('wbListings').textContent = listingCount || 0;
     document.getElementById('wbTrades').textContent = tradeCount || 0;
-    document.getElementById('wbSub').textContent = `${userCount || 0} users · ${listingCount || 0} active listings · ${disputeCount || 0} open disputes`;
-
-    document.getElementById('statUsersSub').textContent = `${bannedCount || 0} banned`;
+    document.getElementById('wbSub').textContent = `${userCount||0} users · ${listingCount||0} active listings · ${disputeCount||0} open disputes`;
+    document.getElementById('statUsersSub').textContent = `${bannedCount||0} banned`;
     document.getElementById('statListingsSub').textContent = 'Currently active';
     document.getElementById('statTradesSub').textContent = 'All time';
     document.getElementById('statDisputesSub').textContent = disputeCount > 0 ? '⚠️ Needs attention' : 'All clear';
@@ -461,8 +562,128 @@ async function loadStats() {
       document.getElementById('disputeBadge').style.display = 'inline';
       addAlert('red', '⚖️', `<strong>${disputeCount} open dispute${disputeCount>1?'s':''}</strong> need your attention.`, 'Review Now', "switchView('disputes')");
     }
+  } catch(e) { console.error('Stats error:', e); }
+}
+
+/* ── PAYOUTS ── */
+async function loadPayouts() {
+  document.getElementById('balAvailable').textContent = '⏳';
+  document.getElementById('balSub').textContent = 'Fetching Stripe balance…';
+  document.getElementById('payoutsPanel').innerHTML = '<div class="loading">Loading payout history…</div>';
+
+  try {
+    // Load balance
+    const balData = await callEdge(PAYOUT_EDGE_URL, { action: 'balance' });
+    if (balData.error) throw new Error(balData.error);
+
+    const balance = balData.balance;
+    const available = (balance.available?.[0]?.amount || 0) / 100;
+    const pending = (balance.pending?.[0]?.amount || 0) / 100;
+    const total = available + pending;
+    availableBalance = available;
+
+    document.getElementById('balAvailable').textContent = '$' + available.toFixed(2);
+    document.getElementById('balAvail2').textContent = '$' + available.toFixed(2);
+    document.getElementById('balPending').textContent = '$' + pending.toFixed(2);
+    document.getElementById('balTotal').textContent = '$' + total.toFixed(2);
+    document.getElementById('balSub').textContent = available > 0
+      ? 'Ready to transfer to Mercury bank account'
+      : 'No available balance — pending funds clear in 2-7 days';
+
+    const payoutBtn = document.getElementById('payoutAllBtn');
+    payoutBtn.disabled = available <= 0;
+    payoutBtn.textContent = available > 0
+      ? `💸 Pay Out $${available.toFixed(2)} to Mercury`
+      : '💸 No Available Balance';
+
+    // Load payout history
+    const payoutData = await callEdge(PAYOUT_EDGE_URL, { action: 'list_payouts' });
+    if (payoutData.error) throw new Error(payoutData.error);
+
+    const payouts = payoutData.payouts || [];
+    const panel = document.getElementById('payoutsPanel');
+
+    if (!payouts.length) {
+      panel.innerHTML = '<div class="empty">No payouts yet — your first payout will appear here.</div>';
+      return;
+    }
+
+    panel.innerHTML = payouts.map(p => {
+      const amt = (p.amount / 100).toFixed(2);
+      const date = new Date(p.arrival_date * 1000).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+      const statusClass = p.status === 'paid' ? 'prs-paid' : p.status === 'pending' ? 'prs-pend' : 'prs-fail';
+      const statusLabel = p.status === 'paid' ? '✓ PAID' : p.status === 'pending' ? '⏳ PENDING' : '✕ FAILED';
+      return `<div class="payout-row">
+        <div class="pr-icon">💸</div>
+        <div class="pr-info">
+          <div class="pr-name">Payout to Mercury</div>
+          <div class="pr-meta">Arrived ${date} · ID: ${p.id.slice(0,16)}…</div>
+        </div>
+        <div class="pr-rt">
+          <div class="pr-amount">$${amt}</div>
+          <div class="pr-status ${statusClass}">${statusLabel}</div>
+        </div>
+      </div>`;
+    }).join('');
+
   } catch(e) {
-    console.error('Stats error:', e);
+    document.getElementById('balAvailable').textContent = 'Error';
+    document.getElementById('balSub').textContent = e.message;
+    document.getElementById('payoutsPanel').innerHTML = `<div class="empty">Could not load payout data: ${e.message}</div>`;
+    showToast('⚠️', 'Error loading Stripe balance: ' + e.message);
+  }
+}
+
+function openPayoutModal(mode) {
+  payoutMode = mode;
+  const customField = document.getElementById('customAmountField');
+  const summaryAmt = document.getElementById('modalPayoutAmt');
+
+  if (mode === 'all') {
+    customField.style.display = 'none';
+    summaryAmt.textContent = '$' + availableBalance.toFixed(2);
+  } else {
+    customField.style.display = 'block';
+    summaryAmt.textContent = '—';
+    document.getElementById('payoutAmount').oninput = function() {
+      const val = parseFloat(this.value) || 0;
+      summaryAmt.textContent = val > 0 ? '$' + val.toFixed(2) : '—';
+    };
+  }
+  openModal('payoutModal');
+}
+
+async function confirmPayout() {
+  let amount = payoutMode === 'all'
+    ? availableBalance
+    : parseFloat(document.getElementById('payoutAmount').value);
+
+  if (!amount || amount <= 0) {
+    showToast('⚠️', 'Please enter a valid amount.');
+    return;
+  }
+
+  if (amount > availableBalance) {
+    showToast('⚠️', `Amount exceeds available balance ($${availableBalance.toFixed(2)}).`);
+    return;
+  }
+
+  const btn = document.getElementById('confirmPayoutBtn');
+  btn.textContent = '⏳ Processing…';
+  btn.disabled = true;
+
+  try {
+    const data = await callEdge(PAYOUT_EDGE_URL, { action: 'payout', amount });
+    if (data.error) throw new Error(data.error);
+
+    closeModal('payoutModal');
+    showToast('💸', `Payout of $${amount.toFixed(2)} initiated! Arrives in 2 business days.`);
+    await loadPayouts();
+  } catch(e) {
+    showToast('⚠️', 'Payout failed: ' + e.message);
+  } finally {
+    btn.textContent = '💸 Confirm Payout';
+    btn.disabled = false;
   }
 }
 
@@ -478,7 +699,6 @@ async function loadRecentUsers() {
   }
 }
 
-/* ── ALL USERS ── */
 async function loadAllUsers(search = '') {
   try {
     let query = sb.from('users').select('id, display_name, email, is_banned, is_admin, warning_count, created_at').order('created_at', { ascending: false });
@@ -502,13 +722,11 @@ function renderUserRow(u) {
   if (u.is_banned) badges.push('<span class="urb urb-b">🚫 Banned</span>');
   if (u.warning_count > 0) badges.push(`<span class="urb urb-w">⚠️ ${u.warning_count} warning${u.warning_count>1?'s':''}</span>`);
   if (!u.is_banned && !u.is_admin) badges.push('<span class="urb urb-a">Active</span>');
-
   const actions = u.is_banned
     ? `<button class="urb2 urb2-unban" onclick="unbanUser('${u.id}','${name}')">✓ Unban</button>`
     : u.is_admin ? '' : `
         <button class="urb2 urb2-warn" onclick="warnUser('${u.id}','${name}')">⚠️ Warn</button>
         <button class="urb2 urb2-ban" onclick="openBanModal('${u.id}','${name}')">🚫 Ban</button>`;
-
   return `<div class="ur">
     <div class="ur-av" style="background:${color}">${initials}</div>
     <div class="ur-info">
@@ -516,16 +734,13 @@ function renderUserRow(u) {
       <div class="ur-meta">${u.email} · Joined ${timeAgo(u.created_at)}</div>
       <div class="ur-badges">${badges.join('')}</div>
     </div>
-    <div class="ur-rt">
-      <div class="ur-acts">${actions}</div>
-    </div>
+    <div class="ur-rt"><div class="ur-acts">${actions}</div></div>
   </div>`;
 }
 
-/* ── RECENT TRADES ── */
 async function loadRecentTrades() {
   try {
-    const { data: trades } = await sb.from('trades').select('id, status, total_value, created_at, trader_a_id, trader_b_id').order('created_at', { ascending: false }).limit(6);
+    const { data: trades } = await sb.from('trades').select('id, status, total_value, created_at').order('created_at', { ascending: false }).limit(6);
     const panel = document.getElementById('recentTradesPanel');
     if (!trades?.length) { panel.innerHTML = '<div class="empty">No trades yet.</div>'; return; }
     panel.innerHTML = trades.map(t => {
@@ -547,7 +762,6 @@ async function loadRecentTrades() {
   }
 }
 
-/* ── ALL TRADES ── */
 async function loadAllTrades() {
   try {
     const { data: trades } = await sb.from('trades').select('*').order('created_at', { ascending: false }).limit(50);
@@ -559,7 +773,7 @@ async function loadAllTrades() {
         <div class="trow-av" style="background:var(--blue)">${t.id.slice(0,2).toUpperCase()}</div>
         <div class="trow-info">
           <div class="trow-name">Trade #${t.id.slice(0,8).toUpperCase()}</div>
-          <div class="trow-meta">${t.trade_type || 'item'} · ${timeAgo(t.created_at)}</div>
+          <div class="trow-meta">${t.trade_type||'item'} · ${timeAgo(t.created_at)}</div>
         </div>
         <div class="trow-rt">
           <div class="trow-val" style="color:var(--green-l)">${t.total_value ? '$'+Number(t.total_value).toFixed(2) : '—'}</div>
@@ -572,7 +786,6 @@ async function loadAllTrades() {
   }
 }
 
-/* ── ALL LISTINGS ── */
 async function loadAllListings() {
   try {
     const { data: listings } = await sb.from('listings').select('*').order('created_at', { ascending: false }).limit(50);
@@ -595,7 +808,6 @@ async function loadAllListings() {
   }
 }
 
-/* ── DISPUTES ── */
 async function loadDisputes() {
   try {
     const { data: disputes } = await sb.from('disputes').select('*').eq('status', 'open').order('created_at', { ascending: false });
@@ -621,7 +833,6 @@ async function loadDisputes() {
   }
 }
 
-/* ── BANNED USERS ── */
 async function loadBannedUsers() {
   try {
     const { data: users } = await sb.from('users').select('id, display_name, email, ban_reason, warning_count, created_at').eq('is_banned', true).order('created_at', { ascending: false });
@@ -637,11 +848,9 @@ async function loadBannedUsers() {
           <div class="ur-meta">${u.email} · Reason: ${u.ban_reason || 'Not specified'}</div>
           <div class="ur-badges"><span class="urb urb-b">🚫 Banned</span></div>
         </div>
-        <div class="ur-rt">
-          <div class="ur-acts">
-            <button class="urb2 urb2-unban" onclick="unbanUser('${u.id}','${name}')">✓ Unban</button>
-          </div>
-        </div>
+        <div class="ur-rt"><div class="ur-acts">
+          <button class="urb2 urb2-unban" onclick="unbanUser('${u.id}','${name}')">✓ Unban</button>
+        </div></div>
       </div>`;
     }).join('');
   } catch(e) {
@@ -649,22 +858,17 @@ async function loadBannedUsers() {
   }
 }
 
-/* ── WARN USER ── */
 async function warnUser(userId, name) {
   if (!confirm(`Send a warning to ${name}?`)) return;
   try {
     const { data: user } = await sb.from('users').select('warning_count').eq('id', userId).single();
     const newCount = (user?.warning_count || 0) + 1;
     await sb.from('users').update({ warning_count: newCount }).eq('id', userId);
-    showToast('⚠️', `Warning sent to ${name}. Total warnings: ${newCount}`);
-    loadAllUsers();
-    loadRecentUsers();
-  } catch(e) {
-    showToast('⚠️', 'Error sending warning.');
-  }
+    showToast('⚠️', `Warning sent to ${name}. Total: ${newCount}`);
+    loadAllUsers(); loadRecentUsers();
+  } catch(e) { showToast('⚠️', 'Error sending warning.'); }
 }
 
-/* ── BAN USER ── */
 function openBanModal(userId, name) {
   banTargetUserId = userId;
   document.getElementById('banModal').querySelector('.mhd-ttl').textContent = `🚫 Ban ${name}`;
@@ -680,30 +884,19 @@ async function confirmBan() {
     closeModal('banModal');
     showToast('🚫', 'User banned. All listings paused.');
     banTargetUserId = null;
-    loadStats();
-    loadAllUsers();
-    loadRecentUsers();
-  } catch(e) {
-    showToast('⚠️', 'Error banning user.');
-  }
+    loadStats(); loadAllUsers(); loadRecentUsers();
+  } catch(e) { showToast('⚠️', 'Error banning user.'); }
 }
 
-/* ── UNBAN USER ── */
 async function unbanUser(userId, name) {
   if (!confirm(`Unban ${name}?`)) return;
   try {
     await sb.from('users').update({ is_banned: false, ban_reason: null }).eq('id', userId);
     showToast('✅', `${name} has been unbanned.`);
-    loadStats();
-    loadAllUsers();
-    loadRecentUsers();
-    loadBannedUsers();
-  } catch(e) {
-    showToast('⚠️', 'Error unbanning user.');
-  }
+    loadStats(); loadAllUsers(); loadRecentUsers(); loadBannedUsers();
+  } catch(e) { showToast('⚠️', 'Error unbanning user.'); }
 }
 
-/* ── RESOLVE DISPUTE ── */
 function openResolveModal(disputeId) {
   resolveTargetDisputeId = disputeId;
   openModal('resolveModal');
@@ -718,27 +911,21 @@ async function confirmResolve() {
     closeModal('resolveModal');
     showToast('✅', 'Dispute resolved and logged.');
     resolveTargetDisputeId = null;
-    loadStats();
-    loadDisputes();
-  } catch(e) {
-    showToast('⚠️', 'Error resolving dispute.');
-  }
+    loadStats(); loadDisputes();
+  } catch(e) { showToast('⚠️', 'Error resolving dispute.'); }
 }
 
-/* ── SEARCH ── */
 function searchUsers() {
   const q = document.getElementById('searchInput').value.trim();
   switchView('users');
   loadAllUsers(q);
 }
 
-/* ── SIGN OUT ── */
 async function doSignOut() {
   await sb.auth.signOut();
   window.location.href = 'alltrades-auth.html';
 }
 
-/* ── ALERTS ── */
 function addAlert(type, icon, text, btnLabel, btnAction) {
   const area = document.getElementById('alertsArea');
   if (!area) return;
@@ -748,7 +935,6 @@ function addAlert(type, icon, text, btnLabel, btnAction) {
   area.appendChild(div);
 }
 
-/* ── VIEW SWITCHER ── */
 function switchView(v) {
   document.querySelectorAll('[id^="view-"]').forEach(el => el.style.display = 'none');
   const el = document.getElementById('view-'+v);
@@ -761,14 +947,13 @@ function switchView(v) {
   if (v === 'listings') loadAllListings();
   if (v === 'disputes') loadDisputes();
   if (v === 'banned') loadBannedUsers();
+  if (v === 'payouts') loadPayouts();
 }
 
-/* ── MODAL ── */
 function openModal(id) { document.getElementById(id).classList.add('open'); }
 function closeModal(id) { document.getElementById(id).classList.remove('open'); }
 document.querySelectorAll('.overlay').forEach(o => o.addEventListener('click', e => { if (e.target === o) o.classList.remove('open'); }));
 
-/* ── UTILITIES ── */
 function timeAgo(ts) {
   if (!ts) return '';
   const m = Math.floor((Date.now() - new Date(ts)) / 60000);
