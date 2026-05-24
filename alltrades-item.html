@@ -440,7 +440,22 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);}
     </div>
   </div>
 </div>
-
+<!-- W-9 GATE MODAL -->
+<div class="modal-overlay" id="w9GateModal">
+  <div class="modal">
+    <div class="modal-head" style="background:linear-gradient(135deg,#7f1d1d,#991b1b)">
+      <div class="modal-head-title">⚠️ Tax Info Required</div>
+      <button class="modal-close" onclick="closeModal('w9GateModal')">✕</button>
+    </div>
+    <div class="modal-body" style="text-align:center;padding:32px 24px">
+      <div style="font-size:3rem;margin-bottom:14px">📋</div>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:1.5rem;font-weight:900;margin-bottom:8px;color:#111827">Tax Information Required</div>
+      <div style="font-size:13px;color:#475569;line-height:1.7;margin-bottom:20px">Federal law requires Tradezy to collect your tax information before your first trade (IRC §6045). This takes about 2 minutes and only needs to be done once.<br><br>Your information is encrypted and used solely for required IRS Form 1099-B reporting.</div>
+      <button class="modal-btn gold" onclick="window.location.href='alltrades-verification.html'">📋 Complete Tax Info Now →</button>
+      <button class="modal-btn outline" onclick="closeModal('w9GateModal')">Maybe Later</button>
+    </div>
+  </div>
+</div>
 <!-- LIGHTBOX -->
 <div class="lightbox" id="lightbox" onclick="closeLightbox()">
   <button class="lightbox-close" onclick="closeLightbox()">✕</button>
@@ -764,6 +779,13 @@ function messageSeller() {
 
 async function submitOffer() {
   if (!listing) return;
+  
+  // W-9 gate — check before anything else
+  const { data: userCheck } = await sb.from('users').select('w9_on_file').eq('id', currentUser.id).single();
+  if (!userCheck?.w9_on_file) {
+    openModal('w9GateModal');
+    return;
+  }
   const itemTitle = document.getElementById('offerItem')?.value.trim();
   const itemCond  = document.getElementById('offerCondition')?.value;
   const itemVal   = parseFloat(document.getElementById('offerVal')?.value)||0;
