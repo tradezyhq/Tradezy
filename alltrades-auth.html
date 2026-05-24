@@ -1053,6 +1053,12 @@ body { font-family:'Lato',sans-serif; background:var(--bg); color:var(--text); m
           <input type="checkbox" id="agreeAge">
           <div class="check-label">I confirm I am <strong>18 years of age or older</strong>. Tradezy is not available to minors.</div>
         </div>
+        
+        <div class="check-row">
+  <input type="checkbox" id="agreeTax">
+  <div class="check-label">I understand that Tradezy is required to report my barter activity to the IRS via <strong>Form 1099-B</strong> under IRC §6045. I agree to provide a completed W-9 before my first trade, and I am responsible for reporting the fair market value of traded items as income on my tax return.</div>
+</div>
+        </div>
 
         <div class="btn-row">
           <button class="btn-back" onclick="prevStep(2)">← Back</button>
@@ -1218,9 +1224,10 @@ function validateStep(step) {
     let ok = true;
     if (pw1.value.length < 8)    { showErr('pw1Err', pw1); ok = false; }
     if (pw1.value !== pw2.value) { showErr('pw2Err', pw2); ok = false; }
-    if (!terms.checked || !privacy.checked || !age.checked) {
-      alert('Please check all three agreements to continue.');
-      ok = false;
+    const tax = document.getElementById('agreeTax');
+if (!terms.checked || !privacy.checked || !age.checked || !tax.checked) {
+  alert('Please check all four agreements to continue.');
+  ok = false;
     }
     return ok;
   }
