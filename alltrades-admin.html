@@ -89,6 +89,7 @@ body{font-family:'Lato',sans-serif;background:var(--navy);color:var(--text);min-
 .ts-ok{background:rgba(22,163,74,.15);border:1px solid rgba(22,163,74,.3);color:var(--green-l);}
 .ts-pend{background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.25);color:var(--gold-l);}
 .ts-disp{background:rgba(220,38,38,.15);border:1px solid rgba(220,38,38,.3);color:#fca5a5;}
+.ts-rem{background:rgba(220,38,38,.2);border:1px solid rgba(220,38,38,.35);color:#fca5a5;}
 .ur{display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid var(--border);}
 .ur:last-child{border:none;}
 .ur-av{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.75rem;color:#fff;flex-shrink:0;}
@@ -107,6 +108,7 @@ body{font-family:'Lato',sans-serif;background:var(--navy);color:var(--text);min-
 .urb2-warn{background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.25);color:var(--gold-l);}
 .urb2-ban{background:rgba(220,38,38,.12);border:1px solid rgba(220,38,38,.25);color:#fca5a5;}
 .urb2-unban{background:rgba(22,163,74,.12);border:1px solid rgba(22,163,74,.25);color:var(--green-l);}
+.urb2-remove{background:rgba(220,38,38,.12);border:1px solid rgba(220,38,38,.25);color:#fca5a5;}
 .dq-item{background:rgba(255,255,255,.03);border:1px solid var(--border2);border-radius:10px;padding:13px;margin-bottom:10px;}
 .dq-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:7px;}
 .dq-id{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.82rem;color:var(--lighter);}
@@ -121,9 +123,26 @@ body{font-family:'Lato',sans-serif;background:var(--navy);color:var(--text);min-
 .dqa-esc{background:rgba(220,38,38,.12);border:1px solid rgba(220,38,38,.25);color:#fca5a5;}
 .two-col{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:18px;}
 
+/* ── MESSAGES ── */
+.msg-row{display:flex;gap:10px;padding:12px 14px;border-bottom:1px solid var(--border);transition:background .15s;}
+.msg-row:last-child{border:none;}
+.msg-row:hover{background:var(--surface2);}
+.msg-av{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.8rem;color:#fff;flex-shrink:0;}
+.msg-body{flex:1;min-width:0;}
+.msg-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:3px;}
+.msg-from{font-weight:700;font-size:12px;}
+.msg-time{font-size:10px;color:var(--lighter);}
+.msg-to{font-size:10px;color:var(--lighter);margin-bottom:3px;}
+.msg-content{font-size:12px;color:var(--light);line-height:1.5;word-break:break-word;}
+.msg-flag{font-size:9px;font-weight:800;padding:2px 6px;border-radius:3px;background:rgba(220,38,38,.15);border:1px solid rgba(220,38,38,.3);color:#fca5a5;margin-left:6px;}
+.msg-system{font-size:9px;font-weight:800;padding:2px 6px;border-radius:3px;background:rgba(26,86,219,.15);border:1px solid rgba(26,86,219,.3);color:#93c5fd;margin-left:6px;}
+.msg-search{display:flex;gap:8px;margin-bottom:14px;}
+.msg-search input{flex:1;background:var(--surface2);border:1px solid var(--border2);border-radius:7px;padding:8px 12px;color:var(--text);font-family:'Lato',sans-serif;font-size:13px;outline:none;}
+.msg-search input:focus{border-color:var(--blue);}
+.msg-search button{background:var(--blue);border:none;color:#fff;padding:8px 16px;border-radius:7px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.85rem;cursor:pointer;}
+
 /* ── PAYOUT PANEL ── */
 .balance-hero{background:linear-gradient(135deg,#052e16,#064e3b);border:1px solid rgba(22,163,74,.25);border-radius:12px;padding:22px 24px;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between;gap:16px;}
-.bh-left{}
 .bh-label{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:#6ee7b7;margin-bottom:4px;}
 .bh-amount{font-family:'Barlow Condensed',sans-serif;font-size:2.8rem;font-weight:900;color:#fff;line-height:1;margin-bottom:4px;}
 .bh-sub{font-size:11px;color:#6ee7b7;}
@@ -218,6 +237,7 @@ body{font-family:'Lato',sans-serif;background:var(--navy);color:var(--text);min-
     <div class="sb-sec">
       <div class="sb-lbl">Safety</div>
       <div class="ni" id="nav-disputes" onclick="switchView('disputes')"><span class="ni-ic">⚖️</span>Disputes <span class="ni-b red" id="disputeBadge" style="display:none">0</span></div>
+      <div class="ni" id="nav-messages" onclick="switchView('messages')"><span class="ni-ic">💬</span>Messages</div>
       <div class="ni" id="nav-banned" onclick="switchView('banned')"><span class="ni-ic">🚫</span>Banned Users</div>
     </div>
     <div class="sb-div"></div>
@@ -255,9 +275,7 @@ body{font-family:'Lato',sans-serif;background:var(--navy);color:var(--text);min-
           <div class="wb-stat"><div class="wb-num" id="wbTrades">—</div><div class="wb-lbl">Trades</div></div>
         </div>
       </div>
-
       <div id="alertsArea"></div>
-
       <div class="stats-grid">
         <div class="stat-card"><div class="sc-icon">👥</div><div class="sc-num" id="statUsers" style="color:var(--blue-l)">—</div><div class="sc-lbl">Total Users</div><div class="sc-chg" id="statUsersSub">Loading…</div></div>
         <div class="stat-card"><div class="sc-icon">📦</div><div class="sc-num" id="statListings" style="color:var(--gold-l)">—</div><div class="sc-lbl">Active Listings</div><div class="sc-chg" id="statListingsSub">Loading…</div></div>
@@ -268,7 +286,6 @@ body{font-family:'Lato',sans-serif;background:var(--navy);color:var(--text);min-
         <div class="stat-card"><div class="sc-icon">💬</div><div class="sc-num" id="statMessages" style="color:var(--teal)">—</div><div class="sc-lbl">Total Messages</div><div class="sc-chg">Platform total</div></div>
         <div class="stat-card"><div class="sc-icon">⭐</div><div class="sc-num" id="statRatings" style="color:var(--gold-l)">—</div><div class="sc-lbl">Total Ratings</div><div class="sc-chg">Platform total</div></div>
       </div>
-
       <div class="two-col">
         <div>
           <div class="sec-hdr"><div class="sec-title">👥 Recent Users</div><div class="sec-lnk" onclick="switchView('users')">All users →</div></div>
@@ -306,6 +323,17 @@ body{font-family:'Lato',sans-serif;background:var(--navy);color:var(--text);min-
       <div id="disputesPanel"><div class="loading">Loading disputes…</div></div>
     </div>
 
+    <!-- MESSAGES -->
+    <div id="view-messages" style="display:none">
+      <div class="sec-hdr"><div class="sec-title">💬 Platform Messages</div></div>
+      <div class="ib blue"><span>ℹ️</span><div>All messages sent between users. Use this for content moderation. System messages are sent by Tradezy admin and shown with a blue badge.</div></div>
+      <div class="msg-search">
+        <input type="text" id="msgSearchInput" placeholder="Search by sender name or message content…" onkeydown="if(event.key==='Enter')loadMessages()">
+        <button onclick="loadMessages()">Search</button>
+      </div>
+      <div class="panel" id="allMessagesPanel"><div class="loading">Loading messages…</div></div>
+    </div>
+
     <!-- BANNED -->
     <div id="view-banned" style="display:none">
       <div class="sec-hdr"><div class="sec-title">🚫 Banned Users</div></div>
@@ -318,10 +346,7 @@ body{font-family:'Lato',sans-serif;background:var(--navy);color:var(--text);min-
         <div class="sec-title">💸 Stripe Payouts — Mercury Bank</div>
         <button class="payout-btn secondary" onclick="loadPayouts()" style="font-size:.78rem;padding:6px 12px">🔄 Refresh</button>
       </div>
-
       <div class="ib gold"><span>⚠️</span><div>Payouts transfer your available Stripe balance to your Mercury bank account. Only available balance (not pending) can be paid out. Standard transfer time is 2 business days.</div></div>
-
-      <!-- Balance hero -->
       <div class="balance-hero" id="balanceHero">
         <div class="bh-left">
           <div class="bh-label">Available Balance</div>
@@ -329,35 +354,15 @@ body{font-family:'Lato',sans-serif;background:var(--navy);color:var(--text);min-
           <div class="bh-sub" id="balSub">Loading Stripe balance…</div>
         </div>
         <div class="bh-right">
-          <button class="payout-btn primary" id="payoutAllBtn" onclick="openPayoutModal('all')" disabled>
-            💸 Pay Out All to Mercury
-          </button>
-          <button class="payout-btn secondary" onclick="openPayoutModal('custom')">
-            ✏️ Custom Amount
-          </button>
+          <button class="payout-btn primary" id="payoutAllBtn" onclick="openPayoutModal('all')" disabled>💸 Pay Out All to Mercury</button>
+          <button class="payout-btn secondary" onclick="openPayoutModal('custom')">✏️ Custom Amount</button>
         </div>
       </div>
-
-      <!-- Balance breakdown -->
-      <div class="balance-grid" id="balanceGrid">
-        <div class="bal-card">
-          <div class="bal-label">Available</div>
-          <div class="bal-amount" id="balAvail2" style="color:var(--green-l)">—</div>
-          <div class="bal-sub">Ready to pay out</div>
-        </div>
-        <div class="bal-card">
-          <div class="bal-label">Pending</div>
-          <div class="bal-amount" id="balPending" style="color:var(--gold-l)">—</div>
-          <div class="bal-sub">Clearing (2-7 days)</div>
-        </div>
-        <div class="bal-card">
-          <div class="bal-label">Total Held</div>
-          <div class="bal-amount" id="balTotal" style="color:var(--blue-l)">—</div>
-          <div class="bal-sub">Available + Pending</div>
-        </div>
+      <div class="balance-grid">
+        <div class="bal-card"><div class="bal-label">Available</div><div class="bal-amount" id="balAvail2" style="color:var(--green-l)">—</div><div class="bal-sub">Ready to pay out</div></div>
+        <div class="bal-card"><div class="bal-label">Pending</div><div class="bal-amount" id="balPending" style="color:var(--gold-l)">—</div><div class="bal-sub">Clearing (2-7 days)</div></div>
+        <div class="bal-card"><div class="bal-label">Total Held</div><div class="bal-amount" id="balTotal" style="color:var(--blue-l)">—</div><div class="bal-sub">Available + Pending</div></div>
       </div>
-
-      <!-- Recent payouts -->
       <div class="sec-hdr" style="margin-top:4px"><div class="sec-title">Recent Payouts</div></div>
       <div class="panel" id="payoutsPanel"><div class="loading">Loading payout history…</div></div>
     </div>
@@ -447,6 +452,39 @@ body{font-family:'Lato',sans-serif;background:var(--navy);color:var(--text);min-
   </div>
 </div>
 
+<!-- REMOVE LISTING MODAL -->
+<div class="overlay" id="removeListingModal">
+  <div class="modal">
+    <div class="mhd" style="background:linear-gradient(135deg,#7f1d1d,#991b1b)"><div class="mhd-ttl">🗑️ Remove Listing</div><button class="mhd-x" onclick="closeModal('removeListingModal')">✕</button></div>
+    <div class="mbody">
+      <div class="ib red"><span>⚠️</span><div>This will remove the listing and send an automatic system message to the seller explaining the reason.</div></div>
+      <div style="background:rgba(255,255,255,.04);border:1px solid var(--border2);border-radius:8px;padding:10px 12px;margin-bottom:12px;font-size:12px;color:var(--light)">
+        <div style="font-weight:700;color:var(--text);margin-bottom:2px" id="removeListingTitle">—</div>
+        <div id="removeListingMeta">—</div>
+      </div>
+      <div class="mfield"><label>Removal Reason</label>
+        <select id="removeReason">
+          <option value="prohibited_item">Prohibited item category (firearms, drugs, alcohol, tobacco, live animals, adult content, crypto, gift cards)</option>
+          <option value="fraudulent">Fraudulent or misleading listing</option>
+          <option value="duplicate">Duplicate listing</option>
+          <option value="inappropriate_content">Inappropriate or offensive content</option>
+          <option value="policy_violation">General platform policy violation</option>
+          <option value="counterfeit">Suspected counterfeit or fake item</option>
+          <option value="pricing_violation">Pricing or fee bypass attempt</option>
+        </select>
+      </div>
+      <div class="mfield"><label>Additional Notes (optional — included in message to seller)</label>
+        <textarea id="removeNotes" placeholder="Any additional context for the seller…" style="min-height:60px"></textarea>
+      </div>
+      <div style="background:rgba(26,86,219,.08);border:1px solid rgba(26,86,219,.2);border-radius:7px;padding:10px 12px;margin-bottom:12px;font-size:11px;color:#93c5fd">
+        <strong>📨 Auto-message preview:</strong> The seller will receive a system message: "Your listing has been removed by the Tradezy moderation team. Reason: [selected reason]. To appeal, contact disputes@tradezyhq.com."
+      </div>
+      <button class="mbtn red" onclick="confirmRemoveListing()">🗑️ Remove Listing & Notify Seller</button>
+      <button class="mbtn outline" onclick="closeModal('removeListingModal')">Cancel</button>
+    </div>
+  </div>
+</div>
+
 <!-- PAYOUT MODAL -->
 <div class="overlay" id="payoutModal">
   <div class="modal">
@@ -480,6 +518,7 @@ let currentUser = null;
 let currentSession = null;
 let banTargetUserId = null;
 let resolveTargetDisputeId = null;
+let removeTargetListing = null;
 let payoutMode = 'all';
 let availableBalance = 0;
 
@@ -500,14 +539,10 @@ let availableBalance = 0;
   await Promise.all([loadStats(), loadRecentUsers(), loadRecentTrades()]);
 })();
 
-/* ── EDGE FUNCTION CALL ── */
 async function callEdge(url, body) {
   const res = await fetch(url, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer ' + currentSession.access_token,
-    },
+    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + currentSession.access_token },
     body: JSON.stringify(body),
   });
   return res.json();
@@ -530,7 +565,6 @@ async function loadStats() {
       sb.from('messages').select('*', { count: 'exact', head: true }),
       sb.from('ratings').select('*', { count: 'exact', head: true })
     ]);
-
     document.getElementById('statUsers').textContent = userCount || 0;
     document.getElementById('statListings').textContent = listingCount || 0;
     document.getElementById('statTrades').textContent = tradeCount || 0;
@@ -548,7 +582,6 @@ async function loadStats() {
     document.getElementById('statTradesSub').textContent = 'All time';
     document.getElementById('statDisputesSub').textContent = disputeCount > 0 ? '⚠️ Needs attention' : 'All clear';
     document.getElementById('statOffersSub').textContent = 'All time';
-
     if (disputeCount > 0) {
       document.getElementById('disputeBadge').textContent = disputeCount;
       document.getElementById('disputeBadge').style.display = 'inline';
@@ -557,72 +590,194 @@ async function loadStats() {
   } catch(e) { console.error('Stats error:', e); }
 }
 
+/* ── MESSAGES ── */
+async function loadMessages(search = '') {
+  const panel = document.getElementById('allMessagesPanel');
+  panel.innerHTML = '<div class="loading">Loading messages…</div>';
+  try {
+    let query = sb.from('messages')
+      .select('id, content, created_at, sender_id, receiver_id, sender:sender_id(display_name), receiver:receiver_id(display_name)')
+      .order('created_at', { ascending: false })
+      .limit(100);
+
+    if (search) {
+      query = query.ilike('content', `%${search}%`);
+    }
+
+    const { data: messages, error } = await query;
+    if (error) throw error;
+
+    if (!messages?.length) {
+      panel.innerHTML = '<div class="empty">No messages found.</div>';
+      return;
+    }
+
+    const colors = ['#1a56db','#16a34a','#ea580c','#7c3aed','#0891b2','#dc2626'];
+    const SYSTEM_ID = '00000000-0000-0000-0000-000000000000';
+
+    panel.innerHTML = messages.map(m => {
+      const senderName = m.sender?.display_name || 'Unknown';
+      const receiverName = m.receiver?.display_name || 'Unknown';
+      const initials = senderName.slice(0,2).toUpperCase();
+      const color = colors[senderName.charCodeAt(0) % colors.length];
+      const isSystem = m.sender_id === SYSTEM_ID;
+      const systemBadge = isSystem ? '<span class="msg-system">SYSTEM</span>' : '';
+
+      // Flag messages with keywords
+      const flagWords = ['gun','weapon','drug','alcohol','crypto','bitcoin','venmo','cash app','paypal outside'];
+      const isFlagged = flagWords.some(w => m.content?.toLowerCase().includes(w));
+      const flagBadge = isFlagged ? '<span class="msg-flag">⚠️ FLAGGED</span>' : '';
+
+      return `<div class="msg-row">
+        <div class="msg-av" style="background:${isSystem ? 'var(--blue)' : color}">${isSystem ? '🤖' : initials}</div>
+        <div class="msg-body">
+          <div class="msg-header">
+            <div class="msg-from">${senderName}${systemBadge}${flagBadge}</div>
+            <div class="msg-time">${timeAgo(m.created_at)}</div>
+          </div>
+          <div class="msg-to">→ to ${receiverName}</div>
+          <div class="msg-content">${m.content || '—'}</div>
+        </div>
+      </div>`;
+    }).join('');
+  } catch(e) {
+    panel.innerHTML = '<div class="empty">Could not load messages.</div>';
+    console.error(e);
+  }
+}
+
+/* ── LISTINGS ── */
+async function loadAllListings() {
+  const panel = document.getElementById('allListingsPanel');
+  panel.innerHTML = '<div class="loading">Loading listings…</div>';
+  try {
+    const { data: listings } = await sb.from('listings')
+      .select('id, title, category, condition, estimated_value, status, created_at, user_id, seller:user_id(display_name)')
+      .order('created_at', { ascending: false })
+      .limit(100);
+
+    if (!listings?.length) { panel.innerHTML = '<div class="empty">No listings yet.</div>'; return; }
+
+    panel.innerHTML = listings.map(l => {
+      const sellerName = l.seller?.display_name || 'Unknown';
+      const statusClass = l.status === 'active' ? 'ts-ok' : l.status === 'removed' ? 'ts-rem' : 'ts-pend';
+      const canRemove = l.status !== 'removed';
+
+      return `<div class="trow">
+        <div class="trow-av" style="background:var(--gold);color:var(--navy)">📦</div>
+        <div class="trow-info">
+          <div class="trow-name">${l.title}</div>
+          <div class="trow-meta">${l.category} · ${l.condition} · by ${sellerName} · ${timeAgo(l.created_at)}</div>
+        </div>
+        <div class="trow-rt" style="display:flex;align-items:center;gap:8px">
+          <div>
+            <div class="trow-val" style="color:var(--gold-l)">${l.estimated_value ? '$'+Number(l.estimated_value).toFixed(0) : '—'}</div>
+            <div class="trow-st ${statusClass}">${(l.status||'active').toUpperCase()}</div>
+          </div>
+          ${canRemove ? `<button class="urb2 urb2-remove" onclick="openRemoveListingModal('${l.id}','${l.title.replace(/'/g,"\\'")}','${sellerName}','${l.user_id}')">🗑️ Remove</button>` : '<span style="font-size:10px;color:var(--lighter)">Removed</span>'}
+        </div>
+      </div>`;
+    }).join('');
+  } catch(e) {
+    panel.innerHTML = '<div class="empty">Could not load listings.</div>';
+  }
+}
+
+function openRemoveListingModal(listingId, title, sellerName, sellerId) {
+  removeTargetListing = { id: listingId, title, sellerName, sellerId };
+  document.getElementById('removeListingTitle').textContent = title;
+  document.getElementById('removeListingMeta').textContent = `Seller: ${sellerName}`;
+  document.getElementById('removeNotes').value = '';
+  openModal('removeListingModal');
+}
+
+const REMOVAL_REASON_LABELS = {
+  prohibited_item: 'Prohibited item category',
+  fraudulent: 'Fraudulent or misleading listing',
+  duplicate: 'Duplicate listing',
+  inappropriate_content: 'Inappropriate or offensive content',
+  policy_violation: 'General platform policy violation',
+  counterfeit: 'Suspected counterfeit or fake item',
+  pricing_violation: 'Pricing or fee bypass attempt',
+};
+
+async function confirmRemoveListing() {
+  if (!removeTargetListing) return;
+  const reason = document.getElementById('removeReason').value;
+  const notes = document.getElementById('removeNotes').value.trim();
+  const reasonLabel = REMOVAL_REASON_LABELS[reason] || reason;
+
+  const btn = document.querySelector('#removeListingModal .mbtn.red');
+  btn.textContent = '⏳ Removing…';
+  btn.disabled = true;
+
+  try {
+    // 1. Set listing status to removed
+    const { error: listingError } = await sb.from('listings')
+      .update({ status: 'removed' })
+      .eq('id', removeTargetListing.id);
+    if (listingError) throw listingError;
+
+    // 2. Send system message to seller
+    const systemMessage = `⚠️ TRADEZY MODERATION NOTICE\n\nYour listing "${removeTargetListing.title}" has been removed by the Tradezy moderation team.\n\nReason: ${reasonLabel}${notes ? '\n\nAdditional notes: ' + notes : ''}\n\nIf you believe this was a mistake, please contact us at disputes@tradezyhq.com. Repeated violations may result in account suspension.\n\n— Tradezy Moderation Team`;
+
+    await sb.from('messages').insert({
+      sender_id: currentUser.id,
+      receiver_id: removeTargetListing.sellerId,
+      content: systemMessage,
+    });
+
+    closeModal('removeListingModal');
+    showToast('🗑️', `Listing removed. Seller ${removeTargetListing.sellerName} has been notified.`);
+    removeTargetListing = null;
+    loadAllListings();
+    loadStats();
+  } catch(e) {
+    showToast('⚠️', 'Error removing listing: ' + e.message);
+    console.error(e);
+  } finally {
+    btn.textContent = '🗑️ Remove Listing & Notify Seller';
+    btn.disabled = false;
+  }
+}
+
 /* ── PAYOUTS ── */
 async function loadPayouts() {
   document.getElementById('balAvailable').textContent = '⏳';
   document.getElementById('balSub').textContent = 'Fetching Stripe balance…';
   document.getElementById('payoutsPanel').innerHTML = '<div class="loading">Loading payout history…</div>';
-
   try {
-    // Load balance
     const balData = await callEdge(PAYOUT_EDGE_URL, { action: 'balance' });
     if (balData.error) throw new Error(balData.error);
-
     const balance = balData.balance;
     const available = (balance.available?.[0]?.amount || 0) / 100;
     const pending = (balance.pending?.[0]?.amount || 0) / 100;
     const total = available + pending;
     availableBalance = available;
-
     document.getElementById('balAvailable').textContent = '$' + available.toFixed(2);
     document.getElementById('balAvail2').textContent = '$' + available.toFixed(2);
     document.getElementById('balPending').textContent = '$' + pending.toFixed(2);
     document.getElementById('balTotal').textContent = '$' + total.toFixed(2);
-    document.getElementById('balSub').textContent = available > 0
-      ? 'Ready to transfer to Mercury bank account'
-      : 'No available balance — pending funds clear in 2-7 days';
-
+    document.getElementById('balSub').textContent = available > 0 ? 'Ready to transfer to Mercury bank account' : 'No available balance — pending funds clear in 2-7 days';
     const payoutBtn = document.getElementById('payoutAllBtn');
     payoutBtn.disabled = available <= 0;
-    payoutBtn.textContent = available > 0
-      ? `💸 Pay Out $${available.toFixed(2)} to Mercury`
-      : '💸 No Available Balance';
-
-    // Load payout history
+    payoutBtn.textContent = available > 0 ? `💸 Pay Out $${available.toFixed(2)} to Mercury` : '💸 No Available Balance';
     const payoutData = await callEdge(PAYOUT_EDGE_URL, { action: 'list_payouts' });
     if (payoutData.error) throw new Error(payoutData.error);
-
     const payouts = payoutData.payouts || [];
     const panel = document.getElementById('payoutsPanel');
-
-    if (!payouts.length) {
-      panel.innerHTML = '<div class="empty">No payouts yet — your first payout will appear here.</div>';
-      return;
-    }
-
+    if (!payouts.length) { panel.innerHTML = '<div class="empty">No payouts yet — your first payout will appear here.</div>'; return; }
     panel.innerHTML = payouts.map(p => {
       const amt = (p.amount / 100).toFixed(2);
       const date = new Date(p.arrival_date * 1000).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
       const statusClass = p.status === 'paid' ? 'prs-paid' : p.status === 'pending' ? 'prs-pend' : 'prs-fail';
       const statusLabel = p.status === 'paid' ? '✓ PAID' : p.status === 'pending' ? '⏳ PENDING' : '✕ FAILED';
-      return `<div class="payout-row">
-        <div class="pr-icon">💸</div>
-        <div class="pr-info">
-          <div class="pr-name">Payout to Mercury</div>
-          <div class="pr-meta">Arrived ${date} · ID: ${p.id.slice(0,16)}…</div>
-        </div>
-        <div class="pr-rt">
-          <div class="pr-amount">$${amt}</div>
-          <div class="pr-status ${statusClass}">${statusLabel}</div>
-        </div>
-      </div>`;
+      return `<div class="payout-row"><div class="pr-icon">💸</div><div class="pr-info"><div class="pr-name">Payout to Mercury</div><div class="pr-meta">Arrived ${date} · ID: ${p.id.slice(0,16)}…</div></div><div class="pr-rt"><div class="pr-amount">$${amt}</div><div class="pr-status ${statusClass}">${statusLabel}</div></div></div>`;
     }).join('');
-
   } catch(e) {
     document.getElementById('balAvailable').textContent = 'Error';
     document.getElementById('balSub').textContent = e.message;
-    document.getElementById('payoutsPanel').innerHTML = `<div class="empty">Could not load payout data: ${e.message}</div>`;
-    showToast('⚠️', 'Error loading Stripe balance: ' + e.message);
+    document.getElementById('payoutsPanel').innerHTML = `<div class="empty">Could not load: ${e.message}</div>`;
   }
 }
 
@@ -630,65 +785,35 @@ function openPayoutModal(mode) {
   payoutMode = mode;
   const customField = document.getElementById('customAmountField');
   const summaryAmt = document.getElementById('modalPayoutAmt');
-
-  if (mode === 'all') {
-    customField.style.display = 'none';
-    summaryAmt.textContent = '$' + availableBalance.toFixed(2);
-  } else {
-    customField.style.display = 'block';
-    summaryAmt.textContent = '—';
-    document.getElementById('payoutAmount').oninput = function() {
-      const val = parseFloat(this.value) || 0;
-      summaryAmt.textContent = val > 0 ? '$' + val.toFixed(2) : '—';
-    };
-  }
+  if (mode === 'all') { customField.style.display = 'none'; summaryAmt.textContent = '$' + availableBalance.toFixed(2); }
+  else { customField.style.display = 'block'; summaryAmt.textContent = '—'; document.getElementById('payoutAmount').oninput = function() { summaryAmt.textContent = parseFloat(this.value) > 0 ? '$' + parseFloat(this.value).toFixed(2) : '—'; }; }
   openModal('payoutModal');
 }
 
 async function confirmPayout() {
-  let amount = payoutMode === 'all'
-    ? availableBalance
-    : parseFloat(document.getElementById('payoutAmount').value);
-
-  if (!amount || amount <= 0) {
-    showToast('⚠️', 'Please enter a valid amount.');
-    return;
-  }
-
-  if (amount > availableBalance) {
-    showToast('⚠️', `Amount exceeds available balance ($${availableBalance.toFixed(2)}).`);
-    return;
-  }
-
+  let amount = payoutMode === 'all' ? availableBalance : parseFloat(document.getElementById('payoutAmount').value);
+  if (!amount || amount <= 0) { showToast('⚠️', 'Please enter a valid amount.'); return; }
+  if (amount > availableBalance) { showToast('⚠️', `Amount exceeds available balance ($${availableBalance.toFixed(2)}).`); return; }
   const btn = document.getElementById('confirmPayoutBtn');
-  btn.textContent = '⏳ Processing…';
-  btn.disabled = true;
-
+  btn.textContent = '⏳ Processing…'; btn.disabled = true;
   try {
     const data = await callEdge(PAYOUT_EDGE_URL, { action: 'payout', amount });
     if (data.error) throw new Error(data.error);
-
     closeModal('payoutModal');
-    showToast('💸', `Payout of $${amount.toFixed(2)} initiated! Arrives in 2 business days.`);
+    showToast('💸', `Payout of $${amount.toFixed(2)} initiated!`);
     await loadPayouts();
-  } catch(e) {
-    showToast('⚠️', 'Payout failed: ' + e.message);
-  } finally {
-    btn.textContent = '💸 Confirm Payout';
-    btn.disabled = false;
-  }
+  } catch(e) { showToast('⚠️', 'Payout failed: ' + e.message); }
+  finally { btn.textContent = '💸 Confirm Payout'; btn.disabled = false; }
 }
 
-/* ── RECENT USERS ── */
+/* ── USERS ── */
 async function loadRecentUsers() {
   try {
     const { data: users } = await sb.from('users').select('id, display_name, email, is_banned, is_admin, warning_count, created_at').order('created_at', { ascending: false }).limit(5);
     const panel = document.getElementById('recentUsersPanel');
     if (!users?.length) { panel.innerHTML = '<div class="empty">No users yet.</div>'; return; }
     panel.innerHTML = users.map(u => renderUserRow(u)).join('');
-  } catch(e) {
-    document.getElementById('recentUsersPanel').innerHTML = '<div class="empty">Could not load users.</div>';
-  }
+  } catch(e) { document.getElementById('recentUsersPanel').innerHTML = '<div class="empty">Could not load users.</div>'; }
 }
 
 async function loadAllUsers(search = '') {
@@ -699,9 +824,7 @@ async function loadAllUsers(search = '') {
     const panel = document.getElementById('allUsersPanel');
     if (!users?.length) { panel.innerHTML = '<div class="empty">No users found.</div>'; return; }
     panel.innerHTML = users.map(u => renderUserRow(u)).join('');
-  } catch(e) {
-    document.getElementById('allUsersPanel').innerHTML = '<div class="empty">Could not load users.</div>';
-  }
+  } catch(e) { document.getElementById('allUsersPanel').innerHTML = '<div class="empty">Could not load users.</div>'; }
 }
 
 function renderUserRow(u) {
@@ -716,18 +839,8 @@ function renderUserRow(u) {
   if (!u.is_banned && !u.is_admin) badges.push('<span class="urb urb-a">Active</span>');
   const actions = u.is_banned
     ? `<button class="urb2 urb2-unban" onclick="unbanUser('${u.id}','${name}')">✓ Unban</button>`
-    : u.is_admin ? '' : `
-        <button class="urb2 urb2-warn" onclick="warnUser('${u.id}','${name}')">⚠️ Warn</button>
-        <button class="urb2 urb2-ban" onclick="openBanModal('${u.id}','${name}')">🚫 Ban</button>`;
-  return `<div class="ur">
-    <div class="ur-av" style="background:${color}">${initials}</div>
-    <div class="ur-info">
-      <div class="ur-name">${name}</div>
-      <div class="ur-meta">${u.email} · Joined ${timeAgo(u.created_at)}</div>
-      <div class="ur-badges">${badges.join('')}</div>
-    </div>
-    <div class="ur-rt"><div class="ur-acts">${actions}</div></div>
-  </div>`;
+    : u.is_admin ? '' : `<button class="urb2 urb2-warn" onclick="warnUser('${u.id}','${name}')">⚠️ Warn</button><button class="urb2 urb2-ban" onclick="openBanModal('${u.id}','${name}')">🚫 Ban</button>`;
+  return `<div class="ur"><div class="ur-av" style="background:${color}">${initials}</div><div class="ur-info"><div class="ur-name">${name}</div><div class="ur-meta">${u.email} · Joined ${timeAgo(u.created_at)}</div><div class="ur-badges">${badges.join('')}</div></div><div class="ur-rt"><div class="ur-acts">${actions}</div></div></div>`;
 }
 
 async function loadRecentTrades() {
@@ -737,21 +850,9 @@ async function loadRecentTrades() {
     if (!trades?.length) { panel.innerHTML = '<div class="empty">No trades yet.</div>'; return; }
     panel.innerHTML = trades.map(t => {
       const statusClass = t.status === 'completed' ? 'ts-ok' : t.status === 'disputed' ? 'ts-disp' : 'ts-pend';
-      return `<div class="trow">
-        <div class="trow-av" style="background:var(--blue)">${t.id.slice(0,2).toUpperCase()}</div>
-        <div class="trow-info">
-          <div class="trow-name">Trade #${t.id.slice(0,8).toUpperCase()}</div>
-          <div class="trow-meta">${timeAgo(t.created_at)}</div>
-        </div>
-        <div class="trow-rt">
-          <div class="trow-val" style="color:var(--green-l)">${t.total_value ? '$'+Number(t.total_value).toFixed(2) : '—'}</div>
-          <div class="trow-st ${statusClass}">${(t.status||'pending').toUpperCase()}</div>
-        </div>
-      </div>`;
+      return `<div class="trow"><div class="trow-av" style="background:var(--blue)">${t.id.slice(0,2).toUpperCase()}</div><div class="trow-info"><div class="trow-name">Trade #${t.id.slice(0,8).toUpperCase()}</div><div class="trow-meta">${timeAgo(t.created_at)}</div></div><div class="trow-rt"><div class="trow-val" style="color:var(--green-l)">${t.total_value ? '$'+Number(t.total_value).toFixed(2) : '—'}</div><div class="trow-st ${statusClass}">${(t.status||'pending').toUpperCase()}</div></div></div>`;
     }).join('');
-  } catch(e) {
-    document.getElementById('recentTradesPanel').innerHTML = '<div class="empty">Could not load trades.</div>';
-  }
+  } catch(e) { document.getElementById('recentTradesPanel').innerHTML = '<div class="empty">Could not load trades.</div>'; }
 }
 
 async function loadAllTrades() {
@@ -761,68 +862,18 @@ async function loadAllTrades() {
     if (!trades?.length) { panel.innerHTML = '<div class="empty">No trades yet.</div>'; return; }
     panel.innerHTML = trades.map(t => {
       const statusClass = t.status === 'completed' ? 'ts-ok' : t.status === 'disputed' ? 'ts-disp' : 'ts-pend';
-      return `<div class="trow">
-        <div class="trow-av" style="background:var(--blue)">${t.id.slice(0,2).toUpperCase()}</div>
-        <div class="trow-info">
-          <div class="trow-name">Trade #${t.id.slice(0,8).toUpperCase()}</div>
-          <div class="trow-meta">${t.trade_type||'item'} · ${timeAgo(t.created_at)}</div>
-        </div>
-        <div class="trow-rt">
-          <div class="trow-val" style="color:var(--green-l)">${t.total_value ? '$'+Number(t.total_value).toFixed(2) : '—'}</div>
-          <div class="trow-st ${statusClass}">${(t.status||'pending').toUpperCase()}</div>
-        </div>
-      </div>`;
+      return `<div class="trow"><div class="trow-av" style="background:var(--blue)">${t.id.slice(0,2).toUpperCase()}</div><div class="trow-info"><div class="trow-name">Trade #${t.id.slice(0,8).toUpperCase()}</div><div class="trow-meta">${t.trade_type||'item'} · ${timeAgo(t.created_at)}</div></div><div class="trow-rt"><div class="trow-val" style="color:var(--green-l)">${t.total_value ? '$'+Number(t.total_value).toFixed(2) : '—'}</div><div class="trow-st ${statusClass}">${(t.status||'pending').toUpperCase()}</div></div></div>`;
     }).join('');
-  } catch(e) {
-    document.getElementById('allTradesPanel').innerHTML = '<div class="empty">Could not load trades.</div>';
-  }
-}
-
-async function loadAllListings() {
-  try {
-    const { data: listings } = await sb.from('listings').select('*').order('created_at', { ascending: false }).limit(50);
-    const panel = document.getElementById('allListingsPanel');
-    if (!listings?.length) { panel.innerHTML = '<div class="empty">No listings yet.</div>'; return; }
-    panel.innerHTML = listings.map(l => `
-      <div class="trow">
-        <div class="trow-av" style="background:var(--gold);color:var(--navy)">📦</div>
-        <div class="trow-info">
-          <div class="trow-name">${l.title}</div>
-          <div class="trow-meta">${l.category} · ${l.condition} · ${timeAgo(l.created_at)}</div>
-        </div>
-        <div class="trow-rt">
-          <div class="trow-val" style="color:var(--gold-l)">${l.estimated_value ? '$'+Number(l.estimated_value).toFixed(0) : '—'}</div>
-          <div class="trow-st ${l.status==='active'?'ts-ok':'ts-pend'}">${(l.status||'active').toUpperCase()}</div>
-        </div>
-      </div>`).join('');
-  } catch(e) {
-    document.getElementById('allListingsPanel').innerHTML = '<div class="empty">Could not load listings.</div>';
-  }
+  } catch(e) { document.getElementById('allTradesPanel').innerHTML = '<div class="empty">Could not load trades.</div>'; }
 }
 
 async function loadDisputes() {
   try {
     const { data: disputes } = await sb.from('disputes').select('*').eq('status', 'open').order('created_at', { ascending: false });
     const panel = document.getElementById('disputesPanel');
-    if (!disputes?.length) {
-      panel.innerHTML = '<div class="ib green" style="margin:0"><span>✅</span><div>No open disputes — all clear!</div></div>';
-      return;
-    }
-    panel.innerHTML = disputes.map(d => `
-      <div class="dq-item">
-        <div class="dq-hdr">
-          <div class="dq-id">Dispute #${d.id.slice(0,8).toUpperCase()} · ${timeAgo(d.created_at)}</div>
-          <div class="dq-sev sev-md">OPEN</div>
-        </div>
-        <div class="dq-issue">${d.description || d.reason || 'No description provided.'}</div>
-        <div class="dq-acts">
-          <button class="dqa dqa-ok" onclick="openResolveModal('${d.id}')">✓ Resolve</button>
-          <button class="dqa dqa-esc" onclick="showToast('📧','Contact user at disputes@tradezyhq.com')">📧 Contact User</button>
-        </div>
-      </div>`).join('');
-  } catch(e) {
-    document.getElementById('disputesPanel').innerHTML = '<div class="empty">Could not load disputes.</div>';
-  }
+    if (!disputes?.length) { panel.innerHTML = '<div class="ib green" style="margin:0"><span>✅</span><div>No open disputes — all clear!</div></div>'; return; }
+    panel.innerHTML = disputes.map(d => `<div class="dq-item"><div class="dq-hdr"><div class="dq-id">Dispute #${d.id.slice(0,8).toUpperCase()} · ${timeAgo(d.created_at)}</div><div class="dq-sev sev-md">OPEN</div></div><div class="dq-issue">${d.description || d.reason || 'No description provided.'}</div><div class="dq-acts"><button class="dqa dqa-ok" onclick="openResolveModal('${d.id}')">✓ Resolve</button><button class="dqa dqa-esc" onclick="showToast('📧','Contact user at disputes@tradezyhq.com')">📧 Contact User</button></div></div>`).join('');
+  } catch(e) { document.getElementById('disputesPanel').innerHTML = '<div class="empty">Could not load disputes.</div>'; }
 }
 
 async function loadBannedUsers() {
@@ -833,21 +884,9 @@ async function loadBannedUsers() {
     panel.innerHTML = users.map(u => {
       const name = u.display_name || u.email?.split('@')[0] || 'User';
       const initials = name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0,2);
-      return `<div class="ur">
-        <div class="ur-av" style="background:var(--red)">${initials}</div>
-        <div class="ur-info">
-          <div class="ur-name">${name}</div>
-          <div class="ur-meta">${u.email} · Reason: ${u.ban_reason || 'Not specified'}</div>
-          <div class="ur-badges"><span class="urb urb-b">🚫 Banned</span></div>
-        </div>
-        <div class="ur-rt"><div class="ur-acts">
-          <button class="urb2 urb2-unban" onclick="unbanUser('${u.id}','${name}')">✓ Unban</button>
-        </div></div>
-      </div>`;
+      return `<div class="ur"><div class="ur-av" style="background:var(--red)">${initials}</div><div class="ur-info"><div class="ur-name">${name}</div><div class="ur-meta">${u.email} · Reason: ${u.ban_reason || 'Not specified'}</div><div class="ur-badges"><span class="urb urb-b">🚫 Banned</span></div></div><div class="ur-rt"><div class="ur-acts"><button class="urb2 urb2-unban" onclick="unbanUser('${u.id}','${name}')">✓ Unban</button></div></div></div>`;
     }).join('');
-  } catch(e) {
-    document.getElementById('bannedPanel').innerHTML = '<div class="empty">Could not load banned users.</div>';
-  }
+  } catch(e) { document.getElementById('bannedPanel').innerHTML = '<div class="empty">Could not load banned users.</div>'; }
 }
 
 async function warnUser(userId, name) {
@@ -940,30 +979,8 @@ function switchView(v) {
   if (v === 'disputes') loadDisputes();
   if (v === 'banned') loadBannedUsers();
   if (v === 'payouts') loadPayouts();
+  if (v === 'messages') loadMessages();
 }
 
 function openModal(id) { document.getElementById(id).classList.add('open'); }
-function closeModal(id) { document.getElementById(id).classList.remove('open'); }
-document.querySelectorAll('.overlay').forEach(o => o.addEventListener('click', e => { if (e.target === o) o.classList.remove('open'); }));
-
-function timeAgo(ts) {
-  if (!ts) return '';
-  const m = Math.floor((Date.now() - new Date(ts)) / 60000);
-  if (m < 1) return 'just now';
-  if (m < 60) return m + 'm ago';
-  const h = Math.floor(m/60);
-  if (h < 24) return h + 'h ago';
-  return Math.floor(h/24) + 'd ago';
-}
-
-function showToast(icon, msg) {
-  document.getElementById('toastIc').textContent = icon;
-  document.getElementById('toastTx').textContent = msg;
-  const t = document.getElementById('toastEl');
-  t.classList.add('show');
-  clearTimeout(window._tt);
-  window._tt = setTimeout(() => t.classList.remove('show'), 4000);
-}
-</script>
-</body>
-</html>
+funct
