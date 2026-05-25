@@ -1093,8 +1093,10 @@ async function openListingDetail(listingId) {
         <div class="ldm-row"><div class="ldm-label">Location</div><div class="ldm-val">${[l.location_city,l.location_state,l.location_zip].filter(Boolean).join(', ')||'—'}</div></div>
         <div class="ldm-row"><div class="ldm-label">Radius</div><div class="ldm-val">${l.radius_miles?l.radius_miles+' miles':'—'}</div></div>
       </div>
-      <div class="ldm-section" style="display:flex;gap:8px">
-        ${l.status!=='removed'?`<button class="mbtn red" style="margin:0;flex:1" onclick="closeModal('listingDetailModal');openRemoveListingModal('${l.id}','${(l.title||'').replace(/'/g,"\\'")}','${sellerName}','${l.user_id}')">🗑️ Remove Listing</button>`:'<div style="color:var(--red-l);font-size:12px;font-weight:700;padding:8px">⚠️ Already removed</div>'}
+      <div class="ldm-section" style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="mbtn gold" style="margin:0;flex:1" onclick="warnUser('${l.user_id}','${sellerName}')">⚠️ Warn Seller</button>
+        <button class="mbtn red" style="margin:0;flex:1" onclick="closeModal('listingDetailModal');openBanModal('${l.user_id}','${sellerName}')">🚫 Ban Seller</button>
+        ${l.status!=='removed'?`<button class="mbtn red" style="margin:0;flex:1;background:#7f1d1d" onclick="closeModal('listingDetailModal');openRemoveListingModal('${l.id}','${(l.title||'').replace(/'/g,"\\'")}','${sellerName}','${l.user_id}')">🗑️ Remove Listing</button>`:'<div style="color:var(--red-l);font-size:12px;font-weight:700;padding:8px 0">⚠️ Already removed</div>'}
         <button class="mbtn outline" style="margin:0;flex:1" onclick="closeModal('listingDetailModal')">Close</button>
       </div>`;
   } catch(e) {
