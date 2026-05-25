@@ -948,7 +948,8 @@ async function loadRecentTrades() {
     if(!trades?.length){panel.innerHTML='<div class="empty">No trades yet.</div>';return;}
     panel.innerHTML=trades.map(t=>{
       const sc=t.status==='completed'?'ts-ok':t.status==='disputed'?'ts-disp':'ts-pend';
-      return `<div class="trow" style="cursor:pointer" onclick="openTradeDetail('${t.id}')"><div class="trow-av" style="background:var(--blue)">${t.id.slice(0,2).toUpperCase()}</div><div class="trow-info"><div class="trow-name">Trade #${t.id.slice(0,8).toUpperCase()}</div><div class="trow-meta">${timeAgo(t.created_at)}</div></div><div class="trow-rt"><div class="trow-val" style="color:var(--green-l)">${t.total_value?'$'+Number(t.total_value).toFixed(2):'—'}</div><div class="trow-st ${sc}">${(t.status||'pending').toUpperCase()}</div></div></div>`;
+      const fee = t.total_value ? '$'+(Number(t.total_value)*0.10).toFixed(2)+' earned' : '—';
+      return `<div class="trow" style="cursor:pointer" onclick="openTradeDetail('${t.id}')"><div class="trow-av" style="background:var(--blue)">${t.id.slice(0,2).toUpperCase()}</div><div class="trow-info"><div class="trow-name">Trade #${t.id.slice(0,8).toUpperCase()}</div><div class="trow-meta">${timeAgo(t.created_at)}</div></div><div class="trow-rt"><div class="trow-val" style="color:var(--green-l)">${fee}</div><div class="trow-st ${sc}">${(t.status||'pending').toUpperCase()}</div></div></div>`;
     }).join('');
   }catch(e){document.getElementById('recentTradesPanel').innerHTML='<div class="empty">Could not load trades.</div>';}
 }
@@ -960,7 +961,8 @@ async function loadAllTrades() {
     if(!trades?.length){panel.innerHTML='<div class="empty">No trades yet.</div>';return;}
     panel.innerHTML=trades.map(t=>{
       const sc=t.status==='completed'?'ts-ok':t.status==='disputed'?'ts-disp':'ts-pend';
-      return `<div class="trow" style="cursor:pointer" onclick="openTradeDetail('${t.id}')"><div class="trow-av" style="background:var(--blue)">${t.id.slice(0,2).toUpperCase()}</div><div class="trow-info"><div class="trow-name">Trade #${t.id.slice(0,8).toUpperCase()}</div><div class="trow-meta">${t.trade_type||'item'} · ${timeAgo(t.created_at)}</div></div><div class="trow-rt"><div class="trow-val" style="color:var(--green-l)">${t.total_value?'$'+Number(t.total_value).toFixed(2):'—'}</div><div class="trow-st ${sc}">${(t.status||'pending').toUpperCase()}</div></div></div>`;
+      const fee = t.total_value ? '$'+(Number(t.total_value)*0.10).toFixed(2)+' earned' : '—';
+      return `<div class="trow" style="cursor:pointer" onclick="openTradeDetail('${t.id}')"><div class="trow-av" style="background:var(--blue)">${t.id.slice(0,2).toUpperCase()}</div><div class="trow-info"><div class="trow-name">Trade #${t.id.slice(0,8).toUpperCase()}</div><div class="trow-meta">${t.trade_type||'item'} · ${timeAgo(t.created_at)}</div></div><div class="trow-rt"><div class="trow-val" style="color:var(--green-l)">${fee}</div><div class="trow-st ${sc}">${(t.status||'pending').toUpperCase()}</div></div></div>`;
     }).join('');
   }catch(e){document.getElementById('allTradesPanel').innerHTML='<div class="empty">Could not load trades.</div>';}
 }
