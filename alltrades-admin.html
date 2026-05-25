@@ -119,6 +119,23 @@ body{font-family:'Lato',sans-serif;background:var(--navy);color:var(--text);min-
 .dqa-esc{background:rgba(220,38,38,.12);border:1px solid rgba(220,38,38,.25);color:#fca5a5;}
 .two-col{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:18px;}
 
+/* ── LISTING/TRADE DETAIL ── */
+.ldm-photos{display:flex;gap:8px;padding:14px 16px;overflow-x:auto;background:rgba(0,0,0,.2);border-bottom:1px solid var(--border);}
+.ldm-photo{width:100px;height:100px;border-radius:8px;object-fit:cover;border:2px solid var(--border2);cursor:pointer;transition:all .15s;flex-shrink:0;}
+.ldm-photo:hover{border-color:var(--blue);transform:scale(1.04);}
+.ldm-no-photo{width:100px;height:100px;border-radius:8px;background:var(--surface2);border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:2rem;flex-shrink:0;}
+.ldm-section{padding:14px 16px;border-bottom:1px solid var(--border);}
+.ldm-section:last-child{border:none;}
+.ldm-row{display:flex;align-items:flex-start;gap:10px;margin-bottom:8px;font-size:12px;}
+.ldm-row:last-child{margin:0;}
+.ldm-label{color:var(--lighter);font-weight:700;text-transform:uppercase;font-size:10px;letter-spacing:.4px;width:100px;flex-shrink:0;padding-top:1px;}
+.ldm-val{color:var(--text);flex:1;line-height:1.5;}
+.ldm-badge{font-size:9px;font-weight:800;padding:2px 7px;border-radius:3px;display:inline-block;}
+.td-row{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);font-size:12px;}
+.td-row:last-child{border:none;}
+.td-key{color:var(--lighter);font-weight:700;font-size:11px;}
+.td-val{color:var(--text);font-weight:700;text-align:right;max-width:60%;word-break:break-all;}
+
 /* ── MESSAGES ── */
 .conv-row{display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .15s;position:relative;}
 .conv-row:last-child{border:none;}
@@ -537,6 +554,22 @@ body{font-family:'Lato',sans-serif;background:var(--navy);color:var(--text);min-
   </div>
 </div>
 
+<!-- LISTING DETAIL MODAL -->
+<div class="overlay" id="listingDetailModal">
+  <div class="modal" style="max-width:620px">
+    <div class="mhd"><div class="mhd-ttl" id="ldmTitle">📦 Listing Detail</div><button class="mhd-x" onclick="closeModal('listingDetailModal')">✕</button></div>
+    <div class="mbody" id="ldmBody" style="padding:0"></div>
+  </div>
+</div>
+
+<!-- TRADE DETAIL MODAL -->
+<div class="overlay" id="tradeDetailModal">
+  <div class="modal" style="max-width:560px">
+    <div class="mhd"><div class="mhd-ttl" id="tdmTitle">🔄 Trade Detail</div><button class="mhd-x" onclick="closeModal('tradeDetailModal')">✕</button></div>
+    <div class="mbody" id="tdmBody"></div>
+  </div>
+</div>
+
 <div class="toast" id="toastEl"><span id="toastIc">✅</span><span id="toastTx"></span></div>
 
 <script>
@@ -759,11 +792,11 @@ async function loadAllListings() {
       const sellerName = l.seller?.display_name || 'Unknown';
       const statusClass = l.status==='active'?'ts-ok':l.status==='removed'?'ts-rem':'ts-pend';
       const canRemove = l.status !== 'removed';
-      return `<div class="trow">
+      return `<div class="trow" style="cursor:pointer" onclick="openListingDetail('${l.id}')">
         <div class="trow-av" style="background:var(--gold);color:var(--navy)">📦</div>
         <div class="trow-info">
           <div class="trow-name">${l.title}</div>
-          <div class="trow-meta">${l.category} · ${l.condition} · by <span style="cursor:pointer;color:var(--blue-l)" onclick="openBanModal('${l.user_id}','${sellerName}')">${sellerName}</span> · ${timeAgo(l.created_at)}</div>
+          <div class="trow-meta">${l.category} · ${l.condition} · by <span style="cursor:pointer;color:var(--blue-l)" onclick="event.stopPropagation();openBanModal('${l.user_id}','${sellerName}')">${sellerName}</span> · ${timeAgo(l.created_at)}</div>
         </div>
         <div class="trow-rt" style="display:flex;align-items:center;gap:8px">
           <div>
@@ -915,7 +948,7 @@ async function loadRecentTrades() {
     if(!trades?.length){panel.innerHTML='<div class="empty">No trades yet.</div>';return;}
     panel.innerHTML=trades.map(t=>{
       const sc=t.status==='completed'?'ts-ok':t.status==='disputed'?'ts-disp':'ts-pend';
-      return `<div class="trow"><div class="trow-av" style="background:var(--blue)">${t.id.slice(0,2).toUpperCase()}</div><div class="trow-info"><div class="trow-name">Trade #${t.id.slice(0,8).toUpperCase()}</div><div class="trow-meta">${timeAgo(t.created_at)}</div></div><div class="trow-rt"><div class="trow-val" style="color:var(--green-l)">${t.total_value?'$'+Number(t.total_value).toFixed(2):'—'}</div><div class="trow-st ${sc}">${(t.status||'pending').toUpperCase()}</div></div></div>`;
+      return `<div class="trow" style="cursor:pointer" onclick="openTradeDetail('${t.id}')"><div class="trow-av" style="background:var(--blue)">${t.id.slice(0,2).toUpperCase()}</div><div class="trow-info"><div class="trow-name">Trade #${t.id.slice(0,8).toUpperCase()}</div><div class="trow-meta">${timeAgo(t.created_at)}</div></div><div class="trow-rt"><div class="trow-val" style="color:var(--green-l)">${t.total_value?'$'+Number(t.total_value).toFixed(2):'—'}</div><div class="trow-st ${sc}">${(t.status||'pending').toUpperCase()}</div></div></div>`;
     }).join('');
   }catch(e){document.getElementById('recentTradesPanel').innerHTML='<div class="empty">Could not load trades.</div>';}
 }
@@ -927,7 +960,7 @@ async function loadAllTrades() {
     if(!trades?.length){panel.innerHTML='<div class="empty">No trades yet.</div>';return;}
     panel.innerHTML=trades.map(t=>{
       const sc=t.status==='completed'?'ts-ok':t.status==='disputed'?'ts-disp':'ts-pend';
-      return `<div class="trow"><div class="trow-av" style="background:var(--blue)">${t.id.slice(0,2).toUpperCase()}</div><div class="trow-info"><div class="trow-name">Trade #${t.id.slice(0,8).toUpperCase()}</div><div class="trow-meta">${t.trade_type||'item'} · ${timeAgo(t.created_at)}</div></div><div class="trow-rt"><div class="trow-val" style="color:var(--green-l)">${t.total_value?'$'+Number(t.total_value).toFixed(2):'—'}</div><div class="trow-st ${sc}">${(t.status||'pending').toUpperCase()}</div></div></div>`;
+      return `<div class="trow" style="cursor:pointer" onclick="openTradeDetail('${t.id}')"><div class="trow-av" style="background:var(--blue)">${t.id.slice(0,2).toUpperCase()}</div><div class="trow-info"><div class="trow-name">Trade #${t.id.slice(0,8).toUpperCase()}</div><div class="trow-meta">${t.trade_type||'item'} · ${timeAgo(t.created_at)}</div></div><div class="trow-rt"><div class="trow-val" style="color:var(--green-l)">${t.total_value?'$'+Number(t.total_value).toFixed(2):'—'}</div><div class="trow-st ${sc}">${(t.status||'pending').toUpperCase()}</div></div></div>`;
     }).join('');
   }catch(e){document.getElementById('allTradesPanel').innerHTML='<div class="empty">Could not load trades.</div>';}
 }
@@ -1014,6 +1047,102 @@ function addAlert(type,icon,text,btnLabel,btnAction) {
   const div=document.createElement('div');div.className=`alert-strip ${type}`;
   div.innerHTML=`<span>${icon}</span><div class="as-txt">${text}</div>${btnLabel?`<button class="as-btn asb-${type}" onclick="${btnAction}">${btnLabel}</button>`:''}`;
   area.appendChild(div);
+}
+
+/* ── LISTING DETAIL ── */
+async function openListingDetail(listingId) {
+  document.getElementById('ldmTitle').textContent = '📦 Loading…';
+  document.getElementById('ldmBody').innerHTML = '<div class="loading">Loading listing…</div>';
+  openModal('listingDetailModal');
+  try {
+    const { data: l, error } = await sb.from('listings')
+      .select('*, seller:user_id(display_name, email)')
+      .eq('id', listingId).single();
+    if (error) throw error;
+
+    const sellerName = l.seller?.display_name || 'Unknown';
+    const sellerEmail = l.seller?.email || '—';
+    const statusColor = l.status==='active'?'var(--green-l)':l.status==='removed'?'var(--red-l)':'var(--gold-l)';
+    const photos = l.photos || [];
+
+    const photosHtml = photos.length
+      ? photos.map(p => `<img class="ldm-photo" src="${p}" alt="listing photo" onclick="window.open('${p}','_blank')">`).join('')
+      : `<div class="ldm-no-photo">📦</div>`;
+
+    document.getElementById('ldmTitle').textContent = `📦 ${l.title}`;
+    document.getElementById('ldmBody').innerHTML = `
+      <div class="ldm-photos">${photosHtml}</div>
+      <div class="ldm-section">
+        <div class="ldm-row"><div class="ldm-label">Status</div><div class="ldm-val"><span style="color:${statusColor};font-weight:800">${(l.status||'active').toUpperCase()}</span></div></div>
+        <div class="ldm-row"><div class="ldm-label">Category</div><div class="ldm-val">${l.category||'—'}</div></div>
+        <div class="ldm-row"><div class="ldm-label">Condition</div><div class="ldm-val">${l.condition||'—'}</div></div>
+        <div class="ldm-row"><div class="ldm-label">Est. Value</div><div class="ldm-val">${l.estimated_value?'$'+Number(l.estimated_value).toFixed(2):'—'}</div></div>
+        <div class="ldm-row"><div class="ldm-label">Trade Type</div><div class="ldm-val">${l.trade_type||'—'}</div></div>
+        <div class="ldm-row"><div class="ldm-label">Quantity</div><div class="ldm-val">${l.quantity||1}</div></div>
+        <div class="ldm-row"><div class="ldm-label">Views</div><div class="ldm-val">${l.view_count||0}</div></div>
+        <div class="ldm-row"><div class="ldm-label">Posted</div><div class="ldm-val">${l.created_at?new Date(l.created_at).toLocaleString():'—'}</div></div>
+      </div>
+      <div class="ldm-section">
+        <div class="ldm-row"><div class="ldm-label">Description</div><div class="ldm-val" style="white-space:pre-wrap">${l.description||'No description.'}</div></div>
+        ${l.wants?`<div class="ldm-row"><div class="ldm-label">Wants</div><div class="ldm-val">${l.wants}</div></div>`:''}
+        ${l.tags?.length?`<div class="ldm-row"><div class="ldm-label">Tags</div><div class="ldm-val">${l.tags.join(', ')}</div></div>`:''}
+      </div>
+      <div class="ldm-section">
+        <div class="ldm-row"><div class="ldm-label">Seller</div><div class="ldm-val"><span class="detail-lnk" onclick="closeModal('listingDetailModal');openBanModal('${l.user_id}','${sellerName}')">${sellerName}</span></div></div>
+        <div class="ldm-row"><div class="ldm-label">Email</div><div class="ldm-val">${sellerEmail}</div></div>
+        <div class="ldm-row"><div class="ldm-label">Location</div><div class="ldm-val">${[l.location_city,l.location_state,l.location_zip].filter(Boolean).join(', ')||'—'}</div></div>
+        <div class="ldm-row"><div class="ldm-label">Radius</div><div class="ldm-val">${l.radius_miles?l.radius_miles+' miles':'—'}</div></div>
+      </div>
+      <div class="ldm-section" style="display:flex;gap:8px">
+        ${l.status!=='removed'?`<button class="mbtn red" style="margin:0;flex:1" onclick="closeModal('listingDetailModal');openRemoveListingModal('${l.id}','${(l.title||'').replace(/'/g,"\\'")}','${sellerName}','${l.user_id}')">🗑️ Remove Listing</button>`:'<div style="color:var(--red-l);font-size:12px;font-weight:700;padding:8px">⚠️ Already removed</div>'}
+        <button class="mbtn outline" style="margin:0;flex:1" onclick="closeModal('listingDetailModal')">Close</button>
+      </div>`;
+  } catch(e) {
+    document.getElementById('ldmBody').innerHTML = `<div class="empty">Error loading listing: ${e.message}</div>`;
+  }
+}
+
+/* ── TRADE DETAIL ── */
+async function openTradeDetail(tradeId) {
+  document.getElementById('tdmTitle').textContent = '🔄 Loading…';
+  document.getElementById('tdmBody').innerHTML = '<div class="loading">Loading trade…</div>';
+  openModal('tradeDetailModal');
+  try {
+    const { data: t, error } = await sb.from('trades').select('*').eq('id', tradeId).single();
+    if (error) throw error;
+    const statusColor = t.status==='completed'?'var(--green-l)':t.status==='disputed'?'var(--red-l)':'var(--gold-l)';
+    document.getElementById('tdmTitle').textContent = `🔄 Trade #${t.id.slice(0,8).toUpperCase()}`;
+    const rows = [
+      ['Status', `<span style="color:${statusColor};font-weight:800">${(t.status||'pending').toUpperCase()}</span>`],
+      ['Trade ID', t.id],
+      ['Trade Type', t.trade_type||'—'],
+      ['Total Value', t.total_value?'$'+Number(t.total_value).toFixed(2):'—'],
+      ['Cash Amount', t.cash_amount?'$'+Number(t.cash_amount).toFixed(2):'—'],
+      ['Fee (Trader A)', t.fee_a?'$'+Number(t.fee_a).toFixed(2):'—'],
+      ['Fee (Trader B)', t.fee_b?'$'+Number(t.fee_b).toFixed(2):'—'],
+      ['Escrow Status', t.escrow_status||'—'],
+      ['Trader A', `<span class="detail-lnk" onclick="closeModal('tradeDetailModal');openBanModal('${t.trader_a_id}','Trader A')">${t.trader_a_id?.slice(0,16)||'—'}…</span>`],
+      ['Trader B', `<span class="detail-lnk" onclick="closeModal('tradeDetailModal');openBanModal('${t.trader_b_id}','Trader B')">${t.trader_b_id?.slice(0,16)||'—'}…</span>`],
+      ['Offer ID', t.offer_id?.slice(0,16)+'…'||'—'],
+      ['Listing ID', t.listing_id?.slice(0,16)+'…'||'—'],
+      ['Meetup Location', t.meetup_location||'—'],
+      ['Meetup Date', t.meetup_date?new Date(t.meetup_date).toLocaleString():'—'],
+      ['Meetup Confirmed A', t.meetup_confirmed_a?'✅ Yes':'❌ No'],
+      ['Meetup Confirmed B', t.meetup_confirmed_b?'✅ Yes':'❌ No'],
+      ['Trade Confirmed A', t.trade_confirmed_a?'✅ Yes':'❌ No'],
+      ['Trade Confirmed B', t.trade_confirmed_b?'✅ Yes':'❌ No'],
+      ['Payment Intent A', t.stripe_payment_intent_a||'—'],
+      ['Payment Intent B', t.stripe_payment_intent_b||'—'],
+      ['Created', t.created_at?new Date(t.created_at).toLocaleString():'—'],
+    ];
+    document.getElementById('tdmBody').innerHTML = `
+      <div>${rows.map(([k,v])=>`<div class="td-row"><div class="td-key">${k}</div><div class="td-val">${v}</div></div>`).join('')}</div>
+      <div style="display:flex;gap:8px;margin-top:14px">
+        <button class="mbtn outline" style="margin:0" onclick="closeModal('tradeDetailModal')">Close</button>
+      </div>`;
+  } catch(e) {
+    document.getElementById('tdmBody').innerHTML = `<div class="empty">Error: ${e.message}</div>`;
+  }
 }
 
 function switchView(v) {
