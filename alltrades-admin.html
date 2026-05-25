@@ -596,13 +596,11 @@ async function loadMessages(search = '') {
   panel.innerHTML = '<div class="loading">Loading messages…</div>';
   try {
     let query = sb.from('messages')
-      .select('id, content, created_at, sender_id, receiver_id, sender:sender_id(display_name), receiver:receiver_id(display_name)')
+      .select('id, content, created_at, sender_id, receiver_id')
       .order('created_at', { ascending: false })
       .limit(100);
 
-    if (search) {
-      query = query.ilike('content', `%${search}%`);
-    }
+    if (search) query = query.ilike('content', `%${search}%`);
 
     const { data: messages, error } = await query;
     if (error) throw error;
@@ -613,35 +611,29 @@ async function loadMessages(search = '') {
     }
 
     const colors = ['#1a56db','#16a34a','#ea580c','#7c3aed','#0891b2','#dc2626'];
-    const SYSTEM_ID = '00000000-0000-0000-0000-000000000000';
+    const flagWords = ['gun','weapon','drug','alcohol','crypto','bitcoin','venmo','cash app','paypal outside'];
 
     panel.innerHTML = messages.map(m => {
-      const senderName = m.sender?.display_name || 'Unknown';
-      const receiverName = m.receiver?.display_name || 'Unknown';
-      const initials = senderName.slice(0,2).toUpperCase();
-      const color = colors[senderName.charCodeAt(0) % colors.length];
-      const isSystem = m.sender_id === SYSTEM_ID;
-      const systemBadge = isSystem ? '<span class="msg-system">SYSTEM</span>' : '';
-
-      // Flag messages with keywords
-      const flagWords = ['gun','weapon','drug','alcohol','crypto','bitcoin','venmo','cash app','paypal outside'];
       const isFlagged = flagWords.some(w => m.content?.toLowerCase().includes(w));
       const flagBadge = isFlagged ? '<span class="msg-flag">⚠️ FLAGGED</span>' : '';
+      const shortSender = m.sender_id?.slice(0,8) || 'Unknown';
+      const shortReceiver = m.receiver_id?.slice(0,8) || 'Unknown';
+      const color = colors[shortSender.charCodeAt(0) % colors.length];
 
       return `<div class="msg-row">
-        <div class="msg-av" style="background:${isSystem ? 'var(--blue)' : color}">${isSystem ? '🤖' : initials}</div>
+        <div class="msg-av" style="background:${color}">${shortSender.slice(0,2).toUpperCase()}</div>
         <div class="msg-body">
           <div class="msg-header">
-            <div class="msg-from">${senderName}${systemBadge}${flagBadge}</div>
+            <div class="msg-from">User ${shortSender}…${flagBadge}</div>
             <div class="msg-time">${timeAgo(m.created_at)}</div>
           </div>
-          <div class="msg-to">→ to ${receiverName}</div>
+          <div class="msg-to">→ to User ${shortReceiver}…</div>
           <div class="msg-content">${m.content || '—'}</div>
         </div>
       </div>`;
     }).join('');
   } catch(e) {
-    panel.innerHTML = '<div class="empty">Could not load messages.</div>';
+    panel.innerHTML = `<div class="empty">Error: ${e.message}</div>`;
     console.error(e);
   }
 }
