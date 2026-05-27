@@ -11,8 +11,6 @@
 </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<!-- SEO -->
 <title>Tradezy — Post a Listing | Trade Locally in Meriden CT</title>
 <meta name="description" content="Post a listing on Tradezy and start trading locally. List items, set trade terms, and connect with verified traders near you in Meriden CT and beyond.">
 <meta name="keywords" content="post listing, trade locally, barter marketplace, Meriden CT, list item for trade, peer to peer trading">
@@ -21,7 +19,6 @@
 <meta property="og:url" content="https://tradezyhq.com/alltrades-post.html">
 <meta property="og:image" content="https://tradezyhq.com/tradezy-preview.png">
 <link rel="canonical" href="https://tradezyhq.com/alltrades-post.html">
-
 <script src="supabase.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Lato:ital,wght@0,300;0,400;0,700;1,300&display=swap" rel="stylesheet">
 <style>
@@ -49,6 +46,22 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
 .progress-bar{flex:1;height:4px;background:rgba(255,255,255,.1);border-radius:2px;overflow:hidden;}
 .progress-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold-light));border-radius:2px;transition:width .4s ease;width:0%;}
 .progress-label{font-family:'Barlow Condensed',sans-serif;font-size:.85rem;font-weight:700;color:var(--gold-light);white-space:nowrap;min-width:80px;text-align:right;}
+
+/* W-9 GATE */
+.w9-gate{display:none;max-width:560px;margin:60px auto;background:var(--white);border:1px solid var(--border);border-radius:16px;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,.1);}
+.w9-gate.show{display:block;}
+.w9-gate-head{background:linear-gradient(135deg,#7f1d1d,#991b1b);padding:22px 24px;text-align:center;}
+.w9-gate-icon{font-size:2.8rem;margin-bottom:8px;}
+.w9-gate-title{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.5rem;color:#fff;margin-bottom:4px;}
+.w9-gate-sub{font-size:13px;color:rgba(255,255,255,.7);}
+.w9-gate-body{padding:24px;}
+.w9-gate-body p{font-size:14px;color:var(--text-light);line-height:1.6;margin-bottom:20px;}
+.w9-gate-body strong{color:var(--text);}
+.btn-w9{display:block;width:100%;padding:13px;background:var(--gold);color:var(--navy);border:none;border-radius:8px;font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.05rem;cursor:pointer;text-align:center;text-decoration:none;transition:all .15s;margin-bottom:10px;}
+.btn-w9:hover{background:var(--gold-light);transform:translateY(-1px);}
+.btn-w9-cancel{display:block;width:100%;padding:11px;background:transparent;color:var(--text-light);border:1.5px solid var(--border);border-radius:8px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.95rem;cursor:pointer;text-align:center;transition:all .15s;}
+.btn-w9-cancel:hover{border-color:#999;color:var(--text);}
+
 .main{max-width:1100px;margin:0 auto;padding:28px 20px;display:grid;grid-template-columns:1fr 340px;gap:24px;align-items:start;}
 .form-card{background:var(--white);border:1px solid var(--border);border-radius:14px;overflow:hidden;}
 .card-head{background:linear-gradient(135deg,var(--navy),#1a3a6b);padding:18px 22px;display:flex;align-items:center;gap:12px;}
@@ -87,6 +100,8 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
 .cat-pill.essential.active{background:#f0fdf4;}
 .cat-pill.tcg{border-color:#a78bfa;color:#7c3aed;}
 .cat-pill.tcg.active{background:#f5f3ff;border-color:#7c3aed;}
+.cat-pill.sports-c{border-color:#f97316;color:#ea580c;}
+.cat-pill.sports-c.active{background:#fff7ed;border-color:#ea580c;}
 .cond-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;}
 .cond-btn{border:1.5px solid var(--border);border-radius:8px;padding:8px 4px;text-align:center;cursor:pointer;transition:all .15s;font-size:11px;font-weight:700;color:var(--text-light);}
 .cond-btn:hover,.cond-btn.active{border-color:var(--blue);color:var(--blue);background:#eff6ff;}
@@ -141,6 +156,27 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
 .tp-pill{padding:5px 12px;border:1.5px solid #a78bfa;border-radius:99px;font-size:12px;font-weight:700;cursor:pointer;color:#7c3aed;background:#fff;transition:all .15s;}
 .tp-pill.active{background:#7c3aed;color:#fff;border-color:#7c3aed;}
 
+/* SPORTS CARDS Section */
+.sc-section{display:none;background:#fff7ed;border:1.5px solid #f97316;border-radius:10px;padding:16px;margin-top:12px;}
+.sc-section.show{display:block;}
+.sc-header{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.95rem;color:#ea580c;margin-bottom:12px;display:flex;align-items:center;gap:7px;}
+.sc-sport-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:12px;}
+.sc-sport-btn{border:1.5px solid #f97316;border-radius:8px;padding:7px 4px;text-align:center;cursor:pointer;transition:all .15s;font-size:11px;font-weight:700;color:#ea580c;background:#fff;}
+.sc-sport-btn:hover,.sc-sport-btn.active{background:#ea580c;color:#fff;border-color:#ea580c;}
+.sc-cond-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:12px;}
+.sc-cond-btn{border:1.5px solid #f97316;border-radius:8px;padding:7px 4px;text-align:center;cursor:pointer;transition:all .15s;font-size:11px;font-weight:700;color:#ea580c;background:#fff;}
+.sc-cond-btn:hover,.sc-cond-btn.active{background:#ea580c;color:#fff;border-color:#ea580c;}
+
+/* SUBCATEGORY PILLS */
+.subcat-section{margin-top:10px;}
+.subcat-label{font-size:11px;font-weight:700;color:#7c3aed;text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:7px;}
+.subcat-label.sports{color:#ea580c;}
+.subcat-pills{display:flex;flex-wrap:wrap;gap:6px;}
+.subcat-pill{padding:5px 13px;border:1.5px solid #a78bfa;border-radius:99px;font-size:12px;font-weight:700;cursor:pointer;color:#7c3aed;background:#fff;transition:all .15s;}
+.subcat-pill:hover,.subcat-pill.active{background:#7c3aed;color:#fff;border-color:#7c3aed;}
+.subcat-pill.sports{border-color:#f97316;color:#ea580c;}
+.subcat-pill.sports:hover,.subcat-pill.sports.active{background:#ea580c;color:#fff;border-color:#ea580c;}
+
 /* Preview */
 .preview-sticky{position:sticky;top:80px;display:flex;flex-direction:column;gap:14px;}
 .preview-card{background:var(--white);border:1px solid var(--border);border-radius:14px;overflow:hidden;}
@@ -155,6 +191,7 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
 .pbadge.ess{background:var(--green);color:#fff;}
 .pbadge.cash{background:var(--gold);color:var(--navy);}
 .pbadge.tcg{background:#7c3aed;color:#fff;}
+.pbadge.sportsc{background:#ea580c;color:#fff;}
 .prev-dist{position:absolute;bottom:7px;left:7px;background:rgba(10,22,40,.75);color:#e2e8f0;font-size:10px;padding:2px 7px;border-radius:99px;}
 .prev-body{padding:12px 14px;}
 .prev-seller{display:flex;align-items:center;gap:6px;margin-bottom:7px;}
@@ -195,7 +232,7 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
 @media(prefers-color-scheme:dark){
   :root{--text:#f1f5f9;--text-light:#94a3b8;--border:rgba(255,255,255,.1);--bg:#0f172a;--white:#1e293b;--surface:#162032;}
   body{background:#0f172a !important;color:#f1f5f9 !important;}
-  .form-card,.preview-card,.tips-card{background:#1e293b !important;border-color:rgba(255,255,255,.08) !important;}
+  .form-card,.preview-card,.tips-card,.w9-gate{background:#1e293b !important;border-color:rgba(255,255,255,.08) !important;}
   input,select,textarea{background:#162032 !important;border-color:rgba(255,255,255,.12) !important;color:#f1f5f9 !important;}
   .tags-wrap,.cash-wrap input{background:#162032 !important;}
   .pref-row{background:#162032 !important;}
@@ -224,6 +261,28 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
   <div class="progress-bar"><div class="progress-fill" id="pFill"></div></div>
   <div class="progress-label" id="pLabel">Step 1 of 4</div>
 </div>
+
+<!-- W-9 GATE — shown if w9_on_file is false -->
+<div class="w9-gate" id="w9Gate">
+  <div class="w9-gate-head">
+    <div class="w9-gate-icon">📋</div>
+    <div class="w9-gate-title">Tax Info Required Before Listing</div>
+    <div class="w9-gate-sub">This takes about 2 minutes to complete</div>
+  </div>
+  <div class="w9-gate-body">
+    <p>
+      The IRS requires platforms like Tradezy to collect a <strong>W-9 form</strong> from sellers before they can list items for trade. This is a one-time step that unlocks your ability to post listings, make offers, and trade on Tradezy.
+    </p>
+    <p style="margin-bottom:20px">
+      <strong>What you'll need:</strong> Your legal name, address, and Social Security Number or EIN. Your information is encrypted and stored securely.
+    </p>
+    <a class="btn-w9" href="alltrades-verification.html">Complete Tax Info → Unlock Listings</a>
+    <button class="btn-w9-cancel" onclick="window.location.href='alltrades.html'">← Back to Marketplace</button>
+  </div>
+</div>
+
+<!-- MAIN FORM — hidden until W-9 check passes -->
+<div id="mainForm" style="display:none">
 
 <div class="main">
   <div>
@@ -287,28 +346,27 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
             <div class="cat-pill" onclick="pickCat(this,'Kids')">👶 Kids</div>
             <div class="cat-pill" onclick="pickCat(this,'Art')">🎨 Art</div>
             <div class="cat-pill tcg" onclick="pickCat(this,'Trading Cards')">🃏 Trading Cards</div>
-<div class="cat-pill tcg" onclick="pickCat(this,'Sports Cards')">⚾ Sports Cards</div>
+            <div class="cat-pill sports-c" onclick="pickCat(this,'Sports Cards')">⚾ Sports Cards</div>
             <div class="cat-pill" onclick="pickCat(this,'Other')">📦 Other</div>
           </div>
           <div class="field-error" id="eCat">Please select a category.</div>
         </div>
 
-        <!-- TCG FIELDS — shown only when Trading Cards selected -->
+        <!-- TCG FIELDS -->
         <div class="tcg-section" id="tcgSection">
           <div class="tcg-header">🃏 Trading Card Details</div>
 
-          <div class="field">
-            <label style="font-size:11px;font-weight:700;color:#7c3aed;text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:6px">Game *</label>
-            <select id="tcgGame" style="border-color:#a78bfa">
-              <option value="">Select game…</option>
-              <option>Pokémon TCG</option>
-              <option>One Piece TCG</option>
-              <option>Magic: The Gathering</option>
-              <option>Yu-Gi-Oh!</option>
-              <option>Lorcana</option>
-              <option>Flesh and Blood</option>
-              <option>Other TCG</option>
-            </select>
+          <!-- TCG Subcategory -->
+          <div class="subcat-section" style="margin-bottom:12px;">
+            <span class="subcat-label">Game / Subcategory *</span>
+            <div class="subcat-pills" id="tcgSubcatPills">
+              <div class="subcat-pill active" onclick="pickTcgSubcat(this,'Pokémon')">Pokémon</div>
+              <div class="subcat-pill" onclick="pickTcgSubcat(this,'One Piece')">One Piece</div>
+              <div class="subcat-pill" onclick="pickTcgSubcat(this,'MTG')">Magic: The Gathering</div>
+              <div class="subcat-pill" onclick="pickTcgSubcat(this,'Yu-Gi-Oh')">Yu-Gi-Oh!</div>
+              <div class="subcat-pill" onclick="pickTcgSubcat(this,'Lorcana')">Lorcana</div>
+              <div class="subcat-pill" onclick="pickTcgSubcat(this,'Flesh and Blood')">Flesh & Blood</div>
+            </div>
           </div>
 
           <div class="field-row-2">
@@ -348,6 +406,72 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
               <div class="tp-pill active" onclick="pickTcgPref(this,'Trade Only')">🔄 Trade Only</div>
               <div class="tp-pill" onclick="pickTcgPref(this,'Trade + Cash')">🔄💵 Trade + Cash</div>
               <div class="tp-pill" onclick="pickTcgPref(this,'Cash Only')">💵 Cash Only</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SPORTS CARDS FIELDS -->
+        <div class="sc-section" id="scSection">
+          <div class="sc-header">⚾ Sports Card Details</div>
+
+          <!-- Sports Cards Subcategory -->
+          <div class="subcat-section" style="margin-bottom:12px;">
+            <span class="subcat-label sports">Sport *</span>
+            <div class="subcat-pills" id="scSubcatPills">
+              <div class="subcat-pill sports active" onclick="pickScSubcat(this,'Baseball')">⚾ Baseball</div>
+              <div class="subcat-pill sports" onclick="pickScSubcat(this,'Football')">🏈 Football</div>
+              <div class="subcat-pill sports" onclick="pickScSubcat(this,'Basketball')">🏀 Basketball</div>
+              <div class="subcat-pill sports" onclick="pickScSubcat(this,'Hockey')">🏒 Hockey</div>
+              <div class="subcat-pill sports" onclick="pickScSubcat(this,'Soccer')">⚽ Soccer</div>
+            </div>
+          </div>
+
+          <div class="field-row-2">
+            <div class="field">
+              <label style="font-size:11px;font-weight:700;color:#ea580c;text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:5px">Player Name</label>
+              <input type="text" id="scPlayer" placeholder="e.g. Mike Trout" style="border-color:#f97316">
+            </div>
+            <div class="field">
+              <label style="font-size:11px;font-weight:700;color:#ea580c;text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:5px">Year / Set</label>
+              <input type="text" id="scYear" placeholder="e.g. 2023 Topps Chrome" style="border-color:#f97316">
+            </div>
+          </div>
+
+          <div class="field">
+            <label style="font-size:11px;font-weight:700;color:#ea580c;text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:6px">Card Condition *</label>
+            <div class="sc-cond-grid">
+              <div class="sc-cond-btn active" onclick="pickScCond(this,'Mint')">✨ Mint</div>
+              <div class="sc-cond-btn" onclick="pickScCond(this,'Near Mint')">⭐ Near Mint</div>
+              <div class="sc-cond-btn" onclick="pickScCond(this,'Lightly Played')">👍 Lightly Played</div>
+              <div class="sc-cond-btn" onclick="pickScCond(this,'Moderately Played')">👌 Mod. Played</div>
+              <div class="sc-cond-btn" onclick="pickScCond(this,'Heavily Played')">⚠️ Heavily Played</div>
+              <div class="sc-cond-btn" onclick="pickScCond(this,'Damaged')">💔 Damaged</div>
+            </div>
+          </div>
+
+          <div class="field">
+            <label style="font-size:11px;font-weight:700;color:#ea580c;text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:6px">Graded Card?</label>
+            <div style="display:flex;gap:8px;">
+              <div class="sc-cond-btn" id="gradedNo" onclick="pickGraded(false)" style="flex:1">❌ Raw (Ungraded)</div>
+              <div class="sc-cond-btn active" id="gradedYes" onclick="pickGraded(true)" style="flex:1">✅ Graded (PSA/BGS/SGC)</div>
+            </div>
+          </div>
+
+          <div id="gradeBox" style="display:none;margin-top:8px;">
+            <div class="field-row-2">
+              <div class="field">
+                <label style="font-size:11px;font-weight:700;color:#ea580c;text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:5px">Grading Company</label>
+                <select id="scGrader" style="border-color:#f97316">
+                  <option>PSA</option>
+                  <option>BGS</option>
+                  <option>SGC</option>
+                  <option>Other</option>
+                </select>
+              </div>
+              <div class="field">
+                <label style="font-size:11px;font-weight:700;color:#ea580c;text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:5px">Grade</label>
+                <input type="text" id="scGrade" placeholder="e.g. 9, 9.5, 10" style="border-color:#f97316">
+              </div>
             </div>
           </div>
         </div>
@@ -563,6 +687,8 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
   </div>
 </div>
 
+</div><!-- end mainForm -->
+
 <div class="toast" id="toastEl"><span id="toastIc">✅</span><span id="toastTx">Done!</span></div>
 
 <script>
@@ -574,23 +700,33 @@ const sb = window.supabase.createClient(
 
 let currentUser = null;
 
-/* ── Session check ── */
+/* ── SESSION + W-9 GATE ── */
 (async () => {
   const { data: { session } } = await sb.auth.getSession();
   if (!session) { window.location.href = 'alltrades-auth.html'; return; }
   currentUser = session.user;
-  loadUserPreview();
-})();
 
-async function loadUserPreview() {
-  try {
-    const { data } = await sb.from('users').select('display_name').eq('id', currentUser.id).single();
-    const name = data?.display_name || currentUser.email?.split('@')[0] || 'You';
-    const initials = name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0,2);
-    document.getElementById('prevAv').textContent = initials;
-    document.getElementById('prevName').textContent = name;
-  } catch(e) {}
-}
+  // Check W-9
+  const { data: profile, error } = await sb.from('users').select('display_name, w9_on_file').eq('id', currentUser.id).single();
+
+  if (error || !profile?.w9_on_file) {
+    // Show W-9 gate, hide form
+    document.getElementById('w9Gate').classList.add('show');
+    return;
+  }
+
+  // W-9 on file — show form
+  document.getElementById('mainForm').style.display = 'block';
+
+  const name = profile?.display_name || currentUser.email?.split('@')[0] || 'You';
+  const initials = name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0,2);
+  document.getElementById('prevAv').textContent = initials;
+  document.getElementById('prevName').textContent = name;
+
+  renderGrid();
+  updateProg(1);
+  livePreview();
+})();
 
 /* ── State ── */
 let step = 1;
@@ -600,6 +736,10 @@ let cat = 'Food & Water';
 let cond = 'Like New';
 let tcgCond = 'Mint';
 let tcgPref = 'Trade Only';
+let tcgSubcat = 'Pokémon';
+let scSubcat = 'Baseball';
+let scCond = 'Mint';
+let scGraded = false;
 let foilOn = false;
 let prefs = {trade:true, tc:true, cash:false, bundle:false};
 
@@ -655,13 +795,48 @@ function pickCat(el, c) {
   el.classList.add('active');
   cat = c;
   livePreview();
-  // Show/hide TCG section
   const isTCG = c === 'Trading Cards';
+  const isSC  = c === 'Sports Cards';
   document.getElementById('tcgSection').classList.toggle('show', isTCG);
-  document.getElementById('condSection').style.display = isTCG ? 'none' : 'block';
+  document.getElementById('scSection').classList.toggle('show', isSC);
+  // Hide general condition section for card categories
+  document.getElementById('condSection').style.display = (isTCG || isSC) ? 'none' : 'block';
   // Update badges
   const ess = ['Food & Water','Garden'].includes(c);
-  document.getElementById('prevBadges').innerHTML = `<span class="pbadge local">LOCAL</span>${ess?'<span class="pbadge ess">ESSENTIAL</span>':''}${isTCG?'<span class="pbadge tcg">🃏 TCG</span>':''}`;
+  document.getElementById('prevBadges').innerHTML =
+    `<span class="pbadge local">LOCAL</span>` +
+    (ess ? '<span class="pbadge ess">ESSENTIAL</span>' : '') +
+    (isTCG ? '<span class="pbadge tcg">🃏 TCG</span>' : '') +
+    (isSC  ? '<span class="pbadge sportsc">⚾ SPORTS</span>' : '');
+}
+
+/* ── TCG SUBCATEGORY ── */
+function pickTcgSubcat(el, sub) {
+  document.querySelectorAll('#tcgSubcatPills .subcat-pill').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  tcgSubcat = sub;
+}
+
+/* ── SPORTS CARDS SUBCATEGORY ── */
+function pickScSubcat(el, sub) {
+  document.querySelectorAll('#scSubcatPills .subcat-pill').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  scSubcat = sub;
+}
+
+/* ── SPORTS CARDS CONDITION ── */
+function pickScCond(el, c) {
+  document.querySelectorAll('.sc-cond-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  scCond = c;
+}
+
+/* ── GRADED ── */
+function pickGraded(val) {
+  scGraded = val;
+  document.getElementById('gradedYes').classList.toggle('active', val);
+  document.getElementById('gradedNo').classList.toggle('active', !val);
+  document.getElementById('gradeBox').style.display = val ? 'block' : 'none';
 }
 
 /* ── CONDITION ── */
@@ -734,13 +909,19 @@ function livePreview() {
   pt.textContent = t || 'Your item title will appear here…';
   pt.classList.toggle('filled', !!t);
   const isTCG = cat === 'Trading Cards';
-  const displayCond = isTCG ? tcgCond : cond;
+  const isSC  = cat === 'Sports Cards';
+  const displayCond = isTCG ? tcgCond : isSC ? scCond : cond;
   document.getElementById('prevCond').textContent = `${displayCond} · ${cat}`;
   document.getElementById('prevVal').textContent = v ? `$${parseFloat(v).toLocaleString()}` : '$—';
   document.getElementById('prevWants').textContent = w ? `Wants: ${w}` : 'Wants: tell us what you need';
   const ess = ['Food & Water','Garden'].includes(cat);
   const cashOk = prefs.cash || prefs.tc;
-  document.getElementById('prevBadges').innerHTML = `<span class="pbadge local">LOCAL</span>${ess?'<span class="pbadge ess">ESSENTIAL</span>':''}${cashOk?'<span class="pbadge cash">💵 CASH OK</span>':''}${isTCG?'<span class="pbadge tcg">🃏 TCG</span>':''}`;
+  document.getElementById('prevBadges').innerHTML =
+    `<span class="pbadge local">LOCAL</span>` +
+    (ess ? '<span class="pbadge ess">ESSENTIAL</span>' : '') +
+    (cashOk ? '<span class="pbadge cash">💵 CASH OK</span>' : '') +
+    (isTCG ? '<span class="pbadge tcg">🃏 TCG</span>' : '') +
+    (isSC  ? '<span class="pbadge sportsc">⚾ SPORTS</span>' : '');
 }
 
 /* ── CHAR COUNT ── */
@@ -757,6 +938,7 @@ function aiTitle() {
     'Electronics': ['Dell Laptop i7 16GB RAM, Good Condition','iPhone 13 128GB Unlocked'],
     'Tools': ['DeWalt 20V Cordless Drill + 2 Batteries','Craftsman 200-Piece Tool Set'],
     'Trading Cards': ['Charizard ex Full Art — Scarlet & Violet','Luffy Alt Art OP01-060 — One Piece TCG','Black Lotus Alpha — MTG (HP)'],
+    'Sports Cards': ['Mike Trout 2023 Topps Chrome PSA 10','LeBron James Rookie Card BGS 9','Tom Brady Prizm SP Near Mint'],
     'default': ['Trek 27-Speed Mountain Bike, Good Condition','Fender Acoustic Guitar + Hard Case']
   };
   const list = pool[cat] || pool.default;
@@ -773,6 +955,7 @@ function aiTags() {
     'Electronics': ['tech','electronics','gadget','device'],
     'Tools': ['tools','diy','hardware','workshop'],
     'Trading Cards': ['tcg','cards','pokemon','collectible','rare'],
+    'Sports Cards': ['sports','cards','collectible','graded','rookie'],
     'Sports': ['outdoor','fitness','sport','exercise']
   };
   (map[cat] || ['trade','local','swap','barter']).forEach(t => {
@@ -788,6 +971,7 @@ function aiWants() {
     'Electronics': ['Tools, camping gear, or sports equipment'],
     'Tools': ['Electronics, bike, or outdoor equipment'],
     'Trading Cards': ['Other TCG cards, sealed packs, or gaming accessories'],
+    'Sports Cards': ['Other sports cards, sealed hobby boxes, or TCG cards'],
     'Music': ['Electronics, PA system, or camera']
   };
   const s = map[cat] || ['Tools, food, electronics, or clothing'];
@@ -841,13 +1025,19 @@ function validate(s) {
   if (s === 2) {
     if (!document.getElementById('fTitle').value.trim()) showErr('eTit','fTitle');
     if (!document.getElementById('fDesc').value.trim()) showErr('eDesc','fDesc');
-    if (cat === 'Trading Cards' && !document.getElementById('tcgGame').value) { toast('🃏','Please select a TCG game.'); ok = false; }
   }
   if (s === 3) {
     if (!document.getElementById('fWants').value.trim()) showErr('eWants','fWants');
     if (!prefs.trade && !prefs.tc && !prefs.cash) { toast('⚠️','Enable at least one offer type.'); ok = false; }
   }
   return ok;
+}
+
+/* ── BUILD CATEGORY VALUE ── */
+function buildCategoryValue() {
+  if (cat === 'Trading Cards') return `TCG - ${tcgSubcat}`;
+  if (cat === 'Sports Cards')  return `Sports Cards - ${scSubcat}`;
+  return cat;
 }
 
 /* ── REVIEW ── */
@@ -866,25 +1056,32 @@ function buildReview() {
   if (prefs.bundle) activePrefs.push('📦 Bundle');
   const meetupLabel = meetup==='public' ? 'Public place only' : meetup==='curb' ? 'Curbside' : 'Either works';
   const isTCG = cat === 'Trading Cards';
+  const isSC  = cat === 'Sports Cards';
+  const catValue = buildCategoryValue();
 
   let photoHtml = photos.length
     ? `<div style="display:flex;gap:6px;margin-bottom:12px">${photos.slice(0,4).map(p=>`<img src="${p}" style="width:58px;height:58px;object-fit:cover;border-radius:6px;border:1px solid var(--border)">`).join('')}${photos.length>4?`<div style="width:58px;height:58px;border-radius:6px;background:#f1f5f9;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#94a3b8">+${photos.length-4}</div>`:''}</div>`
     : `<div style="background:#fff7ed;border:1px solid #fed7aa;border-radius:6px;padding:10px;font-size:12px;color:#9a3412;margin-bottom:10px">⚠️ No photos added.</div>`;
 
-  let tcgHtml = '';
+  let cardHtml = '';
   if (isTCG) {
-    const game = document.getElementById('tcgGame').value;
     const set = document.getElementById('tcgSet').value;
     const cardNum = document.getElementById('tcgCardNum').value;
-    tcgHtml = rr('🃏','TCG Details',`${game}${set?' · '+set:''}${cardNum?' · #'+cardNum:''} · ${tcgCond}${foilOn?' · ✨ Foil':''}`)
+    cardHtml = rr('🃏','TCG Details',`${tcgSubcat}${set?' · '+set:''}${cardNum?' · #'+cardNum:''} · ${tcgCond}${foilOn?' · ✨ Foil':''}`)
              + rr('🔄','Trade Pref',tcgPref);
+  }
+  if (isSC) {
+    const player = document.getElementById('scPlayer').value;
+    const year = document.getElementById('scYear').value;
+    const gradeInfo = scGraded ? ` · ${document.getElementById('scGrader').value} ${document.getElementById('scGrade').value}` : ' · Raw';
+    cardHtml = rr('⚾','Sports Card',`${scSubcat}${player?' · '+player:''}${year?' · '+year:''} · ${scCond}${gradeInfo}`);
   }
 
   document.getElementById('reviewRows').innerHTML = photoHtml
     + rr('📦','Item',`<strong>${title}</strong> · Qty: ${qty}`)
-    + rr('🏷️','Category',`${cat} · ${isTCG ? tcgCond : cond}`)
+    + rr('🏷️','Category', catValue)
     + rr('💰','Est. Value',val ? `$${parseFloat(val).toLocaleString()}` : 'Not specified')
-    + tcgHtml
+    + cardHtml
     + rr('🤝','Looking For', wants)
     + rr('✅','Offer Types', activePrefs.join(', ') || 'None selected')
     + rr('📍','Meetup', `${meetupLabel} · ${avail}`)
@@ -919,13 +1116,13 @@ function screenContent(title, desc) {
 /* ── PUBLISH ── */
 async function publish(btn) {
   const title = document.getElementById('fTitle').value.trim();
-  const desc = document.getElementById('fDesc').value.trim();
+  const desc  = document.getElementById('fDesc').value.trim();
 
   // Screen content
   const screen = screenContent(title, desc);
   if (screen.blocked) {
     toast('🚫', `Listing blocked: ${screen.category.toLowerCase()} items are not allowed.`);
-    setTimeout(() => alert(`⚠️ Listing Not Allowed\n\nThis listing was flagged for: ${screen.category}\n\nIf you believe this is an error, contact support@tradezyhq.com`), 500);
+    setTimeout(() => alert(`⚠️ Listing Not Allowed\n\nFlagged for: ${screen.category}\n\nIf you believe this is an error, contact support@tradezyhq.com`), 500);
     return;
   }
 
@@ -933,13 +1130,24 @@ async function publish(btn) {
   btn.disabled = true;
 
   try {
+    // Double-check W-9 on publish
+    const { data: profile } = await sb.from('users').select('w9_on_file').eq('id', currentUser.id).single();
+    if (!profile?.w9_on_file) {
+      toast('⚠️', 'Tax information required before publishing. Redirecting…');
+      setTimeout(() => window.location.href = 'alltrades-verification.html', 1500);
+      btn.textContent = '🚀 Publish — Go Live Now!';
+      btn.disabled = false;
+      return;
+    }
+
     const isTCG = cat === 'Trading Cards';
-    const val = parseFloat(document.getElementById('fVal').value) || 0;
-    const qty = parseInt(document.getElementById('fQty').value) || 1;
+    const isSC  = cat === 'Sports Cards';
+    const val   = parseFloat(document.getElementById('fVal').value) || 0;
+    const qty   = parseInt(document.getElementById('fQty').value) || 1;
     const wants = document.getElementById('fWants').value.trim();
     const meetup = document.getElementById('fMeetup').value;
-    const avail = document.getElementById('fAvail').value;
-    const area = document.getElementById('fArea').value.trim();
+    const avail  = document.getElementById('fAvail').value;
+    const area   = document.getElementById('fArea').value.trim();
     const minCash = parseFloat(document.getElementById('fMinCash').value) || 0;
 
     // Build trade type
@@ -947,32 +1155,43 @@ async function publish(btn) {
     if (prefs.cash && !prefs.trade && !prefs.tc) tradeType = 'cash';
     else if (prefs.cash || prefs.tc) tradeType = 'item_plus_cash';
 
-    // Build description — include TCG details if applicable
+    // Build category — subcategory stored as "TCG - Pokémon" or "Sports Cards - Baseball"
+    const categoryValue = buildCategoryValue();
+
+    // Build description with card details appended
     let fullDesc = desc;
     if (isTCG) {
-      const game = document.getElementById('tcgGame').value;
       const set = document.getElementById('tcgSet').value;
       const cardNum = document.getElementById('tcgCardNum').value;
-      fullDesc += `\n\n[TCG] Game: ${game}${set?' | Set: '+set:''}${cardNum?' | #'+cardNum:''} | Condition: ${tcgCond}${foilOn?' | ✨ Foil/Holo':''}`;
+      fullDesc += `\n\n[TCG] Game: ${tcgSubcat}${set?' | Set: '+set:''}${cardNum?' | #'+cardNum:''} | Condition: ${tcgCond}${foilOn?' | ✨ Foil/Holo':''}`;
+    }
+    if (isSC) {
+      const player = document.getElementById('scPlayer').value;
+      const year   = document.getElementById('scYear').value;
+      const gradeInfo = scGraded ? ` | ${document.getElementById('scGrader').value} ${document.getElementById('scGrade').value}` : ' | Raw/Ungraded';
+      fullDesc += `\n\n[Sports Card] Sport: ${scSubcat}${player?' | Player: '+player:''}${year?' | Year/Set: '+year:''} | Condition: ${scCond}${gradeInfo}`;
     }
 
+    // Condition value
+    const condValue = isTCG ? tcgCond : isSC ? scCond : cond;
+
     const { data, error } = await sb.from('listings').insert({
-      user_id: currentUser.id,
+      user_id:        currentUser.id,
       title,
-      description: fullDesc,
-      condition: isTCG ? tcgCond : cond,
-      category: cat,
+      description:    fullDesc,
+      condition:      condValue,
+      category:       categoryValue,
       estimated_value: val,
-      quantity: qty,
+      quantity:       qty,
       wants,
-      tags: tags.length > 0 ? tags : null,
-      trade_type: tradeType,
-      meetup_style: meetup,
-      availability: avail,
-      area_note: area || null,
+      tags:           tags.length > 0 ? tags : null,
+      trade_type:     tradeType,
+      meetup_style:   meetup,
+      availability:   avail,
+      area_note:      area || null,
       min_cash_offer: minCash || null,
-      photos: photos.length > 0 ? photos : null,
-      status: 'active'
+      photos:         photos.length > 0 ? photos : null,
+      status:         'active'
     }).select().single();
 
     if (error) throw error;
@@ -981,7 +1200,6 @@ async function publish(btn) {
     document.getElementById('pFill').style.width = '100%';
     document.getElementById('pLabel').textContent = 'Published! 🎉';
     ['pill1','pill2','pill3','pill4'].forEach(id => { document.getElementById(id).className = 'step-pill done'; });
-
     document.getElementById('reviewRows').style.display = 'none';
     document.getElementById('reviewBtns').style.display = 'none';
     document.getElementById('head4Icon').textContent = '🎉';
@@ -989,9 +1207,11 @@ async function publish(btn) {
     document.getElementById('head4Sub').textContent = 'Visible to traders near you right now.';
     document.getElementById('successWrap').classList.add('show');
     document.getElementById('sucTitle').textContent = title;
-    document.getElementById('sucMeta').textContent = `Just listed in ${cat} · 0 offers`;
+    document.getElementById('sucMeta').textContent = `Just listed in ${categoryValue} · 0 offers`;
     if (photos[0]) document.getElementById('sucImg').innerHTML = `<img src="${photos[0]}" style="width:56px;height:56px;object-fit:cover;border-radius:8px">`;
     toast('🚀', `"${title}" is now live!`);
+
+    if (typeof gtag !== 'undefined') gtag('event', 'listing_published', { event_category: 'listings', event_label: categoryValue });
 
   } catch(e) {
     console.error(e);
@@ -1004,7 +1224,8 @@ async function publish(btn) {
 /* ── RESET ── */
 function resetAll() {
   photos = []; tags = []; cat = 'Food & Water'; cond = 'Like New'; step = 1;
-  tcgCond = 'Mint'; tcgPref = 'Trade Only'; foilOn = false;
+  tcgCond = 'Mint'; tcgPref = 'Trade Only'; tcgSubcat = 'Pokémon';
+  scSubcat = 'Baseball'; scCond = 'Mint'; scGraded = false; foilOn = false;
   prefs = {trade:true, tc:true, cash:false, bundle:false};
   document.getElementById('successWrap').classList.remove('show');
   document.getElementById('card4').style.display = 'none';
@@ -1013,10 +1234,14 @@ function resetAll() {
   document.getElementById('head4Icon').textContent = '✅';
   document.getElementById('head4Title').textContent = 'Review & Publish';
   document.getElementById('head4Sub').textContent = 'Everything look good? Go live instantly.';
-  ['fTitle','fDesc','fWants','fVal','fArea'].forEach(id => { const el = document.getElementById(id); if(el) el.value = ''; });
+  ['fTitle','fDesc','fWants','fVal','fArea','tcgSet','tcgCardNum','scPlayer','scYear'].forEach(id => {
+    const el = document.getElementById(id); if(el) el.value = '';
+  });
   document.getElementById('fQty').value = '1';
   document.getElementById('tcgSection').classList.remove('show');
+  document.getElementById('scSection').classList.remove('show');
   document.getElementById('condSection').style.display = 'block';
+  document.getElementById('gradeBox').style.display = 'none';
   updateProg(1); renderGrid(); livePreview();
   show(1); window.scrollTo({top:0, behavior:'smooth'});
 }
@@ -1030,9 +1255,6 @@ function toast(icon, msg) {
   clearTimeout(window._tt);
   window._tt = setTimeout(() => t.classList.remove('show'), 3500);
 }
-
-// Init
-renderGrid(); updateProg(1); livePreview();
 </script>
 </body>
 </html>
