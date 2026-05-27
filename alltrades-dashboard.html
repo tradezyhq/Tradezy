@@ -253,8 +253,11 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
   <!-- SIDEBAR -->
   <div class="sidebar">
     <div class="sb-sec">
-      <div class="sb-label">Overview</div>
-      <div class="nav-item active"><span class="ni-ic">🏠</span>Dashboard</div>
+  <a href="alltrades.html" class="nav-item" style="background:#eff6ff;color:var(--blue);margin-bottom:6px;border:1px solid #bfdbfe;">
+    <span class="ni-ic">🏪</span>Browse Marketplace
+  </a>
+  <div class="sb-label">Overview</div>
+  <div class="nav-item active"><span class="ni-ic">🏠</span>Dashboard</div>
       <div class="nav-item" onclick="document.getElementById('offersPanel').scrollIntoView({behavior:'smooth'})"><span class="ni-ic">📨</span>Offers<span class="ni-badge" id="sbOfferBadge" style="display:none">0</span></div>
       <div class="nav-item" onclick="window.location.href='alltrades-messages.html'"><span class="ni-ic">💬</span>Messages<span class="ni-badge" id="sbMsgBadge" style="display:none">0</span></div>
       <div class="nav-item" onclick="document.getElementById('tradesPanel').scrollIntoView({behavior:'smooth'})"><span class="ni-ic">🔄</span>Active Trades<span class="ni-badge green" id="sbTradeBadge" style="display:none">0</span></div>
