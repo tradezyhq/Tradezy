@@ -639,7 +639,7 @@ window.addEventListener('popstate', (e) => {
    BUILD QUERY
 ═══════════════════════════════════════════ */
 function buildQuery(forCount = false) {
-  let q = sb.from('listings').select(forCount ? 'id', { count: 'exact', head: true } : 'id,title,condition,estimated_value,photos,category,location_city,location_state,view_count,created_at');
+  let q = sb.from('listings').select(forCount ? 'id' : 'id,title,condition,estimated_value,photos,category,location_city,location_state,view_count,created_at', forCount ? { count: 'exact', head: true } : {});
 
   q = q.eq('status', 'active');
 
