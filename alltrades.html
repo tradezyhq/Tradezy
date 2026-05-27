@@ -225,7 +225,7 @@ footer{background:var(--navy);color:#64748b;padding:36px 20px 20px;margin-top:20
     </div>
 
     <!-- TCG (expandable) -->
-    <div class="cat-item" data-cat="Trading Cards" onclick="toggleExpand(this,'Trading Cards','Trading Cards')">
+    <div class="cat-item" data-cat="Trading Cards" onclick=" toggleExpand(event,this,'Trading Cards','Trading Cards')">
       <div class="cat-item-left"><span class="cat-em">🎴</span><span class="cat-item-label">Trading Cards</span></div>
       <span class="cat-arrow" id="arrow-tcg">›</span>
     </div>
@@ -239,7 +239,7 @@ footer{background:var(--navy);color:#64748b;padding:36px 20px 20px;margin-top:20
     </div>
 
     <!-- Sports Cards (expandable) -->
-    <div class="cat-item" data-cat="Sports Cards" onclick="toggleExpand(this,'Sports Cards','Sports Cards')">
+    <div class="cat-item" data-cat="Sports Cards" onclick=" toggleExpand(event,this,'Sports Cards','Sports Cards')">
       <div class="cat-item-left"><span class="cat-em">🃏</span><span class="cat-item-label">Sports Cards</span></div>
       <span class="cat-arrow" id="arrow-sports">›</span>
     </div>
@@ -513,33 +513,18 @@ function selectSubCat(el, cat, label) {
   loadPopular();
 }
 
-function toggleExpand(el, cat, label) {
+function toggleExpand(event, el, cat, label) {
+  event.stopPropagation();
   const isTCG = cat === 'Trading Cards';
   const key = isTCG ? 'tcg' : 'sports';
   const sub = document.getElementById('sub-' + key);
   const arrow = document.getElementById('arrow-' + key);
-  const isOpen = sub.classList.contains('open');
-
-  if (isOpen) {
-    closeExpand(key);
-    // If no sub selected, select the parent
-    if (!document.querySelector('.sub-item.active')) {
-      clearActiveSidebar();
-      el.classList.add('active');
-      currentCat = cat;
-      currentLabel = label;
-      currentPage = 1;
-      document.getElementById('feedTitle').textContent = label;
-      updateUrl();
-      updateSeoMeta();
-      loadFeed();
-      loadPopular();
-    }
+  if (sub.classList.contains('open')) {
+    sub.classList.remove('open');
+    arrow.classList.remove('open');
   } else {
     sub.classList.add('open');
     arrow.classList.add('open');
-    clearActiveSidebar();
-    el.classList.add('active');
   }
 }
 
