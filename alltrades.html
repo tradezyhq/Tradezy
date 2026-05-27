@@ -4,13 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Tradezy — Trade Local. Live Better.</title>
-<meta name="description" content="Tradezy is a free local peer-to-peer trading platform launching July 17, 2026 in Connecticut and Ohio. Trade items safely with verified traders near you.">
+<meta name="description" content="Browse local trading listings near you. Trade items safely with verified traders in Connecticut and Ohio on Tradezy.">
 <meta property="og:title" content="Tradezy — Trade Local. Live Better.">
-<meta property="og:description" content="Safe, local item trading launching July 17 in Connecticut & Ohio. Sign up now to lock in Founding Trader status.">
+<meta property="og:description" content="Safe, local peer-to-peer trading marketplace. Browse listings, make offers, and trade with neighbors near you.">
 <meta property="og:url" content="https://tradezyhq.com">
 <script src="supabase.min.js"></script>
-
-<!-- Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-0NSDNDFP0H"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -18,437 +16,349 @@
   gtag('js', new Date());
   gtag('config', 'G-0NSDNDFP0H');
 </script>
-
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Lato:ital,wght@0,300;0,400;0,700;1,300&display=swap" rel="stylesheet">
 <style>
 :root {
   --navy:#0a1628;--navy2:#112240;--blue:#1a56db;--blue-l:#2563eb;
   --gold:#f59e0b;--gold-l:#fbbf24;--green:#16a34a;--green-l:#22c55e;
   --red:#dc2626;--orange:#ea580c;--text:#1a1a2e;--muted:#475569;
-  --light:#94a3b8;--border:#e2e8f0;--bg:#f8fafc;--white:#fff;--surface:#f8fafc;
+  --light:#94a3b8;--border:#e2e8f0;--bg:#f1f5f9;--white:#fff;--surface:#f8fafc;
+  --sidebar-w:240px;
 }
 *{margin:0;padding:0;box-sizing:border-box;}
 body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);font-size:14px;}
 a{text-decoration:none;color:inherit;}
 
-/* ── LAUNCH BANNER ── */
-.launch-banner{background:linear-gradient(90deg,#1e3a8a,#1a56db,#1e3a8a);padding:10px 20px;text-align:center;font-size:13px;color:#fff;display:flex;align-items:center;justify-content:center;gap:10px;position:relative;}
-.launch-banner strong{color:var(--gold-l);}
-.lb-badge{background:var(--gold);color:var(--navy);font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:11px;padding:2px 10px;border-radius:3px;letter-spacing:.5px;animation:pulse 2s infinite;}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.8}}
-.lb-cta{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);color:#fff;padding:4px 14px;border-radius:4px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:12px;cursor:pointer;transition:all .15s;white-space:nowrap;}
-.lb-cta:hover{background:rgba(255,255,255,.25);}
+/* ── FOUNDING BANNER ── */
+#foundingBanner{background:linear-gradient(90deg,#1e3a8a,#1a56db,#1e3a8a);padding:9px 20px;text-align:center;font-size:12px;color:#fff;display:flex;align-items:center;justify-content:center;gap:10px;position:relative;}
+#foundingBanner strong{color:var(--gold-l);}
+.fb-badge{background:var(--gold);color:var(--navy);font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:10px;padding:2px 9px;border-radius:3px;letter-spacing:.5px;}
+.fb-cta{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);color:#fff;padding:3px 12px;border-radius:4px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:11px;cursor:pointer;transition:all .15s;white-space:nowrap;}
+.fb-cta:hover{background:rgba(255,255,255,.25);}
+.fb-close{position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;color:rgba(255,255,255,.5);font-size:16px;cursor:pointer;line-height:1;}
+.fb-close:hover{color:#fff;}
 
 /* ── NAV ── */
 header{background:var(--white);border-bottom:2px solid var(--border);position:sticky;top:0;z-index:200;box-shadow:0 2px 12px rgba(0,0,0,.07);}
-.nav-main{display:flex;align-items:center;gap:16px;padding:10px 20px;max-width:1280px;margin:0 auto;}
-.logo{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:2rem;letter-spacing:-1px;white-space:nowrap;flex-shrink:0;}
-.logo .a{color:var(--navy);}.logo .t{color:var(--blue);}.logo .d{color:var(--gold);font-size:2.2rem;}
-.nav-cta-area{display:flex;align-items:center;gap:8px;margin-left:auto;}
-.nav-launch-chip{display:flex;align-items:center;gap:6px;background:#eff6ff;border:1px solid #bfdbfe;border-radius:99px;padding:5px 14px;font-size:12px;color:#1e3a8a;font-weight:700;}
-.nav-launch-dot{width:7px;height:7px;background:var(--green);border-radius:50%;animation:pulse 1.5s infinite;}
-.btn-nav-signup{background:var(--gold);color:var(--navy);border:none;padding:8px 20px;border-radius:7px;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.95rem;cursor:pointer;transition:all .15s;}
-.btn-nav-signup:hover{background:var(--gold-l);transform:translateY(-1px);}
-.btn-nav-login{background:transparent;color:var(--muted);border:1px solid var(--border);padding:8px 16px;border-radius:7px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.88rem;cursor:pointer;transition:all .15s;}
+.nav-main{display:flex;align-items:center;gap:12px;padding:9px 20px;max-width:1400px;margin:0 auto;}
+.logo{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.9rem;letter-spacing:-1px;white-space:nowrap;flex-shrink:0;cursor:pointer;}
+.logo .a{color:var(--navy);}.logo .t{color:var(--blue);}.logo .d{color:var(--gold);font-size:2.1rem;}
+.nav-search{flex:1;max-width:560px;position:relative;}
+.nav-search input{width:100%;border:1.5px solid var(--border);border-radius:8px;padding:9px 14px 9px 38px;font-size:13px;font-family:'Lato',sans-serif;color:var(--text);outline:none;transition:border-color .15s;background:var(--surface);}
+.nav-search input:focus{border-color:var(--blue);background:#fff;}
+.nav-search-icon{position:absolute;left:11px;top:50%;transform:translateY(-50%);font-size:15px;pointer-events:none;color:var(--light);}
+.nav-right{display:flex;align-items:center;gap:8px;margin-left:auto;}
+.btn-nav-post{background:var(--gold);color:var(--navy);border:none;padding:8px 16px;border-radius:7px;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.88rem;cursor:pointer;transition:all .15s;white-space:nowrap;}
+.btn-nav-post:hover{background:var(--gold-l);transform:translateY(-1px);}
+.btn-nav-login{background:transparent;color:var(--muted);border:1px solid var(--border);padding:8px 14px;border-radius:7px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.85rem;cursor:pointer;transition:all .15s;}
 .btn-nav-login:hover{border-color:var(--blue);color:var(--blue);}
+.btn-nav-dash{background:var(--navy);color:#fff;border:none;padding:8px 14px;border-radius:7px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.85rem;cursor:pointer;transition:all .15s;}
+.btn-nav-dash:hover{background:#0f2547;}
 
-/* ── HERO ── */
-.hero{background:linear-gradient(135deg,var(--navy) 0%,#0f2547 50%,#0a3060 100%);min-height:520px;display:flex;align-items:center;position:relative;overflow:hidden;padding:60px 20px;}
-.hero::before{content:'';position:absolute;top:-100px;right:-100px;width:500px;height:500px;background:radial-gradient(circle,rgba(245,158,11,.12) 0%,transparent 65%);pointer-events:none;}
-.hero::after{content:'⇄';position:absolute;right:5%;bottom:-20px;font-size:18rem;color:rgba(255,255,255,.025);font-family:'Barlow Condensed',sans-serif;pointer-events:none;}
-.hero-inner{max-width:1280px;margin:0 auto;width:100%;display:grid;grid-template-columns:1fr 420px;gap:48px;align-items:center;position:relative;z-index:1;}
-.hero-tag{display:inline-flex;align-items:center;gap:6px;background:rgba(245,158,11,.15);border:1px solid rgba(245,158,11,.3);color:var(--gold-l);font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:5px 14px;border-radius:4px;margin-bottom:18px;}
-.hero h1{font-family:'Barlow Condensed',sans-serif;font-size:clamp(2.2rem,5vw,3.8rem);font-weight:900;color:#fff;line-height:1.02;letter-spacing:-.5px;margin-bottom:14px;}
-.hero h1 .hl{color:var(--gold-l);}
-.hero-sub{color:#94a3b8;font-size:15px;line-height:1.6;max-width:480px;margin-bottom:10px;}
-.hero-sub strong{color:#cbd5e1;}
-.launch-states{display:flex;align-items:center;gap:8px;margin-bottom:28px;flex-wrap:wrap;}
-.state-chip{display:flex;align-items:center;gap:5px;background:rgba(22,163,74,.12);border:1px solid rgba(22,163,74,.25);color:var(--green-l);font-size:12px;font-weight:700;padding:4px 12px;border-radius:99px;}
-.launch-date-chip{display:flex;align-items:center;gap:5px;background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.25);color:var(--gold-l);font-size:12px;font-weight:700;padding:4px 12px;border-radius:99px;}
-.hero-stats{display:flex;gap:24px;margin-top:28px;padding-top:22px;border-top:1px solid rgba(255,255,255,.08);}
-.hstat-num{font-family:'Barlow Condensed',sans-serif;font-size:1.5rem;font-weight:900;color:var(--gold-l);}
-.hstat-label{font-size:11px;color:#475569;text-transform:uppercase;letter-spacing:.5px;margin-top:1px;}
+/* ── LAYOUT ── */
+.page-body{max-width:1400px;margin:0 auto;padding:20px 20px;display:grid;grid-template-columns:var(--sidebar-w) 1fr;gap:20px;align-items:start;}
 
-/* ── SIGNUP CARD ── */
-.signup-card{background:rgba(255,255,255,.97);border-radius:16px;padding:28px;box-shadow:0 20px 60px rgba(0,0,0,.35);position:relative;}
-.sc-header{margin-bottom:20px;}
-.sc-title{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.4rem;color:var(--navy);margin-bottom:4px;}
-.sc-sub{font-size:12px;color:var(--muted);line-height:1.5;}
-.founding-perks{background:#fffbeb;border:1px solid #fde68a;border-radius:9px;padding:12px 14px;margin-bottom:18px;}
-.fp-title{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.82rem;color:#92400e;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;}
-.fp-item{display:flex;align-items:center;gap:7px;font-size:12px;color:#78350f;margin-bottom:5px;font-weight:700;}
-.fp-item:last-child{margin-bottom:0;}
-.signup-form{display:flex;flex-direction:column;gap:10px;}
-.sf-input{width:100%;border:1.5px solid var(--border);border-radius:8px;padding:11px 14px;font-size:14px;font-family:'Lato',sans-serif;color:var(--text);outline:none;transition:border-color .15s;}
-.sf-input:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(26,86,219,.08);}
-.sf-input::placeholder{color:var(--light);}
-.btn-signup-main{width:100%;padding:13px;background:linear-gradient(135deg,var(--gold),#d97706);color:var(--navy);border:none;border-radius:8px;font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.05rem;cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center;gap:7px;}
-.btn-signup-main:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(245,158,11,.4);}
-.btn-signup-main:disabled{background:#94a3b8;cursor:not-allowed;transform:none;box-shadow:none;}
-.sc-terms{font-size:11px;color:var(--light);text-align:center;line-height:1.5;margin-top:8px;}
-.sc-terms a{color:var(--blue);}
-.success-state{display:none;text-align:center;padding:20px 0;}
-.ss-icon{font-size:3rem;margin-bottom:12px;}
-.ss-title{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.3rem;color:var(--navy);margin-bottom:6px;}
-.ss-sub{font-size:13px;color:var(--muted);line-height:1.5;}
+/* ── SIDEBAR ── */
+.sidebar{background:var(--white);border:1px solid var(--border);border-radius:12px;overflow:hidden;position:sticky;top:68px;}
+.sidebar-header{padding:14px 16px;border-bottom:1px solid var(--border);font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.95rem;color:var(--navy);letter-spacing:.3px;display:flex;align-items:center;gap:6px;}
+.cat-item{display:flex;align-items:center;justify-content:space-between;padding:9px 16px;cursor:pointer;transition:background .12s;border-bottom:1px solid #f1f5f9;user-select:none;}
+.cat-item:hover{background:#f8fafc;}
+.cat-item.active{background:#eff6ff;border-left:3px solid var(--blue);}
+.cat-item.active .cat-item-label{color:var(--blue);font-weight:700;}
+.cat-item-left{display:flex;align-items:center;gap:9px;}
+.cat-em{font-size:1.1rem;width:22px;text-align:center;}
+.cat-item-label{font-size:13px;color:var(--text);font-weight:500;}
+.cat-arrow{font-size:10px;color:var(--light);transition:transform .2s;}
+.cat-arrow.open{transform:rotate(90deg);}
+.sub-items{display:none;background:#fafbfc;border-bottom:1px solid #f1f5f9;}
+.sub-items.open{display:block;}
+.sub-item{padding:7px 16px 7px 46px;cursor:pointer;font-size:12px;color:var(--muted);transition:all .12s;display:flex;align-items:center;gap:6px;}
+.sub-item:hover{background:#eff6ff;color:var(--blue);}
+.sub-item.active{background:#eff6ff;color:var(--blue);font-weight:700;}
+.sub-dot{width:5px;height:5px;border-radius:50%;background:currentColor;flex-shrink:0;}
+.sidebar-divider{height:1px;background:var(--border);margin:4px 0;}
 
-/* ── COUNTDOWN ── */
-.countdown-section{background:var(--navy);padding:28px 20px;text-align:center;}
-.countdown-inner{max-width:800px;margin:0 auto;}
-.cd-label{font-size:13px;color:#64748b;text-transform:uppercase;letter-spacing:1px;font-weight:700;margin-bottom:16px;}
-.cd-units{display:flex;align-items:center;justify-content:center;gap:8px;}
-.cd-unit{text-align:center;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:14px 20px;min-width:80px;}
-.cd-num{font-family:'Barlow Condensed',sans-serif;font-size:2.5rem;font-weight:900;color:var(--gold-l);line-height:1;}
-.cd-lbl{font-size:10px;color:#475569;text-transform:uppercase;letter-spacing:.5px;margin-top:3px;}
-.cd-sep{font-family:'Barlow Condensed',sans-serif;font-size:2rem;font-weight:900;color:#1e3a5f;margin-top:-8px;}
+/* ── MAIN CONTENT ── */
+.main-content{}
+.feed-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px;}
+.feed-title{font-family:'Barlow Condensed',sans-serif;font-size:1.4rem;font-weight:900;color:var(--navy);}
+.feed-meta{font-size:12px;color:var(--muted);}
+.feed-sort{display:flex;align-items:center;gap:6px;}
+.sort-btn{background:var(--white);border:1px solid var(--border);color:var(--muted);padding:5px 12px;border-radius:6px;font-size:12px;cursor:pointer;transition:all .12s;font-family:'Lato',sans-serif;}
+.sort-btn.active{background:var(--navy);color:#fff;border-color:var(--navy);}
+.sort-btn:hover:not(.active){border-color:var(--blue);color:var(--blue);}
 
-/* ── HOW IT WORKS ── */
-.section{max-width:1280px;margin:0 auto;padding:48px 20px;}
-.section-label{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;color:var(--blue);margin-bottom:8px;}
-.section-title{font-family:'Barlow Condensed',sans-serif;font-size:clamp(1.6rem,3vw,2.2rem);font-weight:900;color:var(--text);margin-bottom:6px;}
-.section-sub{font-size:14px;color:var(--muted);max-width:520px;line-height:1.6;margin-bottom:36px;}
-.steps-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;}
-.step-card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:22px 18px;text-align:center;transition:all .2s;position:relative;}
-.step-card:hover{box-shadow:0 8px 28px rgba(0,0,0,.1);transform:translateY(-3px);}
-.step-num{position:absolute;top:14px;right:14px;font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.8rem;color:rgba(26,86,219,.08);}
-.step-icon{width:56px;height:56px;background:#eff6ff;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.6rem;margin:0 auto 14px;border:1px solid #dbeafe;}
-.step-title{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1rem;margin-bottom:6px;}
-.step-desc{font-size:12px;color:var(--muted);line-height:1.6;}
+/* ── LISTING GRID ── */
+.listings-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:14px;margin-bottom:20px;}
+.listing-card{background:var(--white);border:1px solid var(--border);border-radius:10px;overflow:hidden;cursor:pointer;transition:all .18s;display:flex;flex-direction:column;}
+.listing-card:hover{box-shadow:0 6px 24px rgba(0,0,0,.1);transform:translateY(-2px);border-color:#cbd5e1;}
+.lc-photo{width:100%;aspect-ratio:1;object-fit:cover;background:#f1f5f9;display:block;font-size:0;}
+.lc-photo-placeholder{width:100%;aspect-ratio:1;background:linear-gradient(135deg,#f1f5f9,#e2e8f0);display:flex;align-items:center;justify-content:center;font-size:2.5rem;}
+.lc-body{padding:10px 11px 12px;flex:1;display:flex;flex-direction:column;gap:4px;}
+.lc-title{font-size:13px;font-weight:700;color:var(--text);line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.lc-meta{display:flex;align-items:center;justify-content:space-between;margin-top:auto;padding-top:6px;}
+.lc-condition{font-size:10px;font-weight:700;padding:2px 7px;border-radius:3px;background:#f1f5f9;color:var(--muted);}
+.lc-condition.New{background:#dcfce7;color:#15803d;}
+.lc-condition.Like-New{background:#dbeafe;color:#1d4ed8;}
+.lc-condition.Good{background:#fef9c3;color:#a16207;}
+.lc-condition.Fair{background:#ffedd5;color:#c2410c;}
+.lc-condition.Parts{background:#f3e8ff;color:#7e22ce;}
+.lc-value{font-family:'Barlow Condensed',sans-serif;font-size:.95rem;font-weight:800;color:var(--navy);}
 
-/* ── CATEGORIES ── */
-.cats-bg{background:linear-gradient(180deg,#f8fafc,#fff);}
-.cats-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;}
-.cat-card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:16px 10px;text-align:center;cursor:pointer;transition:all .18s;}
-.cat-card:hover{border-color:var(--blue);box-shadow:0 4px 16px rgba(26,86,219,.1);transform:translateY(-2px);}
-.cat-card.new{border-color:var(--gold);background:#fffbeb;}
-.cat-em{font-size:2rem;margin-bottom:7px;}
-.cat-name{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.85rem;color:var(--text);}
-.cat-badge{display:inline-block;background:var(--red);color:#fff;font-size:9px;font-weight:800;padding:1px 5px;border-radius:3px;margin-top:3px;letter-spacing:.3px;}
+/* ── PAGINATION ── */
+.pagination{display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:32px;}
+.pg-btn{background:var(--white);border:1px solid var(--border);color:var(--muted);width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;transition:all .15s;}
+.pg-btn:hover:not(:disabled){border-color:var(--blue);color:var(--blue);}
+.pg-btn:disabled{opacity:.35;cursor:not-allowed;}
+.pg-info{font-size:13px;color:var(--muted);padding:0 8px;}
 
-/* ── FOUNDING TRADER SECTION ── */
-.founding-bg{background:linear-gradient(135deg,var(--navy),#0f3460);}
-.founding-inner{max-width:1280px;margin:0 auto;padding:56px 20px;display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;}
-.founding-title{font-family:'Barlow Condensed',sans-serif;font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:900;color:#fff;line-height:1.05;margin-bottom:14px;}
-.founding-sub{color:#94a3b8;font-size:14px;line-height:1.7;margin-bottom:24px;}
-.perks-list{display:flex;flex-direction:column;gap:12px;}
-.perk-item{display:flex;align-items:flex-start;gap:12px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:13px 15px;}
-.perk-icon{font-size:1.3rem;flex-shrink:0;margin-top:1px;}
-.perk-text{flex:1;}
-.perk-title{font-weight:700;font-size:13px;color:#fff;margin-bottom:2px;}
-.perk-desc{font-size:11px;color:#64748b;line-height:1.5;}
-.founding-cta{text-align:center;}
-.founding-cta-card{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:28px;}
-.fcc-num{font-family:'Barlow Condensed',sans-serif;font-size:3rem;font-weight:900;color:var(--gold-l);margin-bottom:4px;}
-.fcc-label{font-size:13px;color:#94a3b8;margin-bottom:20px;}
-.fcc-spots{background:rgba(220,38,38,.1);border:1px solid rgba(220,38,38,.2);border-radius:8px;padding:9px;font-size:12px;color:#fca5a5;font-weight:700;margin-bottom:18px;}
-.btn-founding{width:100%;padding:13px;background:var(--gold);color:var(--navy);border:none;border-radius:8px;font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.05rem;cursor:pointer;transition:all .15s;}
-.btn-founding:hover{background:var(--gold-l);transform:translateY(-1px);}
+/* ── SECTION ROWS ── */
+.row-section{margin-bottom:28px;}
+.row-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+.row-title{font-family:'Barlow Condensed',sans-serif;font-size:1.15rem;font-weight:900;color:var(--navy);display:flex;align-items:center;gap:7px;}
+.row-title-icon{font-size:1rem;}
+.row-scroll{display:flex;gap:12px;overflow-x:auto;padding-bottom:6px;scrollbar-width:none;}
+.row-scroll::-webkit-scrollbar{display:none;}
+.row-scroll .listing-card{min-width:160px;flex-shrink:0;}
 
-/* ── SAFETY SECTION ── */
-.safety-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
-.safety-card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:22px 18px;}
-.safety-icon{font-size:2rem;margin-bottom:10px;}
-.safety-title{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1rem;margin-bottom:6px;}
-.safety-desc{font-size:12px;color:var(--muted);line-height:1.6;}
+/* ── NEAR YOU SIGNUP PROMPT ── */
+.near-you-prompt{background:linear-gradient(135deg,var(--navy),#0f3460);border-radius:12px;padding:28px 32px;display:flex;align-items:center;justify-content:space-between;gap:24px;}
+.nyp-text{}
+.nyp-title{font-family:'Barlow Condensed',sans-serif;font-size:1.3rem;font-weight:900;color:#fff;margin-bottom:6px;}
+.nyp-sub{font-size:13px;color:#94a3b8;line-height:1.5;}
+.nyp-actions{display:flex;gap:8px;flex-shrink:0;}
+.btn-nyp-signup{background:var(--gold);color:var(--navy);border:none;padding:10px 20px;border-radius:7px;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.9rem;cursor:pointer;transition:all .15s;white-space:nowrap;}
+.btn-nyp-signup:hover{background:var(--gold-l);}
+.btn-nyp-login{background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.2);padding:10px 18px;border-radius:7px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.9rem;cursor:pointer;transition:all .15s;white-space:nowrap;}
+.btn-nyp-login:hover{background:rgba(255,255,255,.18);}
 
-/* ── LAUNCH CITIES ── */
-.cities-section{background:var(--navy);padding:48px 20px;}
-.cities-inner{max-width:1280px;margin:0 auto;text-align:center;}
-.cities-title{font-family:'Barlow Condensed',sans-serif;font-size:clamp(1.6rem,3vw,2.2rem);font-weight:900;color:#fff;margin-bottom:8px;}
-.cities-sub{color:#64748b;font-size:14px;margin-bottom:36px;}
-.cities-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;max-width:700px;margin:0 auto 32px;}
-.city-card{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:24px;text-align:center;transition:all .2s;}
-.city-card:hover{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.2);}
-.city-em{font-size:2.5rem;margin-bottom:10px;}
-.city-name{font-family:'Barlow Condensed',sans-serif;font-size:1.3rem;font-weight:900;color:#fff;margin-bottom:4px;}
-.city-desc{font-size:12px;color:#64748b;line-height:1.5;}
-.city-badge{display:inline-block;background:rgba(22,163,74,.15);border:1px solid rgba(22,163,74,.3);color:var(--green-l);font-size:10px;font-weight:800;padding:2px 10px;border-radius:3px;margin-top:8px;letter-spacing:.3px;}
+/* ── EMPTY STATE ── */
+.empty-state{text-align:center;padding:56px 20px;color:var(--muted);}
+.empty-icon{font-size:3rem;margin-bottom:12px;}
+.empty-title{font-family:'Barlow Condensed',sans-serif;font-size:1.2rem;font-weight:800;color:var(--text);margin-bottom:6px;}
+.empty-sub{font-size:13px;line-height:1.6;}
+.btn-post-first{background:var(--gold);color:var(--navy);border:none;padding:10px 22px;border-radius:7px;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.9rem;cursor:pointer;margin-top:14px;transition:all .15s;}
+.btn-post-first:hover{background:var(--gold-l);}
 
-/* ── BOTTOM CTA ── */
-.bottom-cta{background:linear-gradient(135deg,#f8fafc,#fff);padding:56px 20px;text-align:center;}
-.bc-inner{max-width:600px;margin:0 auto;}
-.bc-title{font-family:'Barlow Condensed',sans-serif;font-size:clamp(1.8rem,4vw,2.6rem);font-weight:900;color:var(--navy);margin-bottom:10px;}
-.bc-sub{font-size:14px;color:var(--muted);line-height:1.6;margin-bottom:28px;}
-.bc-email-wrap{display:flex;gap:8px;max-width:420px;margin:0 auto 14px;}
-.bc-email{flex:1;border:1.5px solid var(--border);border-radius:8px;padding:12px 14px;font-size:14px;font-family:'Lato',sans-serif;outline:none;transition:border-color .15s;}
-.bc-email:focus{border-color:var(--blue);}
-.bc-btn{background:var(--navy);color:#fff;border:none;padding:12px 22px;border-radius:8px;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.95rem;cursor:pointer;transition:all .15s;white-space:nowrap;}
-.bc-btn:hover{background:#0f2547;}
-.bc-note{font-size:11px;color:var(--light);}
-
-/* ── FOOTER ── */
-footer{background:var(--navy);color:#64748b;padding:36px 20px 20px;}
-.footer-inner{max-width:1280px;margin:0 auto;}
-.footer-top{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:32px;margin-bottom:28px;}
-.footer-brand .logo{font-size:1.6rem;margin-bottom:10px;display:block;}
-.footer-brand p{font-size:12px;line-height:1.6;color:#475569;max-width:240px;}
-.footer-col-title{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.9rem;color:#94a3b8;letter-spacing:.5px;text-transform:uppercase;margin-bottom:12px;}
-.footer-links{display:flex;flex-direction:column;gap:8px;}
-.footer-links a{font-size:13px;color:#475569;cursor:pointer;transition:color .15s;}
-.footer-links a:hover{color:#94a3b8;}
-.footer-bottom{border-top:1px solid #1e293b;padding-top:16px;display:flex;align-items:center;justify-content:space-between;font-size:12px;flex-wrap:wrap;gap:8px;}
-.footer-bottom-links{display:flex;gap:16px;}
-.footer-bottom-links a{color:#475569;cursor:pointer;}
-.footer-bottom-links a:hover{color:#94a3b8;}
+/* ── SKELETON LOADER ── */
+.skeleton{background:linear-gradient(90deg,#f1f5f9 25%,#e2e8f0 50%,#f1f5f9 75%);background-size:200% 100%;animation:shimmer 1.4s infinite;}
+@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+.skel-card{background:var(--white);border:1px solid var(--border);border-radius:10px;overflow:hidden;}
+.skel-photo{aspect-ratio:1;width:100%;}
+.skel-body{padding:10px 11px 12px;}
+.skel-line{height:12px;border-radius:4px;margin-bottom:6px;}
+.skel-line.w80{width:80%;}
+.skel-line.w50{width:50%;}
 
 /* ── TOAST ── */
 .toast{position:fixed;bottom:20px;right:20px;background:var(--navy);color:#e2e8f0;border:1px solid #1e3a5f;border-left:4px solid var(--green);border-radius:8px;padding:10px 16px;font-size:13px;z-index:9999;display:flex;align-items:center;gap:9px;max-width:300px;box-shadow:0 8px 26px rgba(0,0,0,.3);transform:translateX(120%);transition:transform .3s ease;}
 .toast.show{transform:translateX(0);}
 .toast.error{border-left-color:var(--red);}
 
+/* ── FOOTER ── */
+footer{background:var(--navy);color:#64748b;padding:36px 20px 20px;margin-top:20px;}
+.footer-inner{max-width:1400px;margin:0 auto;}
+.footer-top{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:32px;margin-bottom:28px;}
+.footer-brand .flogo{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.6rem;letter-spacing:-1px;margin-bottom:10px;display:block;}
+.footer-brand .flogo .a{color:#fff;}.footer-brand .flogo .t{color:var(--blue);}.footer-brand .flogo .d{color:var(--gold);}
+.footer-brand p{font-size:12px;line-height:1.6;color:#475569;max-width:240px;}
+.footer-col-title{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.9rem;color:#94a3b8;letter-spacing:.5px;text-transform:uppercase;margin-bottom:12px;}
+.footer-links{display:flex;flex-direction:column;gap:8px;}
+.footer-links a{font-size:13px;color:#475569;transition:color .15s;}
+.footer-links a:hover{color:#94a3b8;}
+.footer-bottom{border-top:1px solid #1e293b;padding-top:16px;display:flex;align-items:center;justify-content:space-between;font-size:12px;flex-wrap:wrap;gap:8px;}
+.footer-bottom-links{display:flex;gap:16px;}
+.footer-bottom-links a{color:#475569;}
+.footer-bottom-links a:hover{color:#94a3b8;}
+
 @media(max-width:900px){
-  .hero-inner{grid-template-columns:1fr;}.signup-card{max-width:460px;margin:0 auto;}
-  .steps-grid{grid-template-columns:repeat(2,1fr);}
-  .cats-grid{grid-template-columns:repeat(3,1fr);}
-  .founding-inner{grid-template-columns:1fr;}
-  .safety-grid{grid-template-columns:1fr;}
-  .cities-grid{grid-template-columns:1fr;}
+  .page-body{grid-template-columns:1fr;}
+  .sidebar{position:static;display:none;}
+  .sidebar.mobile-open{display:block;}
   .footer-top{grid-template-columns:1fr 1fr;}
-  .bc-email-wrap{flex-direction:column;}
+  .near-you-prompt{flex-direction:column;text-align:center;}
+  .nyp-actions{justify-content:center;}
 }
 @media(max-width:600px){
-  .cats-grid{grid-template-columns:repeat(2,1fr);}
-  .steps-grid{grid-template-columns:1fr;}
   .footer-top{grid-template-columns:1fr;}
-  .cd-units{gap:4px;}.cd-unit{padding:10px 12px;min-width:60px;}
-  .cd-num{font-size:1.8rem;}
+  .listings-grid{grid-template-columns:repeat(2,1fr);}
 }
 </style>
 </head>
 <body>
 
-<!-- LAUNCH BANNER -->
-<div class="launch-banner">
-  <span class="lb-badge">LAUNCHING JULY 17</span>
-  <span>Tradezy goes live in <strong>Connecticut & Ohio</strong> — Sign up now for <strong>Founding Trader</strong> perks</span>
-  <button class="lb-cta" onclick="scrollToSignup()">Claim Your Spot →</button>
+<!-- FOUNDING TRADER BANNER (hides after July 17) -->
+<div id="foundingBanner">
+  <span class="fb-badge">FOUNDING TRADER</span>
+  <span>Lock in <strong>lifetime 3% fees</strong> before July 17 launch — <strong>20+ traders</strong> already signed up</span>
+  <button class="fb-cta" onclick="window.location.href='alltrades-auth.html'">Claim Your Spot →</button>
+  <button class="fb-close" onclick="document.getElementById('foundingBanner').style.display='none'" title="Dismiss">×</button>
 </div>
 
 <!-- NAV -->
 <header>
   <div class="nav-main">
-    <div class="logo"><span class="a">Trade</span><span class="t">zy</span><span class="d">.</span></div>
-    <div class="nav-cta-area">
-      <div class="nav-launch-chip"><div class="nav-launch-dot"></div>July 17 Launch</div>
-      <button class="btn-nav-login" onclick="window.location.href='alltrades-auth.html'">Sign In</button>
-      <button class="btn-nav-signup" onclick="scrollToSignup()">⭐ Join Free</button>
+    <div class="logo" onclick="resetFeed()"><span class="a">Trade</span><span class="t">zy</span><span class="d">.</span></div>
+    <div class="nav-search">
+      <span class="nav-search-icon">🔍</span>
+      <input type="text" id="searchInput" placeholder="Search listings…" oninput="onSearch(this.value)">
+    </div>
+    <div class="nav-right">
+      <button class="btn-nav-post" onclick="goPost()">+ Post a Listing</button>
+      <div id="navAuthArea">
+        <button class="btn-nav-login" onclick="window.location.href='alltrades-auth.html'">Sign In</button>
+      </div>
     </div>
   </div>
 </header>
 
-<!-- HERO -->
-<section class="hero">
-  <div class="hero-inner">
-    <div class="hero-content">
-      <div class="hero-tag">🔄 Local Peer-to-Peer Trading Platform</div>
-      <h1>Trade What You Have<br>for <span class="hl">What You Need</span></h1>
-      <p class="hero-sub">
-        Tradezy connects you with real traders in your community for safe, verified, in-person swaps.
-        <strong>No shipping. No strangers from across the country. Just neighbors trading locally.</strong>
-      </p>
-      <div class="launch-states">
-        <div class="state-chip">📍 Connecticut — Statewide</div>
-        <div class="state-chip">📍 Ohio — Statewide</div>
-        <div class="launch-date-chip">🗓️ Launching July 17, 2026</div>
+<!-- PAGE BODY -->
+<div class="page-body">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">🗂️ Browse Categories</div>
+
+    <!-- All -->
+    <div class="cat-item active" data-cat="" onclick="selectCat(this,'','All Listings')">
+      <div class="cat-item-left"><span class="cat-em">🏠</span><span class="cat-item-label">All Listings</span></div>
+    </div>
+
+    <!-- TCG (expandable) -->
+    <div class="cat-item" data-cat="Trading Cards" onclick="toggleExpand(this,'Trading Cards','Trading Cards')">
+      <div class="cat-item-left"><span class="cat-em">🎴</span><span class="cat-item-label">Trading Cards</span></div>
+      <span class="cat-arrow" id="arrow-tcg">›</span>
+    </div>
+    <div class="sub-items" id="sub-tcg">
+      <div class="sub-item" data-cat="TCG - Pokémon" onclick="selectSubCat(this,'TCG - Pokémon','Pokémon Cards')"><span class="sub-dot"></span>Pokémon</div>
+      <div class="sub-item" data-cat="TCG - One Piece" onclick="selectSubCat(this,'TCG - One Piece','One Piece TCG')"><span class="sub-dot"></span>One Piece</div>
+      <div class="sub-item" data-cat="TCG - MTG" onclick="selectSubCat(this,'TCG - MTG','Magic: The Gathering')"><span class="sub-dot"></span>Magic: The Gathering</div>
+      <div class="sub-item" data-cat="TCG - Yu-Gi-Oh" onclick="selectSubCat(this,'TCG - Yu-Gi-Oh','Yu-Gi-Oh!')"><span class="sub-dot"></span>Yu-Gi-Oh!</div>
+      <div class="sub-item" data-cat="TCG - Lorcana" onclick="selectSubCat(this,'TCG - Lorcana','Lorcana')"><span class="sub-dot"></span>Lorcana</div>
+      <div class="sub-item" data-cat="TCG - Flesh and Blood" onclick="selectSubCat(this,'TCG - Flesh and Blood','Flesh & Blood')"><span class="sub-dot"></span>Flesh & Blood</div>
+    </div>
+
+    <!-- Sports Cards (expandable) -->
+    <div class="cat-item" data-cat="Sports Cards" onclick="toggleExpand(this,'Sports Cards','Sports Cards')">
+      <div class="cat-item-left"><span class="cat-em">🃏</span><span class="cat-item-label">Sports Cards</span></div>
+      <span class="cat-arrow" id="arrow-sports">›</span>
+    </div>
+    <div class="sub-items" id="sub-sports">
+      <div class="sub-item" data-cat="Sports Cards - Baseball" onclick="selectSubCat(this,'Sports Cards - Baseball','Baseball Cards')"><span class="sub-dot"></span>Baseball</div>
+      <div class="sub-item" data-cat="Sports Cards - Football" onclick="selectSubCat(this,'Sports Cards - Football','Football Cards')"><span class="sub-dot"></span>Football</div>
+      <div class="sub-item" data-cat="Sports Cards - Basketball" onclick="selectSubCat(this,'Sports Cards - Basketball','Basketball Cards')"><span class="sub-dot"></span>Basketball</div>
+      <div class="sub-item" data-cat="Sports Cards - Hockey" onclick="selectSubCat(this,'Sports Cards - Hockey','Hockey Cards')"><span class="sub-dot"></span>Hockey</div>
+      <div class="sub-item" data-cat="Sports Cards - Soccer" onclick="selectSubCat(this,'Sports Cards - Soccer','Soccer Cards')"><span class="sub-dot"></span>Soccer</div>
+    </div>
+
+    <div class="sidebar-divider"></div>
+
+    <div class="cat-item" data-cat="Electronics" onclick="selectCat(this,'Electronics','Electronics')">
+      <div class="cat-item-left"><span class="cat-em">⚡</span><span class="cat-item-label">Electronics</span></div>
+    </div>
+    <div class="cat-item" data-cat="Gaming" onclick="selectCat(this,'Gaming','Gaming')">
+      <div class="cat-item-left"><span class="cat-em">🎮</span><span class="cat-item-label">Gaming</span></div>
+    </div>
+    <div class="cat-item" data-cat="Tools" onclick="selectCat(this,'Tools','Tools')">
+      <div class="cat-item-left"><span class="cat-em">🔧</span><span class="cat-item-label">Tools</span></div>
+    </div>
+    <div class="cat-item" data-cat="Sports" onclick="selectCat(this,'Sports','Sports & Outdoors')">
+      <div class="cat-item-left"><span class="cat-em">🚲</span><span class="cat-item-label">Sports & Outdoors</span></div>
+    </div>
+    <div class="cat-item" data-cat="Music" onclick="selectCat(this,'Music','Music')">
+      <div class="cat-item-left"><span class="cat-em">🎵</span><span class="cat-item-label">Music</span></div>
+    </div>
+    <div class="cat-item" data-cat="Clothing" onclick="selectCat(this,'Clothing','Clothing')">
+      <div class="cat-item-left"><span class="cat-em">👗</span><span class="cat-item-label">Clothing</span></div>
+    </div>
+    <div class="cat-item" data-cat="Furniture" onclick="selectCat(this,'Furniture','Furniture')">
+      <div class="cat-item-left"><span class="cat-em">🪑</span><span class="cat-item-label">Furniture</span></div>
+    </div>
+    <div class="cat-item" data-cat="Books" onclick="selectCat(this,'Books','Books & Media')">
+      <div class="cat-item-left"><span class="cat-em">📚</span><span class="cat-item-label">Books & Media</span></div>
+    </div>
+    <div class="cat-item" data-cat="Garden" onclick="selectCat(this,'Garden','Garden & Farm')">
+      <div class="cat-item-left"><span class="cat-em">🌱</span><span class="cat-item-label">Garden & Farm</span></div>
+    </div>
+    <div class="cat-item" data-cat="Kids" onclick="selectCat(this,'Kids','Kids & Baby')">
+      <div class="cat-item-left"><span class="cat-em">👶</span><span class="cat-item-label">Kids & Baby</span></div>
+    </div>
+    <div class="cat-item" data-cat="Food & Water" onclick="selectCat(this,'Food & Water','Food & Water')">
+      <div class="cat-item-left"><span class="cat-em">🥗</span><span class="cat-item-label">Food & Water</span></div>
+    </div>
+    <div class="cat-item" data-cat="Art" onclick="selectCat(this,'Art','Art')">
+      <div class="cat-item-left"><span class="cat-em">🎨</span><span class="cat-item-label">Art</span></div>
+    </div>
+    <div class="cat-item" data-cat="Other" onclick="selectCat(this,'Other','Other')">
+      <div class="cat-item-left"><span class="cat-em">📦</span><span class="cat-item-label">Other</span></div>
+    </div>
+  </aside>
+
+  <!-- MAIN FEED -->
+  <main class="main-content">
+
+    <!-- Feed Header -->
+    <div class="feed-header">
+      <div>
+        <div class="feed-title" id="feedTitle">All Listings</div>
+        <div class="feed-meta" id="feedMeta">Loading listings…</div>
       </div>
-      <div class="hero-stats">
-        <div class="hstat"><div class="hstat-num">$0</div><div class="hstat-label">Listing Fee</div></div>
-        <div class="hstat"><div class="hstat-num">5%</div><div class="hstat-label">Only on Completed Trades</div></div>
-        <div class="hstat"><div class="hstat-num">3%</div><div class="hstat-label">Founding Trader Rate</div></div>
-        <div class="hstat"><div class="hstat-num">20+</div><div class="hstat-label">Founding Traders</div></div>
+      <div class="feed-sort">
+        <button class="sort-btn active" id="sortNewest" onclick="setSort('newest')">Newest</button>
+        <button class="sort-btn" id="sortValue" onclick="setSort('value')">Highest Value</button>
+        <button class="sort-btn" id="sortPopular" onclick="setSort('popular')">Most Viewed</button>
       </div>
     </div>
 
-    <!-- SIGNUP CARD -->
-    <div class="signup-card" id="signupCard">
-      <div class="sc-header">
-        <div class="sc-title">🏆 Become a Founding Trader</div>
-        <div class="sc-sub">Lock in lifetime perks before July 17 launch. Over 20 traders already signed up.</div>
-      </div>
-      <div class="founding-perks">
-        <div class="fp-title">⭐ Founding Trader Perks</div>
-        <div class="fp-item">💰 Lifetime 3% fee instead of 5% — locked in forever</div>
-        <div class="fp-item">🏅 Founding Trader badge on your profile</div>
-        <div class="fp-item">🚀 Early access to every new feature</div>
-        <div class="fp-item">🌟 Featured on the Tradezy homepage at launch</div>
-      </div>
-      <div class="signup-form" id="signupForm">
-        <input class="sf-input" type="email" id="heroEmail" placeholder="Your email address" required>
-        <button class="btn-signup-main" onclick="submitSignup()" id="signupBtn">
-          ⭐ Claim Founding Trader Status
-        </button>
-        <div class="sc-terms">By signing up you agree to our <a href="alltrades-terms.html">Terms of Service</a> and <a href="alltrades-privacy.html">Privacy Policy</a>. No spam, ever.</div>
-      </div>
-      <div class="success-state" id="successState">
-        <div class="ss-icon">🎉</div>
-        <div class="ss-title">You're In!</div>
-        <div class="ss-sub">Welcome to Tradezy. Your Founding Trader status is confirmed. We'll email you before July 17 launch with next steps.</div>
-      </div>
+    <!-- Listings Grid -->
+    <div class="listings-grid" id="listingsGrid">
+      <!-- Skeletons while loading -->
+      <div class="skel-card"><div class="skel-photo skeleton"></div><div class="skel-body"><div class="skel-line w80 skeleton"></div><div class="skel-line w50 skeleton"></div></div></div>
+      <div class="skel-card"><div class="skel-photo skeleton"></div><div class="skel-body"><div class="skel-line w80 skeleton"></div><div class="skel-line w50 skeleton"></div></div></div>
+      <div class="skel-card"><div class="skel-photo skeleton"></div><div class="skel-body"><div class="skel-line w80 skeleton"></div><div class="skel-line w50 skeleton"></div></div></div>
+      <div class="skel-card"><div class="skel-photo skeleton"></div><div class="skel-body"><div class="skel-line w80 skeleton"></div><div class="skel-line w50 skeleton"></div></div></div>
+      <div class="skel-card"><div class="skel-photo skeleton"></div><div class="skel-body"><div class="skel-line w80 skeleton"></div><div class="skel-line w50 skeleton"></div></div></div>
+      <div class="skel-card"><div class="skel-photo skeleton"></div><div class="skel-body"><div class="skel-line w80 skeleton"></div><div class="skel-line w50 skeleton"></div></div></div>
     </div>
-  </div>
-</section>
 
-<!-- COUNTDOWN -->
-<div class="countdown-section">
-  <div class="countdown-inner">
-    <div class="cd-label">⏳ Launch countdown — July 17, 2026</div>
-    <div class="cd-units">
-      <div class="cd-unit"><div class="cd-num" id="cdDays">--</div><div class="cd-lbl">Days</div></div>
-      <div class="cd-sep">:</div>
-      <div class="cd-unit"><div class="cd-num" id="cdHours">--</div><div class="cd-lbl">Hours</div></div>
-      <div class="cd-sep">:</div>
-      <div class="cd-unit"><div class="cd-num" id="cdMins">--</div><div class="cd-lbl">Minutes</div></div>
-      <div class="cd-sep">:</div>
-      <div class="cd-unit"><div class="cd-num" id="cdSecs">--</div><div class="cd-lbl">Seconds</div></div>
+    <!-- Pagination -->
+    <div class="pagination" id="paginationRow">
+      <button class="pg-btn" id="pgPrev" onclick="changePage(-1)" disabled title="Previous">‹</button>
+      <span class="pg-info" id="pgInfo">Page 1</span>
+      <button class="pg-btn" id="pgNext" onclick="changePage(1)" disabled title="Next">›</button>
     </div>
-  </div>
-</div>
 
-<!-- HOW IT WORKS -->
-<div style="background:var(--white);">
-  <div class="section">
-    <div class="section-label">Simple by design</div>
-    <div class="section-title">How Tradezy Works</div>
-    <div class="section-sub">Four steps from listing to trade — no complicated setup, no fees until you complete a trade.</div>
-    <div class="steps-grid">
-      <div class="step-card">
-        <div class="step-num">1</div>
-        <div class="step-icon">📦</div>
-        <div class="step-title">List What You Have</div>
-        <div class="step-desc">Post your item with photos, condition, and what you want in return. Free to list, no upfront cost.</div>
+    <!-- RECENTLY VIEWED -->
+    <div class="row-section" id="recentlyViewedSection" style="display:none;">
+      <div class="row-header">
+        <div class="row-title"><span class="row-title-icon">👁️</span> Recently Viewed</div>
       </div>
-      <div class="step-card">
-        <div class="step-num">2</div>
-        <div class="step-icon">🔍</div>
-        <div class="step-title">Browse & Offer</div>
-        <div class="step-desc">Find listings near you. Make an offer with your item, add cash if needed, and negotiate freely.</div>
-      </div>
-      <div class="step-card">
-        <div class="step-num">3</div>
-        <div class="step-icon">📍</div>
-        <div class="step-title">Meet Locally</div>
-        <div class="step-desc">Agree on a safe public meetup spot. Both parties confirm the exchange through the app.</div>
-      </div>
-      <div class="step-card">
-        <div class="step-num">4</div>
-        <div class="step-icon">⭐</div>
-        <div class="step-title">Rate & Build Trust</div>
-        <div class="step-desc">Leave a rating after each trade. Build your reputation and unlock better trading opportunities.</div>
-      </div>
+      <div class="row-scroll" id="recentlyViewedRow"></div>
     </div>
-  </div>
-</div>
 
-<!-- CATEGORIES -->
-<div class="cats-bg">
-  <div class="section" style="padding-top:36px;">
-    <div class="section-label">Trade anything</div>
-    <div class="section-title">What People Trade on Tradezy</div>
-    <div class="section-sub">From Pokémon cards to power tools — if it has value, you can trade it.</div>
-    <div class="cats-grid">
-      <div class="cat-card new"><div class="cat-em">🃏</div><div class="cat-name">Sports Cards</div><div class="cat-badge">NEW</div></div>
-      <div class="cat-card new"><div class="cat-em">🎴</div><div class="cat-name">TCG Cards</div><div class="cat-badge">NEW</div></div>
-      <div class="cat-card"><div class="cat-em">⚡</div><div class="cat-name">Electronics</div></div>
-      <div class="cat-card"><div class="cat-em">🔧</div><div class="cat-name">Tools</div></div>
-      <div class="cat-card"><div class="cat-em">🎮</div><div class="cat-name">Gaming</div></div>
-      <div class="cat-card"><div class="cat-em">🚲</div><div class="cat-name">Sports & Outdoors</div></div>
-      <div class="cat-card"><div class="cat-em">🎵</div><div class="cat-name">Music</div></div>
-      <div class="cat-card"><div class="cat-em">👗</div><div class="cat-name">Clothing</div></div>
-      <div class="cat-card"><div class="cat-em">🪑</div><div class="cat-name">Furniture</div></div>
-      <div class="cat-card"><div class="cat-em">📚</div><div class="cat-name">Books & Media</div></div>
-      <div class="cat-card"><div class="cat-em">🌱</div><div class="cat-name">Garden & Farm</div></div>
-      <div class="cat-card"><div class="cat-em">👶</div><div class="cat-name">Kids & Baby</div></div>
+    <!-- POPULAR IN CATEGORY -->
+    <div class="row-section" id="popularSection">
+      <div class="row-header">
+        <div class="row-title"><span class="row-title-icon">🔥</span> <span id="popularTitle">Popular Right Now</span></div>
+      </div>
+      <div class="row-scroll" id="popularRow">
+        <div class="skel-card" style="min-width:160px"><div class="skel-photo skeleton"></div><div class="skel-body"><div class="skel-line w80 skeleton"></div><div class="skel-line w50 skeleton"></div></div></div>
+        <div class="skel-card" style="min-width:160px"><div class="skel-photo skeleton"></div><div class="skel-body"><div class="skel-line w80 skeleton"></div><div class="skel-line w50 skeleton"></div></div></div>
+        <div class="skel-card" style="min-width:160px"><div class="skel-photo skeleton"></div><div class="skel-body"><div class="skel-line w80 skeleton"></div><div class="skel-line w50 skeleton"></div></div></div>
+      </div>
     </div>
-  </div>
-</div>
 
-<!-- FOUNDING TRADER -->
-<div class="founding-bg">
-  <div class="founding-inner">
-    <div>
-      <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(245,158,11,.15);border:1px solid rgba(245,158,11,.3);color:var(--gold-l);font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:4px 12px;border-radius:4px;margin-bottom:16px;">⭐ Limited Availability</div>
-      <div class="founding-title">Lock In 3% Fees<br>Before Launch Day</div>
-      <div class="founding-sub">Founding Traders get a lifetime reduced platform fee of 3% instead of 5% — locked in forever regardless of how the platform grows. Sign up before July 17 to qualify.</div>
-      <div class="perks-list">
-        <div class="perk-item"><div class="perk-icon">💰</div><div class="perk-text"><div class="perk-title">Lifetime 3% Platform Fee</div><div class="perk-desc">Standard rate is 5%. You pay 3% forever — even as Tradezy grows nationwide.</div></div></div>
-        <div class="perk-item"><div class="perk-icon">🏅</div><div class="perk-text"><div class="perk-title">Founding Trader Badge</div><div class="perk-desc">Permanent badge on your profile showing you were here from the start.</div></div></div>
-        <div class="perk-item"><div class="perk-icon">🚀</div><div class="perk-text"><div class="perk-title">Early Feature Access</div><div class="perk-desc">Test every new feature before it goes public. Your feedback shapes the platform.</div></div></div>
-        <div class="perk-item"><div class="perk-icon">🌟</div><div class="perk-text"><div class="perk-title">Homepage Featured Listing</div><div class="perk-desc">Your first listing gets featured on the Tradezy homepage at launch.</div></div></div>
+    <!-- NEAR YOU -->
+    <div class="row-section" id="nearYouSection">
+      <div class="row-header">
+        <div class="row-title"><span class="row-title-icon">📍</span> Near You</div>
+      </div>
+      <div id="nearYouContent">
+        <!-- Filled by JS -->
       </div>
     </div>
-    <div class="founding-cta">
-      <div class="founding-cta-card">
-        <div class="fcc-num">20+</div>
-        <div class="fcc-label">Founding Traders already signed up</div>
-        <div class="fcc-spots">🔥 Founding Trader spots are limited — claim yours before July 17</div>
-        <input class="sf-input" type="email" id="foundingEmail" placeholder="Your email address" style="margin-bottom:10px;">
-        <button class="btn-founding" onclick="submitSignupFounding()">⭐ Claim My Founding Trader Spot</button>
-        <div style="font-size:11px;color:#475569;margin-top:10px;">No credit card. No spam. Just early access.</div>
-      </div>
-    </div>
-  </div>
-</div>
 
-<!-- SAFETY -->
-<div style="background:var(--white);">
-  <div class="section">
-    <div class="section-label">Built for trust</div>
-    <div class="section-title">Trading That's Actually Safe</div>
-    <div class="section-sub">Every feature on Tradezy is designed to protect you from the first message to the final handshake.</div>
-    <div class="safety-grid">
-      <div class="safety-card">
-        <div class="safety-icon">✅</div>
-        <div class="safety-title">Verified Meetup Confirmation</div>
-        <div class="safety-desc">Both parties tap confirm in the app after the exchange. Creates a timestamped record and unlocks ratings — no more he-said-she-said.</div>
-      </div>
-      <div class="safety-card">
-        <div class="safety-icon">⚖️</div>
-        <div class="safety-title">Dispute Resolution</div>
-        <div class="safety-desc">If something goes wrong, our team steps in with SLA-guaranteed response times. CRITICAL issues resolved within 4 hours.</div>
-      </div>
-      <div class="safety-card">
-        <div class="safety-icon">🛡️</div>
-        <div class="safety-title">Content Screening</div>
-        <div class="safety-desc">Every message and listing is scanned in real-time for prohibited content and platform bypass attempts. Your safety is automatic.</div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- LAUNCH CITIES -->
-<div class="cities-section">
-  <div class="cities-inner">
-    <div class="cities-title">Launching July 17 in Two States</div>
-    <div class="cities-sub">Phase 1 soft launch — then nationwide July 31</div>
-    <div class="cities-grid">
-      <div class="city-card">
-        <div class="city-em">🌿</div>
-        <div class="city-name">Connecticut</div>
-        <div class="city-desc">Statewide — from Meriden to New Haven, Hartford to Stamford. All of CT on day one.</div>
-        <div class="city-badge">PHASE 1 LAUNCH</div>
-      </div>
-      <div class="city-card">
-        <div class="city-em">🌻</div>
-        <div class="city-name">Ohio</div>
-        <div class="city-desc">Statewide — Athens, Columbus, Cleveland, Cincinnati and everywhere in between.</div>
-        <div class="city-badge">PHASE 1 LAUNCH</div>
-      </div>
-    </div>
-    <div style="font-size:13px;color:#475569;">Nationwide expansion launches July 31, 2026 · Built in Connecticut by a Navy veteran</div>
-  </div>
-</div>
-
-<!-- BOTTOM CTA -->
-<div class="bottom-cta">
-  <div class="bc-inner">
-    <div class="bc-title">Ready to Start Trading?</div>
-    <div class="bc-sub">Join your neighbors in Connecticut and Ohio who are already signed up. Get notified the moment Tradezy goes live on July 17.</div>
-    <div class="bc-email-wrap">
-      <input class="bc-email" type="email" id="bottomEmail" placeholder="Enter your email address">
-      <button class="bc-btn" onclick="submitSignupBottom()">Notify Me →</button>
-    </div>
-    <div class="bc-note">Free forever to browse. 5% fee only on completed trades. Founding Traders pay 3% for life.</div>
-  </div>
+  </main>
 </div>
 
 <!-- FOOTER -->
@@ -456,7 +366,7 @@ footer{background:var(--navy);color:#64748b;padding:36px 20px 20px;}
   <div class="footer-inner">
     <div class="footer-top">
       <div class="footer-brand">
-        <span class="logo"><span class="a">Trade</span><span class="t">zy</span><span class="d">.</span></span>
+        <span class="flogo"><span class="a">Trade</span><span class="t">zy</span><span class="d">.</span></span>
         <p>The free local trading marketplace. Trade items safely with verified traders in your community. Built by a Navy veteran in Connecticut.</p>
       </div>
       <div>
@@ -471,8 +381,7 @@ footer{background:var(--navy);color:#64748b;padding:36px 20px 20px;}
       <div>
         <div class="footer-col-title">Support</div>
         <div class="footer-links">
-          <a>How It Works</a>
-          <a>Safety Tips</a>
+          <a href="alltrades-faq.html">FAQ</a>
           <a href="alltrades-disputes.html">File a Dispute</a>
           <a href="mailto:support@tradezyhq.com">Contact Us</a>
         </div>
@@ -500,115 +409,538 @@ footer{background:var(--navy);color:#64748b;padding:36px 20px 20px;}
 <div class="toast" id="toastEl"><span id="toastIc">✅</span><span id="toastTx"></span></div>
 
 <script>
-/* ── Supabase ── */
+/* ═══════════════════════════════════════════
+   SUPABASE
+═══════════════════════════════════════════ */
 const sb = window.supabase.createClient(
   'https://equvwaspcoeetfsexqki.supabase.co',
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVxdXZ3YXNwY29lZXRmc2V4cWtpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgyNzc2MjQsImV4cCI6MjA5Mzg1MzYyNH0.TP6Kk3pzHW1PYMUu5D9Vu2lJrazIEagzu5csYhqkrfI'
 );
 
-/* ── COUNTDOWN ── */
-function updateCountdown() {
+/* ═══════════════════════════════════════════
+   STATE
+═══════════════════════════════════════════ */
+const PAGE_SIZE = 20;
+let currentCat  = '';        // '' = all
+let currentLabel = 'All Listings';
+let currentPage = 1;
+let totalCount  = 0;
+let currentSort = 'newest';  // 'newest' | 'value' | 'popular'
+let searchQuery = '';
+let searchTimer = null;
+let currentUser = null;
+let userState   = null;
+
+/* ═══════════════════════════════════════════
+   INIT
+═══════════════════════════════════════════ */
+(async function init() {
+  // Hide founding banner after July 17
   const launch = new Date('2026-07-17T00:00:00-04:00');
-  const now = new Date();
-  const diff = launch - now;
-  if (diff <= 0) {
-    document.getElementById('cdDays').textContent = '0';
-    document.getElementById('cdHours').textContent = '0';
-    document.getElementById('cdMins').textContent = '0';
-    document.getElementById('cdSecs').textContent = '0';
+  if (new Date() >= launch) {
+    const b = document.getElementById('foundingBanner');
+    if (b) b.style.display = 'none';
+  }
+
+  // Check session
+  const { data: { session } } = await sb.auth.getSession();
+  if (session) {
+    currentUser = session.user;
+    // Get user's state for Near You
+    const { data: profile } = await sb.from('users').select('address_state,display_name').eq('id', currentUser.id).single();
+    if (profile) {
+      userState = profile.address_state || null;
+      // Swap nav buttons
+      document.getElementById('navAuthArea').innerHTML =
+        `<button class="btn-nav-dash" onclick="window.location.href='alltrades-dashboard.html'">My Dashboard</button>`;
+    }
+  }
+
+  // Read URL params
+  const params = new URLSearchParams(window.location.search);
+  const urlCat = params.get('cat') || '';
+  const urlPage = parseInt(params.get('page')) || 1;
+
+  if (urlCat) {
+    // Find matching sidebar item and activate it
+    activateCatFromUrl(urlCat);
+  }
+
+  currentCat  = urlCat;
+  currentPage = urlPage;
+
+  // Load all sections
+  await loadFeed();
+  loadPopular();
+  loadRecentlyViewed();
+  loadNearYou();
+})();
+
+/* ═══════════════════════════════════════════
+   SIDEBAR INTERACTIONS
+═══════════════════════════════════════════ */
+function clearActiveSidebar() {
+  document.querySelectorAll('.cat-item').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.sub-item').forEach(el => el.classList.remove('active'));
+}
+
+function selectCat(el, cat, label) {
+  clearActiveSidebar();
+  el.classList.add('active');
+  // Close expandable subs if they're open and this isn't a parent
+  if (cat !== 'Trading Cards') closeExpand('tcg');
+  if (cat !== 'Sports Cards') closeExpand('sports');
+  currentCat = cat;
+  currentLabel = label;
+  currentPage = 1;
+  document.getElementById('feedTitle').textContent = label;
+  updateUrl();
+  updateSeoMeta();
+  loadFeed();
+  loadPopular();
+}
+
+function selectSubCat(el, cat, label) {
+  clearActiveSidebar();
+  el.classList.add('active');
+  currentCat = cat;
+  currentLabel = label;
+  currentPage = 1;
+  document.getElementById('feedTitle').textContent = label;
+  updateUrl();
+  updateSeoMeta();
+  loadFeed();
+  loadPopular();
+}
+
+function toggleExpand(el, cat, label) {
+  const isTCG = cat === 'Trading Cards';
+  const key = isTCG ? 'tcg' : 'sports';
+  const sub = document.getElementById('sub-' + key);
+  const arrow = document.getElementById('arrow-' + key);
+  const isOpen = sub.classList.contains('open');
+
+  if (isOpen) {
+    closeExpand(key);
+    // If no sub selected, select the parent
+    if (!document.querySelector('.sub-item.active')) {
+      clearActiveSidebar();
+      el.classList.add('active');
+      currentCat = cat;
+      currentLabel = label;
+      currentPage = 1;
+      document.getElementById('feedTitle').textContent = label;
+      updateUrl();
+      updateSeoMeta();
+      loadFeed();
+      loadPopular();
+    }
+  } else {
+    sub.classList.add('open');
+    arrow.classList.add('open');
+    clearActiveSidebar();
+    el.classList.add('active');
+  }
+}
+
+function closeExpand(key) {
+  const sub = document.getElementById('sub-' + key);
+  const arrow = document.getElementById('arrow-' + key);
+  if (sub) sub.classList.remove('open');
+  if (arrow) arrow.classList.remove('open');
+}
+
+function activateCatFromUrl(cat) {
+  // Check sub-items first
+  const sub = document.querySelector(`.sub-item[data-cat="${CSS.escape(cat)}"]`);
+  if (sub) {
+    // Open parent
+    const subContainer = sub.closest('.sub-items');
+    const key = subContainer.id.replace('sub-', '');
+    subContainer.classList.add('open');
+    const arrow = document.getElementById('arrow-' + key);
+    if (arrow) arrow.classList.add('open');
+    sub.classList.add('active');
+    // Find label
+    const text = sub.textContent.trim().replace('•','').trim();
+    currentLabel = text;
+    document.getElementById('feedTitle').textContent = text;
     return;
   }
-  const days  = Math.floor(diff / 86400000);
-  const hours = Math.floor((diff % 86400000) / 3600000);
-  const mins  = Math.floor((diff % 3600000) / 60000);
-  const secs  = Math.floor((diff % 60000) / 1000);
-  document.getElementById('cdDays').textContent  = days;
-  document.getElementById('cdHours').textContent = String(hours).padStart(2,'0');
-  document.getElementById('cdMins').textContent  = String(mins).padStart(2,'0');
-  document.getElementById('cdSecs').textContent  = String(secs).padStart(2,'0');
-}
-updateCountdown();
-setInterval(updateCountdown, 1000);
-
-/* ── SIGNUP ── */
-async function doSignup(email, source) {
-  if (!email || !email.includes('@')) {
-    showToast('⚠️', 'Please enter a valid email address.', true);
-    return false;
+  // Check main cat items
+  const main = document.querySelector(`.cat-item[data-cat="${CSS.escape(cat)}"]`);
+  if (main) {
+    main.classList.add('active');
+    currentLabel = main.querySelector('.cat-item-label').textContent;
+    document.getElementById('feedTitle').textContent = currentLabel;
   }
+}
+
+function resetFeed() {
+  clearActiveSidebar();
+  document.querySelector('.cat-item[data-cat=""]').classList.add('active');
+  currentCat = '';
+  currentLabel = 'All Listings';
+  currentPage = 1;
+  document.getElementById('feedTitle').textContent = 'All Listings';
+  document.getElementById('searchInput').value = '';
+  searchQuery = '';
+  updateUrl();
+  updateSeoMeta();
+  loadFeed();
+  loadPopular();
+}
+
+/* ═══════════════════════════════════════════
+   SEARCH
+═══════════════════════════════════════════ */
+function onSearch(val) {
+  clearTimeout(searchTimer);
+  searchTimer = setTimeout(() => {
+    searchQuery = val.trim();
+    currentPage = 1;
+    loadFeed();
+  }, 320);
+}
+
+/* ═══════════════════════════════════════════
+   SORT
+═══════════════════════════════════════════ */
+function setSort(s) {
+  currentSort = s;
+  currentPage = 1;
+  document.querySelectorAll('.sort-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('sort' + s.charAt(0).toUpperCase() + s.slice(1)).classList.add('active');
+  loadFeed();
+}
+
+/* ═══════════════════════════════════════════
+   URL + SEO
+═══════════════════════════════════════════ */
+function updateUrl() {
+  const params = new URLSearchParams();
+  if (currentCat) params.set('cat', currentCat);
+  if (currentPage > 1) params.set('page', currentPage);
+  const newUrl = window.location.pathname + (params.toString() ? '?' + params.toString() : '');
+  history.pushState({ cat: currentCat, page: currentPage }, '', newUrl);
+}
+
+function updateSeoMeta() {
+  const base = 'Tradezy — Trade Local. Live Better.';
+  const desc_base = 'Browse local trading listings near you on Tradezy.';
+  if (currentCat) {
+    document.title = `Trade ${currentLabel} Near You | Tradezy`;
+    document.querySelector('meta[name="description"]').setAttribute('content',
+      `Browse ${currentLabel} listings near you. Trade safely with verified local traders on Tradezy.`);
+  } else {
+    document.title = base;
+    document.querySelector('meta[name="description"]').setAttribute('content', desc_base);
+  }
+}
+
+// Handle browser back/forward
+window.addEventListener('popstate', (e) => {
+  if (e.state) {
+    currentCat = e.state.cat || '';
+    currentPage = e.state.page || 1;
+    clearActiveSidebar();
+    activateCatFromUrl(currentCat);
+    if (!currentCat) document.querySelector('.cat-item[data-cat=""]').classList.add('active');
+    loadFeed();
+  }
+});
+
+/* ═══════════════════════════════════════════
+   BUILD QUERY
+═══════════════════════════════════════════ */
+function buildQuery(forCount = false) {
+  let q = sb.from('listings').select(forCount ? 'id', { count: 'exact', head: true } : 'id,title,condition,estimated_value,photos,category,location_city,location_state,view_count,created_at');
+
+  q = q.eq('status', 'active');
+
+  // Category filter
+  if (currentCat) {
+    // For parent categories like "Trading Cards", match any listing starting with that prefix
+    if (currentCat === 'Trading Cards') {
+      q = q.or(`category.eq.Trading Cards,category.like.TCG - %`);
+    } else if (currentCat === 'Sports Cards') {
+      q = q.or(`category.eq.Sports Cards,category.like.Sports Cards - %`);
+    } else {
+      q = q.eq('category', currentCat);
+    }
+  }
+
+  // Search
+  if (searchQuery) {
+    q = q.ilike('title', `%${searchQuery}%`);
+  }
+
+  return q;
+}
+
+/* ═══════════════════════════════════════════
+   LOAD MAIN FEED
+═══════════════════════════════════════════ */
+async function loadFeed() {
+  const grid = document.getElementById('listingsGrid');
+
+  // Show skeletons
+  grid.innerHTML = Array(8).fill(0).map(() =>
+    `<div class="skel-card"><div class="skel-photo skeleton"></div><div class="skel-body"><div class="skel-line w80 skeleton"></div><div class="skel-line w50 skeleton"></div></div></div>`
+  ).join('');
+
   try {
-    const { error } = await sb.from('waitlist').insert({ email: email.trim().toLowerCase(), source });
-    if (error) {
-      if (error.code === '23505') {
-        showToast('✅', "You're already on the list! We'll see you July 17.");
-        return true;
-      }
-      throw error;
-    }
-    // Track signup in Google Analytics
-    if (typeof gtag !== 'undefined') {
-      gtag('event', 'signup', { event_category: 'waitlist', event_label: source });
-    }
-    return true;
+    // Count
+    let countQ = buildQuery(true);
+    const { count } = await countQ;
+    totalCount = count || 0;
+
+    // Data
+    let dataQ = buildQuery(false);
+
+    // Sort
+    if (currentSort === 'newest')  dataQ = dataQ.order('created_at', { ascending: false });
+    if (currentSort === 'value')   dataQ = dataQ.order('estimated_value', { ascending: false });
+    if (currentSort === 'popular') dataQ = dataQ.order('view_count', { ascending: false });
+
+    // Pagination
+    const from = (currentPage - 1) * PAGE_SIZE;
+    const to   = from + PAGE_SIZE - 1;
+    dataQ = dataQ.range(from, to);
+
+    const { data: listings, error } = await dataQ;
+    if (error) throw error;
+
+    renderGrid(listings || []);
+    updatePagination();
+    document.getElementById('feedMeta').textContent =
+      totalCount === 0 ? 'No listings found' : `${totalCount.toLocaleString()} listing${totalCount !== 1 ? 's' : ''}`;
+
   } catch(e) {
-    console.error(e);
-    showToast('⚠️', 'Something went wrong. Please try again.', true);
-    return false;
+    console.error('Feed load error:', e);
+    grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1"><div class="empty-icon">⚠️</div><div class="empty-title">Couldn't load listings</div><div class="empty-sub">Check your connection and try again.</div></div>`;
   }
 }
 
-async function submitSignup() {
-  const email = document.getElementById('heroEmail').value.trim();
-  const btn = document.getElementById('signupBtn');
-  btn.disabled = true;
-  btn.textContent = 'Joining…';
-  const ok = await doSignup(email, 'hero');
-  if (ok) {
-    document.getElementById('signupForm').style.display = 'none';
-    document.getElementById('successState').style.display = 'block';
-    showToast('🎉', 'Welcome to Tradezy! Founding Trader status confirmed.');
-  } else {
-    btn.disabled = false;
-    btn.innerHTML = '⭐ Claim Founding Trader Status';
+/* ═══════════════════════════════════════════
+   RENDER GRID
+═══════════════════════════════════════════ */
+function renderGrid(listings) {
+  const grid = document.getElementById('listingsGrid');
+  if (!listings.length) {
+    grid.innerHTML = `
+      <div class="empty-state" style="grid-column:1/-1">
+        <div class="empty-icon">📭</div>
+        <div class="empty-title">No listings yet${currentCat ? ' in this category' : ''}</div>
+        <div class="empty-sub">Be the first to post${currentCat ? ' a ' + currentLabel + ' listing' : ''}!</div>
+        <button class="btn-post-first" onclick="goPost()">+ Post a Listing</button>
+      </div>`;
+    return;
+  }
+  grid.innerHTML = listings.map(l => buildCardHTML(l)).join('');
+}
+
+function buildCardHTML(l) {
+  const photo = l.photos && l.photos.length > 0
+    ? `<img class="lc-photo" src="${escHtml(l.photos[0])}" alt="${escHtml(l.title)}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">`
+    : '';
+  const placeholder = `<div class="lc-photo-placeholder" ${l.photos && l.photos.length > 0 ? 'style="display:none"' : ''}>📦</div>`;
+  const condClass = (l.condition || '').replace(/\s+/g, '-');
+  const value = l.estimated_value ? `$${parseFloat(l.estimated_value).toLocaleString('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 0})}` : '—';
+  return `
+    <div class="listing-card" onclick="goListing('${l.id}')">
+      ${photo}${placeholder}
+      <div class="lc-body">
+        <div class="lc-title">${escHtml(l.title)}</div>
+        <div class="lc-meta">
+          <span class="lc-condition ${condClass}">${escHtml(l.condition || '')}</span>
+          <span class="lc-value">${value}</span>
+        </div>
+      </div>
+    </div>`;
+}
+
+/* ═══════════════════════════════════════════
+   PAGINATION
+═══════════════════════════════════════════ */
+function updatePagination() {
+  const totalPages = Math.ceil(totalCount / PAGE_SIZE);
+  document.getElementById('pgInfo').textContent = `Page ${currentPage} of ${Math.max(totalPages, 1)}`;
+  document.getElementById('pgPrev').disabled = currentPage <= 1;
+  document.getElementById('pgNext').disabled = currentPage >= totalPages;
+}
+
+function changePage(dir) {
+  currentPage += dir;
+  updateUrl();
+  loadFeed();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+/* ═══════════════════════════════════════════
+   POPULAR ROW
+═══════════════════════════════════════════ */
+async function loadPopular() {
+  const row = document.getElementById('popularRow');
+  const titleEl = document.getElementById('popularTitle');
+
+  row.innerHTML = Array(4).fill(0).map(() =>
+    `<div class="skel-card" style="min-width:160px"><div class="skel-photo skeleton"></div><div class="skel-body"><div class="skel-line w80 skeleton"></div><div class="skel-line w50 skeleton"></div></div></div>`
+  ).join('');
+
+  titleEl.textContent = currentCat ? `Popular in ${currentLabel}` : 'Popular Right Now';
+
+  try {
+    let q = sb.from('listings')
+      .select('id,title,condition,estimated_value,photos')
+      .eq('status', 'active')
+      .order('view_count', { ascending: false })
+      .limit(10);
+
+    if (currentCat) {
+      if (currentCat === 'Trading Cards') {
+        q = q.or(`category.eq.Trading Cards,category.like.TCG - %`);
+      } else if (currentCat === 'Sports Cards') {
+        q = q.or(`category.eq.Sports Cards,category.like.Sports Cards - %`);
+      } else {
+        q = q.eq('category', currentCat);
+      }
+    }
+
+    const { data, error } = await q;
+    if (error) throw error;
+
+    if (!data || !data.length) {
+      row.innerHTML = `<div style="color:var(--muted);font-size:13px;padding:12px 0">No popular listings yet.</div>`;
+      return;
+    }
+    row.innerHTML = data.map(l => buildCardHTML(l)).join('');
+  } catch(e) {
+    console.error('Popular load error:', e);
+    row.innerHTML = `<div style="color:var(--muted);font-size:13px;padding:12px 0">Couldn't load.</div>`;
   }
 }
 
-async function submitSignupFounding() {
-  const email = document.getElementById('foundingEmail').value.trim();
-  const btn = event.target;
-  btn.disabled = true;
-  btn.textContent = 'Joining…';
-  const ok = await doSignup(email, 'founding_section');
-  if (ok) {
-    btn.textContent = '✅ You\'re in!';
-    showToast('🎉', 'Founding Trader spot claimed! See you July 17.');
-  } else {
-    btn.disabled = false;
-    btn.textContent = '⭐ Claim My Founding Trader Spot';
+/* ═══════════════════════════════════════════
+   RECENTLY VIEWED ROW
+═══════════════════════════════════════════ */
+async function loadRecentlyViewed() {
+  const section = document.getElementById('recentlyViewedSection');
+  const row = document.getElementById('recentlyViewedRow');
+
+  let viewed = [];
+  try { viewed = JSON.parse(localStorage.getItem('tz_viewed') || '[]'); } catch(e) {}
+  // Keep last 10, most recent first
+  viewed = viewed.slice(0, 10);
+
+  if (!viewed.length) {
+    section.style.display = 'none';
+    return;
+  }
+
+  section.style.display = 'block';
+  row.innerHTML = `<div class="skel-card" style="min-width:160px"><div class="skel-photo skeleton"></div><div class="skel-body"><div class="skel-line w80 skeleton"></div><div class="skel-line w50 skeleton"></div></div></div>`;
+
+  try {
+    const { data, error } = await sb.from('listings')
+      .select('id,title,condition,estimated_value,photos')
+      .in('id', viewed)
+      .eq('status', 'active');
+    if (error) throw error;
+
+    if (!data || !data.length) {
+      section.style.display = 'none';
+      return;
+    }
+
+    // Maintain recency order
+    const ordered = viewed.map(id => data.find(d => d.id === id)).filter(Boolean);
+    row.innerHTML = ordered.map(l => buildCardHTML(l)).join('');
+  } catch(e) {
+    section.style.display = 'none';
   }
 }
 
-async function submitSignupBottom() {
-  const email = document.getElementById('bottomEmail').value.trim();
-  const btn = event.target;
-  btn.disabled = true;
-  btn.textContent = 'Done!';
-  const ok = await doSignup(email, 'bottom_cta');
-  if (ok) {
-    showToast('✅', "You're on the list! We'll notify you July 17.");
-    document.getElementById('bottomEmail').value = '';
-  } else {
-    btn.disabled = false;
-    btn.textContent = 'Notify Me →';
+/* ═══════════════════════════════════════════
+   NEAR YOU ROW
+═══════════════════════════════════════════ */
+async function loadNearYou() {
+  const content = document.getElementById('nearYouContent');
+
+  if (!currentUser || !userState) {
+    // Logged-out prompt
+    content.innerHTML = `
+      <div class="near-you-prompt">
+        <div class="nyp-text">
+          <div class="nyp-title">📍 See Listings Near You</div>
+          <div class="nyp-sub">Sign in or create a free account to see listings matched to your location in Connecticut, Ohio, or wherever you are.</div>
+        </div>
+        <div class="nyp-actions">
+          <button class="btn-nyp-signup" onclick="window.location.href='alltrades-auth.html'">Sign Up Free</button>
+          <button class="btn-nyp-login" onclick="window.location.href='alltrades-auth.html'">Sign In</button>
+        </div>
+      </div>`;
+    return;
+  }
+
+  content.innerHTML = Array(4).fill(0).map(() =>
+    `<div class="skel-card" style="min-width:160px;display:inline-block"><div class="skel-photo skeleton"></div><div class="skel-body"><div class="skel-line w80 skeleton"></div><div class="skel-line w50 skeleton"></div></div></div>`
+  ).join('');
+
+  try {
+    const { data, error } = await sb.from('listings')
+      .select('id,title,condition,estimated_value,photos,location_state')
+      .eq('status', 'active')
+      .eq('location_state', userState)
+      .order('created_at', { ascending: false })
+      .limit(10);
+
+    if (error) throw error;
+
+    if (!data || !data.length) {
+      content.innerHTML = `<div style="color:var(--muted);font-size:13px;padding:12px 0">No listings in your state yet — be the first to post!</div>`;
+      return;
+    }
+
+    const row = document.createElement('div');
+    row.className = 'row-scroll';
+    row.innerHTML = data.map(l => buildCardHTML(l)).join('');
+    content.innerHTML = '';
+    content.appendChild(row);
+  } catch(e) {
+    content.innerHTML = `<div style="color:var(--muted);font-size:13px;padding:12px 0">Couldn't load nearby listings.</div>`;
   }
 }
 
-function scrollToSignup() {
-  document.getElementById('signupCard').scrollIntoView({ behavior: 'smooth', block: 'center' });
-  setTimeout(() => document.getElementById('heroEmail').focus(), 600);
+/* ═══════════════════════════════════════════
+   NAVIGATION HELPERS
+═══════════════════════════════════════════ */
+function goListing(id) {
+  // Track in recently viewed
+  try {
+    let viewed = JSON.parse(localStorage.getItem('tz_viewed') || '[]');
+    viewed = [id, ...viewed.filter(v => v !== id)].slice(0, 20);
+    localStorage.setItem('tz_viewed', JSON.stringify(viewed));
+  } catch(e) {}
+  window.location.href = `alltrades-item.html?id=${id}`;
 }
 
-/* ── TOAST ── */
+function goPost() {
+  if (!currentUser) {
+    window.location.href = 'alltrades-auth.html';
+    return;
+  }
+  window.location.href = 'alltrades-post.html';
+}
+
+/* ═══════════════════════════════════════════
+   UTILS
+═══════════════════════════════════════════ */
+function escHtml(str) {
+  if (!str) return '';
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
 function showToast(icon, msg, isError = false) {
   document.getElementById('toastIc').textContent = icon;
   document.getElementById('toastTx').textContent = msg;
