@@ -773,26 +773,15 @@ async function loadPopular() {
     `<div class="skel-card" style="min-width:160px"><div class="skel-photo skeleton"></div><div class="skel-body"><div class="skel-line w80 skeleton"></div><div class="skel-line w50 skeleton"></div></div></div>`
   ).join('');
 
-  titleEl.textContent = currentCat ? `Popular in ${currentLabel}` : 'Popular Right Now';
+  titleEl.textContent = 'Popular Right Now — Nationwide';
 
   try {
-    let q = sb.from('listings')
+    const { data, error } = await sb.from('listings')
       .select('id,title,condition,estimated_value,photos')
       .eq('status', 'active')
       .order('view_count', { ascending: false })
       .limit(10);
 
-    if (currentCat) {
-      if (currentCat === 'Trading Cards') {
-        q = q.or(`category.eq.Trading Cards,category.like.TCG - %`);
-      } else if (currentCat === 'Sports Cards') {
-        q = q.or(`category.eq.Sports Cards,category.like.Sports Cards - %`);
-      } else {
-        q = q.eq('category', currentCat);
-      }
-    }
-
-    const { data, error } = await q;
     if (error) throw error;
 
     if (!data || !data.length) {
