@@ -392,6 +392,32 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
             </div>
           </div>
 
+          <div class="field">
+            <label style="font-size:11px;font-weight:700;color:#7c3aed;text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:6px">Graded Card?</label>
+            <div style="display:flex;gap:8px;">
+              <div class="tcg-cond-btn active" id="tcgGradedNo" onclick="pickTcgGraded(false)" style="flex:1">❌ Raw (Ungraded)</div>
+              <div class="tcg-cond-btn" id="tcgGradedYes" onclick="pickTcgGraded(true)" style="flex:1">✅ Graded (PSA/BGS/SGC/TAG)</div>
+            </div>
+          </div>
+          <div id="tcgGradeBox" style="display:none;margin-bottom:12px;">
+            <div class="field-row-2">
+              <div class="field">
+                <label style="font-size:11px;font-weight:700;color:#7c3aed;text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:5px">Grading Company</label>
+                <select id="tcgGrader" style="border-color:#a78bfa">
+                  <option>PSA</option>
+                  <option>BGS</option>
+                  <option>SGC</option>
+                  <option>TAG</option>
+                  <option>Other</option>
+                </select>
+              </div>
+              <div class="field">
+                <label style="font-size:11px;font-weight:700;color:#7c3aed;text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:5px">Grade</label>
+                <input type="text" id="tcgGrade" placeholder="e.g. 9, 9.5, 10" style="border-color:#a78bfa">
+              </div>
+            </div>
+          </div>
+
           <div class="foil-toggle" id="foilToggle" onclick="toggleFoil()">
             <div>
               <div class="foil-label" id="foilLabel">✨ Foil / Holo / Special Edition</div>
@@ -465,6 +491,7 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
                   <option>PSA</option>
                   <option>BGS</option>
                   <option>SGC</option>
+                  <option>TAG</option>
                   <option>Other</option>
                 </select>
               </div>
@@ -739,6 +766,7 @@ let tcgPref = 'Trade Only';
 let tcgSubcat = 'Pokémon';
 let scSubcat = 'Baseball';
 let scCond = 'Mint';
+let tcgGraded = false;
 let scGraded = false;
 let foilOn = false;
 let prefs = {trade:true, tc:true, cash:false, bundle:false};
@@ -837,6 +865,13 @@ function pickGraded(val) {
   document.getElementById('gradedYes').classList.toggle('active', val);
   document.getElementById('gradedNo').classList.toggle('active', !val);
   document.getElementById('gradeBox').style.display = val ? 'block' : 'none';
+}
+
+function pickTcgGraded(val) {
+  tcgGraded = val;
+  document.getElementById('tcgGradedYes').classList.toggle('active', val);
+  document.getElementById('tcgGradedNo').classList.toggle('active', !val);
+  document.getElementById('tcgGradeBox').style.display = val ? 'block' : 'none';
 }
 
 /* ── CONDITION ── */
@@ -1067,7 +1102,8 @@ function buildReview() {
   if (isTCG) {
     const set = document.getElementById('tcgSet').value;
     const cardNum = document.getElementById('tcgCardNum').value;
-    cardHtml = rr('🃏','TCG Details',`${tcgSubcat}${set?' · '+set:''}${cardNum?' · #'+cardNum:''} · ${tcgCond}${foilOn?' · ✨ Foil':''}`)
+    const tcgGradeInfo = tcgGraded ? ` · ${document.getElementById('tcgGrader').value} ${document.getElementById('tcgGrade').value}` : ' · Raw';
+    cardHtml = rr('🃏','TCG Details',`${tcgSubcat}${set?' · '+set:''}${cardNum?' · #'+cardNum:''} · ${tcgCond}${foilOn?' · ✨ Foil':''}${tcgGradeInfo}`)
              + rr('🔄','Trade Pref',tcgPref);
   }
   if (isSC) {
@@ -1163,7 +1199,8 @@ async function publish(btn) {
     if (isTCG) {
       const set = document.getElementById('tcgSet').value;
       const cardNum = document.getElementById('tcgCardNum').value;
-      fullDesc += `\n\n[TCG] Game: ${tcgSubcat}${set?' | Set: '+set:''}${cardNum?' | #'+cardNum:''} | Condition: ${tcgCond}${foilOn?' | ✨ Foil/Holo':''}`;
+      const tcgGradeInfo = tcgGraded ? ` | ${document.getElementById('tcgGrader').value} ${document.getElementById('tcgGrade').value}` : ' | Raw/Ungraded';
+      fullDesc += `\n\n[TCG] Game: ${tcgSubcat}${set?' | Set: '+set:''}${cardNum?' | #'+cardNum:''} | Condition: ${tcgCond}${foilOn?' | ✨ Foil/Holo':''}${tcgGradeInfo}`;
     }
     if (isSC) {
       const player = document.getElementById('scPlayer').value;
@@ -1225,7 +1262,7 @@ async function publish(btn) {
 function resetAll() {
   photos = []; tags = []; cat = 'Food & Water'; cond = 'Like New'; step = 1;
   tcgCond = 'Mint'; tcgPref = 'Trade Only'; tcgSubcat = 'Pokémon';
-  scSubcat = 'Baseball'; scCond = 'Mint'; scGraded = false; foilOn = false;
+  scSubcat = 'Baseball'; scCond = 'Mint'; tcgGraded = false; scGraded = false; foilOn = false;
   prefs = {trade:true, tc:true, cash:false, bundle:false};
   document.getElementById('successWrap').classList.remove('show');
   document.getElementById('card4').style.display = 'none';
@@ -1242,6 +1279,7 @@ function resetAll() {
   document.getElementById('scSection').classList.remove('show');
   document.getElementById('condSection').style.display = 'block';
   document.getElementById('gradeBox').style.display = 'none';
+  document.getElementById('tcgGradeBox').style.display = 'none';
   updateProg(1); renderGrid(); livePreview();
   show(1); window.scrollTo({top:0, behavior:'smooth'});
 }
