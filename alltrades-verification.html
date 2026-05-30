@@ -79,6 +79,7 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
 .sib-pending{background:var(--surface);color:var(--muted);border:1px solid var(--border);}
 .sib-soon{background:#f5f3ff;color:#5b21b6;border:1px solid #ddd6fe;}
 .sib-required{background:#fef2f2;color:#991b1b;border:1px solid #fecaca;}
+.sib-shipit{background:#e0f2fe;color:#0369a1;border:1px solid #7dd3fc;}
 
 .sl-points{padding:12px 16px;background:var(--surface);border-top:1px solid var(--border);}
 .slp-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:5px;}
@@ -114,7 +115,6 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
 .csb-sub{font-size:12px;color:#c4b5fd;line-height:1.5;}
 .csb-badge{background:rgba(167,139,250,.2);border:1px solid rgba(167,139,250,.4);color:#c4b5fd;font-size:10px;font-weight:800;padding:3px 10px;border-radius:3px;letter-spacing:.5px;white-space:nowrap;flex-shrink:0;}
 
-/* W-9 REQUIRED BANNER */
 .required-banner{background:linear-gradient(135deg,#7f1d1d,#991b1b);border-radius:10px;padding:14px 16px;display:flex;align-items:center;gap:12px;margin-bottom:16px;}
 .rb-icon{font-size:1.5rem;flex-shrink:0;}
 .rb-text{flex:1;}
@@ -127,12 +127,15 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
 .ib-purple{background:#f5f3ff;border:1px solid #ddd6fe;color:#5b21b6;}
 .ib-red{background:#fef2f2;border:1px solid #fecaca;color:#991b1b;}
 .ib-gold{background:#fffbeb;border:1px solid #fde68a;color:#92400e;}
+.ib-cyan{background:#e0f2fe;border:1px solid #7dd3fc;color:#0369a1;}
 
 .verify-btn{width:100%;padding:12px;border:none;border-radius:8px;font-family:'Barlow Condensed',sans-serif;font-size:1rem;font-weight:800;cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center;gap:7px;letter-spacing:.3px;}
 .vbtn-blue{background:var(--blue);color:#fff;}
 .vbtn-blue:hover:not(:disabled){background:var(--blue-l);transform:translateY(-1px);}
 .vbtn-green{background:var(--green);color:#fff;}
 .vbtn-green:hover:not(:disabled){background:var(--green-l);transform:translateY(-1px);}
+.vbtn-cyan{background:#0ea5e9;color:#fff;}
+.vbtn-cyan:hover:not(:disabled){background:#0284c7;transform:translateY(-1px);}
 .vbtn-outline{background:transparent;border:1.5px solid var(--border);color:var(--muted);margin-top:8px;}
 .vbtn-outline:hover:not(:disabled){border-color:#999;color:var(--text);}
 .verify-btn:disabled{opacity:.4;cursor:not-allowed;transform:none!important;}
@@ -143,6 +146,13 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
 .field input:focus,.field select:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(26,86,219,.07);}
 .field input.valid{border-color:var(--green);}
 .field-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+
+/* PAYMENT PLATFORM PILLS */
+.payment-platform-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px;}
+.pp-pill{border:1.5px solid var(--border);border-radius:10px;padding:10px 8px;text-align:center;cursor:pointer;transition:all .15s;font-size:12px;font-weight:700;color:var(--muted);background:var(--white);}
+.pp-pill:hover{border-color:#0ea5e9;color:#0369a1;background:#f0f9ff;}
+.pp-pill.active{border-color:#0ea5e9;color:#0369a1;background:#e0f2fe;}
+.pp-pill-icon{font-size:1.3rem;display:block;margin-bottom:4px;}
 
 /* W-9 CERTIFICATION */
 .w9-cert{background:var(--surface);border:1.5px solid var(--border);border-radius:10px;padding:14px 16px;margin-bottom:14px;}
@@ -163,6 +173,7 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
 .bc-icon.gold{background:#fffbeb;border:2px solid #fde68a;}
 .bc-icon.purple{background:#f5f3ff;border:2px solid #ddd6fe;}
 .bc-icon.red{background:#fef2f2;border:2px solid #fecaca;}
+.bc-icon.cyan{background:#e0f2fe;border:2px solid #7dd3fc;}
 .bc-info{flex:1;min-width:0;}
 .bc-name{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.9rem;margin-bottom:2px;}
 .bc-desc{font-size:11px;color:var(--muted);}
@@ -183,7 +194,7 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
 .toast.show{transform:translateX(0);}
 .toast.error{border-left-color:var(--red);}
 
-@media(max-width:800px){.steps-layout{grid-template-columns:1fr;}.step-list{position:static;}.hero{grid-template-columns:1fr;}.trust-score-wrap{display:none;}.badge-showcase{grid-template-columns:1fr;}.field-row{grid-template-columns:1fr;}}
+@media(max-width:800px){.steps-layout{grid-template-columns:1fr;}.step-list{position:static;}.hero{grid-template-columns:1fr;}.trust-score-wrap{display:none;}.badge-showcase{grid-template-columns:1fr;}.field-row{grid-template-columns:1fr;}.payment-platform-grid{grid-template-columns:repeat(2,1fr);}}
 @media(prefers-color-scheme:dark){
   :root{--text:#f1f5f9;--muted:#94a3b8;--border:rgba(255,255,255,.1);--bg:#0f172a;--white:#1e293b;--surface:#162032;}
   body{background:#0f172a !important;color:#f1f5f9 !important;}
@@ -193,6 +204,8 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
   .step-item.active{background:rgba(26,86,219,.15) !important;}
   .step-item.completed{background:rgba(22,163,74,.08) !important;}
   .w9-cert{background:#162032 !important;}
+  .pp-pill{background:#162032 !important;}
+  .pp-pill.active{background:rgba(14,165,233,.15) !important;}
 }
 </style>
 </head>
@@ -217,7 +230,7 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
     <div>
       <div class="hero-tag">🛡️ Trader Verification</div>
       <div class="hero-title">Build Trust,<br>Trade More</div>
-      <div class="hero-desc">Verified traders get more offers, higher trade values, and access to premium features. Complete each step to increase your trust score.</div>
+      <div class="hero-desc">Verified traders get more offers, higher trade values, and access to Ship-It nationwide trading. Complete each step to increase your trust score.</div>
     </div>
     <div class="trust-score-wrap">
       <div class="trust-ring">
@@ -281,7 +294,7 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
         <div class="si-icon-wrap">🪪</div>
         <div class="si-info">
           <div class="si-title">Government ID</div>
-          <div class="si-meta">Stripe Identity</div>
+          <div class="si-meta">Stripe Identity · Ship-It required</div>
         </div>
         <div class="si-badge sib-soon">Coming Soon</div>
       </div>
@@ -293,6 +306,15 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
           <div class="si-meta">Confirm your local area</div>
         </div>
         <div class="si-badge sib-pending" id="addressBadge">+10 pts</div>
+      </div>
+
+      <div class="step-item" id="nav-payment" onclick="showStep('payment')">
+        <div class="si-icon-wrap">💸</div>
+        <div class="si-info">
+          <div class="si-title">Payment Handle</div>
+          <div class="si-meta">For Ship-It trades · Zelle, Venmo…</div>
+        </div>
+        <div class="si-badge sib-shipit" id="paymentBadge">🚚 SHIP-IT</div>
       </div>
 
       <div class="sl-points">
@@ -355,7 +377,6 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
         </div>
         <div class="sp-body" id="w9PanelBody">
 
-          <!-- Already submitted state -->
           <div id="w9VerifiedState" style="display:none">
             <div class="completed-banner">
               <span class="cb-icon">📋</span>
@@ -376,7 +397,6 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
             <button class="verify-btn vbtn-outline" onclick="showStep('phone')">Next: Phone Verification →</button>
           </div>
 
-          <!-- Form state -->
           <div id="w9FormState">
             <div class="required-banner">
               <span class="rb-icon">⚠️</span>
@@ -385,17 +405,14 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
                 <div class="rb-sub">Tradezy is classified as a barter exchange under IRC §6045. Federal law requires us to collect your tax information before you complete your first trade. Failure to provide this information results in mandatory 24% backup withholding under IRC §3406.</div>
               </div>
             </div>
-
             <div class="info-box ib-gold">
               <span>🔒</span>
               <div><strong>Your information is secure.</strong> This data is stored encrypted and used solely for IRS Form 1099-B reporting. Your TIN is never shared with other traders or displayed publicly.</div>
             </div>
-
             <div class="field">
               <label>Legal Name <span style="color:var(--red)">*</span></label>
               <input type="text" id="w9Name" placeholder="Full legal name (as it appears on your tax return)" oninput="checkW9()" autocomplete="name">
             </div>
-
             <div class="field">
               <label>Entity Type <span style="color:var(--red)">*</span></label>
               <select id="w9EntityType" onchange="checkW9()">
@@ -410,7 +427,6 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
                 <option value="other">Other</option>
               </select>
             </div>
-
             <div class="field">
               <label>TIN Type <span style="color:var(--red)">*</span></label>
               <select id="w9TinType" onchange="updateTinPlaceholder(); checkW9()">
@@ -419,18 +435,15 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
                 <option value="ein">Employer Identification Number (EIN)</option>
               </select>
             </div>
-
             <div class="field" id="w9TinField" style="display:none">
               <label id="w9TinLabel">SSN / EIN <span style="color:var(--red)">*</span></label>
               <input type="password" id="w9Tin" placeholder="XXX-XX-XXXX" oninput="formatTin(); checkW9()" autocomplete="off" maxlength="11">
               <div style="font-size:11px;color:var(--muted);margin-top:4px;">Your TIN is encrypted and never displayed after submission.</div>
             </div>
-
             <div class="field">
               <label>Address <span style="color:var(--red)">*</span></label>
               <input type="text" id="w9Address" placeholder="Street address" oninput="checkW9()" autocomplete="street-address">
             </div>
-
             <div class="field-row">
               <div class="field">
                 <label>City <span style="color:var(--red)">*</span></label>
@@ -440,8 +453,7 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
                 <label>State <span style="color:var(--red)">*</span></label>
                 <select id="w9State" onchange="checkW9()">
                   <option value="">State…</option>
-                  <option value="CT">Connecticut</option>
-                  <option value="OH">Ohio</option>
+                  <option value="CT">Connecticut</option><option value="OH">Ohio</option>
                   <option value="AL">Alabama</option><option value="AK">Alaska</option>
                   <option value="AZ">Arizona</option><option value="AR">Arkansas</option>
                   <option value="CA">California</option><option value="CO">Colorado</option>
@@ -469,13 +481,10 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
                 </select>
               </div>
             </div>
-
             <div class="field">
               <label>ZIP Code <span style="color:var(--red)">*</span></label>
               <input type="text" id="w9Zip" placeholder="ZIP code" maxlength="10" oninput="checkW9()" autocomplete="postal-code">
             </div>
-
-            <!-- Certification -->
             <div class="w9-cert">
               <div class="w9-cert-title">📜 Certification Under Penalty of Perjury</div>
               <div class="w9-cert-text">Under penalties of perjury, I certify that: (1) The TIN I provided is my correct taxpayer identification number; (2) I am not subject to backup withholding; (3) I am a U.S. person (including a U.S. resident alien); and (4) The information provided is true, correct, and complete. I understand that Tradezy will issue Form 1099-B reporting my gross barter activity to the IRS annually. I authorize Tradezy to use this information for required tax reporting purposes.</div>
@@ -484,7 +493,6 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
                 <span class="w9-check-label">I certify under penalty of perjury that all information provided is true and correct. I understand Tradezy will report my barter activity to the IRS via Form 1099-B and that failure to provide accurate information may result in <strong>24% backup withholding</strong> under IRC §3406.</span>
               </label>
             </div>
-
             <button class="verify-btn vbtn-blue" id="submitW9Btn" onclick="submitW9()" disabled>📋 Submit Tax Information</button>
             <div style="font-size:11px;color:var(--light);margin-top:8px;text-align:center;line-height:1.5;">Your TIN is encrypted and stored securely. It is never shown to other traders or used for any purpose other than required IRS reporting.</div>
           </div>
@@ -543,9 +551,13 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
             <span class="csb-icon">🪪</span>
             <div class="csb-text">
               <div class="csb-title">ID Verification — Coming Soon</div>
-              <div class="csb-sub">We're integrating Stripe Identity for secure document verification. ID verification unlocks trades up to $500.</div>
+              <div class="csb-sub">We're integrating Stripe Identity for secure document verification. ID verification is required for Ship-It state-to-state trades and unlocks trade values up to $500.</div>
             </div>
             <div class="csb-badge">PHASE 1</div>
+          </div>
+          <div class="info-box ib-cyan">
+            <span>🚚</span>
+            <div><strong>Required for Ship-It trades.</strong> Once ID verification launches, completing it will unlock state-to-state Ship-It trading on all your listings.</div>
           </div>
           <div class="info-box ib-purple">
             <span>🔒</span>
@@ -582,6 +594,7 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
               <span>✅</span>
               <div>Your address area is confirmed. This badge displays on your profile and listings to show local traders you're nearby.</div>
             </div>
+            <button class="verify-btn vbtn-outline" onclick="showStep('payment')">Next: Payment Handle →</button>
           </div>
           <div id="addrFormState">
             <div class="info-box ib-green">
@@ -635,6 +648,81 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
         </div>
       </div>
 
+      <!-- PAYMENT HANDLE -->
+      <div class="step-panel" id="panel-payment">
+        <div class="sp-head">
+          <div class="sp-head-icon" style="background:#e0f2fe;border:1px solid #7dd3fc">💸</div>
+          <div>
+            <div class="sp-head-title">Payment Handle</div>
+            <div class="sp-head-sub" id="paymentPanelSub">Required for Ship-It state-to-state trades</div>
+          </div>
+          <div class="sp-reward" style="margin-left:auto">
+            <div class="sp-reward-pts" style="color:#0ea5e9">🚚 SHIP-IT</div>
+            <div class="sp-reward-label">Unlocks nationwide</div>
+          </div>
+        </div>
+        <div class="sp-body">
+
+          <div id="paymentVerifiedState" style="display:none">
+            <div style="background:linear-gradient(135deg,#0c4a6e,#0369a1);border-radius:10px;padding:14px 16px;display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+              <span style="font-size:1.5rem;flex-shrink:0;">💸</span>
+              <div style="flex:1;">
+                <div style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.95rem;color:#fff;margin-bottom:2px;">Payment Handle Saved</div>
+                <div style="font-size:11px;color:#7dd3fc;" id="paymentVerifiedSub">Ready to receive Ship-It payments</div>
+              </div>
+              <div style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.1rem;color:#38bdf8;">✓</div>
+            </div>
+            <div class="info-box ib-cyan">
+              <span>🚚</span>
+              <div>Your payment handle is saved. When you accept a Ship-It trade, buyers will send payment to this handle. You can update it anytime.</div>
+            </div>
+            <button class="verify-btn vbtn-outline" onclick="document.getElementById('paymentVerifiedState').style.display='none';document.getElementById('paymentFormState').style.display='block';">✏️ Update Payment Handle</button>
+          </div>
+
+          <div id="paymentFormState">
+            <div class="info-box ib-cyan">
+              <span>🚚</span>
+              <div><strong>Ship-It trades are peer-to-peer.</strong> Buyers send payment directly to your handle via Zelle, PayPal, Venmo, Apple Pay, Google Pay, or Cash App. Tradezy never holds funds.</div>
+            </div>
+            <div class="info-box ib-gold">
+              <span>🔒</span>
+              <div>Your payment handle is <strong>only shared with buyers who have an accepted Ship-It trade with you</strong> — never publicly displayed.</div>
+            </div>
+
+            <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:8px;">Select your payment platform *</div>
+            <div class="payment-platform-grid" id="platformGrid">
+              <div class="pp-pill" onclick="selectPlatform(this,'Zelle')">
+                <span class="pp-pill-icon">💚</span>Zelle
+              </div>
+              <div class="pp-pill" onclick="selectPlatform(this,'PayPal')">
+                <span class="pp-pill-icon">🔵</span>PayPal
+              </div>
+              <div class="pp-pill" onclick="selectPlatform(this,'Venmo')">
+                <span class="pp-pill-icon">💙</span>Venmo
+              </div>
+              <div class="pp-pill" onclick="selectPlatform(this,'Apple Pay')">
+                <span class="pp-pill-icon">🍎</span>Apple Pay
+              </div>
+              <div class="pp-pill" onclick="selectPlatform(this,'Google Pay')">
+                <span class="pp-pill-icon">🌈</span>Google Pay
+              </div>
+              <div class="pp-pill" onclick="selectPlatform(this,'Cash App')">
+                <span class="pp-pill-icon">💵</span>Cash App
+              </div>
+            </div>
+
+            <div class="field" id="handleField" style="display:none">
+              <label id="handleLabel">Your Handle / Phone / Email *</label>
+              <input type="text" id="paymentHandleInput" placeholder="e.g. $yourcashtagname or your@email.com" oninput="checkPayment()">
+              <div style="font-size:11px;color:var(--muted);margin-top:4px;" id="handleHint">Enter the handle buyers should send payment to.</div>
+            </div>
+
+            <button class="verify-btn vbtn-cyan" id="savePaymentBtn" onclick="savePaymentHandle()" disabled>💸 Save Payment Handle</button>
+            <div style="font-size:11px;color:var(--light);margin-top:8px;text-align:center;line-height:1.5;">Your handle is only revealed to confirmed Ship-It trade partners — never shown publicly.</div>
+          </div>
+        </div>
+      </div>
+
       <!-- BADGE SHOWCASE -->
       <div style="background:var(--white);border:1px solid var(--border);border-radius:14px;overflow:hidden;">
         <div style="padding:14px 18px;border-bottom:1px solid var(--border);">
@@ -673,7 +761,7 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
               <div class="bc-icon gold">🪪</div>
               <div class="bc-info">
                 <div class="bc-name">ID Verified</div>
-                <div class="bc-desc">Government ID confirmed</div>
+                <div class="bc-desc">Government ID · Ship-It ready</div>
                 <div class="bc-pts">+40 pts · Coming Soon</div>
               </div>
               <span class="bc-lock">🔒</span>
@@ -686,6 +774,15 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
                 <div class="bc-pts" id="addrBadgePts">+10 pts · Pending</div>
               </div>
               <span class="bc-lock" id="addrBadgeLock">🔒</span>
+            </div>
+            <div class="badge-card locked" id="paymentBadgeCard">
+              <div class="bc-icon cyan">💸</div>
+              <div class="bc-info">
+                <div class="bc-name">Ship-It Ready</div>
+                <div class="bc-desc">Payment handle on file</div>
+                <div class="bc-pts" id="paymentBadgePts">🚚 Pending</div>
+              </div>
+              <span class="bc-lock" id="paymentBadgeLock">🔒</span>
             </div>
           </div>
         </div>
@@ -724,13 +821,13 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
               <tr>
                 <td>🪪 ID Verified</td>
                 <td>70 pts</td>
-                <td style="font-weight:700;color:var(--gold);">$500</td>
+                <td style="font-weight:700;color:var(--gold);">$500 + Ship-It</td>
                 <td><span class="tier-badge tb-locked">COMING SOON</span></td>
               </tr>
               <tr>
                 <td>⭐ Fully Verified</td>
                 <td>100 pts</td>
-                <td style="font-weight:700;color:var(--green);">Unlimited</td>
+                <td style="font-weight:700;color:var(--green);">Unlimited + Ship-It</td>
                 <td><span class="tier-badge tb-locked">LOCKED</span></td>
               </tr>
             </tbody>
@@ -753,6 +850,7 @@ const sb = window.supabase.createClient(
 let currentUser = null;
 let userData = null;
 let trustScore = 10;
+let selectedPlatform = '';
 
 /* ── INIT ── */
 (async () => {
@@ -765,7 +863,7 @@ let trustScore = 10;
 async function loadUserData() {
   try {
     const { data, error } = await sb.from('users')
-      .select('display_name, email, trust_score, address_city, address_state, address_zip, address_verified, phone_verified, id_verified, w9_on_file, w9_submitted_at, w9_name, w9_entity_type')
+      .select('display_name, email, trust_score, address_city, address_state, address_zip, address_verified, phone_verified, id_verified, w9_on_file, w9_submitted_at, w9_name, w9_entity_type, payment_handle')
       .eq('id', currentUser.id)
       .single();
 
@@ -791,20 +889,17 @@ async function loadUserData() {
         : 'on file';
       document.getElementById('w9VerifiedSub').textContent = `Submitted ${submittedDate} · ${data.w9_entity_type || 'Individual'}`;
       document.getElementById('w9PanelSub').textContent = 'Tax information on file ✓';
-
       const navW9 = document.getElementById('nav-w9');
       navW9.classList.add('completed');
       navW9.querySelector('.si-icon-wrap').textContent = '✅';
       const w9Badge = document.getElementById('w9Badge');
       w9Badge.className = 'si-badge sib-done';
       w9Badge.textContent = '✓ On File';
-
       document.getElementById('w9BadgeCard').classList.remove('locked');
       document.getElementById('w9BadgeCard').classList.add('earned');
       document.getElementById('w9BadgePts').textContent = 'Submitted · IRS Compliant ✓';
       const w9Lock = document.getElementById('w9BadgeLock');
       if (w9Lock) w9Lock.textContent = '✅';
-
       document.getElementById('w9TierBadge').textContent = '✓ COMPLETE';
       document.getElementById('w9TierBadge').className = 'tier-badge tb-active';
     }
@@ -816,13 +911,11 @@ async function loadUserData() {
       document.getElementById('addrVerifiedSub').textContent =
         `${data.address_city || ''}, ${data.address_state || ''} ${data.address_zip || ''}`.trim();
       document.getElementById('addrPanelSub').textContent = 'Address confirmed ✓';
-
       const navAddr = document.getElementById('nav-address');
       navAddr.classList.add('completed');
       navAddr.querySelector('.si-icon-wrap').textContent = '✅';
       navAddr.querySelector('.si-badge').className = 'si-badge sib-done';
       navAddr.querySelector('.si-badge').textContent = '+10 pts';
-
       document.getElementById('addrBadge').classList.remove('locked');
       document.getElementById('addrBadge').classList.add('earned');
       document.getElementById('addrBadgePts').textContent = '+10 pts · Earned ✓';
@@ -834,6 +927,26 @@ async function loadUserData() {
     if (data.address_state) document.getElementById('addrState').value = data.address_state;
     if (data.address_zip) document.getElementById('addrZip').value = data.address_zip;
     checkAddr();
+
+    // Payment handle already saved
+    if (data.payment_handle) {
+      document.getElementById('paymentFormState').style.display = 'none';
+      document.getElementById('paymentVerifiedState').style.display = 'block';
+      document.getElementById('paymentVerifiedSub').textContent = data.payment_handle;
+      document.getElementById('paymentPanelSub').textContent = 'Payment handle on file ✓';
+      // Pre-fill form for editing
+      document.getElementById('paymentHandleInput').value = data.payment_handle;
+      const navPayment = document.getElementById('nav-payment');
+      navPayment.classList.add('completed');
+      navPayment.querySelector('.si-icon-wrap').textContent = '✅';
+      navPayment.querySelector('.si-badge').className = 'si-badge sib-done';
+      navPayment.querySelector('.si-badge').textContent = '✓ Saved';
+      document.getElementById('paymentBadgeCard').classList.remove('locked');
+      document.getElementById('paymentBadgeCard').classList.add('earned');
+      document.getElementById('paymentBadgePts').textContent = '🚚 Ship-It Ready ✓';
+      const pLock = document.getElementById('paymentBadgeLock');
+      if (pLock) pLock.textContent = '✅';
+    }
 
   } catch(e) {
     console.error(e);
@@ -898,7 +1011,6 @@ function checkW9() {
   const state = document.getElementById('w9State').value;
   const zip = document.getElementById('w9Zip').value.trim();
   const cert = document.getElementById('w9Cert').checked;
-
   const tinValid = tinType === 'ssn' ? tin.length === 11 : tinType === 'ein' ? tin.length === 10 : false;
   const ready = name && entity && tinType && tinValid && address && city && state && zip.length >= 5 && cert;
   document.getElementById('submitW9Btn').disabled = !ready;
@@ -907,16 +1019,13 @@ function checkW9() {
 async function submitW9() {
   const name = document.getElementById('w9Name').value.trim();
   const entity = document.getElementById('w9EntityType').value;
-  const tinType = document.getElementById('w9TinType').value;
   const address = document.getElementById('w9Address').value.trim();
   const city = document.getElementById('w9City').value.trim();
   const state = document.getElementById('w9State').value;
   const zip = document.getElementById('w9Zip').value.trim();
-
   const btn = document.getElementById('submitW9Btn');
   btn.textContent = '⏳ Submitting…';
   btn.disabled = true;
-
   try {
     const { error } = await sb.from('users').update({
       w9_on_file: true,
@@ -924,21 +1033,16 @@ async function submitW9() {
       w9_name: name,
       w9_entity_type: entity,
       tax_disclosure_acknowledged_at: new Date().toISOString(),
-      // Pre-fill address fields from W-9 if not already set
       address_city: city,
       address_state: state,
       address_zip: zip,
     }).eq('id', currentUser.id);
-
     if (error) throw error;
-
-    // Update UI
     document.getElementById('w9FormState').style.display = 'none';
     document.getElementById('w9VerifiedState').style.display = 'block';
     const today = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
     document.getElementById('w9VerifiedSub').textContent = `Submitted ${today} · ${entity}`;
     document.getElementById('w9PanelSub').textContent = 'Tax information on file ✓';
-
     const navW9 = document.getElementById('nav-w9');
     navW9.classList.remove('active');
     navW9.classList.add('completed');
@@ -946,25 +1050,19 @@ async function submitW9() {
     const w9Badge = document.getElementById('w9Badge');
     w9Badge.className = 'si-badge sib-done';
     w9Badge.textContent = '✓ On File';
-
     document.getElementById('w9BadgeCard').classList.remove('locked');
     document.getElementById('w9BadgeCard').classList.add('earned');
     document.getElementById('w9BadgePts').textContent = 'Submitted · IRS Compliant ✓';
     const w9Lock = document.getElementById('w9BadgeLock');
     if (w9Lock) w9Lock.textContent = '✅';
-
     document.getElementById('w9TierBadge').textContent = '✓ COMPLETE';
     document.getElementById('w9TierBadge').className = 'tier-badge tb-active';
-
-    // Pre-fill address panel
     if (city) document.getElementById('addrCity').value = city;
     if (state) document.getElementById('addrState').value = state;
     if (zip) document.getElementById('addrZip').value = zip;
     checkAddr();
-
     showToast('📋', 'Tax information submitted. You are cleared to trade!');
     if (typeof gtag !== 'undefined') gtag('event', 'w9_submitted', { event_category: 'verification' });
-
   } catch(e) {
     console.error(e);
     showToast('⚠️', 'Error submitting tax information. Please try again.', true);
@@ -986,30 +1084,22 @@ async function confirmAddress() {
   const state = document.getElementById('addrState').value;
   const zip = document.getElementById('addrZip').value.trim();
   if (!city || !state || !zip) return;
-
   const btn = document.getElementById('confirmAddrBtn');
   btn.textContent = '⏳ Confirming…';
   btn.disabled = true;
-
   try {
     const newScore = Math.min(100, trustScore + 10);
     const { error } = await sb.from('users').update({
-      address_city: city,
-      address_state: state,
-      address_zip: zip,
-      address_verified: true,
-      trust_score: newScore
+      address_city: city, address_state: state, address_zip: zip,
+      address_verified: true, trust_score: newScore
     }).eq('id', currentUser.id);
-
     if (error) throw error;
     trustScore = newScore;
     updateTrustDisplay(trustScore);
-
     document.getElementById('addrFormState').style.display = 'none';
     document.getElementById('addrVerifiedState').style.display = 'block';
     document.getElementById('addrVerifiedSub').textContent = `${city}, ${state} ${zip}`;
     document.getElementById('addrPanelSub').textContent = 'Address confirmed ✓';
-
     const navAddr = document.getElementById('nav-address');
     navAddr.classList.remove('active');
     navAddr.classList.add('completed');
@@ -1017,23 +1107,85 @@ async function confirmAddress() {
     const badge = navAddr.querySelector('.si-badge');
     badge.className = 'si-badge sib-done';
     badge.textContent = '+10 pts';
-
     const addrBadge = document.getElementById('addrBadge');
     addrBadge.classList.remove('locked');
     addrBadge.classList.add('earned');
     document.getElementById('addrBadgePts').textContent = '+10 pts · Earned ✓';
     const lockEl = document.getElementById('addrBadgeLock');
     if (lockEl) lockEl.remove();
-
     showToast('📍', 'Address confirmed! +10 trust points earned.');
     if (typeof gtag !== 'undefined') gtag('event', 'address_verified', { event_category: 'verification' });
-
   } catch(e) {
     console.error(e);
     showToast('⚠️', 'Error confirming address. Please try again.', true);
     btn.textContent = '📍 Confirm My Address';
     btn.disabled = false;
     checkAddr();
+  }
+}
+
+/* ── PAYMENT HANDLE ── */
+function selectPlatform(el, platform) {
+  document.querySelectorAll('.pp-pill').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  selectedPlatform = platform;
+  const handleField = document.getElementById('handleField');
+  const handleLabel = document.getElementById('handleLabel');
+  const handleHint = document.getElementById('handleHint');
+  const handleInput = document.getElementById('paymentHandleInput');
+  handleField.style.display = 'block';
+  const hints = {
+    'Zelle': { label: 'Zelle Phone Number or Email *', placeholder: 'e.g. (203) 555-0100 or you@email.com', hint: 'The phone number or email linked to your Zelle account.' },
+    'PayPal': { label: 'PayPal Username or Email *', placeholder: 'e.g. @yourname or you@email.com', hint: 'Your PayPal username or the email on your PayPal account.' },
+    'Venmo': { label: 'Venmo Username *', placeholder: 'e.g. @yourname', hint: 'Your Venmo @username (found in the Venmo app).' },
+    'Apple Pay': { label: 'Apple Pay Phone or Email *', placeholder: 'e.g. (203) 555-0100 or you@icloud.com', hint: 'The phone number or email linked to your Apple Pay / Apple Cash.' },
+    'Google Pay': { label: 'Google Pay Phone or Email *', placeholder: 'e.g. (203) 555-0100 or you@gmail.com', hint: 'The phone number or email linked to your Google Pay account.' },
+    'Cash App': { label: 'Cash App $Cashtag *', placeholder: 'e.g. $yourname', hint: 'Your Cash App $Cashtag (found in the Cash App).' }
+  };
+  const h = hints[platform] || {};
+  handleLabel.textContent = h.label || 'Your Handle *';
+  handleInput.placeholder = h.placeholder || '';
+  handleHint.textContent = h.hint || '';
+  checkPayment();
+}
+
+function checkPayment() {
+  const handle = document.getElementById('paymentHandleInput').value.trim();
+  document.getElementById('savePaymentBtn').disabled = !(selectedPlatform && handle.length >= 3);
+}
+
+async function savePaymentHandle() {
+  const handle = document.getElementById('paymentHandleInput').value.trim();
+  if (!selectedPlatform || !handle) return;
+  const fullHandle = `${selectedPlatform}: ${handle}`;
+  const btn = document.getElementById('savePaymentBtn');
+  btn.textContent = '⏳ Saving…';
+  btn.disabled = true;
+  try {
+    const { error } = await sb.from('users').update({ payment_handle: fullHandle }).eq('id', currentUser.id);
+    if (error) throw error;
+    document.getElementById('paymentFormState').style.display = 'none';
+    document.getElementById('paymentVerifiedState').style.display = 'block';
+    document.getElementById('paymentVerifiedSub').textContent = fullHandle;
+    document.getElementById('paymentPanelSub').textContent = 'Payment handle on file ✓';
+    const navPayment = document.getElementById('nav-payment');
+    navPayment.classList.remove('active');
+    navPayment.classList.add('completed');
+    navPayment.querySelector('.si-icon-wrap').textContent = '✅';
+    navPayment.querySelector('.si-badge').className = 'si-badge sib-done';
+    navPayment.querySelector('.si-badge').textContent = '✓ Saved';
+    document.getElementById('paymentBadgeCard').classList.remove('locked');
+    document.getElementById('paymentBadgeCard').classList.add('earned');
+    document.getElementById('paymentBadgePts').textContent = '🚚 Ship-It Ready ✓';
+    const pLock = document.getElementById('paymentBadgeLock');
+    if (pLock) pLock.textContent = '✅';
+    showToast('💸', 'Payment handle saved! You\'re Ship-It ready.');
+    if (typeof gtag !== 'undefined') gtag('event', 'payment_handle_saved', { event_category: 'verification', event_label: selectedPlatform });
+  } catch(e) {
+    console.error(e);
+    showToast('⚠️', 'Error saving payment handle. Please try again.', true);
+    btn.textContent = '💸 Save Payment Handle';
+    btn.disabled = false;
   }
 }
 
@@ -1072,9 +1224,8 @@ function showToast(icon, msg, isError = false) {
   window._tt = setTimeout(() => t.classList.remove('show'), 4000);
 }
 </script>
-<!-- TRADEZY HELP WIDGET START — paste before </body> on every page -->
+<!-- TRADEZY HELP WIDGET START -->
 <style>
-/* ── TRADEZY HELP WIDGET STYLES ── */
 #tz-help-bubble{position:fixed;bottom:24px;right:24px;z-index:9999;display:flex;flex-direction:column;align-items:flex-end;gap:10px;font-family:'Lato',system-ui,sans-serif;}
 #tz-bubble-btn{width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#0a1628,#1a56db);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1.4rem;box-shadow:0 4px 20px rgba(26,86,219,.4);transition:all .2s;position:relative;}
 #tz-bubble-btn:hover{transform:scale(1.08);box-shadow:0 6px 28px rgba(26,86,219,.5);}
@@ -1125,7 +1276,6 @@ function showToast(icon, msg, isError = false) {
 .tz-send-btn:disabled{opacity:.5;cursor:not-allowed;transform:none;}
 .tz-powered{text-align:center;font-size:10px;color:#cbd5e1;padding:5px 0 2px;flex-shrink:0;}
 </style>
- 
 <div id="tz-help-bubble">
   <div id="tz-chat-panel">
     <div class="tz-panel-head">
@@ -1148,85 +1298,42 @@ function showToast(icon, msg, isError = false) {
     <div class="tz-notif" id="tzNotif"></div>
   </button>
 </div>
- 
 <script>
 (function() {
-  // ── CONFIG ──
-  const SUPABASE_URL = 'https://equvwaspcoeetfsexqki.supabase.co';
-  const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVxdXZ3YXNwY29lZXRmc2V4cWtpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgyNzc2MjQsImV4cCI6MjA5Mzg1MzYyNH0.TP6Kk3pzHW1PYMUu5D9Vu2lJrazIEagzu5csYhqkrfI';
- 
   const SYSTEM_PROMPT = `You are the Tradezy support assistant — a helpful, friendly AI for Tradezy, a peer-to-peer local trading marketplace.
- 
+
 ABOUT TRADEZY:
 - Free local trading platform where users list items and trade with verified neighbors
 - Platform fee: 5% per party on completed trades (Founding Traders pay 3% lifetime)
 - Ship-It trades (state-to-state): 10% fee, fully verified users only, launching July 31 2026
 - Phase 1 launch: July 17 2026 — Connecticut and Ohio statewide
 - Phase 2: July 31 2026 — Nationwide
- 
-HOW TRADING WORKS:
-1. Post a listing with photos, condition, what you want in return
-2. Browse listings, make offers (item-for-item, item + cash top-up, or cash)
-3. Accept an offer, agree on a meetup spot
-4. Both parties confirm the exchange in-app — this unlocks ratings
-5. Leave ratings after confirmed meetup
- 
+
 VERIFICATION & TRUST:
 - Email verification required to use platform
-- Address verification adds trust score
-- ID verification required for Ship-It trades
-- W-9 tax form required before posting listings
-- Trust score shown on profiles
- 
-PROHIBITED ITEMS (permanent ban): Firearms, weapons, alcohol, tobacco, drugs, live animals, adult content, stolen goods, cash, gift cards, cryptocurrency
- 
-FEES EXPLAINED:
-- 5% of total trade value per party — example: $100 item trade = $5 fee each party
-- $90 item + $40 cash top-up = $130 total = $6.50 fee each party
-- Founding Traders: 3% lifetime (signed up before July 17 launch)
-- Listing is always free
- 
+- W-9 tax form required before posting listings or trading
+- Address verification adds +10 trust score points
+- Phone verification coming soon — +20 pts, unlocks $150 trades
+- ID verification coming soon — +40 pts, required for Ship-It trades
+- Payment handle required for Ship-It trades (Zelle, PayPal, Venmo, Apple Pay, Google Pay, Cash App)
+
 SHIP-IT TRADES (July 31+):
-- State-to-state trading for fully ID-verified users only
+- Available on ALL listings — buyers choose local or Ship-It when making an offer
+- ID verification required for both parties
+- Payment handle must be set in verification profile
 - 10% fee per party at trade acceptance
-- Payment via Zelle, PayPal, Venmo, Apple Pay, Google Pay, or Cash App (peer-to-peer, Tradezy never holds funds)
-- Buyer uploads payment screenshot as proof
-- Seller enters tracking number
-- Both confirm delivery to close trade
- 
-TCG CATEGORIES: Pokémon, One Piece, MTG, Yu-Gi-Oh, Lorcana, Flesh & Blood
-SPORTS CARDS: Baseball, Football, Basketball, Hockey, Soccer
-Card grading supported: PSA, BGS, SGC, TAG
- 
+- Tradezy never holds funds — peer-to-peer only
+
 ACCOUNT HELP:
-- Password reset: direct users to https://tradezyhq.com/alltrades-auth.html
-- Account locked/banned: direct to support@tradezyhq.com
-- Verification issues: direct to https://tradezyhq.com/alltrades-verification.html
- 
-DISPUTE RESOLUTION:
-- File a dispute at https://tradezyhq.com/alltrades-disputes.html
-- Email disputes@tradezyhq.com
-- SLA: CRITICAL issues 4hrs, HIGH 24hrs, MEDIUM 48hrs, LOW 72hrs
- 
-ESCALATION RULES — escalate to human immediately if:
-- User reports fraud, scam, or didn't receive item
-- User mentions safety concern, threat, or harassment
-- User is clearly distressed or frustrated after multiple exchanges
-- User explicitly requests a human agent
-- Issue involves account ban or suspension
- 
-ESCALATION: When escalating, provide support@tradezyhq.com for general issues or disputes@tradezyhq.com for trade disputes. Summarize the issue briefly.
- 
-TONE: Warm, clear, concise. Never give legal or financial advice. Never make up information — if unsure, direct to support@tradezyhq.com. Keep responses short and scannable — use bullet points for multi-step answers.`;
- 
-  // ── STATE ──
-  let isOpen = false;
-  let isLoading = false;
-  let exchangeCount = 0;
-  let hasShownWelcome = false;
+- Password reset: https://tradezyhq.com/alltrades-auth.html
+- Verification issues: https://tradezyhq.com/alltrades-verification.html
+- Disputes: https://tradezyhq.com/alltrades-disputes.html
+
+TONE: Warm, clear, concise. Never give legal or financial advice. Keep responses short and scannable.`;
+
+  let isOpen = false, isLoading = false, exchangeCount = 0, hasShownWelcome = false;
   const history = [];
- 
-  // ── TOGGLE ──
+
   window.tzToggle = function() {
     isOpen = !isOpen;
     const panel = document.getElementById('tz-chat-panel');
@@ -1236,12 +1343,7 @@ TONE: Warm, clear, concise. Never give legal or financial advice. Never make up 
       btn.innerHTML = '✕<div class="tz-notif" id="tzNotif"></div>';
       if (!hasShownWelcome) {
         hasShownWelcome = true;
-        tzBotMessage("👋 Hey! I'm the Tradezy support assistant. I can help with:", [
-          "How trading works",
-          "Fees & verification",
-          "Account issues",
-          "Reporting a problem"
-        ]);
+        tzBotMessage("👋 Hey! I'm the Tradezy support assistant. I can help with:", ["How verification works","Ship-It requirements","Account issues","Reporting a problem"]);
       }
       setTimeout(() => document.getElementById('tzInput')?.focus(), 200);
     } else {
@@ -1249,161 +1351,78 @@ TONE: Warm, clear, concise. Never give legal or financial advice. Never make up 
       btn.innerHTML = '💬<div class="tz-notif" id="tzNotif"></div>';
     }
   };
- 
-  // ── SEND ──
+
   window.tzSend = async function() {
     const input = document.getElementById('tzInput');
     const text = input.value.trim();
     if (!text || isLoading) return;
-    input.value = '';
-    tzAutoResize(input);
+    input.value = ''; tzAutoResize(input);
     tzUserMessage(text);
     history.push({ role: 'user', content: text });
     exchangeCount++;
     await tzGetResponse();
   };
- 
-  window.tzKeyDown = function(e) {
-    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); tzSend(); }
-  };
- 
-  window.tzAutoResize = function(el) {
-    el.style.height = '38px';
-    el.style.height = Math.min(el.scrollHeight, 90) + 'px';
-  };
- 
-  // ── GET AI RESPONSE ──
+
+  window.tzKeyDown = function(e) { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); tzSend(); } };
+  window.tzAutoResize = function(el) { el.style.height = '38px'; el.style.height = Math.min(el.scrollHeight, 90) + 'px'; };
+
   async function tzGetResponse() {
     isLoading = true;
     document.getElementById('tzSendBtn').disabled = true;
- 
-    // Show typing indicator
     const typingId = 'tz-typing-' + Date.now();
     const msgs = document.getElementById('tzMessages');
     const typingEl = document.createElement('div');
-    typingEl.id = typingId;
-    typingEl.className = 'tz-msg bot';
+    typingEl.id = typingId; typingEl.className = 'tz-msg bot';
     typingEl.innerHTML = '<div class="tz-typing"><span></span><span></span><span></span></div>';
-    msgs.appendChild(typingEl);
-    msgs.scrollTop = msgs.scrollHeight;
- 
+    msgs.appendChild(typingEl); msgs.scrollTop = msgs.scrollHeight;
     try {
       const response = await fetch('https://tradezy-ai-proxy.throbbing-lake-08ed.workers.dev', {
-        method: 'POST',
-       headers: { 'Content-Type': 'application/json',  },
-        body: JSON.stringify({
-          model: 'claude-sonnet-4-6',
-          max_tokens: 1000,
-          system: SYSTEM_PROMPT,
-          messages: history
-        })
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ model: 'claude-sonnet-4-6', max_tokens: 1000, system: SYSTEM_PROMPT, messages: history })
       });
- 
       const data = await response.json();
       const reply = data.content?.[0]?.text || "I'm having trouble responding right now. Please email support@tradezyhq.com.";
- 
-      // Remove typing indicator
       document.getElementById(typingId)?.remove();
- 
-      // Add to history
       history.push({ role: 'assistant', content: reply });
- 
-      // Check for escalation triggers
       const userText = history.filter(m => m.role === 'user').map(m => m.content).join(' ').toLowerCase();
-      const escalateKeywords = ['scam', 'fraud', 'didn\'t receive', 'never received', 'threat', 'harass', 'human', 'agent', 'real person', 'banned', 'suspended', 'unsafe'];
+      const escalateKeywords = ['scam','fraud','didn\'t receive','never received','threat','harass','human','agent','real person','banned','suspended','unsafe'];
       const shouldEscalate = escalateKeywords.some(k => userText.includes(k)) || exchangeCount >= 4;
- 
-      // Render response
       tzBotMessage(reply, null, shouldEscalate);
- 
     } catch(e) {
       document.getElementById(typingId)?.remove();
-      tzBotMessage("I'm having trouble connecting right now. For immediate help, please email support@tradezyhq.com or file a dispute at the link below.", null, true);
+      tzBotMessage("I'm having trouble connecting right now. For immediate help, please email support@tradezyhq.com.", null, true);
     }
- 
     isLoading = false;
     document.getElementById('tzSendBtn').disabled = false;
   }
- 
-  // ── RENDER BOT MESSAGE ──
+
   function tzBotMessage(text, quickReplies = null, showEscalate = false) {
     const msgs = document.getElementById('tzMessages');
-    const wrapper = document.createElement('div');
-    wrapper.className = 'tz-msg bot';
- 
-    // Parse markdown-lite: bold, bullets
-    let html = text
-      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-      .replace(/^[-•] (.+)$/gm, '<li>$1</li>')
-      .replace(/(<li>.*<\/li>)/gs, '<ul style="margin:4px 0 0 14px;padding:0;font-size:13px;line-height:1.6">$1</ul>')
-      .replace(/\n\n/g, '<br><br>')
-      .replace(/\n/g, '<br>');
- 
-    // Detect and linkify account action hints
+    const wrapper = document.createElement('div'); wrapper.className = 'tz-msg bot';
+    let html = text.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/^[-•] (.+)$/gm,'<li>$1</li>').replace(/(<li>.*<\/li>)/gs,'<ul style="margin:4px 0 0 14px;padding:0;font-size:13px;line-height:1.6">$1</ul>').replace(/\n\n/g,'<br><br>').replace(/\n/g,'<br>');
     let extraHTML = '';
- 
-    if (text.toLowerCase().includes('password reset') || text.toLowerCase().includes('reset your password')) {
-      extraHTML += `<a class="tz-action-link" href="https://tradezyhq.com/alltrades-auth.html" target="_blank">🔑 Reset Password →</a>`;
-    }
-    if (text.toLowerCase().includes('verification') || text.toLowerCase().includes('verify your')) {
-      extraHTML += `<a class="tz-action-link" href="https://tradezyhq.com/alltrades-verification.html" target="_blank">✅ Go to Verification →</a>`;
-    }
-    if (text.toLowerCase().includes('dispute') || text.toLowerCase().includes('file a dispute')) {
-      extraHTML += `<a class="tz-action-link" href="https://tradezyhq.com/alltrades-disputes.html" target="_blank">⚖️ File a Dispute →</a>`;
-    }
- 
+    if (text.toLowerCase().includes('password reset') || text.toLowerCase().includes('reset your password')) extraHTML += `<a class="tz-action-link" href="https://tradezyhq.com/alltrades-auth.html" target="_blank">🔑 Reset Password →</a>`;
+    if (text.toLowerCase().includes('verification') || text.toLowerCase().includes('verify your')) extraHTML += `<a class="tz-action-link" href="https://tradezyhq.com/alltrades-verification.html" target="_blank">✅ Go to Verification →</a>`;
+    if (text.toLowerCase().includes('dispute') || text.toLowerCase().includes('file a dispute')) extraHTML += `<a class="tz-action-link" href="https://tradezyhq.com/alltrades-disputes.html" target="_blank">⚖️ File a Dispute →</a>`;
     let bubbleHTML = `<div class="tz-bubble">${html}</div>`;
     if (extraHTML) bubbleHTML += extraHTML;
- 
-    if (showEscalate) {
-      bubbleHTML += `
-        <div class="tz-escalate-card">
-          <div class="tz-escalate-title">🙋 Want to talk to a person?</div>
-          <div style="color:#92400e;font-size:12px;line-height:1.5">Our support team is standing by to help.</div>
-          <div style="display:flex;gap:7px;flex-wrap:wrap;margin-top:7px;">
-            <a class="tz-escalate-btn" href="mailto:support@tradezyhq.com?subject=Support Request from Tradezy Widget">📧 Email Support</a>
-            <a class="tz-escalate-btn" href="https://tradezyhq.com/alltrades-disputes.html" target="_blank" style="background:#1a56db">⚖️ File Dispute</a>
-          </div>
-        </div>`;
-    }
- 
-    if (quickReplies && quickReplies.length) {
-      bubbleHTML += '<div class="tz-quick-btns">' +
-        quickReplies.map(q => `<button class="tz-quick-btn" onclick="tzQuickReply('${q.replace(/'/g, "\\'")}')">${q}</button>`).join('') +
-        '</div>';
-    }
- 
+    if (showEscalate) bubbleHTML += `<div class="tz-escalate-card"><div class="tz-escalate-title">🙋 Want to talk to a person?</div><div style="color:#92400e;font-size:12px;line-height:1.5">Our support team is standing by to help.</div><div style="display:flex;gap:7px;flex-wrap:wrap;margin-top:7px;"><a class="tz-escalate-btn" href="mailto:support@tradezyhq.com?subject=Support Request from Tradezy Widget">📧 Email Support</a><a class="tz-escalate-btn" href="https://tradezyhq.com/alltrades-disputes.html" target="_blank" style="background:#1a56db">⚖️ File Dispute</a></div></div>`;
+    if (quickReplies && quickReplies.length) bubbleHTML += '<div class="tz-quick-btns">' + quickReplies.map(q=>`<button class="tz-quick-btn" onclick="tzQuickReply('${q.replace(/'/g,"\\'")}')">${q}</button>`).join('') + '</div>';
     wrapper.innerHTML = bubbleHTML;
-    const time = document.createElement('div');
-    time.className = 'tz-msg-time';
-    time.textContent = new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
-    wrapper.appendChild(time);
-    msgs.appendChild(wrapper);
-    msgs.scrollTop = msgs.scrollHeight;
+    const time = document.createElement('div'); time.className = 'tz-msg-time';
+    time.textContent = new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+    wrapper.appendChild(time); msgs.appendChild(wrapper); msgs.scrollTop = msgs.scrollHeight;
   }
- 
-  // ── RENDER USER MESSAGE ──
+
   function tzUserMessage(text) {
     const msgs = document.getElementById('tzMessages');
-    const wrapper = document.createElement('div');
-    wrapper.className = 'tz-msg user';
-    wrapper.innerHTML = `
-      <div class="tz-bubble">${escHtml(text)}</div>
-      <div class="tz-msg-time">${new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})}</div>`;
-    msgs.appendChild(wrapper);
-    msgs.scrollTop = msgs.scrollHeight;
+    const wrapper = document.createElement('div'); wrapper.className = 'tz-msg user';
+    wrapper.innerHTML = `<div class="tz-bubble">${escHtml(text)}</div><div class="tz-msg-time">${new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}</div>`;
+    msgs.appendChild(wrapper); msgs.scrollTop = msgs.scrollHeight;
   }
- 
-  // ── QUICK REPLY ──
-  window.tzQuickReply = function(text) {
-    document.getElementById('tzInput').value = text;
-    tzSend();
-  };
- 
-  function escHtml(str) {
-    return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-  }
- 
+
+  window.tzQuickReply = function(text) { document.getElementById('tzInput').value = text; tzSend(); };
+  function escHtml(str) { return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 })();
 </script>
 <!-- TRADEZY HELP WIDGET END -->
