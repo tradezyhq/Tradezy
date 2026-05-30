@@ -141,23 +141,6 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
 .btn-blue:hover{background:var(--blue-light);transform:translateY(-1px);}
 .btn:disabled{opacity:.5;cursor:not-allowed;transform:none!important;}
 
-/* SHIP-IT TOGGLE */
-.shipit-row{display:flex;align-items:center;justify-content:space-between;padding:13px 15px;background:#f0f9ff;border:1.5px solid #0ea5e9;border-radius:10px;cursor:pointer;transition:all .15s;margin-bottom:8px;}
-.shipit-row.on{background:#e0f2fe;border-color:#0284c7;}
-.shipit-left{display:flex;align-items:center;gap:10px;}
-.shipit-icon{font-size:1.2rem;}
-.shipit-title{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.95rem;color:#0369a1;}
-.shipit-desc{font-size:11px;color:#0369a1;margin-top:1px;opacity:.8;}
-.toggle-blue{width:40px;height:22px;background:#cbd5e1;border-radius:99px;position:relative;transition:background .2s;flex-shrink:0;}
-.toggle-blue.on{background:#0ea5e9;}
-.toggle-blue::after{content:'';position:absolute;top:3px;left:3px;width:16px;height:16px;background:#fff;border-radius:50%;transition:transform .2s;box-shadow:0 1px 3px rgba(0,0,0,.2);}
-.toggle-blue.on::after{transform:translateX(18px);}
-.shipit-info{display:none;background:#e0f2fe;border:1px solid #7dd3fc;border-radius:8px;padding:12px 14px;margin-bottom:10px;font-size:12px;color:#0369a1;line-height:1.6;}
-.shipit-info.show{display:block;}
-.shipit-info ul{padding-left:16px;margin-top:5px;}
-.shipit-info li{margin-bottom:3px;}
-.shipit-info strong{color:#0c4a6e;}
-
 /* TCG Section */
 .tcg-section{display:none;background:#f5f3ff;border:1.5px solid #a78bfa;border-radius:10px;padding:16px;margin-top:12px;}
 .tcg-section.show{display:block;}
@@ -177,9 +160,6 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
 .sc-section{display:none;background:#fff7ed;border:1.5px solid #f97316;border-radius:10px;padding:16px;margin-top:12px;}
 .sc-section.show{display:block;}
 .sc-header{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.95rem;color:#ea580c;margin-bottom:12px;display:flex;align-items:center;gap:7px;}
-.sc-sport-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:12px;}
-.sc-sport-btn{border:1.5px solid #f97316;border-radius:8px;padding:7px 4px;text-align:center;cursor:pointer;transition:all .15s;font-size:11px;font-weight:700;color:#ea580c;background:#fff;}
-.sc-sport-btn:hover,.sc-sport-btn.active{background:#ea580c;color:#fff;border-color:#ea580c;}
 .sc-cond-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:12px;}
 .sc-cond-btn{border:1.5px solid #f97316;border-radius:8px;padding:7px 4px;text-align:center;cursor:pointer;transition:all .15s;font-size:11px;font-weight:700;color:#ea580c;background:#fff;}
 .sc-cond-btn:hover,.sc-cond-btn.active{background:#ea580c;color:#fff;border-color:#ea580c;}
@@ -210,7 +190,8 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
 .pbadge.tcg{background:#7c3aed;color:#fff;}
 .pbadge.sportsc{background:#ea580c;color:#fff;}
 .pbadge.shipit{background:#0ea5e9;color:#fff;}
-.prev-dist{position:absolute;bottom:7px;left:7px;background:rgba(10,22,40,.75);color:#e2e8f0;font-size:10px;padding:2px 7px;border-radius:99px;}
+.prev-dist{position:absolute;bottom:7px;left:7px;display:flex;gap:4px;flex-wrap:wrap;}
+.prev-dist-pill{background:rgba(10,22,40,.75);color:#e2e8f0;font-size:10px;padding:2px 7px;border-radius:99px;}
 .prev-body{padding:12px 14px;}
 .prev-seller{display:flex;align-items:center;gap:6px;margin-bottom:7px;}
 .prev-av{width:20px;height:20px;border-radius:50%;background:var(--gold);color:var(--navy);font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.6rem;display:flex;align-items:center;justify-content:center;}
@@ -255,9 +236,6 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
   .tags-wrap,.cash-wrap input{background:#162032 !important;}
   .pref-row{background:#162032 !important;}
   .pref-row.on{background:rgba(22,163,74,.1) !important;}
-  .shipit-row{background:rgba(14,165,233,.1) !important;}
-  .shipit-row.on{background:rgba(14,165,233,.15) !important;}
-  .shipit-info{background:rgba(14,165,233,.1) !important;}
 }
 </style>
 </head>
@@ -283,7 +261,7 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
   <div class="progress-label" id="pLabel">Step 1 of 4</div>
 </div>
 
-<!-- W-9 GATE — shown if w9_on_file is false -->
+<!-- W-9 GATE -->
 <div class="w9-gate" id="w9Gate">
   <div class="w9-gate-head">
     <div class="w9-gate-icon">📋</div>
@@ -291,20 +269,15 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
     <div class="w9-gate-sub">This takes about 2 minutes to complete</div>
   </div>
   <div class="w9-gate-body">
-    <p>
-      The IRS requires platforms like Tradezy to collect a <strong>W-9 form</strong> from sellers before they can list items for trade. This is a one-time step that unlocks your ability to post listings, make offers, and trade on Tradezy.
-    </p>
-    <p style="margin-bottom:20px">
-      <strong>What you'll need:</strong> Your legal name, address, and Social Security Number or EIN. Your information is encrypted and stored securely.
-    </p>
+    <p>The IRS requires platforms like Tradezy to collect a <strong>W-9 form</strong> from sellers before they can list items for trade. This is a one-time step that unlocks your ability to post listings, make offers, and trade on Tradezy.</p>
+    <p style="margin-bottom:20px"><strong>What you'll need:</strong> Your legal name, address, and Social Security Number or EIN. Your information is encrypted and stored securely.</p>
     <a class="btn-w9" href="alltrades-verification.html">Complete Tax Info → Unlock Listings</a>
     <button class="btn-w9-cancel" onclick="window.location.href='alltrades.html'">← Back to Marketplace</button>
   </div>
 </div>
 
-<!-- MAIN FORM — hidden until W-9 check passes -->
+<!-- MAIN FORM -->
 <div id="mainForm" style="display:none">
-
 <div class="main">
   <div>
 
@@ -376,7 +349,6 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
         <!-- TCG FIELDS -->
         <div class="tcg-section" id="tcgSection">
           <div class="tcg-header">🃏 Trading Card Details</div>
-
           <div class="subcat-section" style="margin-bottom:12px;">
             <span class="subcat-label">Game / Subcategory *</span>
             <div class="subcat-pills" id="tcgSubcatPills">
@@ -388,7 +360,6 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
               <div class="subcat-pill" onclick="pickTcgSubcat(this,'Flesh and Blood')">Flesh &amp; Blood</div>
             </div>
           </div>
-
           <div class="field-row-2">
             <div class="field">
               <label style="font-size:11px;font-weight:700;color:#7c3aed;text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:5px">Set Name</label>
@@ -399,7 +370,6 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
               <input type="text" id="tcgCardNum" placeholder="e.g. 025/198" style="border-color:#a78bfa">
             </div>
           </div>
-
           <div class="field">
             <label style="font-size:11px;font-weight:700;color:#7c3aed;text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:6px">Card Condition *</label>
             <div class="tcg-cond-grid">
@@ -411,7 +381,6 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
               <div class="tcg-cond-btn" onclick="pickTcgCond(this,'Damaged')">💔 Damaged</div>
             </div>
           </div>
-
           <div class="field">
             <label style="font-size:11px;font-weight:700;color:#7c3aed;text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:6px">Graded Card?</label>
             <div style="display:flex;gap:8px;">
@@ -423,13 +392,7 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
             <div class="field-row-2">
               <div class="field">
                 <label style="font-size:11px;font-weight:700;color:#7c3aed;text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:5px">Grading Company</label>
-                <select id="tcgGrader" style="border-color:#a78bfa">
-                  <option>PSA</option>
-                  <option>BGS</option>
-                  <option>SGC</option>
-                  <option>TAG</option>
-                  <option>Other</option>
-                </select>
+                <select id="tcgGrader" style="border-color:#a78bfa"><option>PSA</option><option>BGS</option><option>SGC</option><option>TAG</option><option>Other</option></select>
               </div>
               <div class="field">
                 <label style="font-size:11px;font-weight:700;color:#7c3aed;text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:5px">Grade</label>
@@ -437,7 +400,6 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
               </div>
             </div>
           </div>
-
           <div class="foil-toggle" id="foilToggle" onclick="toggleFoil()">
             <div>
               <div class="foil-label" id="foilLabel">✨ Foil / Holo / Special Edition</div>
@@ -445,7 +407,6 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
             </div>
             <div class="toggle" id="foilTgl"></div>
           </div>
-
           <div class="field">
             <label style="font-size:11px;font-weight:700;color:#7c3aed;text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:6px">Trade Preference</label>
             <div class="trade-pref-pills" id="tcgTradePref">
@@ -459,7 +420,6 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
         <!-- SPORTS CARDS FIELDS -->
         <div class="sc-section" id="scSection">
           <div class="sc-header">⚾ Sports Card Details</div>
-
           <div class="subcat-section" style="margin-bottom:12px;">
             <span class="subcat-label sports">Sport *</span>
             <div class="subcat-pills" id="scSubcatPills">
@@ -470,7 +430,6 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
               <div class="subcat-pill sports" onclick="pickScSubcat(this,'Soccer')">⚽ Soccer</div>
             </div>
           </div>
-
           <div class="field-row-2">
             <div class="field">
               <label style="font-size:11px;font-weight:700;color:#ea580c;text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:5px">Player Name</label>
@@ -481,7 +440,6 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
               <input type="text" id="scYear" placeholder="e.g. 2023 Topps Chrome" style="border-color:#f97316">
             </div>
           </div>
-
           <div class="field">
             <label style="font-size:11px;font-weight:700;color:#ea580c;text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:6px">Card Condition *</label>
             <div class="sc-cond-grid">
@@ -493,7 +451,6 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
               <div class="sc-cond-btn" onclick="pickScCond(this,'Damaged')">💔 Damaged</div>
             </div>
           </div>
-
           <div class="field">
             <label style="font-size:11px;font-weight:700;color:#ea580c;text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:6px">Graded Card?</label>
             <div style="display:flex;gap:8px;">
@@ -501,18 +458,11 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
               <div class="sc-cond-btn active" id="gradedYes" onclick="pickGraded(true)" style="flex:1">✅ Graded (PSA/BGS/SGC/TAG)</div>
             </div>
           </div>
-
           <div id="gradeBox" style="display:none;margin-top:8px;">
             <div class="field-row-2">
               <div class="field">
                 <label style="font-size:11px;font-weight:700;color:#ea580c;text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:5px">Grading Company</label>
-                <select id="scGrader" style="border-color:#f97316">
-                  <option>PSA</option>
-                  <option>BGS</option>
-                  <option>SGC</option>
-                  <option>TAG</option>
-                  <option>Other</option>
-                </select>
+                <select id="scGrader" style="border-color:#f97316"><option>PSA</option><option>BGS</option><option>SGC</option><option>TAG</option><option>Other</option></select>
               </div>
               <div class="field">
                 <label style="font-size:11px;font-weight:700;color:#ea580c;text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:5px">Grade</label>
@@ -649,33 +599,16 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
           <div class="field-hint">Keep it general — protect your privacy.</div>
         </div>
 
-        <div class="divider"><div class="divider-line"></div><div class="divider-text">Ship-It Trading</div><div class="divider-line"></div></div>
-
-        <!-- SHIP-IT TOGGLE -->
-        <div class="shipit-row" id="shipItRow" onclick="toggleShipIt()">
-          <div class="shipit-left">
-            <div class="shipit-icon">🚚</div>
-            <div>
-              <div class="shipit-title">Also Open to Ship-It Trades</div>
-              <div class="shipit-desc">Allow state-to-state trades · Both parties must be ID verified · 10% fee at acceptance</div>
-            </div>
+        <!-- Ship-It info banner — always on, not a toggle -->
+        <div style="background:#e0f2fe;border:1px solid #7dd3fc;border-radius:10px;padding:13px 15px;margin-top:18px;font-size:12px;color:#0369a1;line-height:1.6;display:flex;gap:10px;align-items:flex-start;">
+          <span style="font-size:1.2rem;flex-shrink:0;">🚚</span>
+          <div>
+            <strong style="color:#0c4a6e;display:block;margin-bottom:4px;">Ship-It is available on all listings</strong>
+            Buyers can choose to meet locally <em>or</em> do a state-to-state Ship-It trade. ID verification required for Ship-It · 10% fee per party at acceptance · Tradezy never holds funds.
           </div>
-          <div class="toggle-blue" id="tgl-shipit"></div>
         </div>
 
-        <div class="shipit-info" id="shipItInfo">
-          <strong>🚚 Ship-It Trade Info</strong>
-          <ul>
-            <li>Both traders must have <strong>ID verification</strong> on file</li>
-            <li>Buyer sends payment via Zelle, PayPal, Venmo, Apple Pay, Google Pay, or Cash App</li>
-            <li>Buyer uploads payment screenshot · Seller enters tracking number</li>
-            <li>Both confirm delivery to close the trade and unlock ratings</li>
-            <li><strong>10% fee per party</strong> charged at trade acceptance — not delivery</li>
-            <li>Tradezy never holds funds — peer-to-peer only</li>
-          </ul>
-        </div>
-
-        <div class="btn-row">
+        <div class="btn-row" style="margin-top:18px;">
           <button class="btn btn-outline" onclick="goPrev(3)">← Back</button>
           <button class="btn btn-gold" onclick="goNext(3)">Review Listing →</button>
         </div>
@@ -700,7 +633,7 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
         <div class="success-wrap" id="successWrap">
           <div class="suc-emoji">🎉</div>
           <div class="suc-title">You're Live!</div>
-          <div class="suc-desc">Your listing is now visible to traders near you. You'll be notified when someone makes an offer.</div>
+          <div class="suc-desc">Your listing is now visible to local traders and Ship-It traders nationwide. You'll be notified when someone makes an offer.</div>
           <div class="suc-preview">
             <div class="suc-img" id="sucImg">📦</div>
             <div><div class="suc-item-title" id="sucTitle">Your Item</div><div class="suc-item-meta" id="sucMeta">Just listed · 0 offers</div></div>
@@ -726,8 +659,11 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
       <div class="prev-img" id="prevImg">
         <img class="prev-img-real" id="prevImgReal">
         <span id="prevPlaceholder">📦</span>
-        <div class="prev-badges" id="prevBadges"><span class="pbadge local">LOCAL</span></div>
-        <div class="prev-dist" id="prevDist">📍 Near You</div>
+        <div class="prev-badges" id="prevBadges"><span class="pbadge local">LOCAL</span><span class="pbadge shipit">🚚 SHIP-IT</span></div>
+        <div class="prev-dist">
+          <span class="prev-dist-pill">📍 Near You</span>
+          <span class="prev-dist-pill">🚚 Ships Nationwide</span>
+        </div>
       </div>
       <div class="prev-body">
         <div class="prev-seller">
@@ -752,19 +688,17 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
         <div class="tip"><span class="tip-ic">✍️</span><span><strong>Specific titles</strong> rank higher in search.</span></div>
         <div class="tip"><span class="tip-ic">💰</span><span><strong>Fair pricing</strong> builds trust.</span></div>
         <div class="tip"><span class="tip-ic">🤝</span><span><strong>Enable all offer types</strong> for max responses.</span></div>
-        <div class="tip"><span class="tip-ic">🚚</span><span>Enable <strong>Ship-It</strong> to reach traders statewide!</span></div>
+        <div class="tip"><span class="tip-ic">🚚</span><span>Every listing reaches <strong>local + nationwide</strong> Ship-It traders!</span></div>
         <div class="tip"><span class="tip-ic">🃏</span><span>TCG listings trending — <strong>card traders are active!</strong></span></div>
       </div>
     </div>
   </div>
 </div>
-
 </div><!-- end mainForm -->
 
 <div class="toast" id="toastEl"><span id="toastIc">✅</span><span id="toastTx">Done!</span></div>
 
 <script>
-/* ── Supabase ── */
 const sb = window.supabase.createClient(
   'https://equvwaspcoeetfsexqki.supabase.co',
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVxdXZ3YXNwY29lZXRmc2V4cWtpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgyNzc2MjQsImV4cCI6MjA5Mzg1MzYyNH0.TP6Kk3pzHW1PYMUu5D9Vu2lJrazIEagzu5csYhqkrfI'
@@ -772,7 +706,6 @@ const sb = window.supabase.createClient(
 
 let currentUser = null;
 
-/* ── SESSION + W-9 GATE ── */
 (async () => {
   const { data: { session } } = await sb.auth.getSession();
   if (!session) { window.location.href = 'alltrades-auth.html'; return; }
@@ -786,18 +719,15 @@ let currentUser = null;
   }
 
   document.getElementById('mainForm').style.display = 'block';
-
   const name = profile?.display_name || currentUser.email?.split('@')[0] || 'You';
   const initials = name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0,2);
   document.getElementById('prevAv').textContent = initials;
   document.getElementById('prevName').textContent = name;
-
   renderGrid();
   updateProg(1);
   livePreview();
 })();
 
-/* ── State ── */
 let step = 1;
 let photos = [];
 let tags = [];
@@ -811,10 +741,8 @@ let scCond = 'Mint';
 let tcgGraded = false;
 let scGraded = false;
 let foilOn = false;
-let shipIt = false;
 let prefs = {trade:true, tc:true, cash:false, bundle:false};
 
-/* ── PHOTOS ── */
 function renderGrid() {
   const g = document.getElementById('photoGrid');
   g.innerHTML = '';
@@ -860,7 +788,6 @@ function rmPhoto(i) {
   }
 }
 
-/* ── CATEGORY ── */
 function pickCat(el, c) {
   document.querySelectorAll('.cat-pill').forEach(p => p.classList.remove('active'));
   el.classList.add('active');
@@ -871,37 +798,26 @@ function pickCat(el, c) {
   document.getElementById('tcgSection').classList.toggle('show', isTCG);
   document.getElementById('scSection').classList.toggle('show', isSC);
   document.getElementById('condSection').style.display = (isTCG || isSC) ? 'none' : 'block';
-  const ess = ['Food & Water','Garden'].includes(c);
-  document.getElementById('prevBadges').innerHTML =
-    `<span class="pbadge local">LOCAL</span>` +
-    (ess ? '<span class="pbadge ess">ESSENTIAL</span>' : '') +
-    (isTCG ? '<span class="pbadge tcg">🃏 TCG</span>' : '') +
-    (isSC  ? '<span class="pbadge sportsc">⚾ SPORTS</span>' : '') +
-    (shipIt ? '<span class="pbadge shipit">🚚 SHIP-IT</span>' : '');
 }
 
-/* ── TCG SUBCATEGORY ── */
 function pickTcgSubcat(el, sub) {
   document.querySelectorAll('#tcgSubcatPills .subcat-pill').forEach(p => p.classList.remove('active'));
   el.classList.add('active');
   tcgSubcat = sub;
 }
 
-/* ── SPORTS CARDS SUBCATEGORY ── */
 function pickScSubcat(el, sub) {
   document.querySelectorAll('#scSubcatPills .subcat-pill').forEach(p => p.classList.remove('active'));
   el.classList.add('active');
   scSubcat = sub;
 }
 
-/* ── SPORTS CARDS CONDITION ── */
 function pickScCond(el, c) {
   document.querySelectorAll('.sc-cond-btn').forEach(b => b.classList.remove('active'));
   el.classList.add('active');
   scCond = c;
 }
 
-/* ── GRADED ── */
 function pickGraded(val) {
   scGraded = val;
   document.getElementById('gradedYes').classList.toggle('active', val);
@@ -916,7 +832,6 @@ function pickTcgGraded(val) {
   document.getElementById('tcgGradeBox').style.display = val ? 'block' : 'none';
 }
 
-/* ── CONDITION ── */
 function pickCond(el, c) {
   document.querySelectorAll('.cond-btn').forEach(b => b.classList.remove('active'));
   el.classList.add('active');
@@ -924,7 +839,6 @@ function pickCond(el, c) {
   livePreview();
 }
 
-/* ── TCG FIELDS ── */
 function pickTcgCond(el, c) {
   document.querySelectorAll('.tcg-cond-btn').forEach(b => b.classList.remove('active'));
   el.classList.add('active');
@@ -945,16 +859,6 @@ function toggleFoil() {
   document.getElementById('foilSub').textContent = foilOn ? 'Marked as foil/holo' : 'Tap to mark as foil';
 }
 
-/* ── SHIP-IT TOGGLE ── */
-function toggleShipIt() {
-  shipIt = !shipIt;
-  document.getElementById('tgl-shipit').classList.toggle('on', shipIt);
-  document.getElementById('shipItRow').classList.toggle('on', shipIt);
-  document.getElementById('shipItInfo').classList.toggle('show', shipIt);
-  livePreview();
-}
-
-/* ── TRADE PREFS ── */
 function togglePref(k) {
   prefs[k] = !prefs[k];
   document.getElementById('tgl-'+k).classList.toggle('on', prefs[k]);
@@ -963,7 +867,6 @@ function togglePref(k) {
   livePreview();
 }
 
-/* ── TAGS ── */
 function tagKey(e) {
   if (e.key === 'Enter' || e.key === ',') {
     e.preventDefault();
@@ -986,7 +889,6 @@ function renderTags() {
 }
 function delTag(i) { tags.splice(i, 1); renderTags(); }
 
-/* ── LIVE PREVIEW ── */
 function livePreview() {
   const t = document.getElementById('fTitle')?.value || '';
   const v = document.getElementById('fVal')?.value || '';
@@ -1000,8 +902,6 @@ function livePreview() {
   document.getElementById('prevCond').textContent = `${displayCond} · ${cat}`;
   document.getElementById('prevVal').textContent = v ? `$${parseFloat(v).toLocaleString()}` : '$—';
   document.getElementById('prevWants').textContent = w ? `Wants: ${w}` : 'Wants: tell us what you need';
-  // Distance label
-  document.getElementById('prevDist').textContent = shipIt ? '🚚 Ship-It Available' : '📍 Near You';
   const ess = ['Food & Water','Garden'].includes(cat);
   const cashOk = prefs.cash || prefs.tc;
   document.getElementById('prevBadges').innerHTML =
@@ -1010,17 +910,15 @@ function livePreview() {
     (cashOk ? '<span class="pbadge cash">💵 CASH OK</span>' : '') +
     (isTCG ? '<span class="pbadge tcg">🃏 TCG</span>' : '') +
     (isSC  ? '<span class="pbadge sportsc">⚾ SPORTS</span>' : '') +
-    (shipIt ? '<span class="pbadge shipit">🚚 SHIP-IT</span>' : '');
+    '<span class="pbadge shipit">🚚 SHIP-IT</span>';
 }
 
-/* ── CHAR COUNT ── */
 function countChar(el, id, max) {
   const c = document.getElementById(id);
   c.textContent = el.value.length;
   c.style.color = el.value.length >= max ? 'var(--red)' : el.value.length > max*.85 ? 'var(--gold)' : '#94a3b8';
 }
 
-/* ── AI HELPERS ── */
 function aiTitle() {
   const pool = {
     'Food & Water': ['50-Pack Water Bottles (16.9 oz), Sealed','Case of Mixed Canned Veggies (24 cans)','25 lb Bag White Rice, Brand New'],
@@ -1069,7 +967,6 @@ function aiWants() {
   toast('✨', 'Suggestion added — edit to your needs!');
 }
 
-/* ── STEP NAVIGATION ── */
 function goNext(from) {
   if (!validate(from)) return;
   hide(from); step = from + 1; show(step); updateProg(step);
@@ -1099,7 +996,6 @@ function updateProg(s) {
   });
 }
 
-/* ── VALIDATION ── */
 function validate(s) {
   let ok = true;
   function showErr(id, inputId) {
@@ -1108,9 +1004,7 @@ function validate(s) {
     if (inputId) { const inp = document.getElementById(inputId); inp.style.borderColor = 'var(--red)'; setTimeout(() => inp.style.borderColor = '', 3000); }
     ok = false;
   }
-  if (s === 1) {
-    if (photos.length < 3) { toast('📷', 'Please upload at least 3 photos.'); ok = false; }
-  }
+  if (s === 1 && photos.length < 3) { toast('📷', 'Please upload at least 3 photos.'); ok = false; }
   if (s === 2) {
     if (!document.getElementById('fTitle').value.trim()) showErr('eTit','fTitle');
     if (!document.getElementById('fDesc').value.trim()) showErr('eDesc','fDesc');
@@ -1122,14 +1016,12 @@ function validate(s) {
   return ok;
 }
 
-/* ── BUILD CATEGORY VALUE ── */
 function buildCategoryValue() {
   if (cat === 'Trading Cards') return `TCG - ${tcgSubcat}`;
   if (cat === 'Sports Cards')  return `Sports Cards - ${scSubcat}`;
   return cat;
 }
 
-/* ── REVIEW ── */
 function buildReview() {
   const title = document.getElementById('fTitle').value || '—';
   const val = document.getElementById('fVal').value;
@@ -1167,11 +1059,6 @@ function buildReview() {
     cardHtml = rr('⚾','Sports Card',`${scSubcat}${player?' · '+player:''}${year?' · '+year:''} · ${scCond}${gradeInfo}`);
   }
 
-  // Ship-It row
-  const shipItHtml = shipIt
-    ? rr('🚚','Ship-It','<span style="background:#e0f2fe;color:#0369a1;border:1px solid #7dd3fc;border-radius:4px;padding:1px 7px;font-size:11px;font-weight:700">ENABLED — 10% fee at acceptance</span>')
-    : rr('🚚','Ship-It','Local only');
-
   document.getElementById('reviewRows').innerHTML = photoHtml
     + rr('📦','Item',`<strong>${title}</strong> · Qty: ${qty}`)
     + rr('🏷️','Category', catValue)
@@ -1181,7 +1068,7 @@ function buildReview() {
     + rr('✅','Offer Types', activePrefs.join(', ') || 'None selected')
     + rr('📍','Meetup', `${meetupLabel} · ${avail}`)
     + (area !== 'Not specified' ? rr('🗺️','Area', area) : '')
-    + shipItHtml
+    + rr('🚚','Ship-It','<span style="background:#e0f2fe;color:#0369a1;border:1px solid #7dd3fc;border-radius:4px;padding:1px 7px;font-size:11px;font-weight:700">Available on all listings · 10% fee</span>')
     + (tags.length ? rr('🔖','Tags', tags.map(t=>`<span style="background:#eff6ff;color:var(--blue);border:1px solid #bfdbfe;border-radius:99px;padding:2px 7px;font-size:11px;font-weight:700">${t}</span>`).join(' ')) : '');
 }
 
@@ -1189,7 +1076,6 @@ function rr(icon, label, val) {
   return `<div class="review-row"><span class="rr-icon">${icon}</span><span class="rr-label">${label}</span><span class="rr-val">${val}</span></div>`;
 }
 
-/* ── CONTENT SCREENING ── */
 const BANNED_KEYWORDS = {
   WEAPONS: ['gun','firearm','rifle','pistol','handgun','shotgun','ammo','ammunition','explosive','bomb','grenade','taser','switchblade','silencer'],
   DRUGS: ['weed','marijuana','cannabis','thc','cocaine','heroin','meth','fentanyl','mdma','ecstasy','lsd','bong','vape cartridge'],
@@ -1209,23 +1095,18 @@ function screenContent(title, desc) {
   return { blocked: false };
 }
 
-/* ── PUBLISH ── */
 async function publish(btn) {
   const title = document.getElementById('fTitle').value.trim();
   const desc  = document.getElementById('fDesc').value.trim();
-
   const screen = screenContent(title, desc);
   if (screen.blocked) {
     toast('🚫', `Listing blocked: ${screen.category.toLowerCase()} items are not allowed.`);
     setTimeout(() => alert(`⚠️ Listing Not Allowed\n\nFlagged for: ${screen.category}\n\nIf you believe this is an error, contact support@tradezyhq.com`), 500);
     return;
   }
-
   btn.textContent = '⏳ Publishing…';
   btn.disabled = true;
-
   try {
-    // Double-check W-9 on publish
     const { data: profile } = await sb.from('users').select('w9_on_file').eq('id', currentUser.id).single();
     if (!profile?.w9_on_file) {
       toast('⚠️', 'Tax information required before publishing. Redirecting…');
@@ -1234,7 +1115,6 @@ async function publish(btn) {
       btn.disabled = false;
       return;
     }
-
     const isTCG = cat === 'Trading Cards';
     const isSC  = cat === 'Sports Cards';
     const val   = parseFloat(document.getElementById('fVal').value) || 0;
@@ -1244,13 +1124,10 @@ async function publish(btn) {
     const avail  = document.getElementById('fAvail').value;
     const area   = document.getElementById('fArea').value.trim();
     const minCash = parseFloat(document.getElementById('fMinCash').value) || 0;
-
     let tradeType = 'item';
     if (prefs.cash && !prefs.trade && !prefs.tc) tradeType = 'cash';
     else if (prefs.cash || prefs.tc) tradeType = 'item_plus_cash';
-
     const categoryValue = buildCategoryValue();
-
     let fullDesc = desc;
     if (isTCG) {
       const set = document.getElementById('tcgSet').value;
@@ -1264,9 +1141,7 @@ async function publish(btn) {
       const gradeInfo = scGraded ? ` | ${document.getElementById('scGrader').value} ${document.getElementById('scGrade').value}` : ' | Raw/Ungraded';
       fullDesc += `\n\n[Sports Card] Sport: ${scSubcat}${player?' | Player: '+player:''}${year?' | Year/Set: '+year:''} | Condition: ${scCond}${gradeInfo}`;
     }
-
     const condValue = isTCG ? tcgCond : isSC ? scCond : cond;
-
     const { data, error } = await sb.from('listings').insert({
       user_id:        currentUser.id,
       title,
@@ -1284,11 +1159,9 @@ async function publish(btn) {
       min_cash_offer: minCash || null,
       photos:         photos.length > 0 ? photos : null,
       status:         'active',
-      ship_it:        shipIt
+      ship_it:        true
     }).select().single();
-
     if (error) throw error;
-
     document.getElementById('pFill').style.width = '100%';
     document.getElementById('pLabel').textContent = 'Published! 🎉';
     ['pill1','pill2','pill3','pill4'].forEach(id => { document.getElementById(id).className = 'step-pill done'; });
@@ -1296,15 +1169,13 @@ async function publish(btn) {
     document.getElementById('reviewBtns').style.display = 'none';
     document.getElementById('head4Icon').textContent = '🎉';
     document.getElementById('head4Title').textContent = 'Listing Live!';
-    document.getElementById('head4Sub').textContent = 'Visible to traders near you right now.';
+    document.getElementById('head4Sub').textContent = 'Visible to local + nationwide Ship-It traders right now.';
     document.getElementById('successWrap').classList.add('show');
     document.getElementById('sucTitle').textContent = title;
-    document.getElementById('sucMeta').textContent = `Just listed in ${categoryValue} · 0 offers${shipIt ? ' · 🚚 Ship-It' : ''}`;
+    document.getElementById('sucMeta').textContent = `Just listed in ${categoryValue} · 0 offers · 🚚 Ship-It`;
     if (photos[0]) document.getElementById('sucImg').innerHTML = `<img src="${photos[0]}" style="width:56px;height:56px;object-fit:cover;border-radius:8px">`;
     toast('🚀', `"${title}" is now live!`);
-
     if (typeof gtag !== 'undefined') gtag('event', 'listing_published', { event_category: 'listings', event_label: categoryValue });
-
   } catch(e) {
     console.error(e);
     toast('⚠️', 'Error publishing listing. Please try again.');
@@ -1313,12 +1184,10 @@ async function publish(btn) {
   }
 }
 
-/* ── RESET ── */
 function resetAll() {
   photos = []; tags = []; cat = 'Food & Water'; cond = 'Like New'; step = 1;
   tcgCond = 'Mint'; tcgPref = 'Trade Only'; tcgSubcat = 'Pokémon';
-  scSubcat = 'Baseball'; scCond = 'Mint'; tcgGraded = false; scGraded = false;
-  foilOn = false; shipIt = false;
+  scSubcat = 'Baseball'; scCond = 'Mint'; tcgGraded = false; scGraded = false; foilOn = false;
   prefs = {trade:true, tc:true, cash:false, bundle:false};
   document.getElementById('successWrap').classList.remove('show');
   document.getElementById('card4').style.display = 'none';
@@ -1336,15 +1205,10 @@ function resetAll() {
   document.getElementById('condSection').style.display = 'block';
   document.getElementById('gradeBox').style.display = 'none';
   document.getElementById('tcgGradeBox').style.display = 'none';
-  // Reset Ship-It UI
-  document.getElementById('tgl-shipit').classList.remove('on');
-  document.getElementById('shipItRow').classList.remove('on');
-  document.getElementById('shipItInfo').classList.remove('show');
   updateProg(1); renderGrid(); livePreview();
   show(1); window.scrollTo({top:0, behavior:'smooth'});
 }
 
-/* ── TOAST ── */
 function toast(icon, msg) {
   document.getElementById('toastIc').textContent = icon;
   document.getElementById('toastTx').textContent = msg;
@@ -1406,7 +1270,6 @@ function toast(icon, msg) {
 .tz-send-btn:disabled{opacity:.5;cursor:not-allowed;transform:none;}
 .tz-powered{text-align:center;font-size:10px;color:#cbd5e1;padding:5px 0 2px;flex-shrink:0;}
 </style>
-
 <div id="tz-help-bubble">
   <div id="tz-chat-panel">
     <div class="tz-panel-head">
@@ -1429,7 +1292,6 @@ function toast(icon, msg) {
     <div class="tz-notif" id="tzNotif"></div>
   </button>
 </div>
-
 <script>
 (function() {
   const SYSTEM_PROMPT = `You are the Tradezy support assistant — a helpful, friendly AI for Tradezy, a peer-to-peer local trading marketplace.
@@ -1438,68 +1300,45 @@ ABOUT TRADEZY:
 - Free local trading platform where users list items and trade with verified neighbors
 - Platform fee: 5% per party on completed trades (Founding Traders pay 3% lifetime)
 - Ship-It trades (state-to-state): 10% fee, fully verified users only, launching July 31 2026
+- Every listing automatically supports both local meetup AND Ship-It trading
 - Phase 1 launch: July 17 2026 — Connecticut and Ohio statewide
 - Phase 2: July 31 2026 — Nationwide
 
 HOW TRADING WORKS:
 1. Post a listing with photos, condition, what you want in return
 2. Browse listings, make offers (item-for-item, item + cash top-up, or cash)
-3. Accept an offer, agree on a meetup spot
+3. Accept an offer, agree on a meetup spot (local) or Ship-It flow
 4. Both parties confirm the exchange in-app — this unlocks ratings
-5. Leave ratings after confirmed meetup
+5. Leave ratings after confirmed exchange
 
 VERIFICATION & TRUST:
 - Email verification required to use platform
 - Address verification adds trust score
 - ID verification required for Ship-It trades
 - W-9 tax form required before posting listings
-- Trust score shown on profiles
 
 PROHIBITED ITEMS (permanent ban): Firearms, weapons, alcohol, tobacco, drugs, live animals, adult content, stolen goods, cash, gift cards, cryptocurrency
 
-FEES EXPLAINED:
-- 5% of total trade value per party — example: $100 item trade = $5 fee each party
-- $90 item + $40 cash top-up = $130 total = $6.50 fee each party
+FEES:
+- 5% of total trade value per party for local trades
 - Founding Traders: 3% lifetime (signed up before July 17 launch)
+- Ship-It: 10% per party at trade acceptance
 - Listing is always free
 
 SHIP-IT TRADES (July 31+):
+- Available on ALL listings automatically — buyers choose local or Ship-It when making an offer
 - State-to-state trading for fully ID-verified users only
-- 10% fee per party at trade acceptance
-- Payment via Zelle, PayPal, Venmo, Apple Pay, Google Pay, or Cash App (peer-to-peer, Tradezy never holds funds)
-- Buyer uploads payment screenshot as proof
-- Seller enters tracking number
-- Both confirm delivery to close trade
-
-TCG CATEGORIES: Pokémon, One Piece, MTG, Yu-Gi-Oh, Lorcana, Flesh & Blood
-SPORTS CARDS: Baseball, Football, Basketball, Hockey, Soccer
-Card grading supported: PSA, BGS, SGC, TAG
+- Payment via Zelle, PayPal, Venmo, Apple Pay, Google Pay, or Cash App (peer-to-peer)
+- Buyer uploads payment screenshot · Seller enters tracking number · Both confirm delivery
 
 ACCOUNT HELP:
-- Password reset: direct users to https://tradezyhq.com/alltrades-auth.html
-- Account locked/banned: direct to support@tradezyhq.com
-- Verification issues: direct to https://tradezyhq.com/alltrades-verification.html
+- Password reset: https://tradezyhq.com/alltrades-auth.html
+- Verification issues: https://tradezyhq.com/alltrades-verification.html
+- Disputes: https://tradezyhq.com/alltrades-disputes.html or disputes@tradezyhq.com
 
-DISPUTE RESOLUTION:
-- File a dispute at https://tradezyhq.com/alltrades-disputes.html
-- Email disputes@tradezyhq.com
-- SLA: CRITICAL issues 4hrs, HIGH 24hrs, MEDIUM 48hrs, LOW 72hrs
+TONE: Warm, clear, concise. Never give legal or financial advice. Keep responses short and scannable.`;
 
-ESCALATION RULES — escalate to human immediately if:
-- User reports fraud, scam, or didn't receive item
-- User mentions safety concern, threat, or harassment
-- User is clearly distressed or frustrated after multiple exchanges
-- User explicitly requests a human agent
-- Issue involves account ban or suspension
-
-ESCALATION: When escalating, provide support@tradezyhq.com for general issues or disputes@tradezyhq.com for trade disputes.
-
-TONE: Warm, clear, concise. Never give legal or financial advice. Never make up information — if unsure, direct to support@tradezyhq.com. Keep responses short and scannable.`;
-
-  let isOpen = false;
-  let isLoading = false;
-  let exchangeCount = 0;
-  let hasShownWelcome = false;
+  let isOpen = false, isLoading = false, exchangeCount = 0, hasShownWelcome = false;
   const history = [];
 
   window.tzToggle = function() {
@@ -1511,12 +1350,7 @@ TONE: Warm, clear, concise. Never give legal or financial advice. Never make up 
       btn.innerHTML = '✕<div class="tz-notif" id="tzNotif"></div>';
       if (!hasShownWelcome) {
         hasShownWelcome = true;
-        tzBotMessage("👋 Hey! I'm the Tradezy support assistant. I can help with:", [
-          "How trading works",
-          "Fees & verification",
-          "Account issues",
-          "Reporting a problem"
-        ]);
+        tzBotMessage("👋 Hey! I'm the Tradezy support assistant. I can help with:", ["How trading works","Fees & verification","Account issues","Reporting a problem"]);
       }
       setTimeout(() => document.getElementById('tzInput')?.focus(), 200);
     } else {
@@ -1529,22 +1363,15 @@ TONE: Warm, clear, concise. Never give legal or financial advice. Never make up 
     const input = document.getElementById('tzInput');
     const text = input.value.trim();
     if (!text || isLoading) return;
-    input.value = '';
-    tzAutoResize(input);
+    input.value = ''; tzAutoResize(input);
     tzUserMessage(text);
     history.push({ role: 'user', content: text });
     exchangeCount++;
     await tzGetResponse();
   };
 
-  window.tzKeyDown = function(e) {
-    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); tzSend(); }
-  };
-
-  window.tzAutoResize = function(el) {
-    el.style.height = '38px';
-    el.style.height = Math.min(el.scrollHeight, 90) + 'px';
-  };
+  window.tzKeyDown = function(e) { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); tzSend(); } };
+  window.tzAutoResize = function(el) { el.style.height = '38px'; el.style.height = Math.min(el.scrollHeight, 90) + 'px'; };
 
   async function tzGetResponse() {
     isLoading = true;
@@ -1552,21 +1379,13 @@ TONE: Warm, clear, concise. Never give legal or financial advice. Never make up 
     const typingId = 'tz-typing-' + Date.now();
     const msgs = document.getElementById('tzMessages');
     const typingEl = document.createElement('div');
-    typingEl.id = typingId;
-    typingEl.className = 'tz-msg bot';
+    typingEl.id = typingId; typingEl.className = 'tz-msg bot';
     typingEl.innerHTML = '<div class="tz-typing"><span></span><span></span><span></span></div>';
-    msgs.appendChild(typingEl);
-    msgs.scrollTop = msgs.scrollHeight;
+    msgs.appendChild(typingEl); msgs.scrollTop = msgs.scrollHeight;
     try {
       const response = await fetch('https://tradezy-ai-proxy.throbbing-lake-08ed.workers.dev', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          model: 'claude-sonnet-4-6',
-          max_tokens: 1000,
-          system: SYSTEM_PROMPT,
-          messages: history
-        })
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ model: 'claude-sonnet-4-6', max_tokens: 1000, system: SYSTEM_PROMPT, messages: history })
       });
       const data = await response.json();
       const reply = data.content?.[0]?.text || "I'm having trouble responding right now. Please email support@tradezyhq.com.";
@@ -1578,7 +1397,7 @@ TONE: Warm, clear, concise. Never give legal or financial advice. Never make up 
       tzBotMessage(reply, null, shouldEscalate);
     } catch(e) {
       document.getElementById(typingId)?.remove();
-      tzBotMessage("I'm having trouble connecting right now. For immediate help, please email support@tradezyhq.com or file a dispute at the link below.", null, true);
+      tzBotMessage("I'm having trouble connecting right now. For immediate help, please email support@tradezyhq.com.", null, true);
     }
     isLoading = false;
     document.getElementById('tzSendBtn').disabled = false;
@@ -1586,70 +1405,31 @@ TONE: Warm, clear, concise. Never give legal or financial advice. Never make up 
 
   function tzBotMessage(text, quickReplies = null, showEscalate = false) {
     const msgs = document.getElementById('tzMessages');
-    const wrapper = document.createElement('div');
-    wrapper.className = 'tz-msg bot';
-    let html = text
-      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-      .replace(/^[-•] (.+)$/gm, '<li>$1</li>')
-      .replace(/(<li>.*<\/li>)/gs, '<ul style="margin:4px 0 0 14px;padding:0;font-size:13px;line-height:1.6">$1</ul>')
-      .replace(/\n\n/g, '<br><br>')
-      .replace(/\n/g, '<br>');
+    const wrapper = document.createElement('div'); wrapper.className = 'tz-msg bot';
+    let html = text.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/^[-•] (.+)$/gm,'<li>$1</li>').replace(/(<li>.*<\/li>)/gs,'<ul style="margin:4px 0 0 14px;padding:0;font-size:13px;line-height:1.6">$1</ul>').replace(/\n\n/g,'<br><br>').replace(/\n/g,'<br>');
     let extraHTML = '';
-    if (text.toLowerCase().includes('password reset') || text.toLowerCase().includes('reset your password')) {
-      extraHTML += `<a class="tz-action-link" href="https://tradezyhq.com/alltrades-auth.html" target="_blank">🔑 Reset Password →</a>`;
-    }
-    if (text.toLowerCase().includes('verification') || text.toLowerCase().includes('verify your')) {
-      extraHTML += `<a class="tz-action-link" href="https://tradezyhq.com/alltrades-verification.html" target="_blank">✅ Go to Verification →</a>`;
-    }
-    if (text.toLowerCase().includes('dispute') || text.toLowerCase().includes('file a dispute')) {
-      extraHTML += `<a class="tz-action-link" href="https://tradezyhq.com/alltrades-disputes.html" target="_blank">⚖️ File a Dispute →</a>`;
-    }
+    if (text.toLowerCase().includes('password reset') || text.toLowerCase().includes('reset your password')) extraHTML += `<a class="tz-action-link" href="https://tradezyhq.com/alltrades-auth.html" target="_blank">🔑 Reset Password →</a>`;
+    if (text.toLowerCase().includes('verification') || text.toLowerCase().includes('verify your')) extraHTML += `<a class="tz-action-link" href="https://tradezyhq.com/alltrades-verification.html" target="_blank">✅ Go to Verification →</a>`;
+    if (text.toLowerCase().includes('dispute') || text.toLowerCase().includes('file a dispute')) extraHTML += `<a class="tz-action-link" href="https://tradezyhq.com/alltrades-disputes.html" target="_blank">⚖️ File a Dispute →</a>`;
     let bubbleHTML = `<div class="tz-bubble">${html}</div>`;
     if (extraHTML) bubbleHTML += extraHTML;
-    if (showEscalate) {
-      bubbleHTML += `
-        <div class="tz-escalate-card">
-          <div class="tz-escalate-title">🙋 Want to talk to a person?</div>
-          <div style="color:#92400e;font-size:12px;line-height:1.5">Our support team is standing by to help.</div>
-          <div style="display:flex;gap:7px;flex-wrap:wrap;margin-top:7px;">
-            <a class="tz-escalate-btn" href="mailto:support@tradezyhq.com?subject=Support Request from Tradezy Widget">📧 Email Support</a>
-            <a class="tz-escalate-btn" href="https://tradezyhq.com/alltrades-disputes.html" target="_blank" style="background:#1a56db">⚖️ File Dispute</a>
-          </div>
-        </div>`;
-    }
-    if (quickReplies && quickReplies.length) {
-      bubbleHTML += '<div class="tz-quick-btns">' +
-        quickReplies.map(q => `<button class="tz-quick-btn" onclick="tzQuickReply('${q.replace(/'/g, "\\'")}')">${q}</button>`).join('') +
-        '</div>';
-    }
+    if (showEscalate) bubbleHTML += `<div class="tz-escalate-card"><div class="tz-escalate-title">🙋 Want to talk to a person?</div><div style="color:#92400e;font-size:12px;line-height:1.5">Our support team is standing by to help.</div><div style="display:flex;gap:7px;flex-wrap:wrap;margin-top:7px;"><a class="tz-escalate-btn" href="mailto:support@tradezyhq.com?subject=Support Request from Tradezy Widget">📧 Email Support</a><a class="tz-escalate-btn" href="https://tradezyhq.com/alltrades-disputes.html" target="_blank" style="background:#1a56db">⚖️ File Dispute</a></div></div>`;
+    if (quickReplies && quickReplies.length) bubbleHTML += '<div class="tz-quick-btns">' + quickReplies.map(q=>`<button class="tz-quick-btn" onclick="tzQuickReply('${q.replace(/'/g,"\\'")}')">${q}</button>`).join('') + '</div>';
     wrapper.innerHTML = bubbleHTML;
-    const time = document.createElement('div');
-    time.className = 'tz-msg-time';
-    time.textContent = new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
-    wrapper.appendChild(time);
-    msgs.appendChild(wrapper);
-    msgs.scrollTop = msgs.scrollHeight;
+    const time = document.createElement('div'); time.className = 'tz-msg-time';
+    time.textContent = new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+    wrapper.appendChild(time); msgs.appendChild(wrapper); msgs.scrollTop = msgs.scrollHeight;
   }
 
   function tzUserMessage(text) {
     const msgs = document.getElementById('tzMessages');
-    const wrapper = document.createElement('div');
-    wrapper.className = 'tz-msg user';
-    wrapper.innerHTML = `
-      <div class="tz-bubble">${escHtml(text)}</div>
-      <div class="tz-msg-time">${new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})}</div>`;
-    msgs.appendChild(wrapper);
-    msgs.scrollTop = msgs.scrollHeight;
+    const wrapper = document.createElement('div'); wrapper.className = 'tz-msg user';
+    wrapper.innerHTML = `<div class="tz-bubble">${escHtml(text)}</div><div class="tz-msg-time">${new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}</div>`;
+    msgs.appendChild(wrapper); msgs.scrollTop = msgs.scrollHeight;
   }
 
-  window.tzQuickReply = function(text) {
-    document.getElementById('tzInput').value = text;
-    tzSend();
-  };
-
-  function escHtml(str) {
-    return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-  }
+  window.tzQuickReply = function(text) { document.getElementById('tzInput').value = text; tzSend(); };
+  function escHtml(str) { return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 })();
 </script>
 <!-- TRADEZY HELP WIDGET END -->
