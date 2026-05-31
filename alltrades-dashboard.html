@@ -12,7 +12,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Tradezy — My Dashboard | Local Trading & Bartering</title>
-<meta name="description" content="Manage your Tradezy trades, listings, offers, and messages. Track your trade value and connect with local traders in your community.">
+<meta name="description" content="Manage your Tradezy trades, listings, offers, and messages.">
 <meta property="og:title" content="Tradezy — My Dashboard">
 <meta property="og:url" content="https://tradezyhq.com/alltrades-dashboard.html">
 <meta property="og:image" content="https://tradezyhq.com/tradezy-preview.png">
@@ -20,7 +20,7 @@
 <script src="supabase.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
 <style>
-:root{--navy:#0a1628;--navy2:#112240;--blue:#1a56db;--blue-l:#2563eb;--gold:#f59e0b;--gold-l:#fbbf24;--green:#16a34a;--green-l:#22c55e;--red:#dc2626;--orange:#ea580c;--text:#1a1a2e;--muted:#475569;--light:#94a3b8;--border:#e2e8f0;--bg:#f0f4f8;--white:#fff;--surface:#f8fafc;}
+:root{--navy:#0a1628;--navy2:#112240;--blue:#1a56db;--blue-l:#2563eb;--gold:#f59e0b;--gold-l:#fbbf24;--green:#16a34a;--green-l:#22c55e;--red:#dc2626;--orange:#ea580c;--cyan:#0ea5e9;--cyan-l:#0284c7;--text:#1a1a2e;--muted:#475569;--light:#94a3b8;--border:#e2e8f0;--bg:#f0f4f8;--white:#fff;--surface:#f8fafc;}
 *{margin:0;padding:0;box-sizing:border-box;}
 body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column;}
 .topbar{background:var(--navy);padding:0 24px;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:300;}
@@ -92,27 +92,33 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
 .offer-row{display:flex;align-items:center;gap:11px;padding:12px 15px;border-bottom:1px solid var(--border);transition:background .15s;cursor:pointer;}
 .offer-row:last-child{border-bottom:none;}
 .offer-row:hover{background:var(--surface);}
+.offer-row.shipit-row{border-left:3px solid var(--cyan);background:#f0f9ff;}
+.offer-row.shipit-row:hover{background:#e0f2fe;}
 .or-em{width:42px;height:42px;background:var(--surface);border:1px solid var(--border);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0;overflow:hidden;}
 .or-em img{width:100%;height:100%;object-fit:cover;border-radius:8px;}
 .or-info{flex:1;min-width:0;}
 .or-ttl{font-weight:700;font-size:13px;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .or-meta{font-size:11px;color:var(--muted);display:flex;align-items:center;gap:5px;flex-wrap:wrap;}
+.or-shipit-pill{display:inline-flex;align-items:center;gap:3px;background:#e0f2fe;color:#0369a1;border:1px solid #7dd3fc;border-radius:3px;font-size:10px;font-weight:800;padding:1px 6px;letter-spacing:.3px;}
 .or-rt{text-align:right;flex-shrink:0;}
 .or-st{font-size:10px;font-weight:800;padding:2px 7px;border-radius:4px;letter-spacing:.3px;}
 .st-pend{background:#fffbeb;color:#92400e;border:1px solid #fde68a;}
 .or-acts{display:flex;gap:4px;margin-top:3px;}
 .or-btn{padding:4px 9px;border-radius:5px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.72rem;cursor:pointer;border:none;transition:all .15s;}
 .btn-acc{background:var(--green);color:#fff;}
+.btn-acc.shipit-acc{background:var(--cyan);}
 .btn-dec{background:transparent;border:1px solid var(--border);color:var(--muted);}
 .btn-dec:hover{border-color:var(--red);color:var(--red);}
 .two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:18px;}
 .trade-card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:13px 15px;margin-bottom:9px;transition:all .15s;}
 .trade-card:hover{border-color:var(--blue);}
+.trade-card.shipit-trade{border-left:3px solid var(--cyan);}
 .tc-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
 .tc-id{font-size:10px;color:var(--muted);font-weight:700;}
 .tc-stage{font-size:10px;font-weight:800;padding:2px 7px;border-radius:4px;letter-spacing:.3px;}
 .stg-meet{background:#fffbeb;color:#92400e;border:1px solid #fde68a;}
 .stg-agree{background:#eff6ff;color:#1e3a8a;border:1px solid #bfdbfe;}
+.stg-shipit{background:#e0f2fe;color:#0369a1;border:1px solid #7dd3fc;}
 .tc-items{display:flex;align-items:center;gap:7px;margin-bottom:8px;}
 .tc-itm{flex:1;background:var(--surface);border:1px solid var(--border);border-radius:7px;padding:7px;text-align:center;}
 .tc-itm-nm{font-size:11px;font-weight:700;margin-bottom:1px;}
@@ -121,7 +127,7 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
 .tc-prog-lbl{font-size:10px;color:var(--muted);margin-bottom:3px;display:flex;justify-content:space-between;}
 .tc-prog-bar{height:4px;background:var(--border);border-radius:2px;overflow:hidden;}
 .tc-prog-fill{height:100%;border-radius:2px;}
-.fill-gold{background:var(--gold);}.fill-blue{background:var(--blue);}
+.fill-gold{background:var(--gold);}.fill-blue{background:var(--blue);}.fill-cyan{background:var(--cyan);}
 .tc-ftr{display:flex;gap:5px;}
 .tc-btn{flex:1;padding:6px;border-radius:6px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.75rem;cursor:pointer;border:none;transition:all .15s;text-align:center;}
 .tcb-msg{background:var(--surface);border:1px solid var(--border);color:var(--muted);}
@@ -171,15 +177,23 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
 .modal{background:var(--white);border-radius:14px;width:100%;max-width:480px;max-height:88vh;overflow-y:auto;animation:slideUp .25s ease;}
 @keyframes slideUp{from{transform:translateY(16px);opacity:0}to{transform:translateY(0);opacity:1}}
 .mhd{background:linear-gradient(135deg,var(--navy),#1a3a6b);padding:17px 21px;display:flex;align-items:center;justify-content:space-between;border-radius:14px 14px 0 0;}
+.mhd.shipit-head{background:linear-gradient(135deg,#0c4a6e,#0369a1);}
 .mhd-ttl{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.05rem;color:#fff;}
 .mhd-close{background:rgba(255,255,255,.1);border:none;color:#94a3b8;width:27px;height:27px;border-radius:50%;cursor:pointer;font-size:.9rem;display:flex;align-items:center;justify-content:center;transition:all .15s;}
 .mhd-close:hover{background:rgba(255,255,255,.2);color:#fff;}
 .mbody{padding:19px;}
 .mbtn{width:100%;padding:11px;border:none;border-radius:7px;font-family:'Barlow Condensed',sans-serif;font-size:.92rem;font-weight:800;cursor:pointer;transition:all .15s;margin-bottom:7px;}
 .mbtn.green{background:var(--green);color:#fff;}
+.mbtn.cyan{background:var(--cyan);color:#fff;}
+.mbtn.cyan:hover{background:var(--cyan-l);}
 .mbtn.red{background:var(--red);color:#fff;}
 .mbtn.outline{background:transparent;border:1.5px solid var(--border);color:var(--muted);}
 .mbtn.outline:hover{border-color:#999;color:var(--text);}
+.shipit-offer-notice{background:linear-gradient(135deg,#0c4a6e,#0369a1);border-radius:10px;padding:13px 15px;margin-bottom:14px;display:flex;align-items:flex-start;gap:10px;}
+.son-icon{font-size:1.4rem;flex-shrink:0;}
+.son-title{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:.95rem;color:#fff;margin-bottom:3px;}
+.son-desc{font-size:11px;color:#7dd3fc;line-height:1.5;}
+.shipit-id-gate-modal{background:#fff7ed;border:1.5px solid #fed7aa;border-radius:10px;padding:13px 15px;margin-bottom:14px;}
 .od-listing{display:flex;align-items:center;gap:12px;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:11px;margin-bottom:14px;}
 .od-listing-img{width:52px;height:52px;border-radius:8px;object-fit:cover;background:var(--border);display:flex;align-items:center;justify-content:center;font-size:1.5rem;flex-shrink:0;overflow:hidden;}
 .od-listing-img img{width:100%;height:100%;object-fit:cover;border-radius:8px;}
@@ -197,7 +211,6 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
 .od-message{background:#fffbeb;border:1px solid #fde68a;border-radius:8px;padding:10px 13px;font-size:13px;font-style:italic;color:#92400e;line-height:1.5;}
 .od-actions{display:flex;gap:8px;margin-top:16px;}
 .od-actions .mbtn{margin-bottom:0;}
-/* lightbox */
 .offer-lightbox{display:none;position:fixed;inset:0;background:rgba(0,0,0,.93);z-index:900;align-items:center;justify-content:center;}
 .offer-lightbox.open{display:flex;}
 .offer-lightbox img{max-width:90vw;max-height:88vh;border-radius:10px;object-fit:contain;}
@@ -223,12 +236,13 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
   .mbody{background:#1e293b !important;}
   .od-listing,.od-val-box{background:#162032 !important;}
   .od-from{background:rgba(59,130,246,.1) !important;}
+  .offer-row.shipit-row{background:rgba(14,165,233,.08) !important;}
+  .offer-row.shipit-row:hover{background:rgba(14,165,233,.12) !important;}
+  .trade-card.shipit-trade{background:rgba(14,165,233,.05) !important;}
 }
 </style>
 </head>
 <body>
-
-<!-- TOP BAR -->
 <div class="topbar">
   <a href="alltrades.html" style="text-decoration:none">
     <div class="logo"><span class="a">Trade</span><span class="t">zy</span><span class="d">.</span></div>
@@ -248,16 +262,12 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
     </div>
   </div>
 </div>
-
 <div class="layout">
-  <!-- SIDEBAR -->
   <div class="sidebar">
     <div class="sb-sec">
-  <a href="alltrades.html" class="nav-item" style="background:#eff6ff;color:var(--blue);margin-bottom:6px;border:1px solid #bfdbfe;">
-    <span class="ni-ic">🏪</span>Browse Marketplace
-  </a>
-  <div class="sb-label">Overview</div>
-  <div class="nav-item active"><span class="ni-ic">🏠</span>Dashboard</div>
+      <a href="alltrades.html" class="nav-item" style="background:#eff6ff;color:var(--blue);margin-bottom:6px;border:1px solid #bfdbfe;"><span class="ni-ic">🏪</span>Browse Marketplace</a>
+      <div class="sb-label">Overview</div>
+      <div class="nav-item active"><span class="ni-ic">🏠</span>Dashboard</div>
       <div class="nav-item" onclick="document.getElementById('offersPanel').scrollIntoView({behavior:'smooth'})"><span class="ni-ic">📨</span>Offers<span class="ni-badge" id="sbOfferBadge" style="display:none">0</span></div>
       <div class="nav-item" onclick="window.location.href='alltrades-messages.html'"><span class="ni-ic">💬</span>Messages<span class="ni-badge" id="sbMsgBadge" style="display:none">0</span></div>
       <div class="nav-item" onclick="document.getElementById('tradesPanel').scrollIntoView({behavior:'smooth'})"><span class="ni-ic">🔄</span>Active Trades<span class="ni-badge green" id="sbTradeBadge" style="display:none">0</span></div>
@@ -279,8 +289,6 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
       <button class="post-btn" onclick="window.location.href='alltrades-post.html'">+ Post New Listing</button>
     </div>
   </div>
-
-  <!-- MAIN -->
   <div class="main">
     <div class="welcome-bar">
       <div>
@@ -294,22 +302,18 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
         <div class="wb-stat"><div class="wb-num">$0</div><div class="wb-lbl">Listing Fees</div></div>
       </div>
     </div>
-
     <div class="alerts" id="alertsArea"></div>
-
     <div class="stats-grid">
       <div class="stat-card sc-blue"><div class="sc-icon">📨</div><div class="sc-num" id="statOffers" style="color:var(--blue)">—</div><div class="sc-lbl">Offers Received</div><div class="sc-change" id="statOffersSub">Loading…</div></div>
       <div class="stat-card sc-gold"><div class="sc-icon">📦</div><div class="sc-num" id="statListings" style="color:var(--gold)">—</div><div class="sc-lbl">Active Listings</div><div class="sc-change" id="statListingsSub">Loading…</div></div>
       <div class="stat-card sc-green"><div class="sc-icon">🔄</div><div class="sc-num" id="statTrades" style="color:var(--green)">—</div><div class="sc-lbl">Active Trades</div><div class="sc-change" id="statTradesSub">Loading…</div></div>
       <div class="stat-card sc-red"><div class="sc-icon">💰</div><div class="sc-num" id="statValue" style="color:var(--orange)">—</div><div class="sc-lbl">Trade Value (30d)</div><div class="sc-change" id="statValueSub">Loading…</div></div>
     </div>
-
     <div class="sec-hdr">
       <div class="sec-ttl">📨 Incoming Offers <span class="sec-cnt" id="offerCount">0</span></div>
       <div class="sec-lnk" onclick="window.location.href='alltrades-messages.html'">View all →</div>
     </div>
     <div class="panel" id="offersPanel"><div class="loading">Loading offers…</div></div>
-
     <div class="two-col">
       <div>
         <div class="sec-hdr"><div class="sec-ttl">🔄 Active Trades <span class="sec-cnt green" id="tradeCount">0</span></div><div class="sec-lnk">View all →</div></div>
@@ -320,13 +324,11 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
         <div class="msg-panel" id="msgsPanel"><div class="loading">Loading messages…</div></div>
       </div>
     </div>
-
     <div class="sec-hdr">
       <div class="sec-ttl">📦 My Listings <span class="sec-cnt gold" id="listingCount">0</span></div>
       <div class="sec-lnk" onclick="window.location.href='alltrades-post.html'">+ Add New →</div>
     </div>
     <div class="listings-panel" id="listingsPanel"><div class="loading">Loading listings…</div></div>
-
     <div class="two-col-bot">
       <div>
         <div class="sec-hdr"><div class="sec-ttl">💰 Trade Value Summary</div></div>
@@ -358,7 +360,7 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
 <!-- OFFER DETAIL MODAL -->
 <div class="modal-overlay" id="offerModal">
   <div class="modal" style="max-width:500px">
-    <div class="mhd"><div class="mhd-ttl">📨 Offer Details</div><button class="mhd-close" onclick="closeModal('offerModal')">✕</button></div>
+    <div class="mhd" id="offerModalHead"><div class="mhd-ttl" id="offerModalTitle">📨 Offer Details</div><button class="mhd-close" onclick="closeModal('offerModal')">✕</button></div>
     <div class="mbody" id="offerModalBody"><div class="loading">Loading…</div></div>
   </div>
 </div>
@@ -369,12 +371,12 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
     <div class="mhd"><div class="mhd-ttl">✅ Confirm Trade Complete</div><button class="mhd-close" onclick="closeModal('confirmModal')">✕</button></div>
     <div class="mbody">
       <div style="text-align:center;margin-bottom:16px">
-        <div style="font-size:3rem;margin-bottom:9px">🤝</div>
-        <div style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.15rem;margin-bottom:5px">Did the trade happen successfully?</div>
-        <div style="font-size:13px;color:var(--muted);line-height:1.5">Both traders must confirm for the trade to close.</div>
+        <div style="font-size:3rem;margin-bottom:9px" id="confirmEmoji">🤝</div>
+        <div style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.15rem;margin-bottom:5px" id="confirmTitle">Did the trade happen successfully?</div>
+        <div style="font-size:13px;color:var(--muted);line-height:1.5" id="confirmSubtitle">Both traders must confirm for the trade to close.</div>
       </div>
-      <div style="background:#fffbeb;border:1px solid #fde68a;border-radius:8px;padding:11px;margin-bottom:13px;font-size:12px;color:#92400e" id="confirmFeeNote">Your 5% platform fee will be recorded when you confirm.</div>
-      <button class="mbtn green" onclick="doConfirmTrade()">✅ Yes — Trade Complete!</button>
+      <div style="border-radius:8px;padding:11px;margin-bottom:13px;font-size:12px" id="confirmFeeNote">Your 5% platform fee will be recorded when you confirm.</div>
+      <button class="mbtn green" id="confirmBtn" onclick="doConfirmTrade()">✅ Yes — Trade Complete!</button>
       <button class="mbtn red" onclick="closeModal('confirmModal');showToast('⚠️','Issue reported. Support will follow up.')">⚠️ There Was a Problem</button>
       <button class="mbtn outline" onclick="closeModal('confirmModal')">← Not Yet</button>
     </div>
@@ -407,10 +409,12 @@ const sb = window.supabase.createClient(
 );
 
 let currentUser    = null;
+let currentUserData = null;
 let currentTradeId = null;
 let currentOfferId = null;
-let lbPhotos       = [];
-let lbIndex        = 0;
+let currentTradeIsShipIt = false;
+let lbPhotos = [];
+let lbIndex  = 0;
 
 const CAT_EMOJI = {'Food & Water':'🥫','Garden':'🌱','Electronics':'⚡','Tools':'🔧','Sports':'🚲','Music':'🎵','Gaming':'🎮','Clothing':'👗','Books':'📚','Trading Cards':'🃏','Other':'📦'};
 const AV_COLORS = ['var(--blue)','var(--green)','var(--orange)','var(--gold)','#64748b'];
@@ -419,6 +423,9 @@ const AV_COLORS = ['var(--blue)','var(--green)','var(--orange)','var(--gold)','#
   const { data: { session } } = await sb.auth.getSession();
   if (!session) { window.location.href = 'alltrades-auth.html'; return; }
   currentUser = session.user;
+  // Load seller verification status for Ship-It acceptance gate
+  const { data: ud } = await sb.from('users').select('display_name, location_city, location_state, id_verified').eq('id', currentUser.id).single();
+  currentUserData = ud;
   initDashboard();
 })();
 
@@ -434,10 +441,9 @@ function setGreeting() {
 
 async function loadUserProfile() {
   try {
-    const { data } = await sb.from('users').select('display_name,location_city,location_state').eq('id', currentUser.id).single();
-    const name     = data?.display_name || currentUser.email?.split('@')[0] || 'Trader';
+    const name     = currentUserData?.display_name || currentUser.email?.split('@')[0] || 'Trader';
     const initials = name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0,2);
-    const location = data?.location_city ? `📍 ${data.location_city}${data.location_state ? ', '+data.location_state : ''}` : '📍 Location not set';
+    const location = currentUserData?.location_city ? `📍 ${currentUserData.location_city}${currentUserData.location_state ? ', '+currentUserData.location_state : ''}` : '📍 Location not set';
     document.getElementById('userName').textContent = name;
     document.getElementById('userAv').textContent   = initials;
     document.getElementById('wbName').textContent   = name;
@@ -478,27 +484,31 @@ async function loadOffers() {
       return;
     }
     panel.innerHTML = offers.map(o => {
+      const isShipIt     = o.is_ship_it === true;
       const listingTitle = o.listing?.title || 'Listing';
       const firstPhoto   = o.listing?.photos?.[0];
       const cat          = o.listing?.category || '';
       const thumbHtml    = firstPhoto ? `<img src="${firstPhoto}" alt="${listingTitle}" loading="lazy">` : (CAT_EMOJI[cat] || '📦');
-      const offerDesc    = o.offer_type === 'cash' ? `Cash offer: $${Number(o.cash_amount||0).toFixed(2)}`
-                         : o.offer_type === 'item' ? `Item trade: ${o.offered_item_title || 'Item'}`
-                         : `Trade offer`;
+      const offerDesc    = isShipIt
+        ? `🚚 Ship-It trade: ${o.offered_item_title || 'Item'}`
+        : o.offer_type === 'cash' ? `Cash offer: $${Number(o.cash_amount||0).toFixed(2)}`
+        : o.offer_type === 'item' ? `Item trade: ${o.offered_item_title || 'Item'}`
+        : `Trade offer`;
       return `
-        <div class="offer-row" onclick="openOfferModal('${o.id}')">
+        <div class="offer-row${isShipIt?' shipit-row':''}" onclick="openOfferModal('${o.id}')">
           <div class="or-em">${thumbHtml}</div>
           <div class="or-info">
             <div class="or-ttl">${listingTitle}</div>
             <div class="or-meta">
+              ${isShipIt ? '<span class="or-shipit-pill">🚚 Ship-It — State to State</span>' : ''}
               <span>${offerDesc}</span><span>·</span><span>${timeAgo(o.created_at)}</span>
               ${o.message ? `<span>·</span><span style="font-style:italic">"${o.message.slice(0,40)}${o.message.length>40?'…':''}"</span>` : ''}
             </div>
           </div>
           <div class="or-rt">
-            <div class="or-st st-pend">PENDING</div>
+            <div class="or-st st-pend">${isShipIt?'🚚 SHIP-IT':'PENDING'}</div>
             <div class="or-acts">
-              <button class="or-btn btn-acc" onclick="event.stopPropagation();acceptOffer('${o.id}')">✓ Accept</button>
+              <button class="or-btn btn-acc${isShipIt?' shipit-acc':''}" onclick="event.stopPropagation();acceptOffer('${o.id}',${isShipIt})">${isShipIt?'🚚 Accept':'✓ Accept'}</button>
               <button class="or-btn btn-dec" onclick="event.stopPropagation();declineOffer('${o.id}',this)">✕</button>
             </div>
           </div>
@@ -523,6 +533,18 @@ async function openOfferModal(offerId) {
     const { data: offerer } = await sb.from('users').select('display_name').eq('id', o.offerer_id).single();
     const offererName     = offerer?.display_name || 'Trader';
     const offererInitials = offererName.split(' ').map(n => n[0]).join('').toUpperCase().slice(0,2);
+    const isShipIt        = o.is_ship_it === true;
+
+    // Update modal header for Ship-It
+    const modalHead  = document.getElementById('offerModalHead');
+    const modalTitle = document.getElementById('offerModalTitle');
+    if (isShipIt) {
+      modalHead.classList.add('shipit-head');
+      modalTitle.textContent = '🚚 Ship-It Offer Details';
+    } else {
+      modalHead.classList.remove('shipit-head');
+      modalTitle.textContent = '📨 Offer Details';
+    }
 
     const listingTitle = o.listing?.title || 'Listing';
     const firstPhoto   = o.listing?.photos?.[0];
@@ -530,6 +552,24 @@ async function openOfferModal(offerId) {
     const thumbHtml    = firstPhoto
       ? `<img src="${firstPhoto}" alt="${listingTitle}">`
       : `<span style="font-size:1.5rem">${CAT_EMOJI[cat] || '📦'}</span>`;
+
+    // Ship-It notice block
+    const shipItNotice = isShipIt ? `
+      <div class="shipit-offer-notice">
+        <span class="son-icon">🚚</span>
+        <div>
+          <div class="son-title">Ship-It Trade — State to State</div>
+          <div class="son-desc">This buyer wants a state-to-state Ship-It trade. If you accept, you'll need to ship the item with a tracking number. Both parties must be ID verified. 10% platform fee at acceptance.</div>
+        </div>
+      </div>` : '';
+
+    // Seller ID gate for Ship-It
+    const sellerIdGate = isShipIt && !currentUserData?.id_verified ? `
+      <div class="shipit-id-gate-modal">
+        <div style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.92rem;color:#92400e;margin-bottom:5px">🪪 ID Verification Required to Accept Ship-It</div>
+        <div style="font-size:12px;color:#a16207;line-height:1.5;margin-bottom:10px">You need ID verification before you can accept a Ship-It trade. This protects both parties in state-to-state trades.</div>
+        <button class="mbtn outline" onclick="window.location.href='alltrades-verification.html'" style="margin-bottom:0;font-size:.85rem;padding:8px">🪪 Get ID Verified →</button>
+      </div>` : '';
 
     let offerContent = '';
     if (o.offer_type === 'cash') {
@@ -540,7 +580,7 @@ async function openOfferModal(offerId) {
             $${Number(o.cash_amount||0).toFixed(2)}
           </div>
         </div>`;
-    } else if (o.offer_type === 'item' || o.offer_type === 'tc') {
+    } else {
       offerContent = `
         <div class="od-section">
           <div class="od-section-lbl">Offered Item</div>
@@ -555,24 +595,8 @@ async function openOfferModal(offerId) {
           <div class="od-section-lbl">+ Cash Add-on</div>
           <div class="od-val-box" style="color:var(--green);font-weight:700">+$${Number(o.cash_amount).toFixed(2)}</div>
         </div>` : ''}`;
-    } else {
-      offerContent = `
-        <div class="od-section">
-          <div class="od-section-lbl">Trade Offer</div>
-          <div class="od-val-box">
-            <div style="font-weight:700">${o.offered_item_title || 'Item trade'}</div>
-            ${o.offered_condition ? `<div style="font-size:12px;color:var(--muted)">Condition: ${o.offered_condition}</div>` : ''}
-            ${o.offered_item_value ? `<div style="font-size:12px;color:var(--muted)">Est. value: ~$${Number(o.offered_item_value).toFixed(0)}</div>` : ''}
-          </div>
-        </div>
-        ${Number(o.cash_amount) > 0 ? `
-        <div class="od-section">
-          <div class="od-section-lbl">+ Cash Add-on</div>
-          <div class="od-val-box" style="color:var(--green);font-weight:700">+$${Number(o.cash_amount).toFixed(2)}</div>
-        </div>` : ''}`;
     }
 
-    // Photos section — always show if photos exist, with lightbox onclick
     const photos = o.offered_photos || [];
     const photosHtml = photos.length ? `
       <div class="od-section">
@@ -588,7 +612,15 @@ async function openOfferModal(offerId) {
         <div class="od-message">"${o.message}"</div>
       </div>` : '';
 
+    // Accept button — disabled + gate shown if Ship-It and seller not verified
+    const canAccept = !isShipIt || currentUserData?.id_verified;
+    const acceptBtn = isShipIt
+      ? `<button class="mbtn cyan" style="margin-bottom:0" ${canAccept?'':'disabled style="opacity:.4;cursor:not-allowed"'} onclick="closeModal('offerModal');acceptOffer('${o.id}',true)">🚚 Accept Ship-It Offer</button>`
+      : `<button class="mbtn green" style="margin-bottom:0" onclick="closeModal('offerModal');acceptOffer('${o.id}',false)">✓ Accept Offer</button>`;
+
     document.getElementById('offerModalBody').innerHTML = `
+      ${shipItNotice}
+      ${sellerIdGate}
       <div class="od-listing">
         <div class="od-listing-img">${thumbHtml}</div>
         <div class="od-listing-info">
@@ -604,7 +636,7 @@ async function openOfferModal(offerId) {
       ${photosHtml}
       ${messageHtml}
       <div class="od-actions">
-        <button class="mbtn green" style="margin-bottom:0" onclick="closeModal('offerModal');acceptOffer('${o.id}')">✓ Accept Offer</button>
+        ${acceptBtn}
         <button class="mbtn outline" style="margin-bottom:0;flex:0.5" onclick="closeModal('offerModal');declineOfferById('${o.id}')">✕ Decline</button>
       </div>
       <div style="text-align:center;margin-top:10px">
@@ -626,10 +658,7 @@ function openLightbox(el) {
   document.querySelector('.lb-prev').style.display = lbPhotos.length > 1 ? 'flex' : 'none';
   document.querySelector('.lb-next').style.display = lbPhotos.length > 1 ? 'flex' : 'none';
 }
-function closeLightbox() {
-  document.getElementById('offerLightbox').classList.remove('open');
-  document.body.style.overflow = '';
-}
+function closeLightbox() { document.getElementById('offerLightbox').classList.remove('open'); document.body.style.overflow = ''; }
 function lbNav(dir) {
   lbIndex = (lbIndex + dir + lbPhotos.length) % lbPhotos.length;
   document.getElementById('lbImg').src = lbPhotos[lbIndex];
@@ -637,14 +666,15 @@ function lbNav(dir) {
 }
 document.addEventListener('keydown', e => {
   if (!document.getElementById('offerLightbox').classList.contains('open')) return;
-  if (e.key === 'Escape')      closeLightbox();
-  if (e.key === 'ArrowLeft')   lbNav(-1);
-  if (e.key === 'ArrowRight')  lbNav(1);
+  if (e.key === 'Escape') closeLightbox();
+  if (e.key === 'ArrowLeft') lbNav(-1);
+  if (e.key === 'ArrowRight') lbNav(1);
 });
 
 async function loadTrades() {
   try {
-    const { data: trades } = await sb.from('trades').select('*')
+    const { data: trades } = await sb.from('trades')
+      .select('*, offer:offer_id(is_ship_it)')
       .or(`trader_a_id.eq.${currentUser.id},trader_b_id.eq.${currentUser.id}`)
       .in('status', ['accepted','meetup_scheduled'])
       .order('created_at', { ascending: false })
@@ -663,28 +693,32 @@ async function loadTrades() {
       return;
     }
     panel.innerHTML = trades.map(t => {
+      const isShipIt    = t.offer?.is_ship_it === true;
       const isMeetup    = t.status === 'meetup_scheduled';
       const myConfirmed = t.trader_a_id === currentUser.id ? t.trade_confirmed_a : t.trade_confirmed_b;
       const fee         = t.trader_a_id === currentUser.id ? t.fee_a : t.fee_b;
-      return `<div class="trade-card">
+      const stageLabel  = isShipIt ? '🚚 SHIP-IT ACTIVE' : isMeetup ? '📍 MEETUP PENDING' : '✅ ACCEPTED';
+      const stageClass  = isShipIt ? 'stg-shipit' : isMeetup ? 'stg-meet' : 'stg-agree';
+      const fillClass   = isShipIt ? 'fill-cyan' : isMeetup ? 'fill-gold' : 'fill-blue';
+      return `<div class="trade-card${isShipIt?' shipit-trade':''}">
         <div class="tc-hdr">
-          <div class="tc-id">Trade #${t.id.slice(0,8).toUpperCase()}</div>
-          <div class="tc-stage ${isMeetup?'stg-meet':'stg-agree'}">${isMeetup?'📍 MEETUP PENDING':'✅ ACCEPTED'}</div>
+          <div class="tc-id">Trade #${t.id.slice(0,8).toUpperCase()}${isShipIt?' · 🚚':''}</div>
+          <div class="tc-stage ${stageClass}">${stageLabel}</div>
         </div>
         <div class="tc-items">
           <div class="tc-itm">
-            <div class="tc-itm-nm">Trade in progress</div>
+            <div class="tc-itm-nm">${isShipIt?'Ship-It Trade':'Trade in progress'}</div>
             <div class="tc-itm-vl">${t.total_value ? '~$'+Number(t.total_value).toFixed(0) : 'Value TBD'}</div>
           </div>
         </div>
         <div class="tc-prog">
-          <div class="tc-prog-lbl"><span>Progress</span><span style="color:var(--${isMeetup?'gold':'blue'});font-weight:700">Step ${isMeetup?'2':'1'} of 3</span></div>
-          <div class="tc-prog-bar"><div class="tc-prog-fill fill-${isMeetup?'gold':'blue'}" style="width:${isMeetup?'66':'33'}%"></div></div>
+          <div class="tc-prog-lbl"><span>Progress</span><span style="color:var(--${isShipIt?'cyan':isMeetup?'gold':'blue'});font-weight:700">Step ${isMeetup?'2':'1'} of 3</span></div>
+          <div class="tc-prog-bar"><div class="tc-prog-fill ${fillClass}" style="width:${isMeetup?'66':'33'}%"></div></div>
         </div>
         <div class="tc-ftr">
           <div class="tc-btn tcb-msg" onclick="window.location.href='alltrades-messages.html'">💬 Message</div>
           ${!myConfirmed
-            ? `<div class="tc-btn tcb-confirm" onclick="openConfirmModal('${t.id}',${fee||0})">✓ Confirm Done</div>`
+            ? `<div class="tc-btn tcb-confirm" onclick="openConfirmModal('${t.id}',${fee||0},${isShipIt})">✓ Confirm Done</div>`
             : `<div class="tc-btn" style="background:#f0fdf4;border:1px solid #bbf7d0;color:#14532d">✅ You confirmed</div>`}
         </div>
       </div>`;
@@ -820,9 +854,7 @@ async function loadTradeValue() {
     document.getElementById('evAllFees').textContent    = '$' + fAll.toFixed(2);
     document.getElementById('evAllCount').textContent   = allTrades?.length || 0;
     document.getElementById('wbTrades').textContent     = allTrades?.length || 0;
-  } catch(e) {
-    document.getElementById('statValue').textContent = '$0';
-  }
+  } catch(e) { document.getElementById('statValue').textContent = '$0'; }
 }
 
 async function loadRatings() {
@@ -854,7 +886,13 @@ async function loadRatings() {
 
 /* ── ACTIONS ── */
 
-async function acceptOffer(id) {
+async function acceptOffer(id, isShipIt) {
+  // Seller Ship-It ID gate
+  if (isShipIt && !currentUserData?.id_verified) {
+    showToast('🪪', 'ID verification required to accept Ship-It trades.');
+    setTimeout(() => window.location.href = 'alltrades-verification.html', 1800);
+    return;
+  }
   try {
     const { data: offer } = await sb.from('offers').select('*').eq('id', id).single();
     if (!offer) throw new Error('Offer not found');
@@ -866,7 +904,7 @@ async function acceptOffer(id) {
       trader_b_id: offer.offerer_id,
       status:      'accepted',
     });
-    showToast('🎉', 'Offer accepted! Trade created.');
+    showToast(isShipIt ? '🚚' : '🎉', isShipIt ? 'Ship-It offer accepted! Get ready to ship.' : 'Offer accepted! Trade created.');
     loadOffers();
     loadTrades();
   } catch(e) {
@@ -891,9 +929,30 @@ async function declineOfferById(id) {
   } catch(e) { showToast('⚠️', 'Error declining offer.'); }
 }
 
-function openConfirmModal(tradeId, fee) {
+function openConfirmModal(tradeId, fee, isShipIt) {
   currentTradeId = tradeId;
-  document.getElementById('confirmFeeNote').textContent = `Your 5% platform fee${fee ? ': $'+Number(fee).toFixed(2) : ''} will be recorded when you confirm.`;
+  currentTradeIsShipIt = isShipIt;
+  const feeRate = isShipIt ? 0.10 : 0.05;
+  const feeLabel = isShipIt ? '10% Ship-It platform fee' : '5% platform fee';
+  const feeAmt = fee ? `: $${(Number(fee) * (isShipIt ? 2 : 1)).toFixed(2)}` : '';
+  const feeNote = document.getElementById('confirmFeeNote');
+  feeNote.style.cssText = isShipIt
+    ? 'background:#e0f2fe;border:1px solid #7dd3fc;border-radius:8px;padding:11px;margin-bottom:13px;font-size:12px;color:#0369a1'
+    : 'background:#fffbeb;border:1px solid #fde68a;border-radius:8px;padding:11px;margin-bottom:13px;font-size:12px;color:#92400e';
+  feeNote.textContent = `Your ${feeLabel}${feeAmt} will be recorded when you confirm.`;
+  if (isShipIt) {
+    document.getElementById('confirmEmoji').textContent   = '🚚';
+    document.getElementById('confirmTitle').textContent   = 'Confirm Ship-It Trade Complete?';
+    document.getElementById('confirmSubtitle').textContent = 'Confirm that the item was delivered and the trade is complete.';
+    document.getElementById('confirmBtn').className = 'mbtn cyan';
+    document.getElementById('confirmBtn').textContent = '🚚 Yes — Ship-It Trade Complete!';
+  } else {
+    document.getElementById('confirmEmoji').textContent   = '🤝';
+    document.getElementById('confirmTitle').textContent   = 'Did the trade happen successfully?';
+    document.getElementById('confirmSubtitle').textContent = 'Both traders must confirm for the trade to close.';
+    document.getElementById('confirmBtn').className = 'mbtn green';
+    document.getElementById('confirmBtn').textContent = '✅ Yes — Trade Complete!';
+  }
   openModal('confirmModal');
 }
 
@@ -908,7 +967,7 @@ async function doConfirmTrade() {
     if (otherDone) update.status = 'completed';
     await sb.from('trades').update(update).eq('id', currentTradeId);
     closeModal('confirmModal');
-    showToast('🎉', otherDone ? 'Trade complete!' : 'Confirmed! Waiting for the other trader.');
+    showToast(otherDone ? '🎉' : '✅', otherDone ? 'Trade complete! Ratings now unlocked.' : 'Confirmed! Waiting for the other trader.');
     loadTrades();
     loadTradeValue();
   } catch(e) { showToast('⚠️', 'Error confirming trade.'); }
@@ -961,41 +1020,34 @@ function showToast(icon, msg) {
   window._tt = setTimeout(() => t.classList.remove('show'), 3800);
 }
 </script>
-<!-- TRADEZY HELP WIDGET START — paste before </body> on every page -->
+<!-- TRADEZY HELP WIDGET START -->
 <style>
-/* ── TRADEZY HELP WIDGET STYLES ── */
 #tz-help-bubble{position:fixed;bottom:24px;right:24px;z-index:9999;display:flex;flex-direction:column;align-items:flex-end;gap:10px;font-family:'Lato',system-ui,sans-serif;}
 #tz-bubble-btn{width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#0a1628,#1a56db);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1.4rem;box-shadow:0 4px 20px rgba(26,86,219,.4);transition:all .2s;position:relative;}
-#tz-bubble-btn:hover{transform:scale(1.08);box-shadow:0 6px 28px rgba(26,86,219,.5);}
+#tz-bubble-btn:hover{transform:scale(1.08);}
 #tz-bubble-btn .tz-notif{position:absolute;top:0;right:0;width:14px;height:14px;background:#dc2626;border-radius:50%;border:2px solid #fff;display:none;}
 #tz-chat-panel{display:none;width:360px;height:520px;background:#fff;border-radius:16px;box-shadow:0 20px 60px rgba(0,0,0,.18);flex-direction:column;overflow:hidden;border:1px solid #e2e8f0;animation:tzSlideUp .2s ease;}
 #tz-chat-panel.open{display:flex;}
 @keyframes tzSlideUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
 .tz-panel-head{background:linear-gradient(135deg,#0a1628,#112240);padding:14px 16px;display:flex;align-items:center;gap:10px;flex-shrink:0;}
 .tz-head-icon{width:34px;height:34px;background:rgba(245,158,11,.2);border:1px solid rgba(245,158,11,.3);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0;}
-.tz-head-info{flex:1;}
-.tz-head-title{font-weight:800;font-size:.88rem;color:#fff;font-family:'Barlow Condensed',system-ui,sans-serif;letter-spacing:.3px;}
+.tz-head-info{flex:1;}.tz-head-title{font-weight:800;font-size:.88rem;color:#fff;font-family:'Barlow Condensed',system-ui,sans-serif;letter-spacing:.3px;}
 .tz-head-status{font-size:10px;color:#22c55e;display:flex;align-items:center;gap:4px;}
 .tz-head-dot{width:6px;height:6px;background:#22c55e;border-radius:50%;animation:tzPulse 2s infinite;}
 @keyframes tzPulse{0%,100%{opacity:1}50%{opacity:.5}}
 .tz-head-close{background:rgba(255,255,255,.1);border:none;color:#94a3b8;width:26px;height:26px;border-radius:50%;cursor:pointer;font-size:.85rem;display:flex;align-items:center;justify-content:center;transition:all .15s;}
 .tz-head-close:hover{background:rgba(255,255,255,.2);color:#fff;}
 .tz-messages{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px;scroll-behavior:smooth;}
-.tz-messages::-webkit-scrollbar{width:4px;}
-.tz-messages::-webkit-scrollbar-track{background:transparent;}
-.tz-messages::-webkit-scrollbar-thumb{background:#e2e8f0;border-radius:2px;}
+.tz-messages::-webkit-scrollbar{width:4px;}.tz-messages::-webkit-scrollbar-track{background:transparent;}.tz-messages::-webkit-scrollbar-thumb{background:#e2e8f0;border-radius:2px;}
 .tz-msg{max-width:84%;display:flex;flex-direction:column;gap:2px;}
-.tz-msg.bot{align-self:flex-start;}
-.tz-msg.user{align-self:flex-end;}
+.tz-msg.bot{align-self:flex-start;}.tz-msg.user{align-self:flex-end;}
 .tz-bubble{padding:9px 12px;border-radius:12px;font-size:13px;line-height:1.5;}
 .tz-msg.bot .tz-bubble{background:#f1f5f9;color:#1a1a2e;border-radius:4px 12px 12px 12px;}
 .tz-msg.user .tz-bubble{background:linear-gradient(135deg,#1a56db,#2563eb);color:#fff;border-radius:12px 4px 12px 12px;}
-.tz-msg-time{font-size:10px;color:#94a3b8;padding:0 4px;}
-.tz-msg.user .tz-msg-time{text-align:right;}
+.tz-msg-time{font-size:10px;color:#94a3b8;padding:0 4px;}.tz-msg.user .tz-msg-time{text-align:right;}
 .tz-typing{display:flex;align-items:center;gap:4px;padding:9px 12px;background:#f1f5f9;border-radius:4px 12px 12px 12px;width:fit-content;}
 .tz-typing span{width:6px;height:6px;background:#94a3b8;border-radius:50%;animation:tzDot 1.2s infinite;}
-.tz-typing span:nth-child(2){animation-delay:.2s;}
-.tz-typing span:nth-child(3){animation-delay:.4s;}
+.tz-typing span:nth-child(2){animation-delay:.2s;}.tz-typing span:nth-child(3){animation-delay:.4s;}
 @keyframes tzDot{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-4px)}}
 .tz-quick-btns{display:flex;flex-wrap:wrap;gap:5px;margin-top:4px;}
 .tz-quick-btn{background:#fff;border:1px solid #e2e8f0;color:#1a56db;font-size:11px;font-weight:700;padding:4px 10px;border-radius:99px;cursor:pointer;transition:all .12s;font-family:inherit;}
@@ -1010,19 +1062,14 @@ function showToast(icon, msg) {
 .tz-input{flex:1;border:1.5px solid #e2e8f0;border-radius:8px;padding:8px 11px;font-size:13px;font-family:inherit;color:#1a1a2e;outline:none;resize:none;height:38px;max-height:90px;overflow-y:auto;transition:border-color .15s;background:#fff;}
 .tz-input:focus{border-color:#1a56db;box-shadow:0 0 0 3px rgba(26,86,219,.07);}
 .tz-send-btn{width:36px;height:36px;background:linear-gradient(135deg,#1a56db,#2563eb);border:none;border-radius:8px;color:#fff;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s;align-self:flex-end;}
-.tz-send-btn:hover{transform:scale(1.05);}
-.tz-send-btn:disabled{opacity:.5;cursor:not-allowed;transform:none;}
+.tz-send-btn:hover{transform:scale(1.05);}.tz-send-btn:disabled{opacity:.5;cursor:not-allowed;transform:none;}
 .tz-powered{text-align:center;font-size:10px;color:#cbd5e1;padding:5px 0 2px;flex-shrink:0;}
 </style>
- 
 <div id="tz-help-bubble">
   <div id="tz-chat-panel">
     <div class="tz-panel-head">
       <div class="tz-head-icon">🤖</div>
-      <div class="tz-head-info">
-        <div class="tz-head-title">Tradezy Support</div>
-        <div class="tz-head-status"><span class="tz-head-dot"></span>Online — AI Assistant</div>
-      </div>
+      <div class="tz-head-info"><div class="tz-head-title">Tradezy Support</div><div class="tz-head-status"><span class="tz-head-dot"></span>Online — AI Assistant</div></div>
       <button class="tz-head-close" onclick="tzToggle()">✕</button>
     </div>
     <div class="tz-messages" id="tzMessages"></div>
@@ -1032,267 +1079,65 @@ function showToast(icon, msg) {
     </div>
     <div class="tz-powered">Powered by Claude AI · Tradezy Support</div>
   </div>
-  <button id="tz-bubble-btn" onclick="tzToggle()" title="Get Help">
-    💬
-    <div class="tz-notif" id="tzNotif"></div>
-  </button>
+  <button id="tz-bubble-btn" onclick="tzToggle()" title="Get Help">💬<div class="tz-notif" id="tzNotif"></div></button>
 </div>
- 
 <script>
-(function() {
-  // ── CONFIG ──
-  const SUPABASE_URL = 'https://equvwaspcoeetfsexqki.supabase.co';
-  const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVxdXZ3YXNwY29lZXRmc2V4cWtpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgyNzc2MjQsImV4cCI6MjA5Mzg1MzYyNH0.TP6Kk3pzHW1PYMUu5D9Vu2lJrazIEagzu5csYhqkrfI';
- 
-  const SYSTEM_PROMPT = `You are the Tradezy support assistant — a helpful, friendly AI for Tradezy, a peer-to-peer local trading marketplace.
- 
-ABOUT TRADEZY:
-- Free local trading platform where users list items and trade with verified neighbors
-- Platform fee: 5% per party on completed trades (Founding Traders pay 3% lifetime)
-- Ship-It trades (state-to-state): 10% fee, fully verified users only, launching July 31 2026
-- Phase 1 launch: July 17 2026 — Connecticut and Ohio statewide
-- Phase 2: July 31 2026 — Nationwide
- 
-HOW TRADING WORKS:
-1. Post a listing with photos, condition, what you want in return
-2. Browse listings, make offers (item-for-item, item + cash top-up, or cash)
-3. Accept an offer, agree on a meetup spot
-4. Both parties confirm the exchange in-app — this unlocks ratings
-5. Leave ratings after confirmed meetup
- 
-VERIFICATION & TRUST:
-- Email verification required to use platform
-- Address verification adds trust score
-- ID verification required for Ship-It trades
-- W-9 tax form required before posting listings
-- Trust score shown on profiles
- 
-PROHIBITED ITEMS (permanent ban): Firearms, weapons, alcohol, tobacco, drugs, live animals, adult content, stolen goods, cash, gift cards, cryptocurrency
- 
-FEES EXPLAINED:
-- 5% of total trade value per party — example: $100 item trade = $5 fee each party
-- $90 item + $40 cash top-up = $130 total = $6.50 fee each party
-- Founding Traders: 3% lifetime (signed up before July 17 launch)
-- Listing is always free
- 
-SHIP-IT TRADES (July 31+):
-- State-to-state trading for fully ID-verified users only
-- 10% fee per party at trade acceptance
-- Payment via Zelle, PayPal, Venmo, Apple Pay, Google Pay, or Cash App (peer-to-peer, Tradezy never holds funds)
-- Buyer uploads payment screenshot as proof
-- Seller enters tracking number
-- Both confirm delivery to close trade
- 
-TCG CATEGORIES: Pokémon, One Piece, MTG, Yu-Gi-Oh, Lorcana, Flesh & Blood
-SPORTS CARDS: Baseball, Football, Basketball, Hockey, Soccer
-Card grading supported: PSA, BGS, SGC, TAG
- 
-ACCOUNT HELP:
-- Password reset: direct users to https://tradezyhq.com/alltrades-auth.html
-- Account locked/banned: direct to support@tradezyhq.com
-- Verification issues: direct to https://tradezyhq.com/alltrades-verification.html
- 
-DISPUTE RESOLUTION:
-- File a dispute at https://tradezyhq.com/alltrades-disputes.html
-- Email disputes@tradezyhq.com
-- SLA: CRITICAL issues 4hrs, HIGH 24hrs, MEDIUM 48hrs, LOW 72hrs
- 
-ESCALATION RULES — escalate to human immediately if:
-- User reports fraud, scam, or didn't receive item
-- User mentions safety concern, threat, or harassment
-- User is clearly distressed or frustrated after multiple exchanges
-- User explicitly requests a human agent
-- Issue involves account ban or suspension
- 
-ESCALATION: When escalating, provide support@tradezyhq.com for general issues or disputes@tradezyhq.com for trade disputes. Summarize the issue briefly.
- 
-TONE: Warm, clear, concise. Never give legal or financial advice. Never make up information — if unsure, direct to support@tradezyhq.com. Keep responses short and scannable — use bullet points for multi-step answers.`;
- 
-  // ── STATE ──
-  let isOpen = false;
-  let isLoading = false;
-  let exchangeCount = 0;
-  let hasShownWelcome = false;
-  const history = [];
- 
-  // ── TOGGLE ──
-  window.tzToggle = function() {
-    isOpen = !isOpen;
-    const panel = document.getElementById('tz-chat-panel');
-    const btn = document.getElementById('tz-bubble-btn');
-    if (isOpen) {
-      panel.classList.add('open');
-      btn.innerHTML = '✕<div class="tz-notif" id="tzNotif"></div>';
-      if (!hasShownWelcome) {
-        hasShownWelcome = true;
-        tzBotMessage("👋 Hey! I'm the Tradezy support assistant. I can help with:", [
-          "How trading works",
-          "Fees & verification",
-          "Account issues",
-          "Reporting a problem"
-        ]);
-      }
-      setTimeout(() => document.getElementById('tzInput')?.focus(), 200);
-    } else {
-      panel.classList.remove('open');
-      btn.innerHTML = '💬<div class="tz-notif" id="tzNotif"></div>';
-    }
+(function(){
+  const SP=`You are the Tradezy support assistant for a peer-to-peer local trading marketplace. Ship-It trades are state-to-state, require ID verification from both parties, cost 10% per party at acceptance, and payment is peer-to-peer. Local trades cost 5%. Answer questions about trading, fees, verification, and disputes. Be warm and concise.`;
+  let isOpen=false,isLoading=false,exchangeCount=0,hasShownWelcome=false;
+  const history=[];
+  window.tzToggle=function(){
+    isOpen=!isOpen;
+    const panel=document.getElementById('tz-chat-panel'),btn=document.getElementById('tz-bubble-btn');
+    if(isOpen){
+      panel.classList.add('open');btn.innerHTML='✕<div class="tz-notif" id="tzNotif"></div>';
+      if(!hasShownWelcome){hasShownWelcome=true;tzBotMsg("👋 Hey! I'm the Tradezy support assistant. I can help with:",["How trading works","Ship-It trades","Fees & verification","Reporting a problem"]);}
+      setTimeout(()=>document.getElementById('tzInput')?.focus(),200);
+    }else{panel.classList.remove('open');btn.innerHTML='💬<div class="tz-notif" id="tzNotif"></div>';}
   };
- 
-  // ── SEND ──
-  window.tzSend = async function() {
-    const input = document.getElementById('tzInput');
-    const text = input.value.trim();
-    if (!text || isLoading) return;
-    input.value = '';
-    tzAutoResize(input);
-    tzUserMessage(text);
-    history.push({ role: 'user', content: text });
-    exchangeCount++;
-    await tzGetResponse();
+  window.tzSend=async function(){
+    const input=document.getElementById('tzInput'),text=input.value.trim();
+    if(!text||isLoading)return;
+    input.value='';tzAutoResize(input);tzUserMsg(text);
+    history.push({role:'user',content:text});exchangeCount++;await tzGetResp();
   };
- 
-  window.tzKeyDown = function(e) {
-    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); tzSend(); }
-  };
- 
-  window.tzAutoResize = function(el) {
-    el.style.height = '38px';
-    el.style.height = Math.min(el.scrollHeight, 90) + 'px';
-  };
- 
-  // ── GET AI RESPONSE ──
-  async function tzGetResponse() {
-    isLoading = true;
-    document.getElementById('tzSendBtn').disabled = true;
- 
-    // Show typing indicator
-    const typingId = 'tz-typing-' + Date.now();
-    const msgs = document.getElementById('tzMessages');
-    const typingEl = document.createElement('div');
-    typingEl.id = typingId;
-    typingEl.className = 'tz-msg bot';
-    typingEl.innerHTML = '<div class="tz-typing"><span></span><span></span><span></span></div>';
-    msgs.appendChild(typingEl);
-    msgs.scrollTop = msgs.scrollHeight;
- 
-    try {
-      const response = await fetch('https://tradezy-ai-proxy.throbbing-lake-08ed.workers.dev', {
-        method: 'POST',
-       headers: { 'Content-Type': 'application/json',  },
-        body: JSON.stringify({
-          model: 'claude-sonnet-4-6',
-          max_tokens: 1000,
-          system: SYSTEM_PROMPT,
-          messages: history
-        })
-      });
- 
-      const data = await response.json();
-      const reply = data.content?.[0]?.text || "I'm having trouble responding right now. Please email support@tradezyhq.com.";
- 
-      // Remove typing indicator
-      document.getElementById(typingId)?.remove();
- 
-      // Add to history
-      history.push({ role: 'assistant', content: reply });
- 
-      // Check for escalation triggers
-      const userText = history.filter(m => m.role === 'user').map(m => m.content).join(' ').toLowerCase();
-      const escalateKeywords = ['scam', 'fraud', 'didn\'t receive', 'never received', 'threat', 'harass', 'human', 'agent', 'real person', 'banned', 'suspended', 'unsafe'];
-      const shouldEscalate = escalateKeywords.some(k => userText.includes(k)) || exchangeCount >= 4;
- 
-      // Render response
-      tzBotMessage(reply, null, shouldEscalate);
- 
-    } catch(e) {
-      document.getElementById(typingId)?.remove();
-      tzBotMessage("I'm having trouble connecting right now. For immediate help, please email support@tradezyhq.com or file a dispute at the link below.", null, true);
-    }
- 
-    isLoading = false;
-    document.getElementById('tzSendBtn').disabled = false;
+  window.tzKeyDown=function(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();tzSend();}};
+  window.tzAutoResize=function(el){el.style.height='38px';el.style.height=Math.min(el.scrollHeight,90)+'px';};
+  async function tzGetResp(){
+    isLoading=true;document.getElementById('tzSendBtn').disabled=true;
+    const tid='tz-t-'+Date.now(),msgs=document.getElementById('tzMessages');
+    const tel=document.createElement('div');tel.id=tid;tel.className='tz-msg bot';tel.innerHTML='<div class="tz-typing"><span></span><span></span><span></span></div>';
+    msgs.appendChild(tel);msgs.scrollTop=msgs.scrollHeight;
+    try{
+      const r=await fetch('https://tradezy-ai-proxy.throbbing-lake-08ed.workers.dev',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:1000,system:SP,messages:history})});
+      const d=await r.json();const reply=d.content?.[0]?.text||"I'm having trouble responding. Please email support@tradezyhq.com.";
+      document.getElementById(tid)?.remove();history.push({role:'assistant',content:reply});
+      const ut=history.filter(m=>m.role==='user').map(m=>m.content).join(' ').toLowerCase();
+      const esc=['scam','fraud','didn\'t receive','threat','harass','human','agent','banned','suspended'].some(k=>ut.includes(k))||exchangeCount>=4;
+      tzBotMsg(reply,null,esc);
+    }catch(e){document.getElementById(tid)?.remove();tzBotMsg("I'm having trouble connecting. Please email support@tradezyhq.com.",null,true);}
+    isLoading=false;document.getElementById('tzSendBtn').disabled=false;
   }
- 
-  // ── RENDER BOT MESSAGE ──
-  function tzBotMessage(text, quickReplies = null, showEscalate = false) {
-    const msgs = document.getElementById('tzMessages');
-    const wrapper = document.createElement('div');
-    wrapper.className = 'tz-msg bot';
- 
-    // Parse markdown-lite: bold, bullets
-    let html = text
-      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-      .replace(/^[-•] (.+)$/gm, '<li>$1</li>')
-      .replace(/(<li>.*<\/li>)/gs, '<ul style="margin:4px 0 0 14px;padding:0;font-size:13px;line-height:1.6">$1</ul>')
-      .replace(/\n\n/g, '<br><br>')
-      .replace(/\n/g, '<br>');
- 
-    // Detect and linkify account action hints
-    let extraHTML = '';
- 
-    if (text.toLowerCase().includes('password reset') || text.toLowerCase().includes('reset your password')) {
-      extraHTML += `<a class="tz-action-link" href="https://tradezyhq.com/alltrades-auth.html" target="_blank">🔑 Reset Password →</a>`;
-    }
-    if (text.toLowerCase().includes('verification') || text.toLowerCase().includes('verify your')) {
-      extraHTML += `<a class="tz-action-link" href="https://tradezyhq.com/alltrades-verification.html" target="_blank">✅ Go to Verification →</a>`;
-    }
-    if (text.toLowerCase().includes('dispute') || text.toLowerCase().includes('file a dispute')) {
-      extraHTML += `<a class="tz-action-link" href="https://tradezyhq.com/alltrades-disputes.html" target="_blank">⚖️ File a Dispute →</a>`;
-    }
- 
-    let bubbleHTML = `<div class="tz-bubble">${html}</div>`;
-    if (extraHTML) bubbleHTML += extraHTML;
- 
-    if (showEscalate) {
-      bubbleHTML += `
-        <div class="tz-escalate-card">
-          <div class="tz-escalate-title">🙋 Want to talk to a person?</div>
-          <div style="color:#92400e;font-size:12px;line-height:1.5">Our support team is standing by to help.</div>
-          <div style="display:flex;gap:7px;flex-wrap:wrap;margin-top:7px;">
-            <a class="tz-escalate-btn" href="mailto:support@tradezyhq.com?subject=Support Request from Tradezy Widget">📧 Email Support</a>
-            <a class="tz-escalate-btn" href="https://tradezyhq.com/alltrades-disputes.html" target="_blank" style="background:#1a56db">⚖️ File Dispute</a>
-          </div>
-        </div>`;
-    }
- 
-    if (quickReplies && quickReplies.length) {
-      bubbleHTML += '<div class="tz-quick-btns">' +
-        quickReplies.map(q => `<button class="tz-quick-btn" onclick="tzQuickReply('${q.replace(/'/g, "\\'")}')">${q}</button>`).join('') +
-        '</div>';
-    }
- 
-    wrapper.innerHTML = bubbleHTML;
-    const time = document.createElement('div');
-    time.className = 'tz-msg-time';
-    time.textContent = new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
-    wrapper.appendChild(time);
-    msgs.appendChild(wrapper);
-    msgs.scrollTop = msgs.scrollHeight;
+  function tzBotMsg(text,qr=null,esc=false){
+    const msgs=document.getElementById('tzMessages'),w=document.createElement('div');w.className='tz-msg bot';
+    let html=text.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/^[-•] (.+)$/gm,'<li>$1</li>').replace(/(<li>.*<\/li>)/gs,'<ul style="margin:4px 0 0 14px;padding:0;font-size:13px;line-height:1.6">$1</ul>').replace(/\n\n/g,'<br><br>').replace(/\n/g,'<br>');
+    let ex='';
+    if(text.toLowerCase().includes('verification')||text.toLowerCase().includes('verify'))ex+=`<a class="tz-action-link" href="https://tradezyhq.com/alltrades-verification.html" target="_blank">✅ Go to Verification →</a>`;
+    if(text.toLowerCase().includes('dispute'))ex+=`<a class="tz-action-link" href="https://tradezyhq.com/alltrades-disputes.html" target="_blank">⚖️ File a Dispute →</a>`;
+    let bh=`<div class="tz-bubble">${html}</div>`;if(ex)bh+=ex;
+    if(esc)bh+=`<div class="tz-escalate-card"><div class="tz-escalate-title">🙋 Want to talk to a person?</div><div style="color:#92400e;font-size:12px">Our support team is standing by.</div><div style="display:flex;gap:7px;flex-wrap:wrap;margin-top:7px;"><a class="tz-escalate-btn" href="mailto:support@tradezyhq.com">📧 Email Support</a><a class="tz-escalate-btn" href="https://tradezyhq.com/alltrades-disputes.html" target="_blank" style="background:#1a56db">⚖️ File Dispute</a></div></div>`;
+    if(qr&&qr.length)bh+='<div class="tz-quick-btns">'+qr.map(q=>`<button class="tz-quick-btn" onclick="tzQuickReply('${q.replace(/'/g,"\\'")}')">${q}</button>`).join('')+'</div>';
+    w.innerHTML=bh;
+    const t=document.createElement('div');t.className='tz-msg-time';t.textContent=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+    w.appendChild(t);msgs.appendChild(w);msgs.scrollTop=msgs.scrollHeight;
   }
- 
-  // ── RENDER USER MESSAGE ──
-  function tzUserMessage(text) {
-    const msgs = document.getElementById('tzMessages');
-    const wrapper = document.createElement('div');
-    wrapper.className = 'tz-msg user';
-    wrapper.innerHTML = `
-      <div class="tz-bubble">${escHtml(text)}</div>
-      <div class="tz-msg-time">${new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})}</div>`;
-    msgs.appendChild(wrapper);
-    msgs.scrollTop = msgs.scrollHeight;
+  function tzUserMsg(text){
+    const msgs=document.getElementById('tzMessages'),w=document.createElement('div');w.className='tz-msg user';
+    w.innerHTML=`<div class="tz-bubble">${esc(text)}</div><div class="tz-msg-time">${new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}</div>`;
+    msgs.appendChild(w);msgs.scrollTop=msgs.scrollHeight;
   }
- 
-  // ── QUICK REPLY ──
-  window.tzQuickReply = function(text) {
-    document.getElementById('tzInput').value = text;
-    tzSend();
-  };
- 
-  function escHtml(str) {
-    return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-  }
- 
+  window.tzQuickReply=function(t){document.getElementById('tzInput').value=t;tzSend();};
+  function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 })();
 </script>
 <!-- TRADEZY HELP WIDGET END -->
