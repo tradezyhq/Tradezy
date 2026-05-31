@@ -9,8 +9,6 @@
 <meta property="og:description" content="Safe, local item trading launching July 17 in Connecticut & Ohio. Sign up now to lock in Founding Trader status.">
 <meta property="og:url" content="https://tradezyhq.com">
 <script src="supabase.min.js"></script>
-
-<!-- Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-0NSDNDFP0H"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -18,28 +16,24 @@
   gtag('js', new Date());
   gtag('config', 'G-0NSDNDFP0H');
 </script>
-
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Lato:ital,wght@0,300;0,400;0,700;1,300&display=swap" rel="stylesheet">
 <style>
 :root {
   --navy:#0a1628;--navy2:#112240;--blue:#1a56db;--blue-l:#2563eb;
   --gold:#f59e0b;--gold-l:#fbbf24;--green:#16a34a;--green-l:#22c55e;
-  --red:#dc2626;--orange:#ea580c;--text:#1a1a2e;--muted:#475569;
-  --light:#94a3b8;--border:#e2e8f0;--bg:#f8fafc;--white:#fff;--surface:#f8fafc;
+  --red:#dc2626;--orange:#ea580c;--cyan:#0ea5e9;--cyan-l:#0284c7;
+  --text:#1a1a2e;--muted:#475569;--light:#94a3b8;--border:#e2e8f0;
+  --bg:#f8fafc;--white:#fff;--surface:#f8fafc;
 }
 *{margin:0;padding:0;box-sizing:border-box;}
 body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);font-size:14px;}
 a{text-decoration:none;color:inherit;}
-
-/* ── LAUNCH BANNER ── */
 .launch-banner{background:linear-gradient(90deg,#1e3a8a,#1a56db,#1e3a8a);padding:10px 20px;text-align:center;font-size:13px;color:#fff;display:flex;align-items:center;justify-content:center;gap:10px;position:relative;}
 .launch-banner strong{color:var(--gold-l);}
 .lb-badge{background:var(--gold);color:var(--navy);font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:11px;padding:2px 10px;border-radius:3px;letter-spacing:.5px;animation:pulse 2s infinite;}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.8}}
 .lb-cta{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);color:#fff;padding:4px 14px;border-radius:4px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:12px;cursor:pointer;transition:all .15s;white-space:nowrap;}
 .lb-cta:hover{background:rgba(255,255,255,.25);}
-
-/* ── NAV ── */
 header{background:var(--white);border-bottom:2px solid var(--border);position:sticky;top:0;z-index:200;box-shadow:0 2px 12px rgba(0,0,0,.07);}
 .nav-main{display:flex;align-items:center;gap:16px;padding:10px 20px;max-width:1280px;margin:0 auto;}
 .logo{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:2rem;letter-spacing:-1px;white-space:nowrap;flex-shrink:0;}
@@ -51,8 +45,6 @@ header{background:var(--white);border-bottom:2px solid var(--border);position:st
 .btn-nav-signup:hover{background:var(--gold-l);transform:translateY(-1px);}
 .btn-nav-login{background:transparent;color:var(--muted);border:1px solid var(--border);padding:8px 16px;border-radius:7px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.88rem;cursor:pointer;transition:all .15s;}
 .btn-nav-login:hover{border-color:var(--blue);color:var(--blue);}
-
-/* ── HERO ── */
 .hero{background:linear-gradient(135deg,var(--navy) 0%,#0f2547 50%,#0a3060 100%);min-height:520px;display:flex;align-items:center;position:relative;overflow:hidden;padding:60px 20px;}
 .hero::before{content:'';position:absolute;top:-100px;right:-100px;width:500px;height:500px;background:radial-gradient(circle,rgba(245,158,11,.12) 0%,transparent 65%);pointer-events:none;}
 .hero::after{content:'⇄';position:absolute;right:5%;bottom:-20px;font-size:18rem;color:rgba(255,255,255,.025);font-family:'Barlow Condensed',sans-serif;pointer-events:none;}
@@ -65,11 +57,10 @@ header{background:var(--white);border-bottom:2px solid var(--border);position:st
 .launch-states{display:flex;align-items:center;gap:8px;margin-bottom:28px;flex-wrap:wrap;}
 .state-chip{display:flex;align-items:center;gap:5px;background:rgba(22,163,74,.12);border:1px solid rgba(22,163,74,.25);color:var(--green-l);font-size:12px;font-weight:700;padding:4px 12px;border-radius:99px;}
 .launch-date-chip{display:flex;align-items:center;gap:5px;background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.25);color:var(--gold-l);font-size:12px;font-weight:700;padding:4px 12px;border-radius:99px;}
+.shipit-chip{display:flex;align-items:center;gap:5px;background:rgba(14,165,233,.12);border:1px solid rgba(14,165,233,.25);color:#38bdf8;font-size:12px;font-weight:700;padding:4px 12px;border-radius:99px;}
 .hero-stats{display:flex;gap:24px;margin-top:28px;padding-top:22px;border-top:1px solid rgba(255,255,255,.08);}
 .hstat-num{font-family:'Barlow Condensed',sans-serif;font-size:1.5rem;font-weight:900;color:var(--gold-l);}
 .hstat-label{font-size:11px;color:#475569;text-transform:uppercase;letter-spacing:.5px;margin-top:1px;}
-
-/* ── SIGNUP CARD ── */
 .signup-card{background:rgba(255,255,255,.97);border-radius:16px;padding:28px;box-shadow:0 20px 60px rgba(0,0,0,.35);position:relative;}
 .sc-header{margin-bottom:20px;}
 .sc-title{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.4rem;color:var(--navy);margin-bottom:4px;}
@@ -91,8 +82,6 @@ header{background:var(--white);border-bottom:2px solid var(--border);position:st
 .ss-icon{font-size:3rem;margin-bottom:12px;}
 .ss-title{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.3rem;color:var(--navy);margin-bottom:6px;}
 .ss-sub{font-size:13px;color:var(--muted);line-height:1.5;}
-
-/* ── COUNTDOWN ── */
 .countdown-section{background:var(--navy);padding:28px 20px;text-align:center;}
 .countdown-inner{max-width:800px;margin:0 auto;}
 .cd-label{font-size:13px;color:#64748b;text-transform:uppercase;letter-spacing:1px;font-weight:700;margin-bottom:16px;}
@@ -101,8 +90,6 @@ header{background:var(--white);border-bottom:2px solid var(--border);position:st
 .cd-num{font-family:'Barlow Condensed',sans-serif;font-size:2.5rem;font-weight:900;color:var(--gold-l);line-height:1;}
 .cd-lbl{font-size:10px;color:#475569;text-transform:uppercase;letter-spacing:.5px;margin-top:3px;}
 .cd-sep{font-family:'Barlow Condensed',sans-serif;font-size:2rem;font-weight:900;color:#1e3a5f;margin-top:-8px;}
-
-/* ── HOW IT WORKS ── */
 .section{max-width:1280px;margin:0 auto;padding:48px 20px;}
 .section-label{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;color:var(--blue);margin-bottom:8px;}
 .section-title{font-family:'Barlow Condensed',sans-serif;font-size:clamp(1.6rem,3vw,2.2rem);font-weight:900;color:var(--text);margin-bottom:6px;}
@@ -110,12 +97,12 @@ header{background:var(--white);border-bottom:2px solid var(--border);position:st
 .steps-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;}
 .step-card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:22px 18px;text-align:center;transition:all .2s;position:relative;}
 .step-card:hover{box-shadow:0 8px 28px rgba(0,0,0,.1);transform:translateY(-3px);}
+.step-card.shipit-step{border-color:#7dd3fc;background:#f0f9ff;}
 .step-num{position:absolute;top:14px;right:14px;font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.8rem;color:rgba(26,86,219,.08);}
 .step-icon{width:56px;height:56px;background:#eff6ff;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.6rem;margin:0 auto 14px;border:1px solid #dbeafe;}
+.step-card.shipit-step .step-icon{background:#e0f2fe;border-color:#7dd3fc;}
 .step-title{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1rem;margin-bottom:6px;}
 .step-desc{font-size:12px;color:var(--muted);line-height:1.6;}
-
-/* ── CATEGORIES ── */
 .cats-bg{background:linear-gradient(180deg,#f8fafc,#fff);}
 .cats-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;}
 .cat-card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:16px 10px;text-align:center;cursor:pointer;transition:all .18s;}
@@ -125,7 +112,26 @@ header{background:var(--white);border-bottom:2px solid var(--border);position:st
 .cat-name{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.85rem;color:var(--text);}
 .cat-badge{display:inline-block;background:var(--red);color:#fff;font-size:9px;font-weight:800;padding:1px 5px;border-radius:3px;margin-top:3px;letter-spacing:.3px;}
 
-/* ── FOUNDING TRADER SECTION ── */
+/* ── SHIP-IT SECTION (NEW) ── */
+.shipit-section{background:linear-gradient(135deg,#0c4a6e,#0369a1,#0284c7);padding:56px 20px;position:relative;overflow:hidden;}
+.shipit-section::before{content:'🚚';position:absolute;right:-20px;bottom:-40px;font-size:16rem;opacity:.06;pointer-events:none;}
+.shipit-inner{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;}
+.si-tag{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);color:#bae6fd;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:4px 12px;border-radius:4px;margin-bottom:14px;}
+.si-title{font-family:'Barlow Condensed',sans-serif;font-size:clamp(1.8rem,3.5vw,2.6rem);font-weight:900;color:#fff;line-height:1.05;margin-bottom:12px;}
+.si-sub{color:#7dd3fc;font-size:14px;line-height:1.7;margin-bottom:24px;}
+.si-steps{display:flex;flex-direction:column;gap:10px;}
+.si-step{display:flex;align-items:flex-start;gap:12px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:12px 14px;}
+.si-step-num{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.1rem;color:var(--gold-l);flex-shrink:0;width:22px;}
+.si-step-text{font-size:12px;color:#bae6fd;line-height:1.5;}
+.si-step-text strong{color:#fff;}
+.si-cards{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.si-card{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:18px 16px;text-align:center;transition:all .2s;}
+.si-card:hover{background:rgba(255,255,255,.12);}
+.si-card-icon{font-size:1.8rem;margin-bottom:8px;}
+.si-card-title{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.9rem;color:#fff;margin-bottom:4px;}
+.si-card-desc{font-size:11px;color:#7dd3fc;line-height:1.5;}
+.si-launch-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(245,158,11,.2);border:1px solid rgba(245,158,11,.35);color:var(--gold-l);font-size:12px;font-weight:700;padding:5px 14px;border-radius:99px;margin-top:20px;}
+
 .founding-bg{background:linear-gradient(135deg,var(--navy),#0f3460);}
 .founding-inner{max-width:1280px;margin:0 auto;padding:56px 20px;display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;}
 .founding-title{font-family:'Barlow Condensed',sans-serif;font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:900;color:#fff;line-height:1.05;margin-bottom:14px;}
@@ -143,15 +149,11 @@ header{background:var(--white);border-bottom:2px solid var(--border);position:st
 .fcc-spots{background:rgba(220,38,38,.1);border:1px solid rgba(220,38,38,.2);border-radius:8px;padding:9px;font-size:12px;color:#fca5a5;font-weight:700;margin-bottom:18px;}
 .btn-founding{width:100%;padding:13px;background:var(--gold);color:var(--navy);border:none;border-radius:8px;font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.05rem;cursor:pointer;transition:all .15s;}
 .btn-founding:hover{background:var(--gold-l);transform:translateY(-1px);}
-
-/* ── SAFETY SECTION ── */
 .safety-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
 .safety-card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:22px 18px;}
 .safety-icon{font-size:2rem;margin-bottom:10px;}
 .safety-title{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1rem;margin-bottom:6px;}
 .safety-desc{font-size:12px;color:var(--muted);line-height:1.6;}
-
-/* ── LAUNCH CITIES ── */
 .cities-section{background:var(--navy);padding:48px 20px;}
 .cities-inner{max-width:1280px;margin:0 auto;text-align:center;}
 .cities-title{font-family:'Barlow Condensed',sans-serif;font-size:clamp(1.6rem,3vw,2.2rem);font-weight:900;color:#fff;margin-bottom:8px;}
@@ -163,8 +165,6 @@ header{background:var(--white);border-bottom:2px solid var(--border);position:st
 .city-name{font-family:'Barlow Condensed',sans-serif;font-size:1.3rem;font-weight:900;color:#fff;margin-bottom:4px;}
 .city-desc{font-size:12px;color:#64748b;line-height:1.5;}
 .city-badge{display:inline-block;background:rgba(22,163,74,.15);border:1px solid rgba(22,163,74,.3);color:var(--green-l);font-size:10px;font-weight:800;padding:2px 10px;border-radius:3px;margin-top:8px;letter-spacing:.3px;}
-
-/* ── BOTTOM CTA ── */
 .bottom-cta{background:linear-gradient(135deg,#f8fafc,#fff);padding:56px 20px;text-align:center;}
 .bc-inner{max-width:600px;margin:0 auto;}
 .bc-title{font-family:'Barlow Condensed',sans-serif;font-size:clamp(1.8rem,4vw,2.6rem);font-weight:900;color:var(--navy);margin-bottom:10px;}
@@ -175,8 +175,6 @@ header{background:var(--white);border-bottom:2px solid var(--border);position:st
 .bc-btn{background:var(--navy);color:#fff;border:none;padding:12px 22px;border-radius:8px;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.95rem;cursor:pointer;transition:all .15s;white-space:nowrap;}
 .bc-btn:hover{background:#0f2547;}
 .bc-note{font-size:11px;color:var(--light);}
-
-/* ── FOOTER ── */
 footer{background:var(--navy);color:#64748b;padding:36px 20px 20px;}
 .footer-inner{max-width:1280px;margin:0 auto;}
 .footer-top{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:32px;margin-bottom:28px;}
@@ -190,12 +188,9 @@ footer{background:var(--navy);color:#64748b;padding:36px 20px 20px;}
 .footer-bottom-links{display:flex;gap:16px;}
 .footer-bottom-links a{color:#475569;cursor:pointer;}
 .footer-bottom-links a:hover{color:#94a3b8;}
-
-/* ── TOAST ── */
 .toast{position:fixed;bottom:20px;right:20px;background:var(--navy);color:#e2e8f0;border:1px solid #1e3a5f;border-left:4px solid var(--green);border-radius:8px;padding:10px 16px;font-size:13px;z-index:9999;display:flex;align-items:center;gap:9px;max-width:300px;box-shadow:0 8px 26px rgba(0,0,0,.3);transform:translateX(120%);transition:transform .3s ease;}
 .toast.show{transform:translateX(0);}
 .toast.error{border-left-color:var(--red);}
-
 @media(max-width:900px){
   .hero-inner{grid-template-columns:1fr;}.signup-card{max-width:460px;margin:0 auto;}
   .steps-grid{grid-template-columns:repeat(2,1fr);}
@@ -205,6 +200,8 @@ footer{background:var(--navy);color:#64748b;padding:36px 20px 20px;}
   .cities-grid{grid-template-columns:1fr;}
   .footer-top{grid-template-columns:1fr 1fr;}
   .bc-email-wrap{flex-direction:column;}
+  .shipit-inner{grid-template-columns:1fr;}
+  .si-cards{grid-template-columns:repeat(2,1fr);}
 }
 @media(max-width:600px){
   .cats-grid{grid-template-columns:repeat(2,1fr);}
@@ -212,25 +209,23 @@ footer{background:var(--navy);color:#64748b;padding:36px 20px 20px;}
   .footer-top{grid-template-columns:1fr;}
   .cd-units{gap:4px;}.cd-unit{padding:10px 12px;min-width:60px;}
   .cd-num{font-size:1.8rem;}
+  .si-cards{grid-template-columns:1fr;}
 }
 </style>
 </head>
 <body>
 
-<!-- LAUNCH BANNER -->
 <div class="launch-banner">
   <span class="lb-badge">LAUNCHING JULY 17</span>
   <span>Tradezy goes live in <strong>Connecticut & Ohio</strong> — Sign up now for <strong>Founding Trader</strong> perks</span>
   <button class="lb-cta" onclick="scrollToSignup()">Claim Your Spot →</button>
 </div>
 
-<!-- NAV -->
 <header>
   <div class="nav-main">
     <div class="logo"><span class="a">Trade</span><span class="t">zy</span><span class="d">.</span></div>
     <div class="nav-cta-area">
       <div class="nav-launch-chip"><div class="nav-launch-dot"></div>Launching July 17, 2026</div>
-      
       <button class="btn-nav-signup" onclick="scrollToSignup()">⭐ Join Free</button>
     </div>
   </div>
@@ -243,23 +238,23 @@ footer{background:var(--navy);color:#64748b;padding:36px 20px 20px;}
       <div class="hero-tag">🔄 Local Peer-to-Peer Trading Platform</div>
       <h1>Trade What You Have<br>for <span class="hl">What You Need</span></h1>
       <p class="hero-sub">
-        Tradezy connects you with real traders in your community for safe, verified, in-person swaps.
-        <strong>No shipping. No strangers from across the country. Just neighbors trading locally.</strong>
+        Tradezy connects you with real traders in your community for safe, verified exchanges.
+        <strong>Meet locally with neighbors, or Ship-It state-to-state — your trade, your choice.</strong>
       </p>
       <div class="launch-states">
         <div class="state-chip">📍 Connecticut — Statewide</div>
         <div class="state-chip">📍 Ohio — Statewide</div>
         <div class="launch-date-chip">🗓️ Launching July 17, 2026</div>
+        <div class="shipit-chip">🚚 Ship-It Nationwide — July 31</div>
       </div>
       <div class="hero-stats">
         <div class="hstat"><div class="hstat-num">$0</div><div class="hstat-label">Listing Fee</div></div>
-        <div class="hstat"><div class="hstat-num">5%</div><div class="hstat-label">Only on Completed Trades</div></div>
+        <div class="hstat"><div class="hstat-num">5%</div><div class="hstat-label">Local Trade Fee</div></div>
         <div class="hstat"><div class="hstat-num">3%</div><div class="hstat-label">Founding Trader Rate</div></div>
         <div class="hstat"><div class="hstat-num">20+</div><div class="hstat-label">Founding Traders</div></div>
       </div>
     </div>
 
-    <!-- SIGNUP CARD -->
     <div class="signup-card" id="signupCard">
       <div class="sc-header">
         <div class="sc-title">🏆 Become a Founding Trader</div>
@@ -271,6 +266,7 @@ footer{background:var(--navy);color:#64748b;padding:36px 20px 20px;}
         <div class="fp-item">🏅 Founding Trader badge on your profile</div>
         <div class="fp-item">🚀 Early access to every new feature</div>
         <div class="fp-item">🌟 Featured on the Tradezy homepage at launch</div>
+        <div class="fp-item">🚚 First access to Ship-It state-to-state trading</div>
       </div>
       <div class="signup-form" id="signupForm">
         <input class="sf-input" type="email" id="heroEmail" placeholder="Your email address" required>
@@ -321,13 +317,13 @@ footer{background:var(--navy);color:#64748b;padding:36px 20px 20px;}
         <div class="step-num">2</div>
         <div class="step-icon">🔍</div>
         <div class="step-title">Browse & Offer</div>
-        <div class="step-desc">Find listings near you. Make an offer with your item, add cash if needed, and negotiate freely.</div>
+        <div class="step-desc">Find listings near you — or anywhere in the country. Make an offer with your item, add cash if needed, and negotiate freely.</div>
       </div>
       <div class="step-card">
         <div class="step-num">3</div>
         <div class="step-icon">📍</div>
-        <div class="step-title">Meet Locally</div>
-        <div class="step-desc">Agree on a safe public meetup spot. Both parties confirm the exchange through the app.</div>
+        <div class="step-title">Meet Locally or Ship It</div>
+        <div class="step-desc">Agree on a safe public meetup spot with local traders, or choose Ship-It for state-to-state trades — fully tracked from door to door.</div>
       </div>
       <div class="step-card">
         <div class="step-num">4</div>
@@ -344,7 +340,7 @@ footer{background:var(--navy);color:#64748b;padding:36px 20px 20px;}
   <div class="section" style="padding-top:36px;">
     <div class="section-label">Trade anything</div>
     <div class="section-title">What People Trade on Tradezy</div>
-    <div class="section-sub">From Pokémon cards to power tools — if it has value, you can trade it.</div>
+    <div class="section-sub">From Pokémon cards to power tools — if it has value, you can trade it locally or ship it nationwide.</div>
     <div class="cats-grid">
       <div class="cat-card new"><div class="cat-em">🃏</div><div class="cat-name">Sports Cards</div><div class="cat-badge">NEW</div></div>
       <div class="cat-card new"><div class="cat-em">🎴</div><div class="cat-name">TCG Cards</div><div class="cat-badge">NEW</div></div>
@@ -362,6 +358,48 @@ footer{background:var(--navy);color:#64748b;padding:36px 20px 20px;}
   </div>
 </div>
 
+<!-- SHIP-IT SECTION (NEW) -->
+<div class="shipit-section">
+  <div class="shipit-inner">
+    <div>
+      <div class="si-tag">🚚 Coming July 31, 2026</div>
+      <div class="si-title">Introducing Ship-It —<br>Trade Across State Lines</div>
+      <div class="si-sub">Not every great trade happens in your backyard. Ship-It lets fully verified traders send items anywhere in the country — safely, tracked, and protected by Tradezy the whole way.</div>
+      <div class="si-steps">
+        <div class="si-step"><div class="si-step-num">1</div><div class="si-step-text"><strong>Make a Ship-It offer</strong> on any listing — local or nationwide</div></div>
+        <div class="si-step"><div class="si-step-num">2</div><div class="si-step-text"><strong>Seller accepts</strong> — 10% platform fee collected at acceptance</div></div>
+        <div class="si-step"><div class="si-step-num">3</div><div class="si-step-text"><strong>Buyer sends payment</strong> via Zelle, PayPal, Venmo, Apple Pay, Google Pay, or Cash App</div></div>
+        <div class="si-step"><div class="si-step-num">4</div><div class="si-step-text"><strong>Seller ships with tracking</strong> — both parties confirm delivery to close the trade</div></div>
+      </div>
+      <div class="si-launch-badge">🗓️ Ship-It launches July 31 — ID verification required for both parties</div>
+    </div>
+    <div>
+      <div class="si-cards">
+        <div class="si-card">
+          <div class="si-card-icon">🪪</div>
+          <div class="si-card-title">ID Verified Only</div>
+          <div class="si-card-desc">Both parties must be ID verified before a Ship-It trade can happen. No exceptions.</div>
+        </div>
+        <div class="si-card">
+          <div class="si-card-icon">📦</div>
+          <div class="si-card-title">Full Tracking</div>
+          <div class="si-card-desc">Tracking number recorded in-app the moment the seller ships. Both traders can follow the package.</div>
+        </div>
+        <div class="si-card">
+          <div class="si-card-icon">💸</div>
+          <div class="si-card-title">Peer-to-Peer Payment</div>
+          <div class="si-card-desc">Money moves directly between traders. Tradezy never holds your funds — just your 10% platform fee.</div>
+        </div>
+        <div class="si-card">
+          <div class="si-card-icon">⚖️</div>
+          <div class="si-card-title">Dispute Protection</div>
+          <div class="si-card-desc">Confirmation screenshots, tracking records, and Tradezy support — protection built into every step.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- FOUNDING TRADER -->
 <div class="founding-bg">
   <div class="founding-inner">
@@ -372,7 +410,7 @@ footer{background:var(--navy);color:#64748b;padding:36px 20px 20px;}
       <div class="perks-list">
         <div class="perk-item"><div class="perk-icon">💰</div><div class="perk-text"><div class="perk-title">Lifetime 3% Platform Fee</div><div class="perk-desc">Standard rate is 5%. You pay 3% forever — even as Tradezy grows nationwide.</div></div></div>
         <div class="perk-item"><div class="perk-icon">🏅</div><div class="perk-text"><div class="perk-title">Founding Trader Badge</div><div class="perk-desc">Permanent badge on your profile showing you were here from the start.</div></div></div>
-        <div class="perk-item"><div class="perk-icon">🚀</div><div class="perk-text"><div class="perk-title">Early Feature Access</div><div class="perk-desc">Test every new feature before it goes public. Your feedback shapes the platform.</div></div></div>
+        <div class="perk-item"><div class="perk-icon">🚀</div><div class="perk-text"><div class="perk-title">Early Feature Access</div><div class="perk-desc">Test every new feature before it goes public — including Ship-It on July 31.</div></div></div>
         <div class="perk-item"><div class="perk-icon">🌟</div><div class="perk-text"><div class="perk-title">Homepage Featured Listing</div><div class="perk-desc">Your first listing gets featured on the Tradezy homepage at launch.</div></div></div>
       </div>
     </div>
@@ -394,12 +432,12 @@ footer{background:var(--navy);color:#64748b;padding:36px 20px 20px;}
   <div class="section">
     <div class="section-label">Built for trust</div>
     <div class="section-title">Trading That's Actually Safe</div>
-    <div class="section-sub">Every feature on Tradezy is designed to protect you from the first message to the final handshake.</div>
+    <div class="section-sub">Every feature on Tradezy is designed to protect you from the first message to the final handshake — local or shipped.</div>
     <div class="safety-grid">
       <div class="safety-card">
         <div class="safety-icon">✅</div>
-        <div class="safety-title">Verified Meetup Confirmation</div>
-        <div class="safety-desc">Both parties tap confirm in the app after the exchange. Creates a timestamped record and unlocks ratings — no more he-said-she-said.</div>
+        <div class="safety-title">Verified Confirmation</div>
+        <div class="safety-desc">Both parties confirm in the app after every exchange — local meetup or Ship-It delivery. Creates a timestamped record and unlocks ratings.</div>
       </div>
       <div class="safety-card">
         <div class="safety-icon">⚖️</div>
@@ -419,7 +457,7 @@ footer{background:var(--navy);color:#64748b;padding:36px 20px 20px;}
 <div class="cities-section">
   <div class="cities-inner">
     <div class="cities-title">Launching July 17 in Two States</div>
-    <div class="cities-sub">Phase 1 soft launch — then nationwide July 31</div>
+    <div class="cities-sub">Phase 1 soft launch — then Ship-It state-to-state trading goes nationwide July 31</div>
     <div class="cities-grid">
       <div class="city-card">
         <div class="city-em">🌿</div>
@@ -434,7 +472,7 @@ footer{background:var(--navy);color:#64748b;padding:36px 20px 20px;}
         <div class="city-badge">PHASE 1 LAUNCH</div>
       </div>
     </div>
-    <div style="font-size:13px;color:#475569;">Nationwide expansion launches July 31, 2026 · Built in Connecticut by a Navy veteran</div>
+    <div style="font-size:13px;color:#475569;">Nationwide expansion + Ship-It state-to-state trading launches July 31, 2026 · Built in Connecticut by a Navy veteran</div>
   </div>
 </div>
 
@@ -447,7 +485,7 @@ footer{background:var(--navy);color:#64748b;padding:36px 20px 20px;}
       <input class="bc-email" type="email" id="bottomEmail" placeholder="Enter your email address">
       <button class="bc-btn" onclick="submitSignupBottom()">Notify Me →</button>
     </div>
-    <div class="bc-note">Free forever to browse. 5% fee only on completed trades. Founding Traders pay 3% for life.</div>
+    <div class="bc-note">Free forever to browse. 5% fee on local completed trades · 10% for Ship-It state-to-state trades launching July 31. Founding Traders pay 3% for life.</div>
   </div>
 </div>
 
@@ -457,7 +495,7 @@ footer{background:var(--navy);color:#64748b;padding:36px 20px 20px;}
     <div class="footer-top">
       <div class="footer-brand">
         <span class="logo"><span class="a">Trade</span><span class="t">zy</span><span class="d">.</span></span>
-        <p>The free local trading marketplace. Trade items safely with verified traders in your community. Built by a Navy veteran in Connecticut.</p>
+        <p>The free local trading marketplace. Trade items safely with verified traders in your community — locally or ship it nationwide. Built by a Navy veteran in Connecticut.</p>
       </div>
       <div>
         <div class="footer-col-title">Platform</div>
@@ -500,22 +538,17 @@ footer{background:var(--navy);color:#64748b;padding:36px 20px 20px;}
 <div class="toast" id="toastEl"><span id="toastIc">✅</span><span id="toastTx"></span></div>
 
 <script>
-/* ── Supabase ── */
 const sb = window.supabase.createClient(
   'https://equvwaspcoeetfsexqki.supabase.co',
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVxdXZ3YXNwY29lZXRmc2V4cWtpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgyNzc2MjQsImV4cCI6MjA5Mzg1MzYyNH0.TP6Kk3pzHW1PYMUu5D9Vu2lJrazIEagzu5csYhqkrfI'
 );
 
-/* ── COUNTDOWN ── */
 function updateCountdown() {
   const launch = new Date('2026-07-17T00:00:00-04:00');
   const now = new Date();
   const diff = launch - now;
   if (diff <= 0) {
-    document.getElementById('cdDays').textContent = '0';
-    document.getElementById('cdHours').textContent = '0';
-    document.getElementById('cdMins').textContent = '0';
-    document.getElementById('cdSecs').textContent = '0';
+    ['cdDays','cdHours','cdMins','cdSecs'].forEach(id => document.getElementById(id).textContent = '0');
     return;
   }
   const days  = Math.floor(diff / 86400000);
@@ -530,25 +563,15 @@ function updateCountdown() {
 updateCountdown();
 setInterval(updateCountdown, 1000);
 
-/* ── SIGNUP ── */
 async function doSignup(email, source) {
-  if (!email || !email.includes('@')) {
-    showToast('⚠️', 'Please enter a valid email address.', true);
-    return false;
-  }
+  if (!email || !email.includes('@')) { showToast('⚠️', 'Please enter a valid email address.', true); return false; }
   try {
     const { error } = await sb.from('waitlist').insert({ email: email.trim().toLowerCase(), source });
     if (error) {
-      if (error.code === '23505') {
-        showToast('✅', "You're already on the list! We'll see you July 17.");
-        return true;
-      }
+      if (error.code === '23505') { showToast('✅', "You're already on the list! We'll see you July 17."); return true; }
       throw error;
     }
-    // Track signup in Google Analytics
-    if (typeof gtag !== 'undefined') {
-      gtag('event', 'signup', { event_category: 'waitlist', event_label: source });
-    }
+    if (typeof gtag !== 'undefined') gtag('event', 'signup', { event_category: 'waitlist', event_label: source });
     return true;
   } catch(e) {
     console.error(e);
@@ -560,8 +583,7 @@ async function doSignup(email, source) {
 async function submitSignup() {
   const email = document.getElementById('heroEmail').value.trim();
   const btn = document.getElementById('signupBtn');
-  btn.disabled = true;
-  btn.textContent = 'Joining…';
+  btn.disabled = true; btn.textContent = 'Joining…';
   const ok = await doSignup(email, 'hero');
   if (ok) {
     document.getElementById('signupForm').style.display = 'none';
@@ -576,31 +598,19 @@ async function submitSignup() {
 async function submitSignupFounding() {
   const email = document.getElementById('foundingEmail').value.trim();
   const btn = event.target;
-  btn.disabled = true;
-  btn.textContent = 'Joining…';
+  btn.disabled = true; btn.textContent = 'Joining…';
   const ok = await doSignup(email, 'founding_section');
-  if (ok) {
-    btn.textContent = '✅ You\'re in!';
-    showToast('🎉', 'Founding Trader spot claimed! See you July 17.');
-  } else {
-    btn.disabled = false;
-    btn.textContent = '⭐ Claim My Founding Trader Spot';
-  }
+  if (ok) { btn.textContent = "✅ You're in!"; showToast('🎉', 'Founding Trader spot claimed! See you July 17.'); }
+  else { btn.disabled = false; btn.textContent = '⭐ Claim My Founding Trader Spot'; }
 }
 
 async function submitSignupBottom() {
   const email = document.getElementById('bottomEmail').value.trim();
   const btn = event.target;
-  btn.disabled = true;
-  btn.textContent = 'Done!';
+  btn.disabled = true; btn.textContent = 'Done!';
   const ok = await doSignup(email, 'bottom_cta');
-  if (ok) {
-    showToast('✅', "You're on the list! We'll notify you July 17.");
-    document.getElementById('bottomEmail').value = '';
-  } else {
-    btn.disabled = false;
-    btn.textContent = 'Notify Me →';
-  }
+  if (ok) { showToast('✅', "You're on the list! We'll notify you July 17."); document.getElementById('bottomEmail').value = ''; }
+  else { btn.disabled = false; btn.textContent = 'Notify Me →'; }
 }
 
 function scrollToSignup() {
@@ -608,7 +618,6 @@ function scrollToSignup() {
   setTimeout(() => document.getElementById('heroEmail').focus(), 600);
 }
 
-/* ── TOAST ── */
 function showToast(icon, msg, isError = false) {
   document.getElementById('toastIc').textContent = icon;
   document.getElementById('toastTx').textContent = msg;
