@@ -178,6 +178,21 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);height
 .mbtn.outline:hover{border-color:#999;color:var(--text);}
 .toast{position:fixed;bottom:20px;right:20px;background:var(--navy);color:#e2e8f0;border:1px solid #1e3a5f;border-left:4px solid var(--green);border-radius:8px;padding:10px 15px;font-size:13px;z-index:9999;display:flex;align-items:center;gap:8px;max-width:280px;box-shadow:0 8px 26px rgba(0,0,0,.25);transform:translateX(120%);transition:transform .3s ease;}
 .toast.show{transform:translateX(0);}
+/* REPORT MODE */
+.report-mode-banner{display:none;background:linear-gradient(90deg,#7f1d1d,#991b1b);padding:9px 16px;align-items:center;gap:10px;flex-shrink:0;}
+.report-mode-banner.active{display:flex;}
+.rmb-text{flex:1;font-size:12px;color:#fca5a5;font-family:'Barlow Condensed',sans-serif;font-weight:700;letter-spacing:.3px;}
+.rmb-cancel{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);color:#fff;padding:4px 12px;border-radius:5px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.78rem;cursor:pointer;}
+.rmb-cancel:hover{background:rgba(255,255,255,.25);}
+.msg-wrap{position:relative;}
+.msg-flag{display:none;position:absolute;top:50%;transform:translateY(-50%);background:#dc2626;color:#fff;border:none;border-radius:50%;width:24px;height:24px;font-size:.65rem;cursor:pointer;align-items:center;justify-content:center;opacity:0;transition:opacity .15s;z-index:10;box-shadow:0 2px 8px rgba(220,38,38,.4);}
+.msg-wrap.mine .msg-flag{left:-32px;}
+.msg-wrap.theirs .msg-flag{right:-32px;}
+body.report-mode .msg-flag{display:flex;}
+body.report-mode .msg-wrap:hover .msg-flag{opacity:1;}
+body.report-mode .msgs-area{cursor:crosshair;}
+body.report-mode .bubble{transition:opacity .15s;}
+body.report-mode .msg-wrap:hover .bubble{opacity:.85;}
 .typing-indicator{display:none;align-self:flex-start;}
 .typing-indicator.show{display:flex;}
 .typing-bubble{background:var(--white);border:1px solid var(--border);border-radius:12px 12px 12px 4px;padding:10px 14px;display:flex;gap:4px;align-items:center;}
@@ -286,8 +301,14 @@ const TradezyScan = (() => {
       </div>
       <div class="ch-actions">
         <button class="ch-btn view" id="btnViewListing" onclick="viewActiveListing()">📦 Listing</button>
-        <button class="ch-btn danger" onclick="openModal('reportModal')">⚑ Report</button>
+        <button class="ch-btn danger" id="reportModeBtn" onclick="toggleReportMode()">⚑ Report a Problem</button>
       </div>
+    </div>
+    <!-- Report mode banner -->
+    <div class="report-mode-banner" id="reportModeBanner">
+      <span style="font-size:1rem">⚑</span>
+      <span class="rmb-text">Tap the flag on the message you want to report — then we'll take it from there</span>
+      <button class="rmb-cancel" onclick="toggleReportMode()">✕ Cancel</button>
     </div>
     <div class="trade-context" id="tradeContextBar" style="display:none">
       <span class="tc-icon">🔄</span>
@@ -606,6 +627,8 @@ function makeBubble(m) {
   const wrap = document.createElement('div');
   wrap.className = `msg-wrap ${isMine ? 'mine' : 'theirs'}`;
   wrap.dataset.msgId = m.id;
+  wrap.dataset.msgContent = m.content || '';
+  wrap.dataset.msgSender = isMine ? 'you' : (thread?.otherName || 'Trader');
   const timeStr = new Date(m.created_at).toLocaleTimeString('en-US', { hour:'numeric', minute:'2-digit' });
   const isRead = isMine && m.read_at;
   wrap.innerHTML = `
@@ -614,7 +637,8 @@ function makeBubble(m) {
       <div class="bubble">${escHtml(m.content || '')}</div>
       <div class="bubble-time">${timeStr}</div>
       ${isRead ? '<div class="msg-read">✓✓ Read</div>' : ''}
-    </div>`;
+    </div>
+    <button class="msg-flag" title="Report this message" onclick="flagMessage(this)">⚑</button>`;
   return wrap;
 }
 
@@ -690,7 +714,40 @@ function viewActiveListing() {
   else showToast('📦', 'No listing linked to this conversation.');
 }
 
-/* ── REPORT — NOW WIRED ── */
+/* ── REPORT MODE ── */
+let reportingMessageContent = '';
+let reportingMessageSender  = '';
+
+function toggleReportMode() {
+  const active = document.body.classList.toggle('report-mode');
+  document.getElementById('reportModeBanner').classList.toggle('active', active);
+  const btn = document.getElementById('reportModeBtn');
+  if (active) {
+    btn.textContent = '✕ Cancel Report';
+    btn.style.borderColor = 'var(--red)';
+    btn.style.color = 'var(--red)';
+  } else {
+    btn.textContent = '⚑ Report a Problem';
+    btn.style.borderColor = '';
+    btn.style.color = '';
+    reportingMessageContent = '';
+    reportingMessageSender  = '';
+  }
+}
+
+function flagMessage(flagBtn) {
+  const wrap = flagBtn.closest('.msg-wrap');
+  reportingMessageContent = wrap.dataset.msgContent || '';
+  reportingMessageSender  = wrap.dataset.msgSender  || 'Trader';
+  // Pre-fill details textarea with the flagged message
+  const details = document.getElementById('reportDetails');
+  details.value = `Flagged message from ${reportingMessageSender}:\n"${reportingMessageContent}"`;
+  // Exit report mode and open modal
+  toggleReportMode();
+  openModal('reportModal');
+}
+
+/* ── REPORT SUBMIT ── */
 function selectReport(el) {
   document.querySelectorAll('#reportOptions label').forEach(l => { l.style.borderColor='var(--border)'; l.style.background=''; });
   el.style.borderColor = 'var(--red)';
@@ -713,7 +770,7 @@ async function submitReport() {
     // Insert to disputes table
     const { error } = await sb.from('disputes').insert({
       status:      'open',
-      description: `Reported user: ${activeOtherId}\nReason: ${reason}${details ? '\n\nDetails: ' + details : ''}`,
+      description: `Reported user: ${activeOtherId}\nReason: ${reason}${reportingMessageContent ? '\n\nFlagged message from ' + reportingMessageSender + ':\n"' + reportingMessageContent + '"' : ''}${details ? '\n\nAdditional details: ' + details : ''}`,
       reason:      reason,
     });
     if (error) throw error;
@@ -724,6 +781,8 @@ async function submitReport() {
     document.querySelectorAll('#reportOptions input[type="radio"]').forEach(r => r.checked = false);
     document.querySelectorAll('#reportOptions label').forEach(l => { l.style.borderColor='var(--border)'; l.style.background=''; });
     document.getElementById('reportDetails').value = '';
+    reportingMessageContent = '';
+    reportingMessageSender  = '';
 
     showToast('✅', 'Report submitted. Our team reviews within 24 hours. Thank you for keeping Tradezy safe.');
   } catch(e) {
