@@ -23,7 +23,6 @@
 }
 *{margin:0;padding:0;box-sizing:border-box;}
 body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);height:100vh;display:flex;flex-direction:column;overflow:hidden;}
-
 .nav{background:var(--navy);padding:0 20px;height:54px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;z-index:100;}
 .logo{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.5rem;letter-spacing:-1px;cursor:pointer;}
 .logo .a{color:#fff;}.logo .t{color:var(--blue);}.logo .d{color:var(--gold);}
@@ -35,10 +34,7 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);height
 .user-chip:hover{background:rgba(255,255,255,.07);}
 .u-av{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--orange));color:var(--navy);font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:.8rem;display:flex;align-items:center;justify-content:center;}
 .u-name{font-size:13px;color:#cbd5e1;font-weight:700;}
-
 .chat-layout{display:flex;flex:1;min-height:0;overflow:hidden;}
-
-/* SIDEBAR */
 .sidebar{width:300px;background:var(--white);border-right:1px solid var(--border);display:flex;flex-direction:column;flex-shrink:0;}
 .sb-head{padding:14px 16px;border-bottom:1px solid var(--border);}
 .sb-title-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
@@ -63,9 +59,6 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);height
 .th-dot{position:absolute;top:0;right:0;width:11px;height:11px;background:var(--blue);border-radius:50%;border:2px solid var(--white);}
 .th-info{flex:1;min-width:0;}
 .th-name{font-weight:700;font-size:13px;margin-bottom:1px;display:flex;align-items:center;gap:5px;}
-.th-badge{font-size:9px;font-weight:800;padding:1px 5px;border-radius:3px;letter-spacing:.3px;}
-.th-badge.trade{background:#eff6ff;color:var(--blue-dim);border:1px solid #bfdbfe;}
-.th-badge.offer{background:#fffbeb;color:#92400e;border:1px solid #fde68a;}
 .th-preview{font-size:11px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .th-preview.unread{color:var(--text);font-weight:700;}
 .th-right{text-align:right;flex-shrink:0;}
@@ -74,13 +67,10 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);height
 .empty-threads{text-align:center;padding:40px 20px;color:var(--muted);}
 .empty-threads .ei{font-size:2.5rem;margin-bottom:10px;}
 .empty-threads p{font-size:13px;line-height:1.5;}
-
-/* CHAT PANEL */
 .chat-panel{flex:1;display:flex;flex-direction:column;min-width:0;}
 .chat-empty{flex:1;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:10px;color:var(--muted);}
 .chat-empty .cei{font-size:3rem;}
 .chat-empty p{font-size:14px;}
-
 .chat-head{background:var(--white);border-bottom:1px solid var(--border);padding:12px 18px;display:flex;align-items:center;gap:12px;flex-shrink:0;}
 .ch-av{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:.88rem;color:#fff;flex-shrink:0;}
 .ch-info{flex:1;min-width:0;}
@@ -90,22 +80,19 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);height
 .ch-btn{padding:6px 12px;border-radius:6px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.78rem;cursor:pointer;border:none;transition:all .15s;}
 .ch-btn.view{background:var(--surface);border:1px solid var(--border);color:var(--muted);}
 .ch-btn.view:hover{border-color:var(--blue);color:var(--blue);}
-.ch-btn.offer{background:var(--gold);color:var(--navy);}
-.ch-btn.offer:hover{background:var(--gold-l);}
+.ch-btn.gold{background:var(--gold);color:var(--navy);}
+.ch-btn.gold:hover{background:var(--gold-l);}
 .ch-btn.danger{background:transparent;border:1px solid var(--border);color:var(--light);}
 .ch-btn.danger:hover{border-color:var(--red);color:var(--red);}
-
 .trade-context{background:linear-gradient(90deg,#1e3a8a,#1d4ed8);padding:10px 18px;display:flex;align-items:center;gap:12px;flex-shrink:0;}
 .tc-icon{font-size:1rem;flex-shrink:0;}
 .tc-text{flex:1;font-size:12px;color:#93c5fd;}
 .tc-text strong{color:#fff;}
 .tc-action{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.2);color:#fff;padding:4px 11px;border-radius:5px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.75rem;cursor:pointer;transition:all .15s;}
 .tc-action:hover{background:rgba(255,255,255,.25);}
-
 .msgs-area{flex:1;overflow-y:auto;padding:18px;display:flex;flex-direction:column;gap:14px;background:var(--bg);}
 .date-div{text-align:center;margin:6px 0;}
 .date-div span{background:var(--border);color:var(--muted);font-size:10px;font-weight:700;padding:3px 12px;border-radius:99px;text-transform:uppercase;letter-spacing:.5px;}
-
 .msg-wrap{display:flex;gap:8px;max-width:75%;animation:fadeIn .2s ease;}
 @keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
 .msg-wrap.mine{align-self:flex-end;flex-direction:row-reverse;}
@@ -118,11 +105,9 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);height
 .msg-wrap.mine .bubble-time{color:rgba(255,255,255,.7);text-align:right;}
 .msg-wrap.theirs .bubble-time{color:var(--muted);}
 .msg-read{font-size:10px;color:var(--green-l);margin-top:2px;text-align:right;}
-
 .sys-msg{text-align:center;font-size:11px;color:var(--muted);background:var(--surface);border:1px solid var(--border);border-radius:99px;padding:5px 14px;width:fit-content;margin:0 auto;}
 .sys-msg.warn{background:#fef2f2;border-color:#fecaca;color:#991b1b;}
 .sys-msg.success{background:#f0fdf4;border-color:#bbf7d0;color:#14532d;}
-
 .bypass-warn{background:linear-gradient(90deg,#7f1d1d,#991b1b);padding:11px 16px;display:flex;align-items:flex-start;gap:10px;border-bottom:1px solid rgba(248,113,113,.3);flex-shrink:0;}
 .bw-icon{font-size:1.2rem;flex-shrink:0;margin-top:1px;}
 .bw-text{flex:1;}
@@ -130,7 +115,6 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);height
 .bw-desc{font-size:12px;color:#fca5a5;opacity:.85;line-height:1.4;}
 .bw-close{color:#fca5a5;cursor:pointer;font-size:.85rem;padding:2px 6px;flex-shrink:0;opacity:.7;}
 .bw-close:hover{opacity:1;}
-
 .input-area{background:var(--white);border-top:1px solid var(--border);padding:12px 16px;flex-shrink:0;}
 .safety-remind{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:7px;padding:7px 11px;margin-bottom:9px;font-size:11px;color:#14532d;display:flex;align-items:center;gap:6px;}
 .safety-remind.hidden{display:none;}
@@ -154,8 +138,6 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);height
 .scan-dot:nth-child(2){animation-delay:.2s;}
 .scan-dot:nth-child(3){animation-delay:.4s;}
 @keyframes scanPulse{0%,100%{opacity:.3}50%{opacity:1}}
-
-/* RIGHT PANEL */
 .right-panel{width:260px;background:var(--white);border-left:1px solid var(--border);display:flex;flex-direction:column;flex-shrink:0;overflow-y:auto;}
 .rp-head{background:linear-gradient(135deg,var(--navy),#1a3a6b);padding:13px 15px;}
 .rp-title{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.92rem;color:#fff;margin-bottom:1px;}
@@ -166,11 +148,9 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);height
 .rp-item-em{font-size:1.5rem;margin-bottom:3px;}
 .rp-item-nm{font-size:12px;font-weight:700;margin-bottom:2px;}
 .rp-item-vl{font-size:11px;font-weight:700;}
-.rp-arrow{text-align:center;color:var(--muted);font-size:.85rem;margin-bottom:6px;}
 .rp-fee-row{display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px;}
 .rp-fee-label{color:var(--muted);}
 .rp-fee-val{font-weight:700;}
-.rp-total{display:flex;justify-content:space-between;padding:6px 8px;background:#fffbeb;border:1px solid #fde68a;border-radius:6px;margin-top:6px;font-size:12px;font-weight:700;color:#92400e;}
 .rp-safety{padding:12px 14px;border-bottom:1px solid var(--border);}
 .safety-tip{display:flex;gap:7px;font-size:11px;color:var(--muted);line-height:1.4;margin-bottom:7px;}
 .st-icon{flex-shrink:0;font-size:.9rem;}
@@ -182,7 +162,6 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);height
 .rp-btn.outline:hover{border-color:#999;color:var(--text);}
 .rp-btn.red{background:transparent;border:1.5px solid var(--border);color:var(--light);}
 .rp-btn.red:hover{border-color:#fecaca;color:var(--red);}
-
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(10,22,40,.8);z-index:500;align-items:center;justify-content:center;padding:20px;}
 .modal-overlay.open{display:flex;}
 .modal{background:var(--white);border-radius:14px;width:100%;max-width:440px;max-height:88vh;overflow-y:auto;animation:slideUp .25s ease;}
@@ -197,10 +176,8 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);height
 .mbtn.gold{background:var(--gold);color:var(--navy);}
 .mbtn.outline{background:transparent;border:1.5px solid var(--border);color:var(--muted);}
 .mbtn.outline:hover{border-color:#999;color:var(--text);}
-
 .toast{position:fixed;bottom:20px;right:20px;background:var(--navy);color:#e2e8f0;border:1px solid #1e3a5f;border-left:4px solid var(--green);border-radius:8px;padding:10px 15px;font-size:13px;z-index:9999;display:flex;align-items:center;gap:8px;max-width:280px;box-shadow:0 8px 26px rgba(0,0,0,.25);transform:translateX(120%);transition:transform .3s ease;}
 .toast.show{transform:translateX(0);}
-
 .typing-indicator{display:none;align-self:flex-start;}
 .typing-indicator.show{display:flex;}
 .typing-bubble{background:var(--white);border:1px solid var(--border);border-radius:12px 12px 12px 4px;padding:10px 14px;display:flex;gap:4px;align-items:center;}
@@ -208,7 +185,6 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);height
 .typing-dot:nth-child(2){animation-delay:.2s;}
 .typing-dot:nth-child(3){animation-delay:.4s;}
 @keyframes typingPulse{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-4px)}}
-
 @media(max-width:900px){.right-panel{display:none;}}
 @media(max-width:640px){.sidebar{width:72px;}.th-info,.th-right{display:none;}.th-av{margin:0 auto;}}
 @media(prefers-color-scheme:dark){
@@ -277,8 +253,6 @@ const TradezyScan = (() => {
 </div>
 
 <div class="chat-layout">
-
-  <!-- SIDEBAR -->
   <div class="sidebar">
     <div class="sb-head">
       <div class="sb-title-row">
@@ -299,14 +273,11 @@ const TradezyScan = (() => {
     </div>
   </div>
 
-  <!-- CHAT PANEL -->
   <div class="chat-panel" id="chatPanel">
     <div class="chat-empty" id="chatEmpty">
       <div class="cei">💬</div>
       <p>Select a conversation to start messaging</p>
     </div>
-
-    <!-- Chat header (hidden until thread selected) -->
     <div class="chat-head" id="chatHead" style="display:none">
       <div class="ch-av" id="chatAv" style="background:var(--blue)">?</div>
       <div class="ch-info">
@@ -318,15 +289,11 @@ const TradezyScan = (() => {
         <button class="ch-btn danger" onclick="openModal('reportModal')">⚑ Report</button>
       </div>
     </div>
-
-    <!-- Trade context bar (shown when active trade exists) -->
     <div class="trade-context" id="tradeContextBar" style="display:none">
       <span class="tc-icon">🔄</span>
       <div class="tc-text" id="tradeContextText"><strong>Active trade</strong></div>
       <button class="tc-action" onclick="window.location.href='alltrades-dashboard.html'">View Trade →</button>
     </div>
-
-    <!-- Bypass warning -->
     <div class="bypass-warn" id="bypassWarn" style="display:none">
       <span class="bw-icon">🚨</span>
       <div class="bw-text">
@@ -335,18 +302,12 @@ const TradezyScan = (() => {
       </div>
       <span class="bw-close" onclick="hideBypass()">✕</span>
     </div>
-
-    <!-- Messages area -->
     <div class="msgs-area" id="msgsArea" style="display:none"></div>
-
-    <!-- Typing indicator -->
     <div class="typing-indicator" id="typingIndicator">
       <div class="typing-bubble">
         <div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>
       </div>
     </div>
-
-    <!-- Input area -->
     <div class="input-area" id="inputArea" style="display:none">
       <div class="safety-remind" id="safetyRemind">
         🛡️ <span>Keep all communication on Tradezy — sharing personal contact info removes your trade protection.</span>
@@ -371,7 +332,6 @@ const TradezyScan = (() => {
     </div>
   </div>
 
-  <!-- RIGHT PANEL -->
   <div class="right-panel">
     <div class="rp-head">
       <div class="rp-title" id="rpTitle">🔄 Trade Details</div>
@@ -387,25 +347,28 @@ const TradezyScan = (() => {
       </div>
     </div>
   </div>
-
 </div>
 
 <!-- REPORT MODAL -->
 <div class="modal-overlay" id="reportModal">
   <div class="modal">
-    <div class="mhd"><div class="mhd-title">⚑ Report This User</div><button class="mhd-close" onclick="closeModal('reportModal')">✕</button></div>
+    <div class="mhd" style="background:linear-gradient(135deg,#7f1d1d,#991b1b)">
+      <div class="mhd-title">⚑ Report This User</div>
+      <button class="mhd-close" onclick="closeModal('reportModal')">✕</button>
+    </div>
     <div class="mbody">
       <p style="font-size:13px;color:var(--muted);margin-bottom:14px;line-height:1.5">What's the issue? Our team reviews all reports within 24 hours.</p>
       <div style="display:flex;flex-direction:column;gap:7px;margin-bottom:14px" id="reportOptions">
-        <label style="display:flex;align-items:center;gap:10px;padding:10px 12px;border:1.5px solid var(--border);border-radius:7px;cursor:pointer;font-size:13px" onclick="selectReport(this)"><input type="radio" name="report" style="accent-color:var(--red)"> Tried to take conversation off-platform</label>
-        <label style="display:flex;align-items:center;gap:10px;padding:10px 12px;border:1.5px solid var(--border);border-radius:7px;cursor:pointer;font-size:13px" onclick="selectReport(this)"><input type="radio" name="report" style="accent-color:var(--red)"> Item not as described</label>
-        <label style="display:flex;align-items:center;gap:10px;padding:10px 12px;border:1.5px solid var(--border);border-radius:7px;cursor:pointer;font-size:13px" onclick="selectReport(this)"><input type="radio" name="report" style="accent-color:var(--red)"> Suspicious or scam behavior</label>
-        <label style="display:flex;align-items:center;gap:10px;padding:10px 12px;border:1.5px solid var(--border);border-radius:7px;cursor:pointer;font-size:13px" onclick="selectReport(this)"><input type="radio" name="report" style="accent-color:var(--red)"> Harassment or threatening messages</label>
-        <label style="display:flex;align-items:center;gap:10px;padding:10px 12px;border:1.5px solid var(--border);border-radius:7px;cursor:pointer;font-size:13px" onclick="selectReport(this)"><input type="radio" name="report" style="accent-color:var(--red)"> Other</label>
+        <label style="display:flex;align-items:center;gap:10px;padding:10px 12px;border:1.5px solid var(--border);border-radius:7px;cursor:pointer;font-size:13px" onclick="selectReport(this)"><input type="radio" name="report" value="Tried to take conversation off-platform" style="accent-color:var(--red)"> Tried to take conversation off-platform</label>
+        <label style="display:flex;align-items:center;gap:10px;padding:10px 12px;border:1.5px solid var(--border);border-radius:7px;cursor:pointer;font-size:13px" onclick="selectReport(this)"><input type="radio" name="report" value="Item not as described" style="accent-color:var(--red)"> Item not as described</label>
+        <label style="display:flex;align-items:center;gap:10px;padding:10px 12px;border:1.5px solid var(--border);border-radius:7px;cursor:pointer;font-size:13px" onclick="selectReport(this)"><input type="radio" name="report" value="Suspicious or scam behavior" style="accent-color:var(--red)"> Suspicious or scam behavior</label>
+        <label style="display:flex;align-items:center;gap:10px;padding:10px 12px;border:1.5px solid var(--border);border-radius:7px;cursor:pointer;font-size:13px" onclick="selectReport(this)"><input type="radio" name="report" value="Harassment or threatening messages" style="accent-color:var(--red)"> Harassment or threatening messages</label>
+        <label style="display:flex;align-items:center;gap:10px;padding:10px 12px;border:1.5px solid var(--border);border-radius:7px;cursor:pointer;font-size:13px" onclick="selectReport(this)"><input type="radio" name="report" value="Prohibited item listing" style="accent-color:var(--red)"> Prohibited item listing</label>
+        <label style="display:flex;align-items:center;gap:10px;padding:10px 12px;border:1.5px solid var(--border);border-radius:7px;cursor:pointer;font-size:13px" onclick="selectReport(this)"><input type="radio" name="report" value="Other" style="accent-color:var(--red)"> Other</label>
       </div>
-      <textarea placeholder="Additional details (optional)…" style="width:100%;border:1.5px solid var(--border);border-radius:7px;padding:9px 11px;font-family:'Lato',sans-serif;font-size:13px;outline:none;resize:vertical;min-height:70px;" onfocus="this.style.borderColor='var(--blue)'" onblur="this.style.borderColor='var(--border)'"></textarea>
-      <div style="margin:12px 0;font-size:11px;color:var(--muted)">Reporting is anonymous. False reports may affect your account standing.</div>
-      <button class="mbtn red" onclick="submitReport()">Submit Report</button>
+      <textarea id="reportDetails" placeholder="Additional details (optional) — the more you share, the faster we can act…" style="width:100%;border:1.5px solid var(--border);border-radius:7px;padding:9px 11px;font-family:'Lato',sans-serif;font-size:13px;outline:none;resize:vertical;min-height:80px;" onfocus="this.style.borderColor='var(--red)'" onblur="this.style.borderColor='var(--border)'"></textarea>
+      <div style="margin:12px 0;font-size:11px;color:var(--muted)">Reports are reviewed by our team within 24 hours. False reports may affect your account standing.</div>
+      <button class="mbtn red" id="submitReportBtn" onclick="submitReport()">⚑ Submit Report</button>
       <button class="mbtn outline" onclick="closeModal('reportModal')">Cancel</button>
     </div>
   </div>
@@ -414,39 +377,34 @@ const TradezyScan = (() => {
 <div class="toast" id="toastEl"><span id="toastIc">✅</span><span id="toastTx">Done!</span></div>
 
 <script>
-/* ── SUPABASE ── */
 const sb = window.supabase.createClient(
   'https://equvwaspcoeetfsexqki.supabase.co',
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVxdXZ3YXNwY29lZXRmc2V4cWtpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgyNzc2MjQsImV4cCI6MjA5Mzg1MzYyNH0.TP6Kk3pzHW1PYMUu5D9Vu2lJrazIEagzu5csYhqkrfI'
 );
 
-/* ── STATE ── */
-let currentUser   = null;
+let currentUser = null;
 let currentUserProfile = null;
-let threads       = [];       // [{otherId, otherName, otherInitials, otherColor, lastMsg, lastTime, unreadCount, listingId}]
-let activeOtherId = null;     // UUID of the person we're chatting with
-let activeListingId = null;   // listing_id for this thread
-let realtimeSub   = null;     // Supabase realtime channel
+let threads = [];
+let activeOtherId = null;
+let activeListingId = null;
+let realtimeSub = null;
 let allThreadsFilter = 'all';
-let scanTimer     = null;
+let scanTimer = null;
 
 const AV_COLORS = ['#1a56db','#16a34a','#ea580c','#f59e0b','#7c3aed','#0891b2','#be185d'];
 
-/* ── INIT ── */
 (async () => {
   const { data: { session } } = await sb.auth.getSession();
   if (!session) { window.location.href = 'alltrades-auth.html'; return; }
   currentUser = session.user;
   await loadUserProfile();
   await loadThreads();
-  // check if ?user= param to auto-open a thread
   const params = new URLSearchParams(window.location.search);
   const openUser = params.get('user');
   const openListing = params.get('listing');
   if (openUser) openThread(openUser, openListing || null);
 })();
 
-/* ── LOAD PROFILE ── */
 async function loadUserProfile() {
   try {
     const { data } = await sb.from('users').select('display_name').eq('id', currentUser.id).single();
@@ -455,220 +413,119 @@ async function loadUserProfile() {
     currentUserProfile = { name, initials };
     document.getElementById('navAv').textContent = initials;
     document.getElementById('navName').textContent = name;
-  } catch(e) {
-    document.getElementById('navName').textContent = 'Me';
-  }
+  } catch(e) { document.getElementById('navName').textContent = 'Me'; }
 }
 
-/* ── LOAD THREADS ── */
 async function loadThreads() {
   try {
-    // Fetch all messages involving the current user
-    const { data: msgs } = await sb
-      .from('messages')
-      .select('*')
+    const { data: msgs } = await sb.from('messages').select('*')
       .or(`sender_id.eq.${currentUser.id},receiver_id.eq.${currentUser.id}`)
       .order('created_at', { ascending: false });
-
     if (!msgs?.length) {
-      document.getElementById('threadList').innerHTML =
-        `<div class="empty-threads"><div class="ei">💬</div><p>No messages yet.<br>Make an offer on a listing to start chatting!</p></div>`;
+      document.getElementById('threadList').innerHTML = `<div class="empty-threads"><div class="ei">💬</div><p>No messages yet.<br>Make an offer on a listing to start chatting!</p></div>`;
       return;
     }
-
-    // Group by the other user, keep latest message per thread
     const threadMap = {};
     for (const m of msgs) {
       const otherId = m.sender_id === currentUser.id ? m.receiver_id : m.sender_id;
-      if (!threadMap[otherId]) {
-        threadMap[otherId] = { lastMsg: m, unreadCount: 0, listingId: m.listing_id };
-      }
-      // Count unread
-      if (m.receiver_id === currentUser.id && !m.read_at) {
-        threadMap[otherId].unreadCount++;
-      }
+      if (!threadMap[otherId]) { threadMap[otherId] = { lastMsg: m, unreadCount: 0, listingId: m.listing_id }; }
+      if (m.receiver_id === currentUser.id && !m.read_at) threadMap[otherId].unreadCount++;
     }
-
-    // Fetch display names for all other users
     const otherIds = Object.keys(threadMap);
     const { data: userRows } = await sb.from('users').select('id,display_name').in('id', otherIds);
     const nameMap = {};
     (userRows||[]).forEach(u => { nameMap[u.id] = u.display_name || 'Trader'; });
-
     threads = otherIds.map((otherId, i) => ({
-      otherId,
-      otherName: nameMap[otherId] || 'Trader',
+      otherId, otherName: nameMap[otherId] || 'Trader',
       otherInitials: (nameMap[otherId]||'TR').split(' ').map(n=>n[0]).join('').toUpperCase().slice(0,2),
       otherColor: AV_COLORS[i % AV_COLORS.length],
-      lastMsg: threadMap[otherId].lastMsg,
-      lastTime: threadMap[otherId].lastMsg.created_at,
-      unreadCount: threadMap[otherId].unreadCount,
-      listingId: threadMap[otherId].listingId,
+      lastMsg: threadMap[otherId].lastMsg, lastTime: threadMap[otherId].lastMsg.created_at,
+      unreadCount: threadMap[otherId].unreadCount, listingId: threadMap[otherId].listingId,
     })).sort((a,b) => new Date(b.lastTime) - new Date(a.lastTime));
-
     const totalUnread = threads.reduce((s,t) => s + t.unreadCount, 0);
-    if (totalUnread > 0) {
-      const cnt = document.getElementById('tabAllCnt');
-      cnt.textContent = totalUnread;
-      cnt.style.display = 'inline';
-    }
-
+    if (totalUnread > 0) { const cnt = document.getElementById('tabAllCnt'); cnt.textContent = totalUnread; cnt.style.display = 'inline'; }
     renderThreadList();
   } catch(e) {
-    console.error('loadThreads error:', e);
-    document.getElementById('threadList').innerHTML =
-      `<div class="empty-threads"><div class="ei">⚠️</div><p>Could not load messages.</p></div>`;
+    document.getElementById('threadList').innerHTML = `<div class="empty-threads"><div class="ei">⚠️</div><p>Could not load messages.</p></div>`;
   }
 }
 
-/* ── RENDER THREAD LIST ── */
 function renderThreadList(filter = '') {
   const list = document.getElementById('threadList');
   let visible = threads;
   if (filter) visible = threads.filter(t => t.otherName.toLowerCase().includes(filter.toLowerCase()));
   if (allThreadsFilter === 'unread') visible = visible.filter(t => t.unreadCount > 0);
-
-  if (!visible.length) {
-    list.innerHTML = `<div class="empty-threads"><div class="ei">🔍</div><p>No conversations found.</p></div>`;
-    return;
-  }
-
+  if (!visible.length) { list.innerHTML = `<div class="empty-threads"><div class="ei">🔍</div><p>No conversations found.</p></div>`; return; }
   list.innerHTML = '';
   visible.forEach(t => {
-    const isActive  = t.otherId === activeOtherId;
-    const isUnread  = t.unreadCount > 0;
-    const isMine    = t.lastMsg.sender_id === currentUser.id;
-    const preview   = (isMine ? 'You: ' : '') + (t.lastMsg.content || '').slice(0,45) + ((t.lastMsg.content||'').length > 45 ? '…' : '');
-
+    const isActive = t.otherId === activeOtherId, isUnread = t.unreadCount > 0;
+    const isMine = t.lastMsg.sender_id === currentUser.id;
+    const preview = (isMine ? 'You: ' : '') + (t.lastMsg.content || '').slice(0,45) + ((t.lastMsg.content||'').length > 45 ? '…' : '');
     const div = document.createElement('div');
     div.className = `thread${isUnread?' unread':''}${isActive?' active':''}`;
     div.onclick = () => openThread(t.otherId, t.listingId);
     div.innerHTML = `
-      <div class="th-av" style="background:${t.otherColor}">
-        ${t.otherInitials}
-        ${isUnread ? '<div class="th-dot"></div>' : ''}
-      </div>
-      <div class="th-info">
-        <div class="th-name">${t.otherName}</div>
-        <div class="th-preview${isUnread?' unread':''}">${preview}</div>
-      </div>
-      <div class="th-right">
-        <div class="th-time">${timeAgo(t.lastTime)}</div>
-        ${isUnread ? `<div class="th-unread-cnt">${t.unreadCount}</div>` : ''}
-      </div>`;
+      <div class="th-av" style="background:${t.otherColor}">${t.otherInitials}${isUnread?'<div class="th-dot"></div>':''}</div>
+      <div class="th-info"><div class="th-name">${t.otherName}</div><div class="th-preview${isUnread?' unread':''}">${preview}</div></div>
+      <div class="th-right"><div class="th-time">${timeAgo(t.lastTime)}</div>${isUnread?`<div class="th-unread-cnt">${t.unreadCount}</div>`:''}</div>`;
     list.appendChild(div);
   });
 }
 
-/* ── OPEN THREAD ── */
 async function openThread(otherId, listingId) {
-  activeOtherId  = otherId;
-  activeListingId = listingId || null;
-
-  // Mark UI active
+  activeOtherId = otherId; activeListingId = listingId || null;
   renderThreadList();
-
-  // Show chat UI
-  document.getElementById('chatEmpty').style.display  = 'none';
-  document.getElementById('chatHead').style.display   = 'flex';
-  document.getElementById('msgsArea').style.display   = 'flex';
-  document.getElementById('inputArea').style.display  = 'block';
-
-  // Set header
+  document.getElementById('chatEmpty').style.display = 'none';
+  document.getElementById('chatHead').style.display = 'flex';
+  document.getElementById('msgsArea').style.display = 'flex';
+  document.getElementById('inputArea').style.display = 'block';
   const thread = threads.find(t => t.otherId === otherId);
-  const otherName     = thread?.otherName     || 'Trader';
+  const otherName = thread?.otherName || 'Trader';
   const otherInitials = thread?.otherInitials || 'TR';
-  const otherColor    = thread?.otherColor    || AV_COLORS[0];
-
-  document.getElementById('chatAv').textContent       = otherInitials;
-  document.getElementById('chatAv').style.background  = otherColor;
-  document.getElementById('chatName').textContent     = otherName;
-  document.getElementById('chatMeta').textContent     = 'Tradezy member';
-  document.getElementById('msgInput').placeholder     = `Message ${otherName}…`;
-
-  // Load listing context if we have a listing ID
-  if (listingId || thread?.listingId) {
-    await loadListingContext(listingId || thread.listingId);
-  } else {
-    document.getElementById('tradeContextBar').style.display = 'none';
-    renderRightPanelDefault();
-  }
-
-  // Load messages
+  const otherColor = thread?.otherColor || AV_COLORS[0];
+  document.getElementById('chatAv').textContent = otherInitials;
+  document.getElementById('chatAv').style.background = otherColor;
+  document.getElementById('chatName').textContent = otherName;
+  document.getElementById('chatMeta').textContent = 'Tradezy member';
+  document.getElementById('msgInput').placeholder = `Message ${otherName}…`;
+  if (listingId || thread?.listingId) await loadListingContext(listingId || thread.listingId);
+  else { document.getElementById('tradeContextBar').style.display = 'none'; renderRightPanelDefault(); }
   await loadMessages(otherId);
-
-  // Mark received messages as read
   markAsRead(otherId);
-
-  // Subscribe real-time
   subscribeToMessages(otherId);
-
-  // Update thread unread count locally
   if (thread) { thread.unreadCount = 0; renderThreadList(); }
 }
 
-/* ── LOAD LISTING CONTEXT ── */
 async function loadListingContext(listingId) {
   try {
     const { data: listing } = await sb.from('listings').select('id,title,estimated_value,category').eq('id', listingId).single();
     if (!listing) { document.getElementById('tradeContextBar').style.display = 'none'; return; }
-
-    // Show trade context bar
     const bar = document.getElementById('tradeContextBar');
     bar.style.display = 'flex';
-    document.getElementById('tradeContextText').innerHTML =
-      `<strong>${listing.title}</strong> — Click View Trade for full details`;
-
-    // Update listing button
-    document.getElementById('btnViewListing').onclick = () =>
-      window.location.href = `alltrades-item.html?id=${listing.id}`;
-
-    // Check for active trade between these two users on this listing
-    const { data: trades } = await sb.from('trades')
-      .select('*')
+    document.getElementById('tradeContextText').innerHTML = `<strong>${listing.title}</strong> — Click View Trade for full details`;
+    document.getElementById('btnViewListing').onclick = () => window.location.href = `alltrades-item.html?id=${listing.id}`;
+    const { data: trades } = await sb.from('trades').select('*')
       .or(`trader_a_id.eq.${currentUser.id},trader_b_id.eq.${currentUser.id}`)
-      .eq('listing_id', listingId)
-      .in('status', ['accepted','meetup_scheduled'])
-      .limit(1);
-
-    const trade = trades?.[0];
-    renderRightPanel(listing, trade);
-  } catch(e) {
-    document.getElementById('tradeContextBar').style.display = 'none';
-    renderRightPanelDefault();
-  }
+      .eq('listing_id', listingId).in('status', ['accepted','meetup_scheduled']).limit(1);
+    renderRightPanel(listing, trades?.[0]);
+  } catch(e) { document.getElementById('tradeContextBar').style.display = 'none'; renderRightPanelDefault(); }
 }
 
-/* ── RENDER RIGHT PANEL ── */
 const CAT_EMOJI = {'Food & Water':'🥫','Garden':'🌱','Electronics':'⚡','Tools':'🔧','Sports':'🚲','Music':'🎵','Gaming':'🎮','Clothing':'👗','Books':'📚','Trading Cards':'🃏','Other':'📦'};
 
 function renderRightPanel(listing, trade) {
   const emoji = CAT_EMOJI[listing.category] || '📦';
-  const val   = listing.estimated_value ? Number(listing.estimated_value) : 0;
-  const fee   = val * 0.05;
-
+  const val = listing.estimated_value ? Number(listing.estimated_value) : 0;
+  const fee = val * 0.05;
   document.getElementById('rpTitle').textContent = '📦 Listing Details';
-  document.getElementById('rpSub').textContent   = listing.title.slice(0,28);
+  document.getElementById('rpSub').textContent = listing.title.slice(0,28);
   document.getElementById('rpContent').innerHTML = `
     <div class="rp-section">
       <div class="rp-sec-title">Listing</div>
-      <div class="rp-item">
-        <div class="rp-item-em">${emoji}</div>
-        <div class="rp-item-nm">${listing.title}</div>
-        <div class="rp-item-vl" style="color:var(--gold)">~$${val.toFixed(0)} est.</div>
-      </div>
-      ${trade ? `
-      <div class="rp-fee-row"><span class="rp-fee-label">5% platform fee</span><span class="rp-fee-val" style="color:var(--gold)">$${fee.toFixed(2)}</span></div>
-      <div style="font-size:10px;color:var(--muted);margin-top:4px">Only charged when trade is confirmed complete.</div>
-      ` : ''}
+      <div class="rp-item"><div class="rp-item-em">${emoji}</div><div class="rp-item-nm">${listing.title}</div><div class="rp-item-vl" style="color:var(--gold)">~$${val.toFixed(0)} est.</div></div>
+      ${trade?`<div class="rp-fee-row"><span class="rp-fee-label">5% platform fee</span><span class="rp-fee-val" style="color:var(--gold)">$${fee.toFixed(2)}</span></div><div style="font-size:10px;color:var(--muted);margin-top:4px">Only charged when trade is confirmed complete.</div>`:''}
     </div>
-    ${trade ? `
-    <div class="rp-section">
-      <div class="rp-sec-title">Active Trade</div>
-      <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:7px;padding:9px;font-size:12px;color:#14532d;font-weight:700;margin-bottom:6px">
-        ✅ Trade in progress — Step ${trade.status==='meetup_scheduled'?'2':'1'} of 3
-      </div>
-    </div>` : ''}
+    ${trade?`<div class="rp-section"><div class="rp-sec-title">Active Trade</div><div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:7px;padding:9px;font-size:12px;color:#14532d;font-weight:700;margin-bottom:6px">✅ Trade in progress — Step ${trade.status==='meetup_scheduled'?'2':'1'} of 3</div></div>`:''}
     <div class="rp-safety">
       <div class="rp-sec-title">🛡️ Safety Tips</div>
       <div class="safety-tip"><span class="st-icon">📍</span><span>Meet in a <strong>public place</strong> — parking lot, library, or police station.</span></div>
@@ -684,7 +541,7 @@ function renderRightPanel(listing, trade) {
 
 function renderRightPanelDefault() {
   document.getElementById('rpTitle').textContent = '🛡️ Safety';
-  document.getElementById('rpSub').textContent   = 'Trade safely';
+  document.getElementById('rpSub').textContent = 'Trade safely';
   document.getElementById('rpContent').innerHTML = `
     <div class="rp-safety" style="border-bottom:none">
       <div class="rp-sec-title">🛡️ Safety Tips</div>
@@ -695,100 +552,62 @@ function renderRightPanelDefault() {
     </div>`;
 }
 
-/* ── LOAD MESSAGES ── */
 async function loadMessages(otherId) {
   const area = document.getElementById('msgsArea');
   area.innerHTML = '';
-
   try {
-    const { data: msgs } = await sb
-      .from('messages')
-      .select('*')
-      .or(
-        `and(sender_id.eq.${currentUser.id},receiver_id.eq.${otherId}),and(sender_id.eq.${otherId},receiver_id.eq.${currentUser.id})`
-      )
+    const { data: msgs } = await sb.from('messages').select('*')
+      .or(`and(sender_id.eq.${currentUser.id},receiver_id.eq.${otherId}),and(sender_id.eq.${otherId},receiver_id.eq.${currentUser.id})`)
       .order('created_at', { ascending: true });
-
-    if (!msgs?.length) {
-      area.innerHTML = `<div class="sys-msg">No messages yet — say hello! 👋</div>`;
-      return;
-    }
-
-    // Group by date
+    if (!msgs?.length) { area.innerHTML = `<div class="sys-msg">No messages yet — say hello! 👋</div>`; return; }
     let lastDate = '';
     for (const m of msgs) {
       const msgDate = new Date(m.created_at).toLocaleDateString('en-US', { month:'short', day:'numeric' });
-      const today   = new Date().toLocaleDateString('en-US', { month:'short', day:'numeric' });
-      const label   = msgDate === today ? 'Today' : msgDate;
-
-      if (label !== lastDate) {
-        area.appendChild(makeDateDiv(label));
-        lastDate = label;
-      }
+      const today = new Date().toLocaleDateString('en-US', { month:'short', day:'numeric' });
+      const label = msgDate === today ? 'Today' : msgDate;
+      if (label !== lastDate) { area.appendChild(makeDateDiv(label)); lastDate = label; }
       area.appendChild(makeBubble(m));
     }
-
     area.scrollTop = area.scrollHeight;
-  } catch(e) {
-    area.innerHTML = `<div class="sys-msg warn">Could not load messages.</div>`;
-  }
+  } catch(e) { area.innerHTML = `<div class="sys-msg warn">Could not load messages.</div>`; }
 }
 
-/* ── MARK AS READ ── */
 async function markAsRead(otherId) {
   try {
-    await sb.from('messages')
-      .update({ read_at: new Date().toISOString() })
-      .eq('sender_id', otherId)
-      .eq('receiver_id', currentUser.id)
-      .is('read_at', null);
+    await sb.from('messages').update({ read_at: new Date().toISOString() })
+      .eq('sender_id', otherId).eq('receiver_id', currentUser.id).is('read_at', null);
   } catch(e) {}
 }
 
-/* ── REAL-TIME SUBSCRIPTION ── */
 function subscribeToMessages(otherId) {
-  // Unsubscribe previous
   if (realtimeSub) { sb.removeChannel(realtimeSub); realtimeSub = null; }
-
   realtimeSub = sb.channel(`messages-${currentUser.id}`)
-    .on('postgres_changes', {
-      event: 'INSERT',
-      schema: 'public',
-      table: 'messages',
-      filter: `receiver_id=eq.${currentUser.id}`
-    }, payload => {
+    .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages', filter: `receiver_id=eq.${currentUser.id}` }, payload => {
       const m = payload.new;
-      // Only render if this message is from the active thread
       if (m.sender_id === activeOtherId) {
         const area = document.getElementById('msgsArea');
         area.appendChild(makeBubble(m));
         area.scrollTop = area.scrollHeight;
         markAsRead(activeOtherId);
       } else {
-        // Update sidebar unread count for other thread
         const t = threads.find(th => th.otherId === m.sender_id);
         if (t) { t.unreadCount++; t.lastMsg = m; t.lastTime = m.created_at; }
         renderThreadList();
         showToast('💬', `New message from ${threads.find(th=>th.otherId===m.sender_id)?.otherName||'someone'}`);
       }
-    })
-    .subscribe();
+    }).subscribe();
 }
 
-/* ── MAKE BUBBLE ── */
 function makeBubble(m) {
   const isMine = m.sender_id === currentUser.id;
   const thread = threads.find(t => t.otherId === (isMine ? m.receiver_id : m.sender_id));
-  const color  = thread?.otherColor || AV_COLORS[0];
+  const color = thread?.otherColor || AV_COLORS[0];
   const initials = thread?.otherInitials || '??';
-
   const wrap = document.createElement('div');
   wrap.className = `msg-wrap ${isMine ? 'mine' : 'theirs'}`;
   wrap.dataset.msgId = m.id;
-
   const timeStr = new Date(m.created_at).toLocaleTimeString('en-US', { hour:'numeric', minute:'2-digit' });
-  const isRead  = isMine && m.read_at;
-
+  const isRead = isMine && m.read_at;
   wrap.innerHTML = `
     ${!isMine ? `<div class="msg-av" style="background:${color}">${initials}</div>` : ''}
     <div>
@@ -799,34 +618,18 @@ function makeBubble(m) {
   return wrap;
 }
 
-function makeDateDiv(label) {
-  const d = document.createElement('div');
-  d.className = 'date-div';
-  d.innerHTML = `<span>${label}</span>`;
-  return d;
-}
+function makeDateDiv(label) { const d = document.createElement('div'); d.className='date-div'; d.innerHTML=`<span>${label}</span>`; return d; }
+function makeSysMsg(text, success=false) { const d = document.createElement('div'); d.className=`sys-msg${success?' success':''}`; d.textContent=text; return d; }
 
-function makeSysMsg(text, success = false) {
-  const d = document.createElement('div');
-  d.className = `sys-msg${success ? ' success' : ''}`;
-  d.textContent = text;
-  return d;
-}
-
-/* ── SEND MESSAGE ── */
 async function sendMessage() {
   if (!activeOtherId) return;
   const input = document.getElementById('msgInput');
-  const text  = input.value.trim();
+  const text = input.value.trim();
   if (!text || text.length > 500) return;
-
-  // Content screening
   const scan = TradezyScan.scanMessage(text);
   if (!scan.canSend && scan.violations.length > 0) {
     const v = scan.violations[0];
     showBypass(TradezyScan.USER_MESSAGES.MESSAGE_BLOCKED);
-    console.warn('[TRADEZY SCREEN] Message blocked:', v);
-    // Add system warning to chat
     const area = document.getElementById('msgsArea');
     const warn = makeSysMsg(`⚑ Message blocked — ${v.category}. Keep all communication on Tradezy.`);
     warn.className = 'sys-msg warn';
@@ -834,192 +637,161 @@ async function sendMessage() {
     area.scrollTop = area.scrollHeight;
     return;
   }
-
   const btn = document.getElementById('sendBtn');
   btn.disabled = true;
-
   try {
     const { data: inserted, error } = await sb.from('messages').insert({
-      sender_id:   currentUser.id,
-      receiver_id: activeOtherId,
-      content:     text,
-      listing_id:  activeListingId || null,
-      read_at:     null
+      sender_id: currentUser.id, receiver_id: activeOtherId,
+      content: text, listing_id: activeListingId || null, read_at: null
     }).select().single();
-
     if (error) throw error;
-
-    // Append immediately (optimistic)
-const area = document.getElementById('msgsArea');
-const bubble = makeBubble({
-  ...inserted,
-  sender_id: currentUser.id,
-  receiver_id: activeOtherId
-});
-area.appendChild(bubble);
-area.scrollTop = area.scrollHeight;
-
-    // Update thread preview
+    const area = document.getElementById('msgsArea');
+    const bubble = makeBubble({ ...inserted, sender_id: currentUser.id, receiver_id: activeOtherId });
+    area.appendChild(bubble);
+    area.scrollTop = area.scrollHeight;
     const thread = threads.find(t => t.otherId === activeOtherId);
     if (thread) { thread.lastMsg = inserted; thread.lastTime = inserted.created_at; }
     renderThreadList();
-
-    // Clear input
     input.value = '';
     input.style.height = 'auto';
     document.getElementById('charWarn').textContent = '0 / 500';
     document.getElementById('scanIndicator').classList.remove('show');
     hideBypass();
-
-  } catch(e) {
-    showToast('⚠️', 'Failed to send message. Please try again.');
-  } finally {
-    btn.disabled = !document.getElementById('msgInput').value.trim();
-  }
+  } catch(e) { showToast('⚠️', 'Failed to send message. Please try again.'); }
+  finally { btn.disabled = !document.getElementById('msgInput').value.trim(); }
 }
 
-/* ── TYPING HANDLER ── */
 function onType(el) {
-  const val = el.value;
-  const len = val.length;
+  const val = el.value, len = val.length;
   const charWarn = document.getElementById('charWarn');
   charWarn.textContent = `${len} / 500`;
-  charWarn.className   = 'char-warn' + (len > 450 ? ' close' : '') + (len >= 500 ? ' over' : '');
+  charWarn.className = 'char-warn' + (len > 450 ? ' close' : '') + (len >= 500 ? ' over' : '');
   document.getElementById('sendBtn').disabled = !val.trim() || len > 500;
-
-  // Auto-resize
   el.style.height = 'auto';
   el.style.height = Math.min(el.scrollHeight, 120) + 'px';
-
-  // Debounced scan
   clearTimeout(scanTimer);
   if (val.trim().length > 3) {
     document.getElementById('scanIndicator').classList.add('show');
     scanTimer = setTimeout(() => {
       document.getElementById('scanIndicator').classList.remove('show');
       const scan = TradezyScan.scanMessage(val);
-      if (!scan.canSend) {
-        showBypass('Your message appears to contain prohibited content.');
-        document.getElementById('sendBtn').disabled = true;
-      } else {
-        hideBypass();
-      }
+      if (!scan.canSend) { showBypass('Your message appears to contain prohibited content.'); document.getElementById('sendBtn').disabled = true; }
+      else hideBypass();
     }, 600);
-  } else {
-    document.getElementById('scanIndicator').classList.remove('show');
-  }
+  } else { document.getElementById('scanIndicator').classList.remove('show'); }
 }
 
 function handleKey(e) {
-  if (e.key === 'Enter' && !e.shiftKey) {
-    e.preventDefault();
-    if (!document.getElementById('sendBtn').disabled) sendMessage();
-  }
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); if (!document.getElementById('sendBtn').disabled) sendMessage(); }
 }
 
-/* ── LISTING BUTTON ── */
 function viewActiveListing() {
   if (activeListingId) window.location.href = `alltrades-item.html?id=${activeListingId}`;
   else showToast('📦', 'No listing linked to this conversation.');
 }
 
-/* ── HELPERS ── */
-function escHtml(str) {
-  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
-
-function timeAgo(ts) {
-  if (!ts) return '';
-  const m = Math.floor((Date.now() - new Date(ts)) / 60000);
-  if (m < 1)  return 'just now';
-  if (m < 60) return m + 'm ago';
-  const h = Math.floor(m/60);
-  if (h < 24) return h + 'h ago';
-  return Math.floor(h/24) + 'd ago';
-}
-
-function showBypass(desc) {
-  document.getElementById('bypassDesc').textContent = desc;
-  document.getElementById('bypassWarn').style.display = 'flex';
-}
-function hideBypass() { document.getElementById('bypassWarn').style.display = 'none'; }
-
-function setTab(el, tab) {
-  document.querySelectorAll('.sb-tab').forEach(t => t.classList.remove('active'));
-  el.classList.add('active');
-  allThreadsFilter = tab;
-  renderThreadList();
-}
-
-function filterThreads(val) { renderThreadList(val); }
-
+/* ── REPORT — NOW WIRED ── */
 function selectReport(el) {
   document.querySelectorAll('#reportOptions label').forEach(l => { l.style.borderColor='var(--border)'; l.style.background=''; });
   el.style.borderColor = 'var(--red)';
   el.style.background  = '#fef2f2';
+  el.querySelector('input').checked = true;
 }
 
-function submitReport() {
-  closeModal('reportModal');
-  showToast('✅', 'Report submitted. Our team reviews within 24 hours. Thank you.');
+async function submitReport() {
+  // Get selected reason
+  const selected = document.querySelector('#reportOptions input[type="radio"]:checked');
+  if (!selected) { showToast('⚠️', 'Please select a reason for your report.'); return; }
+  const reason  = selected.value;
+  const details = document.getElementById('reportDetails').value.trim();
+
+  const btn = document.getElementById('submitReportBtn');
+  btn.disabled = true;
+  btn.textContent = '⏳ Submitting…';
+
+  try {
+    // Insert to disputes table
+    const { error } = await sb.from('disputes').insert({
+      status:      'open',
+      description: `Reported user: ${activeOtherId}\nReason: ${reason}${details ? '\n\nDetails: ' + details : ''}`,
+      reason:      reason,
+    });
+    if (error) throw error;
+
+    closeModal('reportModal');
+
+    // Reset form
+    document.querySelectorAll('#reportOptions input[type="radio"]').forEach(r => r.checked = false);
+    document.querySelectorAll('#reportOptions label').forEach(l => { l.style.borderColor='var(--border)'; l.style.background=''; });
+    document.getElementById('reportDetails').value = '';
+
+    showToast('✅', 'Report submitted. Our team reviews within 24 hours. Thank you for keeping Tradezy safe.');
+  } catch(e) {
+    console.error('submitReport error:', e);
+    showToast('⚠️', 'Could not submit report. Please email disputes@tradezyhq.com directly.');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '⚑ Submit Report';
+  }
 }
 
+function escHtml(str) { return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function timeAgo(ts) {
+  if (!ts) return '';
+  const m = Math.floor((Date.now() - new Date(ts)) / 60000);
+  if (m < 1) return 'just now'; if (m < 60) return m + 'm ago';
+  const h = Math.floor(m/60);
+  if (h < 24) return h + 'h ago';
+  return Math.floor(h/24) + 'd ago';
+}
+function showBypass(desc) { document.getElementById('bypassDesc').textContent = desc; document.getElementById('bypassWarn').style.display = 'flex'; }
+function hideBypass() { document.getElementById('bypassWarn').style.display = 'none'; }
+function setTab(el, tab) { document.querySelectorAll('.sb-tab').forEach(t=>t.classList.remove('active')); el.classList.add('active'); allThreadsFilter=tab; renderThreadList(); }
+function filterThreads(val) { renderThreadList(val); }
 function openModal(id)  { document.getElementById(id).classList.add('open'); }
 function closeModal(id) { document.getElementById(id).classList.remove('open'); }
-document.querySelectorAll('.modal-overlay').forEach(o =>
-  o.addEventListener('click', e => { if (e.target===o) o.classList.remove('open'); })
-);
-
+document.querySelectorAll('.modal-overlay').forEach(o => o.addEventListener('click', e => { if (e.target===o) o.classList.remove('open'); }));
 function showToast(icon, msg) {
   document.getElementById('toastIc').textContent = icon;
   document.getElementById('toastTx').textContent = msg;
   const t = document.getElementById('toastEl');
-  t.classList.add('show');
-  clearTimeout(window._tt);
+  t.classList.add('show'); clearTimeout(window._tt);
   window._tt = setTimeout(() => t.classList.remove('show'), 3800);
 }
 </script>
-<!-- TRADEZY HELP WIDGET START — paste before </body> on every page -->
+<!-- TRADEZY HELP WIDGET START -->
 <style>
-/* ── TRADEZY HELP WIDGET STYLES ── */
 #tz-help-bubble{position:fixed;bottom:24px;right:24px;z-index:9999;display:flex;flex-direction:column;align-items:flex-end;gap:10px;font-family:'Lato',system-ui,sans-serif;}
 #tz-bubble-btn{width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#0a1628,#1a56db);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1.4rem;box-shadow:0 4px 20px rgba(26,86,219,.4);transition:all .2s;position:relative;}
-#tz-bubble-btn:hover{transform:scale(1.08);box-shadow:0 6px 28px rgba(26,86,219,.5);}
+#tz-bubble-btn:hover{transform:scale(1.08);}
 #tz-bubble-btn .tz-notif{position:absolute;top:0;right:0;width:14px;height:14px;background:#dc2626;border-radius:50%;border:2px solid #fff;display:none;}
 #tz-chat-panel{display:none;width:360px;height:520px;background:#fff;border-radius:16px;box-shadow:0 20px 60px rgba(0,0,0,.18);flex-direction:column;overflow:hidden;border:1px solid #e2e8f0;animation:tzSlideUp .2s ease;}
 #tz-chat-panel.open{display:flex;}
 @keyframes tzSlideUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
 .tz-panel-head{background:linear-gradient(135deg,#0a1628,#112240);padding:14px 16px;display:flex;align-items:center;gap:10px;flex-shrink:0;}
 .tz-head-icon{width:34px;height:34px;background:rgba(245,158,11,.2);border:1px solid rgba(245,158,11,.3);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0;}
-.tz-head-info{flex:1;}
-.tz-head-title{font-weight:800;font-size:.88rem;color:#fff;font-family:'Barlow Condensed',system-ui,sans-serif;letter-spacing:.3px;}
+.tz-head-info{flex:1;}.tz-head-title{font-weight:800;font-size:.88rem;color:#fff;font-family:'Barlow Condensed',system-ui,sans-serif;letter-spacing:.3px;}
 .tz-head-status{font-size:10px;color:#22c55e;display:flex;align-items:center;gap:4px;}
 .tz-head-dot{width:6px;height:6px;background:#22c55e;border-radius:50%;animation:tzPulse 2s infinite;}
 @keyframes tzPulse{0%,100%{opacity:1}50%{opacity:.5}}
 .tz-head-close{background:rgba(255,255,255,.1);border:none;color:#94a3b8;width:26px;height:26px;border-radius:50%;cursor:pointer;font-size:.85rem;display:flex;align-items:center;justify-content:center;transition:all .15s;}
 .tz-head-close:hover{background:rgba(255,255,255,.2);color:#fff;}
 .tz-messages{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px;scroll-behavior:smooth;}
-.tz-messages::-webkit-scrollbar{width:4px;}
-.tz-messages::-webkit-scrollbar-track{background:transparent;}
-.tz-messages::-webkit-scrollbar-thumb{background:#e2e8f0;border-radius:2px;}
+.tz-messages::-webkit-scrollbar{width:4px;}.tz-messages::-webkit-scrollbar-track{background:transparent;}.tz-messages::-webkit-scrollbar-thumb{background:#e2e8f0;border-radius:2px;}
 .tz-msg{max-width:84%;display:flex;flex-direction:column;gap:2px;}
-.tz-msg.bot{align-self:flex-start;}
-.tz-msg.user{align-self:flex-end;}
+.tz-msg.bot{align-self:flex-start;}.tz-msg.user{align-self:flex-end;}
 .tz-bubble{padding:9px 12px;border-radius:12px;font-size:13px;line-height:1.5;}
 .tz-msg.bot .tz-bubble{background:#f1f5f9;color:#1a1a2e;border-radius:4px 12px 12px 12px;}
 .tz-msg.user .tz-bubble{background:linear-gradient(135deg,#1a56db,#2563eb);color:#fff;border-radius:12px 4px 12px 12px;}
-.tz-msg-time{font-size:10px;color:#94a3b8;padding:0 4px;}
-.tz-msg.user .tz-msg-time{text-align:right;}
+.tz-msg-time{font-size:10px;color:#94a3b8;padding:0 4px;}.tz-msg.user .tz-msg-time{text-align:right;}
 .tz-typing{display:flex;align-items:center;gap:4px;padding:9px 12px;background:#f1f5f9;border-radius:4px 12px 12px 12px;width:fit-content;}
 .tz-typing span{width:6px;height:6px;background:#94a3b8;border-radius:50%;animation:tzDot 1.2s infinite;}
-.tz-typing span:nth-child(2){animation-delay:.2s;}
-.tz-typing span:nth-child(3){animation-delay:.4s;}
+.tz-typing span:nth-child(2){animation-delay:.2s;}.tz-typing span:nth-child(3){animation-delay:.4s;}
 @keyframes tzDot{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-4px)}}
 .tz-quick-btns{display:flex;flex-wrap:wrap;gap:5px;margin-top:4px;}
 .tz-quick-btn{background:#fff;border:1px solid #e2e8f0;color:#1a56db;font-size:11px;font-weight:700;padding:4px 10px;border-radius:99px;cursor:pointer;transition:all .12s;font-family:inherit;}
 .tz-quick-btn:hover{background:#eff6ff;border-color:#1a56db;}
 .tz-action-link{display:inline-flex;align-items:center;gap:5px;background:#eff6ff;border:1px solid #bfdbfe;color:#1a56db;font-size:12px;font-weight:700;padding:6px 12px;border-radius:7px;cursor:pointer;text-decoration:none;margin-top:5px;transition:all .12s;}
-.tz-action-link:hover{background:#dbeafe;}
 .tz-escalate-card{background:#fff7ed;border:1px solid #fed7aa;border-radius:10px;padding:11px 13px;margin-top:6px;font-size:12px;}
 .tz-escalate-title{font-weight:800;color:#92400e;margin-bottom:5px;font-size:12px;}
 .tz-escalate-btn{display:inline-block;background:#ea580c;color:#fff;font-size:11px;font-weight:700;padding:5px 12px;border-radius:6px;text-decoration:none;margin-top:6px;cursor:pointer;border:none;font-family:inherit;}
@@ -1028,19 +800,14 @@ function showToast(icon, msg) {
 .tz-input{flex:1;border:1.5px solid #e2e8f0;border-radius:8px;padding:8px 11px;font-size:13px;font-family:inherit;color:#1a1a2e;outline:none;resize:none;height:38px;max-height:90px;overflow-y:auto;transition:border-color .15s;background:#fff;}
 .tz-input:focus{border-color:#1a56db;box-shadow:0 0 0 3px rgba(26,86,219,.07);}
 .tz-send-btn{width:36px;height:36px;background:linear-gradient(135deg,#1a56db,#2563eb);border:none;border-radius:8px;color:#fff;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s;align-self:flex-end;}
-.tz-send-btn:hover{transform:scale(1.05);}
-.tz-send-btn:disabled{opacity:.5;cursor:not-allowed;transform:none;}
+.tz-send-btn:hover{transform:scale(1.05);}.tz-send-btn:disabled{opacity:.5;cursor:not-allowed;transform:none;}
 .tz-powered{text-align:center;font-size:10px;color:#cbd5e1;padding:5px 0 2px;flex-shrink:0;}
 </style>
- 
 <div id="tz-help-bubble">
   <div id="tz-chat-panel">
     <div class="tz-panel-head">
       <div class="tz-head-icon">🤖</div>
-      <div class="tz-head-info">
-        <div class="tz-head-title">Tradezy Support</div>
-        <div class="tz-head-status"><span class="tz-head-dot"></span>Online — AI Assistant</div>
-      </div>
+      <div class="tz-head-info"><div class="tz-head-title">Tradezy Support</div><div class="tz-head-status"><span class="tz-head-dot"></span>Online — AI Assistant</div></div>
       <button class="tz-head-close" onclick="tzToggle()">✕</button>
     </div>
     <div class="tz-messages" id="tzMessages"></div>
@@ -1050,267 +817,129 @@ function showToast(icon, msg) {
     </div>
     <div class="tz-powered">Powered by Claude AI · Tradezy Support</div>
   </div>
-  <button id="tz-bubble-btn" onclick="tzToggle()" title="Get Help">
-    💬
-    <div class="tz-notif" id="tzNotif"></div>
-  </button>
+  <button id="tz-bubble-btn" onclick="tzToggle()" title="Get Help">💬<div class="tz-notif" id="tzNotif"></div></button>
 </div>
- 
 <script>
-(function() {
-  // ── CONFIG ──
-  const SUPABASE_URL = 'https://equvwaspcoeetfsexqki.supabase.co';
-  const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVxdXZ3YXNwY29lZXRmc2V4cWtpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgyNzc2MjQsImV4cCI6MjA5Mzg1MzYyNH0.TP6Kk3pzHW1PYMUu5D9Vu2lJrazIEagzu5csYhqkrfI';
- 
-  const SYSTEM_PROMPT = `You are the Tradezy support assistant — a helpful, friendly AI for Tradezy, a peer-to-peer local trading marketplace.
- 
+(function(){
+  const SP=`You are the Tradezy support assistant — a helpful, friendly AI for Tradezy, a peer-to-peer local trading marketplace.
+
 ABOUT TRADEZY:
 - Free local trading platform where users list items and trade with verified neighbors
 - Platform fee: 5% per party on completed trades (Founding Traders pay 3% lifetime)
 - Ship-It trades (state-to-state): 10% fee, fully verified users only, launching July 31 2026
+- Every listing supports both local meetup AND Ship-It trading
 - Phase 1 launch: July 17 2026 — Connecticut and Ohio statewide
 - Phase 2: July 31 2026 — Nationwide
- 
+
 HOW TRADING WORKS:
 1. Post a listing with photos, condition, what you want in return
 2. Browse listings, make offers (item-for-item, item + cash top-up, or cash)
-3. Accept an offer, agree on a meetup spot
+3. Accept an offer, agree on a meetup spot (local) or Ship-It flow
 4. Both parties confirm the exchange in-app — this unlocks ratings
-5. Leave ratings after confirmed meetup
- 
+5. Leave ratings after confirmed exchange
+
 VERIFICATION & TRUST:
 - Email verification required to use platform
 - Address verification adds trust score
 - ID verification required for Ship-It trades
 - W-9 tax form required before posting listings
 - Trust score shown on profiles
- 
+
 PROHIBITED ITEMS (permanent ban): Firearms, weapons, alcohol, tobacco, drugs, live animals, adult content, stolen goods, cash, gift cards, cryptocurrency
- 
+
 FEES EXPLAINED:
 - 5% of total trade value per party — example: $100 item trade = $5 fee each party
 - $90 item + $40 cash top-up = $130 total = $6.50 fee each party
 - Founding Traders: 3% lifetime (signed up before July 17 launch)
 - Listing is always free
- 
+
 SHIP-IT TRADES (July 31+):
+- Available on ALL listings — buyers choose local or Ship-It when making an offer
 - State-to-state trading for fully ID-verified users only
 - 10% fee per party at trade acceptance
 - Payment via Zelle, PayPal, Venmo, Apple Pay, Google Pay, or Cash App (peer-to-peer, Tradezy never holds funds)
 - Buyer uploads payment screenshot as proof
 - Seller enters tracking number
 - Both confirm delivery to close trade
- 
+
 TCG CATEGORIES: Pokémon, One Piece, MTG, Yu-Gi-Oh, Lorcana, Flesh & Blood
 SPORTS CARDS: Baseball, Football, Basketball, Hockey, Soccer
 Card grading supported: PSA, BGS, SGC, TAG
- 
+
 ACCOUNT HELP:
 - Password reset: direct users to https://tradezyhq.com/alltrades-auth.html
 - Account locked/banned: direct to support@tradezyhq.com
 - Verification issues: direct to https://tradezyhq.com/alltrades-verification.html
- 
+
 DISPUTE RESOLUTION:
 - File a dispute at https://tradezyhq.com/alltrades-disputes.html
 - Email disputes@tradezyhq.com
 - SLA: CRITICAL issues 4hrs, HIGH 24hrs, MEDIUM 48hrs, LOW 72hrs
- 
+
 ESCALATION RULES — escalate to human immediately if:
 - User reports fraud, scam, or didn't receive item
 - User mentions safety concern, threat, or harassment
 - User is clearly distressed or frustrated after multiple exchanges
 - User explicitly requests a human agent
 - Issue involves account ban or suspension
- 
-ESCALATION: When escalating, provide support@tradezyhq.com for general issues or disputes@tradezyhq.com for trade disputes. Summarize the issue briefly.
- 
+
+ESCALATION: When escalating, provide support@tradezyhq.com for general issues or disputes@tradezyhq.com for trade disputes.
+
 TONE: Warm, clear, concise. Never give legal or financial advice. Never make up information — if unsure, direct to support@tradezyhq.com. Keep responses short and scannable — use bullet points for multi-step answers.`;
- 
-  // ── STATE ──
-  let isOpen = false;
-  let isLoading = false;
-  let exchangeCount = 0;
-  let hasShownWelcome = false;
-  const history = [];
- 
-  // ── TOGGLE ──
-  window.tzToggle = function() {
-    isOpen = !isOpen;
-    const panel = document.getElementById('tz-chat-panel');
-    const btn = document.getElementById('tz-bubble-btn');
-    if (isOpen) {
-      panel.classList.add('open');
-      btn.innerHTML = '✕<div class="tz-notif" id="tzNotif"></div>';
-      if (!hasShownWelcome) {
-        hasShownWelcome = true;
-        tzBotMessage("👋 Hey! I'm the Tradezy support assistant. I can help with:", [
-          "How trading works",
-          "Fees & verification",
-          "Account issues",
-          "Reporting a problem"
-        ]);
-      }
-      setTimeout(() => document.getElementById('tzInput')?.focus(), 200);
-    } else {
-      panel.classList.remove('open');
-      btn.innerHTML = '💬<div class="tz-notif" id="tzNotif"></div>';
-    }
+  let isOpen=false,isLoading=false,exchangeCount=0,hasShownWelcome=false;
+  const history=[];
+  window.tzToggle=function(){
+    isOpen=!isOpen;
+    const panel=document.getElementById('tz-chat-panel'),btn=document.getElementById('tz-bubble-btn');
+    if(isOpen){
+      panel.classList.add('open');btn.innerHTML='✕<div class="tz-notif" id="tzNotif"></div>';
+      if(!hasShownWelcome){hasShownWelcome=true;tzBotMsg("👋 Hey! I'm the Tradezy support assistant. I can help with:",["How trading works","Ship-It trades","Fees & verification","Reporting a problem"]);}
+      setTimeout(()=>document.getElementById('tzInput')?.focus(),200);
+    }else{panel.classList.remove('open');btn.innerHTML='💬<div class="tz-notif" id="tzNotif"></div>';}
   };
- 
-  // ── SEND ──
-  window.tzSend = async function() {
-    const input = document.getElementById('tzInput');
-    const text = input.value.trim();
-    if (!text || isLoading) return;
-    input.value = '';
-    tzAutoResize(input);
-    tzUserMessage(text);
-    history.push({ role: 'user', content: text });
-    exchangeCount++;
-    await tzGetResponse();
+  window.tzSend=async function(){
+    const input=document.getElementById('tzInput'),text=input.value.trim();
+    if(!text||isLoading)return;
+    input.value='';tzAutoResize(input);tzUserMsg(text);
+    history.push({role:'user',content:text});exchangeCount++;await tzGetResp();
   };
- 
-  window.tzKeyDown = function(e) {
-    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); tzSend(); }
-  };
- 
-  window.tzAutoResize = function(el) {
-    el.style.height = '38px';
-    el.style.height = Math.min(el.scrollHeight, 90) + 'px';
-  };
- 
-  // ── GET AI RESPONSE ──
-  async function tzGetResponse() {
-    isLoading = true;
-    document.getElementById('tzSendBtn').disabled = true;
- 
-    // Show typing indicator
-    const typingId = 'tz-typing-' + Date.now();
-    const msgs = document.getElementById('tzMessages');
-    const typingEl = document.createElement('div');
-    typingEl.id = typingId;
-    typingEl.className = 'tz-msg bot';
-    typingEl.innerHTML = '<div class="tz-typing"><span></span><span></span><span></span></div>';
-    msgs.appendChild(typingEl);
-    msgs.scrollTop = msgs.scrollHeight;
- 
-    try {
-      const response = await fetch('https://tradezy-ai-proxy.throbbing-lake-08ed.workers.dev', {
-        method: 'POST',
-       headers: { 'Content-Type': 'application/json',  },
-        body: JSON.stringify({
-          model: 'claude-sonnet-4-6',
-          max_tokens: 1000,
-          system: SYSTEM_PROMPT,
-          messages: history
-        })
-      });
- 
-      const data = await response.json();
-      const reply = data.content?.[0]?.text || "I'm having trouble responding right now. Please email support@tradezyhq.com.";
- 
-      // Remove typing indicator
-      document.getElementById(typingId)?.remove();
- 
-      // Add to history
-      history.push({ role: 'assistant', content: reply });
- 
-      // Check for escalation triggers
-      const userText = history.filter(m => m.role === 'user').map(m => m.content).join(' ').toLowerCase();
-      const escalateKeywords = ['scam', 'fraud', 'didn\'t receive', 'never received', 'threat', 'harass', 'human', 'agent', 'real person', 'banned', 'suspended', 'unsafe'];
-      const shouldEscalate = escalateKeywords.some(k => userText.includes(k)) || exchangeCount >= 4;
- 
-      // Render response
-      tzBotMessage(reply, null, shouldEscalate);
- 
-    } catch(e) {
-      document.getElementById(typingId)?.remove();
-      tzBotMessage("I'm having trouble connecting right now. For immediate help, please email support@tradezyhq.com or file a dispute at the link below.", null, true);
-    }
- 
-    isLoading = false;
-    document.getElementById('tzSendBtn').disabled = false;
+  window.tzKeyDown=function(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();tzSend();}};
+  window.tzAutoResize=function(el){el.style.height='38px';el.style.height=Math.min(el.scrollHeight,90)+'px';};
+  async function tzGetResp(){
+    isLoading=true;document.getElementById('tzSendBtn').disabled=true;
+    const tid='tz-t-'+Date.now(),msgs=document.getElementById('tzMessages');
+    const tel=document.createElement('div');tel.id=tid;tel.className='tz-msg bot';tel.innerHTML='<div class="tz-typing"><span></span><span></span><span></span></div>';
+    msgs.appendChild(tel);msgs.scrollTop=msgs.scrollHeight;
+    try{
+      const r=await fetch('https://tradezy-ai-proxy.throbbing-lake-08ed.workers.dev',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:1000,system:SP,messages:history})});
+      const d=await r.json();const reply=d.content?.[0]?.text||"I'm having trouble responding. Please email support@tradezyhq.com.";
+      document.getElementById(tid)?.remove();history.push({role:'assistant',content:reply});
+      const ut=history.filter(m=>m.role==='user').map(m=>m.content).join(' ').toLowerCase();
+      const esc=['scam','fraud','didn\'t receive','threat','harass','human','agent','banned','suspended'].some(k=>ut.includes(k))||exchangeCount>=4;
+      tzBotMsg(reply,null,esc);
+    }catch(e){document.getElementById(tid)?.remove();tzBotMsg("I'm having trouble connecting. Please email support@tradezyhq.com.",null,true);}
+    isLoading=false;document.getElementById('tzSendBtn').disabled=false;
   }
- 
-  // ── RENDER BOT MESSAGE ──
-  function tzBotMessage(text, quickReplies = null, showEscalate = false) {
-    const msgs = document.getElementById('tzMessages');
-    const wrapper = document.createElement('div');
-    wrapper.className = 'tz-msg bot';
- 
-    // Parse markdown-lite: bold, bullets
-    let html = text
-      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-      .replace(/^[-•] (.+)$/gm, '<li>$1</li>')
-      .replace(/(<li>.*<\/li>)/gs, '<ul style="margin:4px 0 0 14px;padding:0;font-size:13px;line-height:1.6">$1</ul>')
-      .replace(/\n\n/g, '<br><br>')
-      .replace(/\n/g, '<br>');
- 
-    // Detect and linkify account action hints
-    let extraHTML = '';
- 
-    if (text.toLowerCase().includes('password reset') || text.toLowerCase().includes('reset your password')) {
-      extraHTML += `<a class="tz-action-link" href="https://tradezyhq.com/alltrades-auth.html" target="_blank">🔑 Reset Password →</a>`;
-    }
-    if (text.toLowerCase().includes('verification') || text.toLowerCase().includes('verify your')) {
-      extraHTML += `<a class="tz-action-link" href="https://tradezyhq.com/alltrades-verification.html" target="_blank">✅ Go to Verification →</a>`;
-    }
-    if (text.toLowerCase().includes('dispute') || text.toLowerCase().includes('file a dispute')) {
-      extraHTML += `<a class="tz-action-link" href="https://tradezyhq.com/alltrades-disputes.html" target="_blank">⚖️ File a Dispute →</a>`;
-    }
- 
-    let bubbleHTML = `<div class="tz-bubble">${html}</div>`;
-    if (extraHTML) bubbleHTML += extraHTML;
- 
-    if (showEscalate) {
-      bubbleHTML += `
-        <div class="tz-escalate-card">
-          <div class="tz-escalate-title">🙋 Want to talk to a person?</div>
-          <div style="color:#92400e;font-size:12px;line-height:1.5">Our support team is standing by to help.</div>
-          <div style="display:flex;gap:7px;flex-wrap:wrap;margin-top:7px;">
-            <a class="tz-escalate-btn" href="mailto:support@tradezyhq.com?subject=Support Request from Tradezy Widget">📧 Email Support</a>
-            <a class="tz-escalate-btn" href="https://tradezyhq.com/alltrades-disputes.html" target="_blank" style="background:#1a56db">⚖️ File Dispute</a>
-          </div>
-        </div>`;
-    }
- 
-    if (quickReplies && quickReplies.length) {
-      bubbleHTML += '<div class="tz-quick-btns">' +
-        quickReplies.map(q => `<button class="tz-quick-btn" onclick="tzQuickReply('${q.replace(/'/g, "\\'")}')">${q}</button>`).join('') +
-        '</div>';
-    }
- 
-    wrapper.innerHTML = bubbleHTML;
-    const time = document.createElement('div');
-    time.className = 'tz-msg-time';
-    time.textContent = new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
-    wrapper.appendChild(time);
-    msgs.appendChild(wrapper);
-    msgs.scrollTop = msgs.scrollHeight;
+  function tzBotMsg(text,qr=null,esc=false){
+    const msgs=document.getElementById('tzMessages'),w=document.createElement('div');w.className='tz-msg bot';
+    let html=text.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/^[-•] (.+)$/gm,'<li>$1</li>').replace(/(<li>.*<\/li>)/gs,'<ul style="margin:4px 0 0 14px;padding:0;font-size:13px;line-height:1.6">$1</ul>').replace(/\n\n/g,'<br><br>').replace(/\n/g,'<br>');
+    let ex='';
+    if(text.toLowerCase().includes('verification')||text.toLowerCase().includes('verify'))ex+=`<a class="tz-action-link" href="https://tradezyhq.com/alltrades-verification.html" target="_blank">✅ Go to Verification →</a>`;
+    if(text.toLowerCase().includes('dispute'))ex+=`<a class="tz-action-link" href="https://tradezyhq.com/alltrades-disputes.html" target="_blank">⚖️ File a Dispute →</a>`;
+    let bh=`<div class="tz-bubble">${html}</div>`;if(ex)bh+=ex;
+    if(esc)bh+=`<div class="tz-escalate-card"><div class="tz-escalate-title">🙋 Want to talk to a person?</div><div style="color:#92400e;font-size:12px">Our support team is standing by.</div><div style="display:flex;gap:7px;flex-wrap:wrap;margin-top:7px;"><a class="tz-escalate-btn" href="mailto:support@tradezyhq.com">📧 Email Support</a><a class="tz-escalate-btn" href="https://tradezyhq.com/alltrades-disputes.html" target="_blank" style="background:#1a56db">⚖️ File Dispute</a></div></div>`;
+    if(qr&&qr.length)bh+='<div class="tz-quick-btns">'+qr.map(q=>`<button class="tz-quick-btn" onclick="tzQuickReply('${q.replace(/'/g,"\\'")}')">${q}</button>`).join('')+'</div>';
+    w.innerHTML=bh;
+    const t=document.createElement('div');t.className='tz-msg-time';t.textContent=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+    w.appendChild(t);msgs.appendChild(w);msgs.scrollTop=msgs.scrollHeight;
   }
- 
-  // ── RENDER USER MESSAGE ──
-  function tzUserMessage(text) {
-    const msgs = document.getElementById('tzMessages');
-    const wrapper = document.createElement('div');
-    wrapper.className = 'tz-msg user';
-    wrapper.innerHTML = `
-      <div class="tz-bubble">${escHtml(text)}</div>
-      <div class="tz-msg-time">${new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})}</div>`;
-    msgs.appendChild(wrapper);
-    msgs.scrollTop = msgs.scrollHeight;
+  function tzUserMsg(text){
+    const msgs=document.getElementById('tzMessages'),w=document.createElement('div');w.className='tz-msg user';
+    w.innerHTML=`<div class="tz-bubble">${escH(text)}</div><div class="tz-msg-time">${new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}</div>`;
+    msgs.appendChild(w);msgs.scrollTop=msgs.scrollHeight;
   }
- 
-  // ── QUICK REPLY ──
-  window.tzQuickReply = function(text) {
-    document.getElementById('tzInput').value = text;
-    tzSend();
-  };
- 
-  function escHtml(str) {
-    return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-  }
- 
+  window.tzQuickReply=function(t){document.getElementById('tzInput').value=t;tzSend();};
+  function escH(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 })();
 </script>
 <!-- TRADEZY HELP WIDGET END -->
