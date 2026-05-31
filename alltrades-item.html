@@ -1,16 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-0NSDNDFP0H"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag("js", new Date());
-  gtag("config", "G-0NSDNDFP0H");
-</script>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","G-0NSDNDFP0H");</script>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Tradezy — View Listing | Local Trading & Bartering</title>
 <meta name="description" content="View this listing and make a trade offer on Tradezy — the safe local peer-to-peer trading marketplace.">
 <meta property="og:title" content="Tradezy — View Listing">
@@ -21,7 +14,7 @@
 <script src="supabase.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Lato:ital,wght@0,300;0,400;0,700;1,300&display=swap" rel="stylesheet">
 <style>
-:root{--navy:#0a1628;--navy2:#112240;--blue:#1a56db;--blue-l:#2563eb;--gold:#f59e0b;--gold-l:#fbbf24;--green:#16a34a;--green-l:#22c55e;--red:#dc2626;--orange:#ea580c;--text:#1a1a2e;--muted:#475569;--border:#e2e8f0;--bg:#f1f5f9;--white:#fff;--surface:#f8fafc;}
+:root{--navy:#0a1628;--navy2:#112240;--blue:#1a56db;--blue-l:#2563eb;--gold:#f59e0b;--gold-l:#fbbf24;--green:#16a34a;--green-l:#22c55e;--red:#dc2626;--orange:#ea580c;--cyan:#0ea5e9;--cyan-l:#0284c7;--text:#1a1a2e;--muted:#475569;--border:#e2e8f0;--bg:#f1f5f9;--white:#fff;--surface:#f8fafc;}
 *{margin:0;padding:0;box-sizing:border-box;}
 body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);}
 .nav{background:var(--navy);padding:11px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;}
@@ -41,9 +34,9 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);}
 .main-img-wrap{position:relative;width:100%;aspect-ratio:4/3;background:linear-gradient(135deg,#1e293b,#0f172a);display:flex;align-items:center;justify-content:center;overflow:hidden;}
 .main-img-wrap img{width:100%;height:100%;object-fit:contain;object-position:center;background:#0f172a;}
 .main-img-emoji{font-size:7rem;}
-.img-badges{position:absolute;top:12px;left:12px;display:flex;gap:6px;z-index:2;}
+.img-badges{position:absolute;top:12px;left:12px;display:flex;gap:6px;z-index:2;flex-wrap:wrap;}
 .ibadge{font-size:11px;font-weight:800;padding:3px 9px;border-radius:4px;letter-spacing:.4px;}
-.ibadge.local{background:var(--blue);color:#fff;}.ibadge.tcg{background:#7c3aed;color:#fff;}.ibadge.cash{background:var(--gold);color:var(--navy);}.ibadge.ess{background:var(--green);color:#fff;}
+.ibadge.local{background:var(--blue);color:#fff;}.ibadge.tcg{background:#7c3aed;color:#fff;}.ibadge.cash{background:var(--gold);color:var(--navy);}.ibadge.ess{background:var(--green);color:#fff;}.ibadge.shipit{background:var(--cyan);color:#fff;}
 .watch-btn{position:absolute;top:12px;right:12px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);color:#fff;border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center;font-size:1rem;cursor:pointer;transition:all .2s;z-index:2;}
 .watch-btn:hover,.watch-btn.on{background:rgba(239,68,68,.25);border-color:rgba(239,68,68,.6);color:#fca5a5;}
 .thumbs{display:flex;gap:8px;padding:12px;overflow-x:auto;}
@@ -82,6 +75,7 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);}
 .ol-title{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1rem;margin-bottom:12px;display:flex;align-items:center;gap:8px;}
 .ol-count{background:var(--red);color:#fff;font-size:11px;font-weight:800;padding:2px 7px;border-radius:99px;}
 .offer-item{padding:12px;background:var(--surface);border:1px solid var(--border);border-radius:8px;margin-bottom:9px;}
+.offer-item.shipit-offer{border-color:#7dd3fc;background:#f0f9ff;}
 .offer-item-top{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
 .oi-av{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.85rem;color:#fff;flex-shrink:0;background:var(--blue);}
 .oi-info{flex:1;min-width:0;}
@@ -90,10 +84,10 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);}
 .oi-right{text-align:right;flex-shrink:0;}
 .oi-val{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.95rem;color:var(--blue);}
 .oi-time{font-size:10px;color:var(--muted);margin-top:1px;}
+.oi-shipit-badge{display:inline-flex;align-items:center;gap:4px;background:#e0f2fe;color:#0369a1;border:1px solid #7dd3fc;border-radius:4px;font-size:10px;font-weight:800;padding:2px 7px;margin-top:5px;letter-spacing:.3px;}
 .oi-photos{display:flex;gap:6px;flex-wrap:wrap;}
 .oi-photo{width:56px;height:56px;border-radius:6px;object-fit:cover;border:1px solid var(--border);cursor:pointer;transition:all .15s;}
 .oi-photo:hover{border-color:var(--blue);transform:scale(1.05);}
-/* lightbox */
 .lightbox{display:none;position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:900;align-items:center;justify-content:center;}
 .lightbox.open{display:flex;}
 .lightbox img{max-width:90vw;max-height:88vh;border-radius:10px;object-fit:contain;}
@@ -101,29 +95,38 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);}
 .lightbox-close:hover{background:rgba(255,255,255,.25);}
 .lightbox-nav{position:absolute;top:50%;transform:translateY(-50%);background:rgba(255,255,255,.12);border:none;color:#fff;font-size:1.3rem;width:44px;height:44px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .15s;}
 .lightbox-nav:hover{background:rgba(255,255,255,.25);}
-.lightbox-prev{left:16px;}
-.lightbox-next{right:16px;}
+.lightbox-prev{left:16px;}.lightbox-next{right:16px;}
 .lightbox-counter{position:absolute;bottom:16px;left:50%;transform:translateX(-50%);color:rgba(255,255,255,.7);font-size:13px;font-family:'Barlow Condensed',sans-serif;font-weight:700;}
-/* offer panel */
 .offer-panel{background:var(--white);border:1px solid var(--border);border-radius:14px;overflow:hidden;position:sticky;top:72px;}
-.op-head{background:linear-gradient(135deg,var(--navy),#1a3a6b);padding:18px 20px;}
+.op-head{background:linear-gradient(135deg,var(--navy),#1a3a6b);padding:18px 20px;transition:background .3s;}
+.op-head.shipit-mode{background:linear-gradient(135deg,#0c4a6e,#0369a1);}
 .op-head-title{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.15rem;color:#fff;margin-bottom:2px;}
 .op-head-sub{font-size:12px;color:#64748b;}
 .op-body{padding:20px;}
-.offer-tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:18px;}
-.otab{border:1.5px solid var(--border);border-radius:8px;padding:10px 4px;text-align:center;cursor:pointer;transition:all .15s;}
+.offer-tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin-bottom:18px;}
+.otab{border:1.5px solid var(--border);border-radius:8px;padding:9px 4px;text-align:center;cursor:pointer;transition:all .15s;}
 .otab:hover{border-color:var(--blue);}
 .otab.active{border-color:var(--blue);background:#eff6ff;}
-.otab-icon{font-size:1.3rem;margin-bottom:3px;}
-.otab-label{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.8rem;color:var(--muted);}
+.otab.active.shipit-tab{border-color:var(--cyan);background:#e0f2fe;}
+.otab-icon{font-size:1.1rem;margin-bottom:2px;}
+.otab-label{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.72rem;color:var(--muted);line-height:1.2;}
 .otab.active .otab-label{color:var(--blue);}
+.otab.active.shipit-tab .otab-label{color:#0369a1;}
+.shipit-offer-banner{background:linear-gradient(135deg,#0c4a6e,#0369a1);border-radius:10px;padding:14px 16px;margin-bottom:16px;display:flex;align-items:flex-start;gap:12px;}
+.sob-icon{font-size:1.6rem;flex-shrink:0;}
+.sob-title{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1rem;color:#fff;margin-bottom:4px;}
+.sob-desc{font-size:11px;color:#7dd3fc;line-height:1.5;}
+.sob-steps{font-size:11px;color:#bae6fd;margin-top:6px;padding-left:14px;}
+.sob-steps li{margin-bottom:2px;}
+.shipit-id-gate{background:#fff7ed;border:1.5px solid #fed7aa;border-radius:10px;padding:14px 16px;margin-bottom:14px;display:none;}
+.sig-title{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.92rem;color:#92400e;margin-bottom:5px;}
+.sig-desc{font-size:12px;color:#a16207;line-height:1.5;margin-bottom:10px;}
 .your-item-box{background:var(--surface);border:1.5px solid var(--border);border-radius:10px;padding:14px;margin-bottom:14px;}
 .yib-title{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.88rem;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:10px;}
 .field{margin-bottom:12px;}
 .field label{display:block;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px;}
 .field input,.field select,.field textarea{width:100%;border:1.5px solid var(--border);border-radius:7px;padding:9px 12px;font-size:13px;font-family:'Lato',sans-serif;color:var(--text);outline:none;transition:all .15s;background:#fff;}
 .field input:focus,.field select:focus,.field textarea:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(26,86,219,.08);}
-/* photo upload */
 .photo-upload-area{border:2px dashed var(--border);border-radius:10px;padding:14px;text-align:center;cursor:pointer;transition:all .15s;background:#fff;}
 .photo-upload-area:hover{border-color:var(--blue);background:#eff6ff;}
 .photo-upload-area.has-photos{border-color:var(--green);background:#f0fdf4;}
@@ -153,7 +156,9 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);}
 .cash-wrap{display:flex;align-items:center;border:1.5px solid #fde68a;border-radius:7px;overflow:hidden;background:#fff;}
 .cash-prefix{padding:9px 11px;background:#fef3c7;font-family:'Barlow Condensed',sans-serif;font-weight:800;color:var(--gold);font-size:1rem;border-right:1px solid #fde68a;}
 .cash-wrap input{flex:1;border:none;outline:none;padding:9px 11px;font-size:14px;font-family:'Lato',sans-serif;}
-.fee-box{background:linear-gradient(135deg,#1e3a8a,#1e2d6e);border-radius:10px;padding:14px 16px;margin-bottom:14px;}
+.fee-box{border-radius:10px;padding:14px 16px;margin-bottom:14px;}
+.fee-box.local-fee{background:linear-gradient(135deg,#1e3a8a,#1e2d6e);}
+.fee-box.shipit-fee{background:linear-gradient(135deg,#0c4a6e,#0369a1);}
 .fee-title{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.88rem;color:#93c5fd;text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px;}
 .fee-row{display:flex;align-items:center;justify-content:space-between;font-size:12px;margin-bottom:6px;}
 .fee-label{color:#93c5fd;}
@@ -166,6 +171,8 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);}
 .btn-submit{width:100%;padding:13px;background:var(--gold);color:var(--navy);border:none;border-radius:8px;font-family:'Barlow Condensed',sans-serif;font-size:1.05rem;font-weight:900;letter-spacing:.3px;cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center;gap:7px;}
 .btn-submit:hover{background:var(--gold-l);transform:translateY(-1px);box-shadow:0 4px 16px rgba(245,158,11,.35);}
 .btn-submit:disabled{opacity:.5;cursor:not-allowed;transform:none;}
+.btn-submit.shipit-btn{background:var(--cyan);color:#fff;}
+.btn-submit.shipit-btn:hover{background:var(--cyan-l);box-shadow:0 4px 16px rgba(14,165,233,.35);}
 .btn-secondary{width:100%;padding:10px;background:transparent;border:1.5px solid var(--border);border-radius:8px;font-family:'Barlow Condensed',sans-serif;font-size:.95rem;font-weight:700;cursor:pointer;color:var(--muted);transition:all .15s;margin-top:7px;}
 .btn-secondary:hover{border-color:#999;color:var(--text);}
 .own-listing-notice{background:#fffbeb;border:1px solid #fde68a;border-radius:10px;padding:16px;text-align:center;font-size:13px;color:#92400e;}
@@ -187,7 +194,7 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);}
 .not-found{text-align:center;padding:60px 20px;}
 .toast{position:fixed;bottom:22px;right:22px;background:var(--navy);color:#e2e8f0;border:1px solid #1e3a5f;border-left:4px solid var(--green);border-radius:8px;padding:11px 16px;font-size:13px;z-index:9999;display:flex;align-items:center;gap:9px;max-width:290px;box-shadow:0 8px 28px rgba(0,0,0,.25);transform:translateX(120%);transition:transform .3s ease;}
 .toast.show{transform:translateX(0);}
-@media(max-width:900px){.page{grid-template-columns:1fr;}.offer-panel{position:static;}}
+@media(max-width:900px){.page{grid-template-columns:1fr;}.offer-panel{position:static;}.offer-tabs{grid-template-columns:repeat(2,1fr);}}
 @media(prefers-color-scheme:dark){
   :root{--text:#f1f5f9;--muted:#94a3b8;--border:rgba(255,255,255,.1);--bg:#0f172a;--white:#1e293b;--surface:#162032;}
   body{background:#0f172a !important;color:#f1f5f9 !important;}
@@ -195,11 +202,11 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);}
   input,select,textarea{background:#162032 !important;border-color:rgba(255,255,255,.12) !important;color:#f1f5f9 !important;}
   .photo-upload-area{background:#162032 !important;}
   .main-img-wrap img{background:#0f172a;}
+  .offer-item.shipit-offer{background:rgba(14,165,233,.08) !important;}
 }
 </style>
 </head>
 <body>
-
 <div class="nav">
   <a href="alltrades.html" style="text-decoration:none"><div class="logo"><span class="a">Trade</span><span class="t">zy</span><span class="d">.</span></div></a>
   <div class="nav-links">
@@ -208,28 +215,20 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);}
     <button class="nav-btn gold" onclick="window.location.href='alltrades-post.html'">+ List Item</button>
   </div>
 </div>
-
 <div class="breadcrumb">
   <a href="alltrades.html">Home</a><span>›</span>
   <a href="alltrades-dashboard.html" id="bcCategory">Listings</a><span>›</span>
   <span id="bcTitle">Loading…</span>
 </div>
-
-<div id="loadingState" class="loading-state">
-  <div class="loading-spinner">⏳</div>
-  <div style="font-size:14px;color:var(--muted)">Loading listing…</div>
-</div>
-
+<div id="loadingState" class="loading-state"><div class="loading-spinner">⏳</div><div style="font-size:14px;color:var(--muted)">Loading listing…</div></div>
 <div id="notFoundState" class="not-found" style="display:none">
   <div style="font-size:3rem;margin-bottom:12px">🔍</div>
   <div style="font-family:'Barlow Condensed',sans-serif;font-size:1.5rem;font-weight:900;margin-bottom:8px">Listing Not Found</div>
   <div style="font-size:13px;color:var(--muted);margin-bottom:16px">This listing may have been removed or the link is incorrect.</div>
   <button class="btn-submit" style="max-width:200px;margin:0 auto" onclick="window.location.href='alltrades.html'">← Back to Home</button>
 </div>
-
 <div class="page" id="pageContent" style="display:none">
   <div>
-    <!-- GALLERY -->
     <div class="img-gallery">
       <div style="position:relative;">
         <div class="img-badges" id="imgBadges"></div>
@@ -238,8 +237,6 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);}
       </div>
       <div class="thumbs" id="thumbsRow"></div>
     </div>
-
-    <!-- DETAIL -->
     <div class="detail-card">
       <div class="item-category" id="itemCategory">Category</div>
       <div class="item-title" id="itemTitle">Loading…</div>
@@ -248,17 +245,12 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);}
         <div class="meta-chip" id="metaTime">—</div>
         <div class="meta-chip" id="metaViews" style="display:none">—</div>
         <div class="meta-chip" id="metaQty" style="display:none">—</div>
+        <div class="meta-chip" id="metaShipIt" style="display:none;border-color:#7dd3fc;color:#0369a1;background:#e0f2fe">🚚 Ship-It Available</div>
       </div>
       <div class="value-banner">
         <div class="vb-icon">📊</div>
-        <div class="vb-text">
-          <div class="vb-title">Estimated Fair Value</div>
-          <div class="vb-desc">Based on the seller's estimate and current market data.</div>
-        </div>
-        <div class="vb-value">
-          <div class="vb-num" id="itemValue">$—</div>
-          <div class="vb-label">Seller Estimate</div>
-        </div>
+        <div class="vb-text"><div class="vb-title">Estimated Fair Value</div><div class="vb-desc">Based on the seller's estimate and current market data.</div></div>
+        <div class="vb-value"><div class="vb-num" id="itemValue">$—</div><div class="vb-label">Seller Estimate</div></div>
       </div>
       <div class="item-desc" id="itemDesc">Loading description…</div>
       <div class="wants-box" id="wantsBox" style="display:none">
@@ -267,15 +259,10 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);}
         <div class="wants-tags" id="wantsTags"></div>
       </div>
     </div>
-
-    <!-- SELLER -->
     <div class="seller-card">
       <div class="seller-row">
         <div class="seller-av" id="sellerAv">?</div>
-        <div>
-          <div class="seller-name" id="sellerName">Loading…</div>
-          <div class="seller-since" id="sellerSince">—</div>
-        </div>
+        <div><div class="seller-name" id="sellerName">Loading…</div><div class="seller-since" id="sellerSince">—</div></div>
         <div style="margin-left:auto;text-align:right">
           <div style="color:var(--gold);font-size:1rem" id="sellerStars">—</div>
           <div style="font-size:11px;color:var(--muted)" id="sellerRating">—</div>
@@ -287,23 +274,15 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);}
         <div class="ss-item"><div class="ss-num" id="sellerListings">—</div><div class="ss-label">Listings</div></div>
       </div>
     </div>
-
-    <div class="safety-box">
-      <span>🛡️</span>
-      <div><strong>Safety tip:</strong> Always meet in a public place — parking lots, libraries, or police station community lots. Never share your home address. Tradezy never asks for payment outside this platform.</div>
-    </div>
-
-    <!-- OFFERS LIST -->
+    <div class="safety-box"><span>🛡️</span><div><strong>Safety tip:</strong> Always meet in a public place — parking lots, libraries, or police station community lots. Never share your home address.</div></div>
     <div class="offers-list">
       <div class="ol-title">Current Offers <span class="ol-count" id="offersCount">0</span></div>
       <div id="offersList"><div style="font-size:13px;color:var(--muted);text-align:center;padding:16px">No offers yet — be the first!</div></div>
     </div>
   </div>
-
-  <!-- OFFER PANEL -->
   <div class="offer-panel" id="offerPanel">
-    <div class="op-head">
-      <div class="op-head-title">🤝 Make a Trade Offer</div>
+    <div class="op-head" id="opHead">
+      <div class="op-head-title" id="opHeadTitle">🤝 Make a Trade Offer</div>
       <div class="op-head-sub" id="opSub">Loading seller info…</div>
     </div>
     <div class="op-body">
@@ -313,29 +292,35 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);}
         <div style="font-size:12px;color:#92400e;margin-bottom:2px">You can't make an offer on your own item.</div>
         <button class="btn-submit" style="max-width:180px;margin:12px auto 0" onclick="window.location.href='alltrades-dashboard.html'">← My Dashboard</button>
       </div>
-
       <div id="offerForm">
         <div class="offer-tabs">
-          <div class="otab active" id="tab-trade" onclick="setOfferType('trade')">
-            <div class="otab-icon">🔄</div><div class="otab-label">Trade Only</div>
-          </div>
-          <div class="otab" id="tab-tc" onclick="setOfferType('tc')">
-            <div class="otab-icon">🔄💵</div><div class="otab-label">Trade+Cash</div>
-          </div>
-          <div class="otab" id="tab-cash" onclick="setOfferType('cash')">
-            <div class="otab-icon">💵</div><div class="otab-label">Cash Only</div>
+          <div class="otab active" id="tab-trade" onclick="setOfferType('trade')"><div class="otab-icon">🔄</div><div class="otab-label">Trade Only</div></div>
+          <div class="otab" id="tab-tc" onclick="setOfferType('tc')"><div class="otab-icon">🔄💵</div><div class="otab-label">Trade+Cash</div></div>
+          <div class="otab" id="tab-cash" onclick="setOfferType('cash')"><div class="otab-icon">💵</div><div class="otab-label">Cash Only</div></div>
+          <div class="otab" id="tab-shipit" onclick="setOfferType('shipit')"><div class="otab-icon">🚚</div><div class="otab-label">Ship-It</div></div>
+        </div>
+        <div class="shipit-offer-banner" id="shipItBanner" style="display:none">
+          <span class="sob-icon">🚚</span>
+          <div>
+            <div class="sob-title">Ship-It Trade — State to State</div>
+            <div class="sob-desc">This is a state-to-state trade. Both parties must be ID verified. Payment is peer-to-peer — Tradezy never holds funds.</div>
+            <ul class="sob-steps">
+              <li>You send payment via Zelle, PayPal, Venmo, etc.</li>
+              <li>Seller ships your item with a tracking number</li>
+              <li>Both confirm delivery → ratings unlock</li>
+              <li>10% platform fee per party at acceptance</li>
+            </ul>
           </div>
         </div>
-
-        <!-- Item fields -->
+        <div class="shipit-id-gate" id="shipItIdGate">
+          <div class="sig-title">🪪 ID Verification Required for Ship-It</div>
+          <div class="sig-desc">Ship-It trades require ID verification from both parties. This protects everyone in state-to-state trades where there's no in-person meetup.</div>
+          <button class="btn-submit" style="font-size:.9rem;padding:10px" onclick="window.location.href='alltrades-verification.html'">🪪 Get ID Verified →</button>
+        </div>
         <div class="your-item-box" id="yourItemSection">
-          <div class="yib-title">Your Item to Trade</div>
-          <div class="field">
-            <label>What are you offering? *</label>
-            <input type="text" id="offerItem" placeholder="e.g. Charizard Base Set, cordless drill…" oninput="updateComparison();updateFees()">
-          </div>
-          <div class="field">
-            <label>Condition *</label>
+          <div class="yib-title" id="yourItemTitle">Your Item to Trade</div>
+          <div class="field"><label>What are you offering? *</label><input type="text" id="offerItem" placeholder="e.g. Charizard Base Set, cordless drill…" oninput="updateComparison();updateFees()"></div>
+          <div class="field"><label>Condition *</label>
             <select id="offerCondition">
               <option value="">Select condition…</option>
               <option>Mint</option><option>Near Mint</option><option>Lightly Played</option>
@@ -343,14 +328,9 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);}
               <option>New</option><option>Like New</option><option>Good</option><option>Fair</option><option>Poor</option>
             </select>
           </div>
+          <div class="field"><label>Your estimated value ($) *</label><input type="number" id="offerVal" placeholder="0.00" min="0" step="0.01" oninput="updateComparison();updateFees()"></div>
           <div class="field">
-            <label>Your estimated value ($) *</label>
-            <input type="number" id="offerVal" placeholder="0.00" min="0" step="0.01" oninput="updateComparison();updateFees()">
-          </div>
-
-          <!-- Photo upload -->
-          <div class="field">
-            <label>Photos of your item * <span style="color:var(--orange);font-size:10px">(up to 4 — front, back, or multiple items)</span></label>
+            <label>Photos of your item * <span style="color:var(--orange);font-size:10px">(up to 4)</span></label>
             <div class="photo-upload-area" id="photoUploadArea" onclick="document.getElementById('offerPhotoInput').click()">
               <div class="pua-icon">📸</div>
               <div class="pua-text"><strong>Tap to add photos</strong><br>Show front &amp; back, or all items being traded<br>JPG/PNG · up to 5MB each · max 4</div>
@@ -359,104 +339,69 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);}
             <div class="photo-previews" id="photoPreviews"></div>
           </div>
         </div>
-
-        <!-- Trade comparison -->
         <div class="trade-compare" id="compareBox" style="display:none">
           <div class="tc-title">📊 Trade Value Comparison</div>
           <div class="tc-bars">
-            <div class="tc-side theirs">
-              <div class="tc-who">Their Item</div>
-              <div class="tc-amount theirs" id="theirAmt">$—</div>
-              <div class="tc-item-name" id="theirItemLabel">—</div>
-            </div>
+            <div class="tc-side theirs"><div class="tc-who">Their Item</div><div class="tc-amount theirs" id="theirAmt">$—</div><div class="tc-item-name" id="theirItemLabel">—</div></div>
             <div class="tc-arrow">⇄</div>
-            <div class="tc-side yours">
-              <div class="tc-who">Your Item</div>
-              <div class="tc-amount yours" id="yourAmt">$—</div>
-              <div class="tc-item-name" id="yourItemLabel">Your offer</div>
-            </div>
+            <div class="tc-side yours"><div class="tc-who">Your Item</div><div class="tc-amount yours" id="yourAmt">$—</div><div class="tc-item-name" id="yourItemLabel">Your offer</div></div>
           </div>
           <div class="tc-balance" id="tcBalance">Enter your item value to see balance</div>
         </div>
-
-        <!-- Cash add-on -->
         <div class="cash-box" id="cashBox">
           <div style="font-size:12px;font-weight:700;color:#92400e;margin-bottom:7px">💵 Cash to add on top</div>
-          <div class="cash-wrap">
-            <span class="cash-prefix">$</span>
-            <input type="number" id="cashAmt" placeholder="Amount" min="0" oninput="updateFees()">
-          </div>
+          <div class="cash-wrap"><span class="cash-prefix">$</span><input type="number" id="cashAmt" placeholder="Amount" min="0" oninput="updateFees()"></div>
         </div>
-
-        <!-- Cash only -->
         <div id="cashOnlySection" style="display:none">
-          <div class="field">
-            <label>Your Cash Offer ($)</label>
+          <div class="field"><label>Your Cash Offer ($)</label>
             <div style="display:flex;align-items:center;border:1.5px solid var(--border);border-radius:7px;overflow:hidden;background:#fff;">
               <span style="padding:9px 11px;background:var(--surface);font-family:'Barlow Condensed',sans-serif;font-weight:800;color:var(--muted);border-right:1px solid var(--border);">$</span>
               <input type="number" id="cashOnlyAmt" placeholder="e.g. 28.00" style="flex:1;border:none;outline:none;padding:9px 11px;font-size:14px;font-family:'Lato',sans-serif;" oninput="updateFees()">
             </div>
           </div>
         </div>
-
-        <!-- Fee -->
-        <div class="fee-box">
-          <div class="fee-title">🏦 Tradezy Platform Fee</div>
+        <div class="fee-box local-fee" id="feeBox">
+          <div class="fee-title" id="feeTitle">🏦 Tradezy Platform Fee</div>
           <div class="fee-row"><span class="fee-label">Your item/cash value</span><span class="fee-amount" id="feeBase">$0.00</span></div>
-          <div class="fee-row"><span class="fee-label">5% platform fee (you)</span><span class="fee-amount" id="feePct" style="color:var(--gold-l)">$0.00</span></div>
+          <div class="fee-row"><span class="fee-label" id="feePctLabel">5% platform fee (you)</span><span class="fee-amount" id="feePct" style="color:var(--gold-l)">$0.00</span></div>
           <div class="fee-divider"></div>
-          <div class="fee-total-row">
-            <span class="fee-total-label">Your total if accepted</span>
-            <span class="fee-total-amount" id="feeTotal">$0.00</span>
-          </div>
-          <div class="fee-note">💡 Fee only charged when accepted. Sending this offer is free.</div>
+          <div class="fee-total-row"><span class="fee-total-label">Your total if accepted</span><span class="fee-total-amount" id="feeTotal">$0.00</span></div>
+          <div class="fee-note" id="feeNote">💡 Fee only charged when accepted. Sending this offer is free.</div>
         </div>
-
-        <div class="field">
+        <div class="field" id="msgField">
           <label>Message to Seller (optional)</label>
           <textarea id="offerMsg" placeholder="Introduce yourself or explain why it's a fair trade…" style="width:100%;border:1.5px solid var(--border);border-radius:7px;padding:9px 12px;font-size:13px;font-family:'Lato',sans-serif;outline:none;resize:vertical;min-height:70px;" onfocus="this.style.borderColor='var(--blue)'" onblur="this.style.borderColor='var(--border)'"></textarea>
         </div>
-
         <button class="btn-submit" id="submitOfferBtn" onclick="submitOffer()">🤝 Send Trade Offer</button>
         <button class="btn-secondary" onclick="messageSeller()">💬 Message Seller First</button>
       </div>
     </div>
   </div>
 </div>
-
-<!-- SUCCESS MODAL -->
 <div class="modal-overlay" id="successModal">
   <div class="modal">
-    <div class="modal-head">
-      <div class="modal-head-title">🎉 Offer Sent!</div>
-      <button class="modal-close" onclick="closeModal('successModal')">✕</button>
-    </div>
+    <div class="modal-head"><div class="modal-head-title" id="successModalTitle">🎉 Offer Sent!</div><button class="modal-close" onclick="closeModal('successModal')">✕</button></div>
     <div class="modal-body" style="text-align:center;padding:32px 24px">
-      <div style="font-size:3.5rem;margin-bottom:14px">🤝</div>
-      <div style="font-family:'Barlow Condensed',sans-serif;font-size:1.6rem;font-weight:900;margin-bottom:8px">Offer Sent!</div>
-      <div style="font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:20px">The seller has been notified. They have 48 hours to accept or decline. You won't be charged until they accept.</div>
+      <div style="font-size:3.5rem;margin-bottom:14px" id="successEmoji">🤝</div>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:1.6rem;font-weight:900;margin-bottom:8px" id="successHeading">Offer Sent!</div>
+      <div style="font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:20px" id="successDesc">The seller has been notified. They have 48 hours to accept or decline. You won't be charged until they accept.</div>
       <button class="modal-btn gold" onclick="window.location.href='alltrades-dashboard.html'">📋 View My Dashboard</button>
       <button class="modal-btn outline" onclick="closeModal('successModal')">Stay on Listing</button>
     </div>
   </div>
 </div>
-<!-- W-9 GATE MODAL -->
 <div class="modal-overlay" id="w9GateModal">
   <div class="modal">
-    <div class="modal-head" style="background:linear-gradient(135deg,#7f1d1d,#991b1b)">
-      <div class="modal-head-title">⚠️ Tax Info Required</div>
-      <button class="modal-close" onclick="closeModal('w9GateModal')">✕</button>
-    </div>
+    <div class="modal-head" style="background:linear-gradient(135deg,#7f1d1d,#991b1b)"><div class="modal-head-title">⚠️ Tax Info Required</div><button class="modal-close" onclick="closeModal('w9GateModal')">✕</button></div>
     <div class="modal-body" style="text-align:center;padding:32px 24px">
       <div style="font-size:3rem;margin-bottom:14px">📋</div>
       <div style="font-family:'Barlow Condensed',sans-serif;font-size:1.5rem;font-weight:900;margin-bottom:8px;color:#111827">Tax Information Required</div>
-      <div style="font-size:13px;color:#475569;line-height:1.7;margin-bottom:20px">Federal law requires Tradezy to collect your tax information before your first trade (IRC §6045). This takes about 2 minutes and only needs to be done once.<br><br>Your information is encrypted and used solely for required IRS Form 1099-B reporting.</div>
+      <div style="font-size:13px;color:#475569;line-height:1.7;margin-bottom:20px">Federal law requires Tradezy to collect your tax information before your first trade (IRC §6045). This takes about 2 minutes and only needs to be done once.</div>
       <button class="modal-btn gold" onclick="window.location.href='alltrades-verification.html'">📋 Complete Tax Info Now →</button>
       <button class="modal-btn outline" onclick="closeModal('w9GateModal')">Maybe Later</button>
     </div>
   </div>
 </div>
-<!-- LIGHTBOX -->
 <div class="lightbox" id="lightbox" onclick="closeLightbox()">
   <button class="lightbox-close" onclick="closeLightbox()">✕</button>
   <button class="lightbox-nav lightbox-prev" onclick="event.stopPropagation();lightboxNav(-1)">‹</button>
@@ -464,439 +409,365 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);}
   <button class="lightbox-nav lightbox-next" onclick="event.stopPropagation();lightboxNav(1)">›</button>
   <div class="lightbox-counter" id="lightboxCounter"></div>
 </div>
-
 <div class="toast" id="toastEl"><span id="toastIc">✅</span><span id="toastTx">Done!</span></div>
-
 <script>
 const sb = window.supabase.createClient(
   'https://equvwaspcoeetfsexqki.supabase.co',
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVxdXZ3YXNwY29lZXRmc2V4cWtpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgyNzc2MjQsImV4cCI6MjA5Mzg1MzYyNH0.TP6Kk3pzHW1PYMUu5D9Vu2lJrazIEagzu5csYhqkrfI'
 );
-
-let currentUser    = null;
-let listing        = null;
-let offerType      = 'trade';
-let watching       = false;
-let selectedPhotos = [];
-let lightboxPhotos = [];
-let lightboxIndex  = 0;
-
-const CAT_EMOJI = {'Food & Water':'🥫','Garden':'🌱','Electronics':'⚡','Tools':'🔧','Sports':'🚲','Music':'🎵','Gaming':'🎮','Clothing':'👗','Books':'📚','Trading Cards':'🃏','Other':'📦'};
-
-(async () => {
-  const { data: { session } } = await sb.auth.getSession();
-  if (!session) { window.location.href = 'alltrades-auth.html'; return; }
-  currentUser = session.user;
+let currentUser=null,currentUserData=null,listing=null,offerType='trade',watching=false,selectedPhotos=[],lightboxPhotos=[],lightboxIndex=0;
+const CAT_EMOJI={'Food & Water':'🥫','Garden':'🌱','Electronics':'⚡','Tools':'🔧','Sports':'🚲','Music':'🎵','Gaming':'🎮','Clothing':'👗','Books':'📚','Trading Cards':'🃏','Other':'📦'};
+(async()=>{
+  const{data:{session}}=await sb.auth.getSession();
+  if(!session){window.location.href='alltrades-auth.html';return;}
+  currentUser=session.user;
+  const{data:ud}=await sb.from('users').select('w9_on_file,id_verified').eq('id',currentUser.id).single();
+  currentUserData=ud;
   loadListing();
 })();
-
-function getListingId() { return new URLSearchParams(window.location.search).get('id'); }
-
-async function loadListing() {
-  const id = getListingId();
-  if (!id) { showNotFound(); return; }
-  try {
-    const { data, error } = await sb.from('listings').select('*').eq('id', id).single();
-    if (error || !data) { showNotFound(); return; }
-    listing = data;
-    sb.from('listings').update({ view_count: (data.view_count||0)+1 }).eq('id', id).then(()=>{});
-    await Promise.all([loadSeller(data.user_id), loadOffers(id)]);
+function getListingId(){return new URLSearchParams(window.location.search).get('id');}
+async function loadListing(){
+  const id=getListingId();
+  if(!id){showNotFound();return;}
+  try{
+    const{data,error}=await sb.from('listings').select('*').eq('id',id).single();
+    if(error||!data){showNotFound();return;}
+    listing=data;
+    sb.from('listings').update({view_count:(data.view_count||0)+1}).eq('id',id).then(()=>{});
+    await Promise.all([loadSeller(data.user_id),loadOffers(id)]);
     renderListing(data);
-  } catch(e) { showNotFound(); }
+  }catch(e){showNotFound();}
 }
-
-async function loadSeller(userId) {
-  try {
-    const [{ data: user },{ count: tradeCount },{ count: listingCount },{ data: ratings }] = await Promise.all([
-      sb.from('users').select('display_name,created_at').eq('id', userId).single(),
+async function loadSeller(userId){
+  try{
+    const[{data:user},{count:tradeCount},{count:listingCount},{data:ratings}]=await Promise.all([
+      sb.from('users').select('display_name,created_at').eq('id',userId).single(),
       sb.from('trades').select('*',{count:'exact',head:true}).or(`trader_a_id.eq.${userId},trader_b_id.eq.${userId}`).eq('status','completed'),
       sb.from('listings').select('*',{count:'exact',head:true}).eq('user_id',userId).eq('status','active'),
-      sb.from('ratings').select('stars').eq('rated_id', userId)
+      sb.from('ratings').select('stars').eq('rated_id',userId)
     ]);
-    const name     = user?.display_name || 'Trader';
-    const initials = name.split(' ').map(n=>n[0]).join('').toUpperCase().slice(0,2);
-    const avg      = ratings?.length ? (ratings.reduce((s,r)=>s+r.stars,0)/ratings.length).toFixed(1) : null;
-    const stars    = avg ? '★'.repeat(Math.round(avg))+'☆'.repeat(5-Math.round(avg)) : '—';
-    const joined   = user?.created_at ? new Date(user.created_at).toLocaleDateString('en-US',{month:'short',year:'numeric'}) : '—';
-    document.getElementById('sellerAv').textContent        = initials;
-    document.getElementById('sellerName').textContent      = name;
-    document.getElementById('sellerSince').textContent     = `📍 Member since ${joined}`;
-    document.getElementById('sellerStars').textContent     = stars;
-    document.getElementById('sellerRating').textContent    = avg ? `${avg} · ${ratings.length} ratings` : 'No ratings yet';
-    document.getElementById('sellerTrades').textContent    = tradeCount  || 0;
-    document.getElementById('sellerRatingNum').textContent = avg ? avg+'★' : '—';
-    document.getElementById('sellerListings').textContent  = listingCount || 0;
-    document.getElementById('opSub').textContent           = `${tradeCount||0} completed trades · ${avg?avg+'★ rating':'No ratings yet'}`;
-  } catch(e) {}
+    const name=user?.display_name||'Trader';
+    const initials=name.split(' ').map(n=>n[0]).join('').toUpperCase().slice(0,2);
+    const avg=ratings?.length?(ratings.reduce((s,r)=>s+r.stars,0)/ratings.length).toFixed(1):null;
+    const stars=avg?'★'.repeat(Math.round(avg))+'☆'.repeat(5-Math.round(avg)):'—';
+    const joined=user?.created_at?new Date(user.created_at).toLocaleDateString('en-US',{month:'short',year:'numeric'}):'—';
+    document.getElementById('sellerAv').textContent=initials;
+    document.getElementById('sellerName').textContent=name;
+    document.getElementById('sellerSince').textContent=`📍 Member since ${joined}`;
+    document.getElementById('sellerStars').textContent=stars;
+    document.getElementById('sellerRating').textContent=avg?`${avg} · ${ratings.length} ratings`:'No ratings yet';
+    document.getElementById('sellerTrades').textContent=tradeCount||0;
+    document.getElementById('sellerRatingNum').textContent=avg?avg+'★':'—';
+    document.getElementById('sellerListings').textContent=listingCount||0;
+    document.getElementById('opSub').textContent=`${tradeCount||0} completed trades · ${avg?avg+'★ rating':'No ratings yet'}`;
+  }catch(e){}
 }
-
-async function loadOffers(listingId) {
-  try {
-    const { data: offers, count } = await sb
-      .from('offers')
-      .select('*, offerer:offerer_id(display_name)', { count:'exact' })
-      .eq('listing_id', listingId)
-      .eq('status', 'pending')
-      .order('created_at', { ascending: false })
-      .limit(5);
-
-    document.getElementById('offersCount').textContent = count || 0;
-
-    if (!offers?.length) {
-      document.getElementById('offersList').innerHTML = '<div style="font-size:13px;color:var(--muted);text-align:center;padding:16px">No offers yet — be the first!</div>';
-      return;
-    }
-
-    const colors = ['#1a56db','#16a34a','#ea580c','#f59e0b','#7c3aed'];
-    document.getElementById('offersList').innerHTML = offers.map((o, i) => {
-      const name     = o.offerer?.display_name || 'Trader';
-      const initials = name.split(' ').map(n=>n[0]).join('').toUpperCase().slice(0,2);
-      const desc     = o.offer_type === 'cash'
-        ? `💵 Cash offer: $${Number(o.cash_amount).toFixed(2)}`
-        : o.offer_type === 'tc'
-        ? `🔄💵 ${o.offered_item_title||'Item'} + $${Number(o.cash_amount||0).toFixed(2)}`
-        : `🔄 ${o.offered_item_title||'Item trade'}`;
-
-      // Build photo thumbnails if offer has photos
-      const photos = o.offered_photos || [];
-      const photosHtml = photos.length
-        ? `<div class="oi-photos">${photos.map((p, pi) =>
-            `<img class="oi-photo" src="${p}" alt="offer photo" onclick="openLightbox(${JSON.stringify(photos)},${pi})" title="Click to expand">`
-          ).join('')}</div>`
-        : '';
-
-      const condHtml = o.offered_condition
-        ? `<span style="font-size:10px;background:#eff6ff;color:var(--blue);border:1px solid #bfdbfe;border-radius:99px;padding:1px 6px;font-weight:700;margin-left:4px">${o.offered_condition}</span>`
-        : '';
-
-      return `
-        <div class="offer-item">
-          <div class="offer-item-top">
-            <div class="oi-av" style="background:${colors[i%colors.length]}">${initials}</div>
-            <div class="oi-info">
-              <div class="oi-name">${name}${condHtml}</div>
-              <div class="oi-detail">${desc}</div>
-            </div>
-            <div class="oi-right">
-              <div class="oi-val">~$${Number(o.offered_item_value||o.cash_amount||0).toFixed(0)}</div>
-              <div class="oi-time">${timeAgo(o.created_at)}</div>
-            </div>
-          </div>
-          ${photosHtml}
-        </div>`;
+async function loadOffers(listingId){
+  try{
+    const{data:offers,count}=await sb.from('offers').select('*, offerer:offerer_id(display_name)',{count:'exact'}).eq('listing_id',listingId).eq('status','pending').order('created_at',{ascending:false}).limit(5);
+    document.getElementById('offersCount').textContent=count||0;
+    if(!offers?.length){document.getElementById('offersList').innerHTML='<div style="font-size:13px;color:var(--muted);text-align:center;padding:16px">No offers yet — be the first!</div>';return;}
+    const colors=['#1a56db','#16a34a','#ea580c','#f59e0b','#7c3aed'];
+    document.getElementById('offersList').innerHTML=offers.map((o,i)=>{
+      const name=o.offerer?.display_name||'Trader';
+      const initials=name.split(' ').map(n=>n[0]).join('').toUpperCase().slice(0,2);
+      const isShipIt=o.is_ship_it===true;
+      const desc=isShipIt?`🚚 Ship-It · ${o.offered_item_title||'Item trade'}`:o.offer_type==='cash'?`💵 Cash offer: $${Number(o.cash_amount).toFixed(2)}`:o.offer_type==='tc'?`🔄💵 ${o.offered_item_title||'Item'} + $${Number(o.cash_amount||0).toFixed(2)}`:`🔄 ${o.offered_item_title||'Item trade'}`;
+      const photos=o.offered_photos||[];
+      const photosHtml=photos.length?`<div class="oi-photos">${photos.map((p,pi)=>`<img class="oi-photo" src="${p}" alt="offer photo" onclick="openLightbox(${JSON.stringify(photos)},${pi})" title="Click to expand">`).join('')}</div>`:'';
+      const condHtml=o.offered_condition?`<span style="font-size:10px;background:#eff6ff;color:var(--blue);border:1px solid #bfdbfe;border-radius:99px;padding:1px 6px;font-weight:700;margin-left:4px">${o.offered_condition}</span>`:'';
+      const shipItBadge=isShipIt?`<div class="oi-shipit-badge">🚚 Ship-It Trade — State to State</div>`:'';
+      return`<div class="offer-item${isShipIt?' shipit-offer':''}">
+        <div class="offer-item-top">
+          <div class="oi-av" style="background:${isShipIt?'#0ea5e9':colors[i%colors.length]}">${initials}</div>
+          <div class="oi-info"><div class="oi-name">${name}${condHtml}</div><div class="oi-detail">${desc}</div></div>
+          <div class="oi-right"><div class="oi-val" style="${isShipIt?'color:#0ea5e9':''}">~$${Number(o.offered_item_value||o.cash_amount||0).toFixed(0)}</div><div class="oi-time">${timeAgo(o.created_at)}</div></div>
+        </div>${shipItBadge}${photosHtml}</div>`;
     }).join('');
-  } catch(e) {}
+  }catch(e){}
 }
-
-/* ── Lightbox ── */
-function openLightbox(photos, index) {
-  lightboxPhotos = photos;
-  lightboxIndex  = index;
-  document.getElementById('lightboxImg').src = photos[index];
-  document.getElementById('lightboxCounter').textContent = photos.length > 1 ? `${index+1} / ${photos.length}` : '';
-  document.getElementById('lightbox').classList.add('open');
-  document.body.style.overflow = 'hidden';
-  // show/hide nav arrows
-  document.querySelector('.lightbox-prev').style.display = photos.length > 1 ? 'flex' : 'none';
-  document.querySelector('.lightbox-next').style.display = photos.length > 1 ? 'flex' : 'none';
+function openLightbox(photos,index){
+  lightboxPhotos=photos;lightboxIndex=index;
+  document.getElementById('lightboxImg').src=photos[index];
+  document.getElementById('lightboxCounter').textContent=photos.length>1?`${index+1} / ${photos.length}`:'';
+  document.getElementById('lightbox').classList.add('open');document.body.style.overflow='hidden';
+  document.querySelector('.lightbox-prev').style.display=photos.length>1?'flex':'none';
+  document.querySelector('.lightbox-next').style.display=photos.length>1?'flex':'none';
 }
-
-function closeLightbox() {
-  document.getElementById('lightbox').classList.remove('open');
-  document.body.style.overflow = '';
+function closeLightbox(){document.getElementById('lightbox').classList.remove('open');document.body.style.overflow='';}
+function lightboxNav(dir){
+  lightboxIndex=(lightboxIndex+dir+lightboxPhotos.length)%lightboxPhotos.length;
+  document.getElementById('lightboxImg').src=lightboxPhotos[lightboxIndex];
+  document.getElementById('lightboxCounter').textContent=`${lightboxIndex+1} / ${lightboxPhotos.length}`;
 }
-
-function lightboxNav(dir) {
-  lightboxIndex = (lightboxIndex + dir + lightboxPhotos.length) % lightboxPhotos.length;
-  document.getElementById('lightboxImg').src = lightboxPhotos[lightboxIndex];
-  document.getElementById('lightboxCounter').textContent = `${lightboxIndex+1} / ${lightboxPhotos.length}`;
-}
-
-document.addEventListener('keydown', e => {
-  if (!document.getElementById('lightbox').classList.contains('open')) return;
-  if (e.key === 'Escape') closeLightbox();
-  if (e.key === 'ArrowLeft')  lightboxNav(-1);
-  if (e.key === 'ArrowRight') lightboxNav(1);
+document.addEventListener('keydown',e=>{
+  if(!document.getElementById('lightbox').classList.contains('open'))return;
+  if(e.key==='Escape')closeLightbox();
+  if(e.key==='ArrowLeft')lightboxNav(-1);
+  if(e.key==='ArrowRight')lightboxNav(1);
 });
-
-function renderListing(l) {
-  const emoji = CAT_EMOJI[l.category]||'📦';
-  const isTCG = l.category==='Trading Cards';
-  document.title = `Tradezy — ${l.title} | Local Trading`;
-  document.querySelector('meta[name="description"]').content = `${l.title} — ${l.description?.slice(0,120)||'View this listing on Tradezy.'}`;
-  document.getElementById('bcCategory').textContent = l.category||'Browse';
-  document.getElementById('bcTitle').textContent    = l.title;
-  const hasCash = l.trade_type==='cash'||l.trade_type==='item_plus_cash';
-  const isEss   = ['Food & Water','Garden'].includes(l.category);
-  document.getElementById('imgBadges').innerHTML = [
+function renderListing(l){
+  const emoji=CAT_EMOJI[l.category]||'📦';
+  const isTCG=l.category==='Trading Cards';
+  document.title=`Tradezy — ${l.title} | Local Trading`;
+  document.querySelector('meta[name="description"]').content=`${l.title} — ${l.description?.slice(0,120)||'View this listing on Tradezy.'}`;
+  document.getElementById('bcCategory').textContent=l.category||'Browse';
+  document.getElementById('bcTitle').textContent=l.title;
+  const hasCash=l.trade_type==='cash'||l.trade_type==='item_plus_cash';
+  const isEss=['Food & Water','Garden'].includes(l.category);
+  document.getElementById('imgBadges').innerHTML=[
     '<span class="ibadge local">LOCAL</span>',
-    isEss  ?'<span class="ibadge ess">ESSENTIAL</span>'  :'',
-    isTCG  ?'<span class="ibadge tcg">🃏 TCG</span>'    :'',
-    hasCash?'<span class="ibadge cash">💵 CASH OK</span>':''
+    isEss?'<span class="ibadge ess">ESSENTIAL</span>':'',
+    isTCG?'<span class="ibadge tcg">🃏 TCG</span>':'',
+    hasCash?'<span class="ibadge cash">💵 CASH OK</span>':'',
+    '<span class="ibadge shipit">🚚 SHIP-IT</span>'
   ].join('');
-  const wrap = document.getElementById('mainImgWrap');
-  if (l.photos?.length>0) {
-    wrap.innerHTML = `<img src="${l.photos[0]}" alt="${l.title}">`;
-    document.getElementById('thumbsRow').innerHTML = l.photos.slice(0,6).map((p,i)=>
-      `<div class="thumb ${i===0?'active':''}" onclick="switchPhoto('${p}',this)"><img src="${p}" alt="photo ${i+1}" loading="lazy"></div>`
-    ).join('');
-  } else {
-    wrap.innerHTML = `<span class="main-img-emoji">${emoji}</span>`;
-    document.getElementById('thumbsRow').innerHTML = `<div class="thumb active">${emoji}</div>`;
+  const wrap=document.getElementById('mainImgWrap');
+  if(l.photos?.length>0){
+    wrap.innerHTML=`<img src="${l.photos[0]}" alt="${l.title}">`;
+    document.getElementById('thumbsRow').innerHTML=l.photos.slice(0,6).map((p,i)=>`<div class="thumb ${i===0?'active':''}" onclick="switchPhoto('${p}',this)"><img src="${p}" alt="photo ${i+1}" loading="lazy"></div>`).join('');
+  }else{
+    wrap.innerHTML=`<span class="main-img-emoji">${emoji}</span>`;
+    document.getElementById('thumbsRow').innerHTML=`<div class="thumb active">${emoji}</div>`;
   }
-  document.getElementById('itemCategory').textContent = `${emoji} ${l.category}${isTCG?' · Trading Cards':''}`;
-  document.getElementById('itemTitle').textContent    = l.title;
-  document.getElementById('metaCondition').innerHTML  = `<span>✨</span> ${l.condition||'Condition not specified'}`;
-  document.getElementById('metaTime').innerHTML       = `<span>⏰</span> ${timeAgo(l.created_at)}`;
-  const vc = document.getElementById('metaViews');
-  vc.innerHTML = `<span>👁</span> ${(l.view_count||0)+1} views`;
-  vc.style.display = 'flex';
-  if (l.quantity>1) { document.getElementById('metaQty').innerHTML=`<span>📦</span> Qty: ${l.quantity}`; document.getElementById('metaQty').style.display='flex'; }
-  document.getElementById('itemValue').textContent = l.estimated_value?`$${Number(l.estimated_value).toFixed(0)}`:'—';
-  document.getElementById('itemDesc').textContent  = l.description||'No description provided.';
-  if (l.wants) {
+  document.getElementById('itemCategory').textContent=`${emoji} ${l.category}${isTCG?' · Trading Cards':''}`;
+  document.getElementById('itemTitle').textContent=l.title;
+  document.getElementById('metaCondition').innerHTML=`<span>✨</span> ${l.condition||'Condition not specified'}`;
+  document.getElementById('metaTime').innerHTML=`<span>⏰</span> ${timeAgo(l.created_at)}`;
+  const vc=document.getElementById('metaViews');vc.innerHTML=`<span>👁</span> ${(l.view_count||0)+1} views`;vc.style.display='flex';
+  document.getElementById('metaShipIt').style.display='flex';
+  if(l.quantity>1){document.getElementById('metaQty').innerHTML=`<span>📦</span> Qty: ${l.quantity}`;document.getElementById('metaQty').style.display='flex';}
+  document.getElementById('itemValue').textContent=l.estimated_value?`$${Number(l.estimated_value).toFixed(0)}`:'—';
+  document.getElementById('itemDesc').textContent=l.description||'No description provided.';
+  if(l.wants){
     document.getElementById('wantsBox').style.display='block';
     document.getElementById('wantsText').textContent=`"${l.wants}"`;
-    if (l.tags?.length) document.getElementById('wantsTags').innerHTML=l.tags.map(t=>`<span class="wants-tag">${t}</span>`).join('');
+    if(l.tags?.length)document.getElementById('wantsTags').innerHTML=l.tags.map(t=>`<span class="wants-tag">${t}</span>`).join('');
   }
-  document.getElementById('theirAmt').textContent       = l.estimated_value?`$${Number(l.estimated_value).toFixed(0)}`:'$—';
-  document.getElementById('theirItemLabel').textContent = l.title.slice(0,25);
-  if (l.user_id===currentUser.id) {
-    document.getElementById('ownListingNotice').style.display='block';
-    document.getElementById('offerForm').style.display='none';
-  }
-  if (l.trade_type==='cash') { setOfferType('cash'); document.getElementById('tab-trade').style.display='none'; document.getElementById('tab-tc').style.display='none'; }
-  else if (l.trade_type==='item') { document.getElementById('tab-cash').style.display='none'; }
+  document.getElementById('theirAmt').textContent=l.estimated_value?`$${Number(l.estimated_value).toFixed(0)}`:'$—';
+  document.getElementById('theirItemLabel').textContent=l.title.slice(0,25);
+  if(l.user_id===currentUser.id){document.getElementById('ownListingNotice').style.display='block';document.getElementById('offerForm').style.display='none';}
+  if(l.trade_type==='cash'){setOfferType('cash');document.getElementById('tab-trade').style.display='none';document.getElementById('tab-tc').style.display='none';}
+  else if(l.trade_type==='item'){document.getElementById('tab-cash').style.display='none';}
   document.getElementById('loadingState').style.display='none';
   document.getElementById('pageContent').style.display='grid';
 }
-
-function switchPhoto(src, el) {
+function switchPhoto(src,el){
   document.querySelectorAll('.thumb').forEach(t=>t.classList.remove('active'));
   el.classList.add('active');
-  const img = document.getElementById('mainImgWrap').querySelector('img');
-  if (img) img.src = src;
+  const img=document.getElementById('mainImgWrap').querySelector('img');
+  if(img)img.src=src;
 }
-
-function toggleWatch() {
-  watching = !watching;
-  const btn = document.getElementById('watchBtn');
-  btn.textContent = watching?'♥':'♡';
-  btn.classList.toggle('on', watching);
-  showToast(watching?'♥':'♡', watching?'Added to watchlist!':'Removed from watchlist');
+function toggleWatch(){
+  watching=!watching;
+  const btn=document.getElementById('watchBtn');
+  btn.textContent=watching?'♥':'♡';btn.classList.toggle('on',watching);
+  showToast(watching?'♥':'♡',watching?'Added to watchlist!':'Removed from watchlist');
 }
-
-function setOfferType(type) {
-  offerType = type;
-  document.querySelectorAll('.otab').forEach(t=>t.classList.remove('active'));
-  const tab = document.getElementById('tab-'+type);
-  if (tab) tab.classList.add('active');
-  document.getElementById('yourItemSection').style.display  = type==='cash'?'none':'block';
-  document.getElementById('cashBox').classList.toggle('show', type==='tc');
-  document.getElementById('cashOnlySection').style.display  = type==='cash'?'block':'none';
-  if (type!=='trade') document.getElementById('compareBox').style.display='none';
+function setOfferType(type){
+  offerType=type;
+  const isShipIt=type==='shipit';
+  document.querySelectorAll('.otab').forEach(t=>t.classList.remove('active','shipit-tab'));
+  const tab=document.getElementById('tab-'+type);
+  if(tab){tab.classList.add('active');if(isShipIt)tab.classList.add('shipit-tab');}
+  const opHead=document.getElementById('opHead');
+  if(isShipIt){opHead.classList.add('shipit-mode');document.getElementById('opHeadTitle').textContent='🚚 Ship-It Trade Offer';}
+  else{opHead.classList.remove('shipit-mode');document.getElementById('opHeadTitle').textContent='🤝 Make a Trade Offer';}
+  document.getElementById('shipItBanner').style.display=isShipIt?'flex':'none';
+  const idGate=document.getElementById('shipItIdGate');
+  const submitBtn=document.getElementById('submitOfferBtn');
+  if(isShipIt&&!currentUserData?.id_verified){
+    idGate.style.display='block';
+    document.getElementById('yourItemSection').style.display='none';
+    document.getElementById('compareBox').style.display='none';
+    document.getElementById('cashBox').classList.remove('show');
+    document.getElementById('cashOnlySection').style.display='none';
+    document.getElementById('feeBox').style.display='none';
+    document.getElementById('msgField').style.display='none';
+    submitBtn.style.display='none';
+    return;
+  }else{
+    idGate.style.display='none';
+    document.getElementById('feeBox').style.display='block';
+    document.getElementById('msgField').style.display='block';
+    submitBtn.style.display='flex';
+  }
+  document.getElementById('yourItemSection').style.display=type==='cash'?'none':'block';
+  document.getElementById('cashBox').classList.toggle('show',type==='tc');
+  document.getElementById('cashOnlySection').style.display=type==='cash'?'block':'none';
+  if(type!=='trade'&&type!=='shipit')document.getElementById('compareBox').style.display='none';
+  document.getElementById('yourItemTitle').textContent=isShipIt?'Your Item to Trade (Ships to Seller)':'Your Item to Trade';
+  const feeBox=document.getElementById('feeBox');
+  if(isShipIt){
+    feeBox.className='fee-box shipit-fee';
+    document.getElementById('feeTitle').textContent='🚚 Ship-It Platform Fee (10%)';
+    document.getElementById('feePctLabel').textContent='10% Ship-It fee (you)';
+    document.getElementById('feeNote').textContent='💡 10% fee per party — charged at acceptance, not delivery. Tradezy never holds funds.';
+    submitBtn.className='btn-submit shipit-btn';submitBtn.textContent='🚚 Send Ship-It Offer';
+  }else{
+    feeBox.className='fee-box local-fee';
+    document.getElementById('feeTitle').textContent='🏦 Tradezy Platform Fee';
+    document.getElementById('feePctLabel').textContent='5% platform fee (you)';
+    document.getElementById('feeNote').textContent='💡 Fee only charged when accepted. Sending this offer is free.';
+    submitBtn.className='btn-submit';submitBtn.textContent='🤝 Send Trade Offer';
+  }
   updateFees();
 }
-
-/* ── Photo upload ── */
-function handlePhotoSelect(event) {
-  const files     = Array.from(event.target.files);
-  const remaining = 4 - selectedPhotos.length;
-  selectedPhotos  = [...selectedPhotos, ...files.slice(0, remaining)];
-  renderPhotoPreviews();
-  event.target.value = '';
+function handlePhotoSelect(event){
+  const files=Array.from(event.target.files);
+  const remaining=4-selectedPhotos.length;
+  selectedPhotos=[...selectedPhotos,...files.slice(0,remaining)];
+  renderPhotoPreviews();event.target.value='';
 }
-
-function renderPhotoPreviews() {
-  const area = document.getElementById('photoUploadArea');
-  const prev = document.getElementById('photoPreviews');
-  const n    = selectedPhotos.length;
-  area.classList.toggle('has-photos', n > 0);
-  if (n > 0) {
-    area.querySelector('.pua-icon').textContent = n >= 4 ? '✅' : '📸';
-    area.querySelector('.pua-text').innerHTML   = n >= 4
-      ? '<strong>4 photos added</strong><br>Maximum reached'
-      : `<strong>${n} photo${n>1?'s':''} added</strong><br>Tap to add more (${4-n} remaining)`;
-  } else {
-    area.querySelector('.pua-icon').textContent = '📸';
-    area.querySelector('.pua-text').innerHTML   = '<strong>Tap to add photos</strong><br>Show front &amp; back, or all items being traded<br>JPG/PNG · up to 5MB each · max 4';
+function renderPhotoPreviews(){
+  const area=document.getElementById('photoUploadArea'),prev=document.getElementById('photoPreviews'),n=selectedPhotos.length;
+  area.classList.toggle('has-photos',n>0);
+  if(n>0){
+    area.querySelector('.pua-icon').textContent=n>=4?'✅':'📸';
+    area.querySelector('.pua-text').innerHTML=n>=4?'<strong>4 photos added</strong><br>Maximum reached':`<strong>${n} photo${n>1?'s':''} added</strong><br>Tap to add more (${4-n} remaining)`;
+  }else{
+    area.querySelector('.pua-icon').textContent='📸';
+    area.querySelector('.pua-text').innerHTML='<strong>Tap to add photos</strong><br>Show front &amp; back, or all items being traded<br>JPG/PNG · up to 5MB each · max 4';
   }
-  prev.innerHTML = selectedPhotos.map((f,i) => {
-    const url = URL.createObjectURL(f);
-    return `<div class="photo-preview-item">
-      <img src="${url}" alt="preview">
-      <button class="photo-preview-remove" onclick="removePhoto(${i})">✕</button>
-    </div>`;
-  }).join('');
+  prev.innerHTML=selectedPhotos.map((f,i)=>{const url=URL.createObjectURL(f);return`<div class="photo-preview-item"><img src="${url}" alt="preview"><button class="photo-preview-remove" onclick="removePhoto(${i})">✕</button></div>`;}).join('');
 }
-
-function removePhoto(index) { selectedPhotos.splice(index,1); renderPhotoPreviews(); }
-
-async function uploadPhotos() {
-  const urls = [];
-  for (const file of selectedPhotos) {
-    const ext  = file.name.split('.').pop();
-    const path = `${currentUser.id}/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
-    const { error } = await sb.storage.from('offer-photos').upload(path, file, { upsert: false });
-    if (error) throw error;
-    const { data: { publicUrl } } = sb.storage.from('offer-photos').getPublicUrl(path);
+function removePhoto(index){selectedPhotos.splice(index,1);renderPhotoPreviews();}
+async function uploadPhotos(){
+  const urls=[];
+  for(const file of selectedPhotos){
+    const ext=file.name.split('.').pop();
+    const path=`${currentUser.id}/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
+    const{error}=await sb.storage.from('offer-photos').upload(path,file,{upsert:false});
+    if(error)throw error;
+    const{data:{publicUrl}}=sb.storage.from('offer-photos').getPublicUrl(path);
     urls.push(publicUrl);
   }
   return urls;
 }
-
-function updateComparison() {
-  const yourVal  = parseFloat(document.getElementById('offerVal')?.value)||0;
-  const theirVal = listing?.estimated_value ? Number(listing.estimated_value) : 0;
-  const itemText = document.getElementById('offerItem')?.value||'Your offer';
-  if (yourVal>0 && offerType!=='cash' && theirVal>0) {
+function updateComparison(){
+  const yourVal=parseFloat(document.getElementById('offerVal')?.value)||0;
+  const theirVal=listing?.estimated_value?Number(listing.estimated_value):0;
+  const itemText=document.getElementById('offerItem')?.value||'Your offer';
+  if(yourVal>0&&(offerType==='trade'||offerType==='shipit')&&theirVal>0){
     document.getElementById('compareBox').style.display='block';
-    document.getElementById('yourAmt').textContent       = `$${yourVal.toFixed(0)}`;
-    document.getElementById('yourItemLabel').textContent = itemText.slice(0,22);
-    const diff = theirVal-yourVal;
-    const bal  = document.getElementById('tcBalance');
-    if (Math.abs(diff)<=3) { bal.className='tc-balance fair'; bal.textContent='✅ Even trade — fair for both sides!'; }
-    else if (diff>0) { bal.className='tc-balance you-pay'; bal.textContent=`⚖️ Their item is worth ~$${diff.toFixed(0)} more — consider adding cash`; }
-    else { bal.className='tc-balance they-pay'; bal.textContent=`⚖️ Your item is worth ~$${Math.abs(diff).toFixed(0)} more — great deal for them!`; }
-  } else { document.getElementById('compareBox').style.display='none'; }
+    document.getElementById('yourAmt').textContent=`$${yourVal.toFixed(0)}`;
+    document.getElementById('yourItemLabel').textContent=itemText.slice(0,22);
+    const diff=theirVal-yourVal,bal=document.getElementById('tcBalance');
+    if(Math.abs(diff)<=3){bal.className='tc-balance fair';bal.textContent='✅ Even trade — fair for both sides!';}
+    else if(diff>0){bal.className='tc-balance you-pay';bal.textContent=`⚖️ Their item is worth ~$${diff.toFixed(0)} more — consider adding cash`;}
+    else{bal.className='tc-balance they-pay';bal.textContent=`⚖️ Your item is worth ~$${Math.abs(diff).toFixed(0)} more — great deal for them!`;}
+  }else{document.getElementById('compareBox').style.display='none';}
 }
-
-function updateFees() {
-  let base = 0;
-  if (offerType==='trade') base = parseFloat(document.getElementById('offerVal')?.value)||0;
-  if (offerType==='tc')    base = (parseFloat(document.getElementById('offerVal')?.value)||0)+(parseFloat(document.getElementById('cashAmt')?.value)||0);
-  if (offerType==='cash')  base = parseFloat(document.getElementById('cashOnlyAmt')?.value)||0;
-  const fee=base*0.05, total=base+fee;
-  document.getElementById('feeBase').textContent  = `$${base.toFixed(2)}`;
-  document.getElementById('feePct').textContent   = `$${fee.toFixed(2)}`;
-  document.getElementById('feeTotal').textContent = `$${total.toFixed(2)}`;
+function updateFees(){
+  const isShipIt=offerType==='shipit';
+  const feeRate=isShipIt?0.10:0.05;
+  let base=0;
+  if(offerType==='trade'||offerType==='shipit')base=parseFloat(document.getElementById('offerVal')?.value)||0;
+  if(offerType==='tc')base=(parseFloat(document.getElementById('offerVal')?.value)||0)+(parseFloat(document.getElementById('cashAmt')?.value)||0);
+  if(offerType==='cash')base=parseFloat(document.getElementById('cashOnlyAmt')?.value)||0;
+  const fee=base*feeRate,total=base+fee;
+  document.getElementById('feeBase').textContent=`$${base.toFixed(2)}`;
+  document.getElementById('feePct').textContent=`$${fee.toFixed(2)}`;
+  document.getElementById('feeTotal').textContent=`$${total.toFixed(2)}`;
 }
-
-function messageSeller() {
-  if (!listing) return;
-  window.location.href = `alltrades-messages.html?user=${listing.user_id}&listing=${listing.id}`;
-}
-
-async function submitOffer() {
-  if (!listing) return;
-  
-  // W-9 gate — check before anything else
-  const { data: userCheck } = await sb.from('users').select('w9_on_file').eq('id', currentUser.id).single();
-  if (!userCheck?.w9_on_file) {
-    openModal('w9GateModal');
-    return;
+function messageSeller(){if(!listing)return;window.location.href=`alltrades-messages.html?user=${listing.user_id}&listing=${listing.id}`;}
+async function submitOffer(){
+  if(!listing)return;
+  const isShipIt=offerType==='shipit';
+  const{data:userCheck}=await sb.from('users').select('w9_on_file,id_verified').eq('id',currentUser.id).single();
+  if(!userCheck?.w9_on_file){openModal('w9GateModal');return;}
+  if(isShipIt&&!userCheck?.id_verified){showToast('🪪','ID verification required for Ship-It trades.');return;}
+  const itemTitle=document.getElementById('offerItem')?.value.trim();
+  const itemCond=document.getElementById('offerCondition')?.value;
+  const itemVal=parseFloat(document.getElementById('offerVal')?.value)||0;
+  const cashAdd=parseFloat(document.getElementById('cashAmt')?.value)||0;
+  const cashOnly=parseFloat(document.getElementById('cashOnlyAmt')?.value)||0;
+  const msg=document.getElementById('offerMsg')?.value.trim();
+  if(offerType!=='cash'){
+    if(!itemTitle){showToast('⚠️','Please describe what you are offering.');return;}
+    if(!itemCond){showToast('⚠️','Please select your item condition.');return;}
+    if(!itemVal){showToast('⚠️','Please enter your item\'s estimated value.');return;}
+    if(selectedPhotos.length===0){showToast('📸','Please add at least 1 photo of your item.');return;}
   }
-  const itemTitle = document.getElementById('offerItem')?.value.trim();
-  const itemCond  = document.getElementById('offerCondition')?.value;
-  const itemVal   = parseFloat(document.getElementById('offerVal')?.value)||0;
-  const cashAdd   = parseFloat(document.getElementById('cashAmt')?.value)||0;
-  const cashOnly  = parseFloat(document.getElementById('cashOnlyAmt')?.value)||0;
-  const msg       = document.getElementById('offerMsg')?.value.trim();
-
-  if (offerType!=='cash') {
-    if (!itemTitle) { showToast('⚠️','Please describe what you are offering.'); return; }
-    if (!itemCond)  { showToast('⚠️','Please select your item condition.'); return; }
-    if (!itemVal)   { showToast('⚠️','Please enter your item\'s estimated value.'); return; }
-    if (selectedPhotos.length===0) { showToast('📸','Please add at least 1 photo of your item.'); return; }
-  }
-  if (offerType==='cash'&&!cashOnly) { showToast('⚠️','Please enter your cash offer amount.'); return; }
-
-  const btn = document.getElementById('submitOfferBtn');
-  btn.disabled = true;
-
-  try {
-    let photoUrls = [];
-    if (offerType!=='cash' && selectedPhotos.length>0) {
-      btn.textContent = '⏳ Uploading photos…';
-      photoUrls = await uploadPhotos();
-    }
-    btn.textContent = '⏳ Sending offer…';
-    const { error } = await sb.from('offers').insert({
-      listing_id:         listing.id,
-      offerer_id:         currentUser.id,
-      status:             'pending',
-      offer_type:         offerType,
-      offered_item_title: offerType!=='cash' ? itemTitle : null,
-      offered_item_value: offerType!=='cash' ? itemVal   : cashOnly,
-      offered_condition:  offerType!=='cash' ? itemCond  : null,
-      offered_photos:     photoUrls.length>0 ? photoUrls : null,
-      cash_amount:        offerType==='tc' ? cashAdd : offerType==='cash' ? cashOnly : 0,
-      message:            msg||null,
+  if(offerType==='cash'&&!cashOnly){showToast('⚠️','Please enter your cash offer amount.');return;}
+  const btn=document.getElementById('submitOfferBtn');btn.disabled=true;
+  try{
+    let photoUrls=[];
+    if(offerType!=='cash'&&selectedPhotos.length>0){btn.textContent='⏳ Uploading photos…';photoUrls=await uploadPhotos();}
+    btn.textContent='⏳ Sending offer…';
+    const{error}=await sb.from('offers').insert({
+      listing_id:listing.id,offerer_id:currentUser.id,status:'pending',
+      offer_type:isShipIt?'trade':offerType,is_ship_it:isShipIt,
+      offered_item_title:offerType!=='cash'?itemTitle:null,
+      offered_item_value:offerType!=='cash'?itemVal:cashOnly,
+      offered_condition:offerType!=='cash'?itemCond:null,
+      offered_photos:photoUrls.length>0?photoUrls:null,
+      cash_amount:offerType==='tc'?cashAdd:offerType==='cash'?cashOnly:0,
+      message:msg||null,
     });
-    if (error) throw error;
-    openModal('successModal');
-    selectedPhotos = [];
-    renderPhotoPreviews();
-    loadOffers(listing.id);
-  } catch(e) {
-    showToast('⚠️','Error sending offer. Please try again.');
-    console.error(e);
-  } finally {
-    btn.textContent = '🤝 Send Trade Offer';
-    btn.disabled    = false;
-  }
+    if(error)throw error;
+    if(isShipIt){
+      document.getElementById('successModalTitle').textContent='🚚 Ship-It Offer Sent!';
+      document.getElementById('successEmoji').textContent='🚚';
+      document.getElementById('successHeading').textContent='Ship-It Offer Sent!';
+      document.getElementById('successDesc').textContent="The seller has been notified this is a state-to-state Ship-It trade. They can accept or decline — it will be clearly marked in their dashboard.";
+    }else{
+      document.getElementById('successModalTitle').textContent='🎉 Offer Sent!';
+      document.getElementById('successEmoji').textContent='🤝';
+      document.getElementById('successHeading').textContent='Offer Sent!';
+      document.getElementById('successDesc').textContent="The seller has been notified. They have 48 hours to accept or decline. You won't be charged until they accept.";
+    }
+    openModal('successModal');selectedPhotos=[];renderPhotoPreviews();loadOffers(listing.id);
+  }catch(e){showToast('⚠️','Error sending offer. Please try again.');console.error(e);}
+  finally{btn.textContent=isShipIt?'🚚 Send Ship-It Offer':'🤝 Send Trade Offer';btn.disabled=false;}
 }
-
-function showNotFound() { document.getElementById('loadingState').style.display='none'; document.getElementById('notFoundState').style.display='block'; }
-
-function timeAgo(ts) {
-  if (!ts) return '';
+function showNotFound(){document.getElementById('loadingState').style.display='none';document.getElementById('notFoundState').style.display='block';}
+function timeAgo(ts){
+  if(!ts)return'';
   const m=Math.floor((Date.now()-new Date(ts))/60000);
-  if (m<1) return 'just now'; if (m<60) return m+'m ago';
+  if(m<1)return'just now';if(m<60)return m+'m ago';
   const h=Math.floor(m/60);
-  if (h<24) return h+'h ago';
+  if(h<24)return h+'h ago';
   return Math.floor(h/24)+'d ago';
 }
-
-function openModal(id)  { document.getElementById(id).classList.add('open'); }
-function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+function openModal(id){document.getElementById(id).classList.add('open');}
+function closeModal(id){document.getElementById(id).classList.remove('open');}
 document.querySelectorAll('.modal-overlay').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('open');}));
-
-function showToast(icon, msg) {
-  document.getElementById('toastIc').textContent=icon;
-  document.getElementById('toastTx').textContent=msg;
-  const t=document.getElementById('toastEl');
-  t.classList.add('show'); clearTimeout(window._tt);
+function showToast(icon,msg){
+  document.getElementById('toastIc').textContent=icon;document.getElementById('toastTx').textContent=msg;
+  const t=document.getElementById('toastEl');t.classList.add('show');clearTimeout(window._tt);
   window._tt=setTimeout(()=>t.classList.remove('show'),3500);
 }
-
 updateFees();
 </script>
-<!-- TRADEZY HELP WIDGET START — paste before </body> on every page -->
+<!-- TRADEZY HELP WIDGET START -->
 <style>
-/* ── TRADEZY HELP WIDGET STYLES ── */
 #tz-help-bubble{position:fixed;bottom:24px;right:24px;z-index:9999;display:flex;flex-direction:column;align-items:flex-end;gap:10px;font-family:'Lato',system-ui,sans-serif;}
 #tz-bubble-btn{width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#0a1628,#1a56db);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1.4rem;box-shadow:0 4px 20px rgba(26,86,219,.4);transition:all .2s;position:relative;}
-#tz-bubble-btn:hover{transform:scale(1.08);box-shadow:0 6px 28px rgba(26,86,219,.5);}
+#tz-bubble-btn:hover{transform:scale(1.08);}
 #tz-bubble-btn .tz-notif{position:absolute;top:0;right:0;width:14px;height:14px;background:#dc2626;border-radius:50%;border:2px solid #fff;display:none;}
 #tz-chat-panel{display:none;width:360px;height:520px;background:#fff;border-radius:16px;box-shadow:0 20px 60px rgba(0,0,0,.18);flex-direction:column;overflow:hidden;border:1px solid #e2e8f0;animation:tzSlideUp .2s ease;}
 #tz-chat-panel.open{display:flex;}
 @keyframes tzSlideUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
 .tz-panel-head{background:linear-gradient(135deg,#0a1628,#112240);padding:14px 16px;display:flex;align-items:center;gap:10px;flex-shrink:0;}
 .tz-head-icon{width:34px;height:34px;background:rgba(245,158,11,.2);border:1px solid rgba(245,158,11,.3);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0;}
-.tz-head-info{flex:1;}
-.tz-head-title{font-weight:800;font-size:.88rem;color:#fff;font-family:'Barlow Condensed',system-ui,sans-serif;letter-spacing:.3px;}
+.tz-head-info{flex:1;}.tz-head-title{font-weight:800;font-size:.88rem;color:#fff;font-family:'Barlow Condensed',system-ui,sans-serif;letter-spacing:.3px;}
 .tz-head-status{font-size:10px;color:#22c55e;display:flex;align-items:center;gap:4px;}
 .tz-head-dot{width:6px;height:6px;background:#22c55e;border-radius:50%;animation:tzPulse 2s infinite;}
 @keyframes tzPulse{0%,100%{opacity:1}50%{opacity:.5}}
 .tz-head-close{background:rgba(255,255,255,.1);border:none;color:#94a3b8;width:26px;height:26px;border-radius:50%;cursor:pointer;font-size:.85rem;display:flex;align-items:center;justify-content:center;transition:all .15s;}
 .tz-head-close:hover{background:rgba(255,255,255,.2);color:#fff;}
 .tz-messages{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px;scroll-behavior:smooth;}
-.tz-messages::-webkit-scrollbar{width:4px;}
-.tz-messages::-webkit-scrollbar-track{background:transparent;}
-.tz-messages::-webkit-scrollbar-thumb{background:#e2e8f0;border-radius:2px;}
+.tz-messages::-webkit-scrollbar{width:4px;}.tz-messages::-webkit-scrollbar-track{background:transparent;}.tz-messages::-webkit-scrollbar-thumb{background:#e2e8f0;border-radius:2px;}
 .tz-msg{max-width:84%;display:flex;flex-direction:column;gap:2px;}
-.tz-msg.bot{align-self:flex-start;}
-.tz-msg.user{align-self:flex-end;}
+.tz-msg.bot{align-self:flex-start;}.tz-msg.user{align-self:flex-end;}
 .tz-bubble{padding:9px 12px;border-radius:12px;font-size:13px;line-height:1.5;}
 .tz-msg.bot .tz-bubble{background:#f1f5f9;color:#1a1a2e;border-radius:4px 12px 12px 12px;}
 .tz-msg.user .tz-bubble{background:linear-gradient(135deg,#1a56db,#2563eb);color:#fff;border-radius:12px 4px 12px 12px;}
-.tz-msg-time{font-size:10px;color:#94a3b8;padding:0 4px;}
-.tz-msg.user .tz-msg-time{text-align:right;}
+.tz-msg-time{font-size:10px;color:#94a3b8;padding:0 4px;}.tz-msg.user .tz-msg-time{text-align:right;}
 .tz-typing{display:flex;align-items:center;gap:4px;padding:9px 12px;background:#f1f5f9;border-radius:4px 12px 12px 12px;width:fit-content;}
 .tz-typing span{width:6px;height:6px;background:#94a3b8;border-radius:50%;animation:tzDot 1.2s infinite;}
-.tz-typing span:nth-child(2){animation-delay:.2s;}
-.tz-typing span:nth-child(3){animation-delay:.4s;}
+.tz-typing span:nth-child(2){animation-delay:.2s;}.tz-typing span:nth-child(3){animation-delay:.4s;}
 @keyframes tzDot{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-4px)}}
 .tz-quick-btns{display:flex;flex-wrap:wrap;gap:5px;margin-top:4px;}
 .tz-quick-btn{background:#fff;border:1px solid #e2e8f0;color:#1a56db;font-size:11px;font-weight:700;padding:4px 10px;border-radius:99px;cursor:pointer;transition:all .12s;font-family:inherit;}
@@ -911,19 +782,14 @@ updateFees();
 .tz-input{flex:1;border:1.5px solid #e2e8f0;border-radius:8px;padding:8px 11px;font-size:13px;font-family:inherit;color:#1a1a2e;outline:none;resize:none;height:38px;max-height:90px;overflow-y:auto;transition:border-color .15s;background:#fff;}
 .tz-input:focus{border-color:#1a56db;box-shadow:0 0 0 3px rgba(26,86,219,.07);}
 .tz-send-btn{width:36px;height:36px;background:linear-gradient(135deg,#1a56db,#2563eb);border:none;border-radius:8px;color:#fff;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s;align-self:flex-end;}
-.tz-send-btn:hover{transform:scale(1.05);}
-.tz-send-btn:disabled{opacity:.5;cursor:not-allowed;transform:none;}
+.tz-send-btn:hover{transform:scale(1.05);}.tz-send-btn:disabled{opacity:.5;cursor:not-allowed;transform:none;}
 .tz-powered{text-align:center;font-size:10px;color:#cbd5e1;padding:5px 0 2px;flex-shrink:0;}
 </style>
- 
 <div id="tz-help-bubble">
   <div id="tz-chat-panel">
     <div class="tz-panel-head">
       <div class="tz-head-icon">🤖</div>
-      <div class="tz-head-info">
-        <div class="tz-head-title">Tradezy Support</div>
-        <div class="tz-head-status"><span class="tz-head-dot"></span>Online — AI Assistant</div>
-      </div>
+      <div class="tz-head-info"><div class="tz-head-title">Tradezy Support</div><div class="tz-head-status"><span class="tz-head-dot"></span>Online — AI Assistant</div></div>
       <button class="tz-head-close" onclick="tzToggle()">✕</button>
     </div>
     <div class="tz-messages" id="tzMessages"></div>
@@ -933,267 +799,65 @@ updateFees();
     </div>
     <div class="tz-powered">Powered by Claude AI · Tradezy Support</div>
   </div>
-  <button id="tz-bubble-btn" onclick="tzToggle()" title="Get Help">
-    💬
-    <div class="tz-notif" id="tzNotif"></div>
-  </button>
+  <button id="tz-bubble-btn" onclick="tzToggle()" title="Get Help">💬<div class="tz-notif" id="tzNotif"></div></button>
 </div>
- 
 <script>
-(function() {
-  // ── CONFIG ──
-  const SUPABASE_URL = 'https://equvwaspcoeetfsexqki.supabase.co';
-  const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVxdXZ3YXNwY29lZXRmc2V4cWtpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgyNzc2MjQsImV4cCI6MjA5Mzg1MzYyNH0.TP6Kk3pzHW1PYMUu5D9Vu2lJrazIEagzu5csYhqkrfI';
- 
-  const SYSTEM_PROMPT = `You are the Tradezy support assistant — a helpful, friendly AI for Tradezy, a peer-to-peer local trading marketplace.
- 
-ABOUT TRADEZY:
-- Free local trading platform where users list items and trade with verified neighbors
-- Platform fee: 5% per party on completed trades (Founding Traders pay 3% lifetime)
-- Ship-It trades (state-to-state): 10% fee, fully verified users only, launching July 31 2026
-- Phase 1 launch: July 17 2026 — Connecticut and Ohio statewide
-- Phase 2: July 31 2026 — Nationwide
- 
-HOW TRADING WORKS:
-1. Post a listing with photos, condition, what you want in return
-2. Browse listings, make offers (item-for-item, item + cash top-up, or cash)
-3. Accept an offer, agree on a meetup spot
-4. Both parties confirm the exchange in-app — this unlocks ratings
-5. Leave ratings after confirmed meetup
- 
-VERIFICATION & TRUST:
-- Email verification required to use platform
-- Address verification adds trust score
-- ID verification required for Ship-It trades
-- W-9 tax form required before posting listings
-- Trust score shown on profiles
- 
-PROHIBITED ITEMS (permanent ban): Firearms, weapons, alcohol, tobacco, drugs, live animals, adult content, stolen goods, cash, gift cards, cryptocurrency
- 
-FEES EXPLAINED:
-- 5% of total trade value per party — example: $100 item trade = $5 fee each party
-- $90 item + $40 cash top-up = $130 total = $6.50 fee each party
-- Founding Traders: 3% lifetime (signed up before July 17 launch)
-- Listing is always free
- 
-SHIP-IT TRADES (July 31+):
-- State-to-state trading for fully ID-verified users only
-- 10% fee per party at trade acceptance
-- Payment via Zelle, PayPal, Venmo, Apple Pay, Google Pay, or Cash App (peer-to-peer, Tradezy never holds funds)
-- Buyer uploads payment screenshot as proof
-- Seller enters tracking number
-- Both confirm delivery to close trade
- 
-TCG CATEGORIES: Pokémon, One Piece, MTG, Yu-Gi-Oh, Lorcana, Flesh & Blood
-SPORTS CARDS: Baseball, Football, Basketball, Hockey, Soccer
-Card grading supported: PSA, BGS, SGC, TAG
- 
-ACCOUNT HELP:
-- Password reset: direct users to https://tradezyhq.com/alltrades-auth.html
-- Account locked/banned: direct to support@tradezyhq.com
-- Verification issues: direct to https://tradezyhq.com/alltrades-verification.html
- 
-DISPUTE RESOLUTION:
-- File a dispute at https://tradezyhq.com/alltrades-disputes.html
-- Email disputes@tradezyhq.com
-- SLA: CRITICAL issues 4hrs, HIGH 24hrs, MEDIUM 48hrs, LOW 72hrs
- 
-ESCALATION RULES — escalate to human immediately if:
-- User reports fraud, scam, or didn't receive item
-- User mentions safety concern, threat, or harassment
-- User is clearly distressed or frustrated after multiple exchanges
-- User explicitly requests a human agent
-- Issue involves account ban or suspension
- 
-ESCALATION: When escalating, provide support@tradezyhq.com for general issues or disputes@tradezyhq.com for trade disputes. Summarize the issue briefly.
- 
-TONE: Warm, clear, concise. Never give legal or financial advice. Never make up information — if unsure, direct to support@tradezyhq.com. Keep responses short and scannable — use bullet points for multi-step answers.`;
- 
-  // ── STATE ──
-  let isOpen = false;
-  let isLoading = false;
-  let exchangeCount = 0;
-  let hasShownWelcome = false;
-  const history = [];
- 
-  // ── TOGGLE ──
-  window.tzToggle = function() {
-    isOpen = !isOpen;
-    const panel = document.getElementById('tz-chat-panel');
-    const btn = document.getElementById('tz-bubble-btn');
-    if (isOpen) {
-      panel.classList.add('open');
-      btn.innerHTML = '✕<div class="tz-notif" id="tzNotif"></div>';
-      if (!hasShownWelcome) {
-        hasShownWelcome = true;
-        tzBotMessage("👋 Hey! I'm the Tradezy support assistant. I can help with:", [
-          "How trading works",
-          "Fees & verification",
-          "Account issues",
-          "Reporting a problem"
-        ]);
-      }
-      setTimeout(() => document.getElementById('tzInput')?.focus(), 200);
-    } else {
-      panel.classList.remove('open');
-      btn.innerHTML = '💬<div class="tz-notif" id="tzNotif"></div>';
-    }
+(function(){
+  const SP=`You are the Tradezy support assistant for a peer-to-peer local trading marketplace. Ship-It trades are state-to-state, require ID verification from both parties, cost 10% per party at acceptance, and payment is peer-to-peer (Zelle/PayPal/Venmo/Apple Pay/Google Pay/Cash App). Local trades cost 5%. Founding Traders pay 3% lifetime. Answer questions about how trading works, fees, verification, and disputes. Be warm and concise. For disputes: https://tradezyhq.com/alltrades-disputes.html. For verification: https://tradezyhq.com/alltrades-verification.html.`;
+  let isOpen=false,isLoading=false,exchangeCount=0,hasShownWelcome=false;
+  const history=[];
+  window.tzToggle=function(){
+    isOpen=!isOpen;
+    const panel=document.getElementById('tz-chat-panel'),btn=document.getElementById('tz-bubble-btn');
+    if(isOpen){
+      panel.classList.add('open');btn.innerHTML='✕<div class="tz-notif" id="tzNotif"></div>';
+      if(!hasShownWelcome){hasShownWelcome=true;tzBotMsg("👋 Hey! I'm the Tradezy support assistant. I can help with:",["How trading works","Ship-It trades","Fees & verification","Reporting a problem"]);}
+      setTimeout(()=>document.getElementById('tzInput')?.focus(),200);
+    }else{panel.classList.remove('open');btn.innerHTML='💬<div class="tz-notif" id="tzNotif"></div>';}
   };
- 
-  // ── SEND ──
-  window.tzSend = async function() {
-    const input = document.getElementById('tzInput');
-    const text = input.value.trim();
-    if (!text || isLoading) return;
-    input.value = '';
-    tzAutoResize(input);
-    tzUserMessage(text);
-    history.push({ role: 'user', content: text });
-    exchangeCount++;
-    await tzGetResponse();
+  window.tzSend=async function(){
+    const input=document.getElementById('tzInput'),text=input.value.trim();
+    if(!text||isLoading)return;
+    input.value='';tzAutoResize(input);tzUserMsg(text);
+    history.push({role:'user',content:text});exchangeCount++;await tzGetResp();
   };
- 
-  window.tzKeyDown = function(e) {
-    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); tzSend(); }
-  };
- 
-  window.tzAutoResize = function(el) {
-    el.style.height = '38px';
-    el.style.height = Math.min(el.scrollHeight, 90) + 'px';
-  };
- 
-  // ── GET AI RESPONSE ──
-  async function tzGetResponse() {
-    isLoading = true;
-    document.getElementById('tzSendBtn').disabled = true;
- 
-    // Show typing indicator
-    const typingId = 'tz-typing-' + Date.now();
-    const msgs = document.getElementById('tzMessages');
-    const typingEl = document.createElement('div');
-    typingEl.id = typingId;
-    typingEl.className = 'tz-msg bot';
-    typingEl.innerHTML = '<div class="tz-typing"><span></span><span></span><span></span></div>';
-    msgs.appendChild(typingEl);
-    msgs.scrollTop = msgs.scrollHeight;
- 
-    try {
-      const response = await fetch('https://tradezy-ai-proxy.throbbing-lake-08ed.workers.dev', {
-        method: 'POST',
-       headers: { 'Content-Type': 'application/json',  },
-        body: JSON.stringify({
-          model: 'claude-sonnet-4-6',
-          max_tokens: 1000,
-          system: SYSTEM_PROMPT,
-          messages: history
-        })
-      });
- 
-      const data = await response.json();
-      const reply = data.content?.[0]?.text || "I'm having trouble responding right now. Please email support@tradezyhq.com.";
- 
-      // Remove typing indicator
-      document.getElementById(typingId)?.remove();
- 
-      // Add to history
-      history.push({ role: 'assistant', content: reply });
- 
-      // Check for escalation triggers
-      const userText = history.filter(m => m.role === 'user').map(m => m.content).join(' ').toLowerCase();
-      const escalateKeywords = ['scam', 'fraud', 'didn\'t receive', 'never received', 'threat', 'harass', 'human', 'agent', 'real person', 'banned', 'suspended', 'unsafe'];
-      const shouldEscalate = escalateKeywords.some(k => userText.includes(k)) || exchangeCount >= 4;
- 
-      // Render response
-      tzBotMessage(reply, null, shouldEscalate);
- 
-    } catch(e) {
-      document.getElementById(typingId)?.remove();
-      tzBotMessage("I'm having trouble connecting right now. For immediate help, please email support@tradezyhq.com or file a dispute at the link below.", null, true);
-    }
- 
-    isLoading = false;
-    document.getElementById('tzSendBtn').disabled = false;
+  window.tzKeyDown=function(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();tzSend();}};
+  window.tzAutoResize=function(el){el.style.height='38px';el.style.height=Math.min(el.scrollHeight,90)+'px';};
+  async function tzGetResp(){
+    isLoading=true;document.getElementById('tzSendBtn').disabled=true;
+    const tid='tz-t-'+Date.now(),msgs=document.getElementById('tzMessages');
+    const tel=document.createElement('div');tel.id=tid;tel.className='tz-msg bot';tel.innerHTML='<div class="tz-typing"><span></span><span></span><span></span></div>';
+    msgs.appendChild(tel);msgs.scrollTop=msgs.scrollHeight;
+    try{
+      const r=await fetch('https://tradezy-ai-proxy.throbbing-lake-08ed.workers.dev',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:1000,system:SP,messages:history})});
+      const d=await r.json();const reply=d.content?.[0]?.text||"I'm having trouble responding. Please email support@tradezyhq.com.";
+      document.getElementById(tid)?.remove();history.push({role:'assistant',content:reply});
+      const ut=history.filter(m=>m.role==='user').map(m=>m.content).join(' ').toLowerCase();
+      const esc=['scam','fraud','didn\'t receive','threat','harass','human','agent','banned','suspended','unsafe'].some(k=>ut.includes(k))||exchangeCount>=4;
+      tzBotMsg(reply,null,esc);
+    }catch(e){document.getElementById(tid)?.remove();tzBotMsg("I'm having trouble connecting. Please email support@tradezyhq.com.",null,true);}
+    isLoading=false;document.getElementById('tzSendBtn').disabled=false;
   }
- 
-  // ── RENDER BOT MESSAGE ──
-  function tzBotMessage(text, quickReplies = null, showEscalate = false) {
-    const msgs = document.getElementById('tzMessages');
-    const wrapper = document.createElement('div');
-    wrapper.className = 'tz-msg bot';
- 
-    // Parse markdown-lite: bold, bullets
-    let html = text
-      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-      .replace(/^[-•] (.+)$/gm, '<li>$1</li>')
-      .replace(/(<li>.*<\/li>)/gs, '<ul style="margin:4px 0 0 14px;padding:0;font-size:13px;line-height:1.6">$1</ul>')
-      .replace(/\n\n/g, '<br><br>')
-      .replace(/\n/g, '<br>');
- 
-    // Detect and linkify account action hints
-    let extraHTML = '';
- 
-    if (text.toLowerCase().includes('password reset') || text.toLowerCase().includes('reset your password')) {
-      extraHTML += `<a class="tz-action-link" href="https://tradezyhq.com/alltrades-auth.html" target="_blank">🔑 Reset Password →</a>`;
-    }
-    if (text.toLowerCase().includes('verification') || text.toLowerCase().includes('verify your')) {
-      extraHTML += `<a class="tz-action-link" href="https://tradezyhq.com/alltrades-verification.html" target="_blank">✅ Go to Verification →</a>`;
-    }
-    if (text.toLowerCase().includes('dispute') || text.toLowerCase().includes('file a dispute')) {
-      extraHTML += `<a class="tz-action-link" href="https://tradezyhq.com/alltrades-disputes.html" target="_blank">⚖️ File a Dispute →</a>`;
-    }
- 
-    let bubbleHTML = `<div class="tz-bubble">${html}</div>`;
-    if (extraHTML) bubbleHTML += extraHTML;
- 
-    if (showEscalate) {
-      bubbleHTML += `
-        <div class="tz-escalate-card">
-          <div class="tz-escalate-title">🙋 Want to talk to a person?</div>
-          <div style="color:#92400e;font-size:12px;line-height:1.5">Our support team is standing by to help.</div>
-          <div style="display:flex;gap:7px;flex-wrap:wrap;margin-top:7px;">
-            <a class="tz-escalate-btn" href="mailto:support@tradezyhq.com?subject=Support Request from Tradezy Widget">📧 Email Support</a>
-            <a class="tz-escalate-btn" href="https://tradezyhq.com/alltrades-disputes.html" target="_blank" style="background:#1a56db">⚖️ File Dispute</a>
-          </div>
-        </div>`;
-    }
- 
-    if (quickReplies && quickReplies.length) {
-      bubbleHTML += '<div class="tz-quick-btns">' +
-        quickReplies.map(q => `<button class="tz-quick-btn" onclick="tzQuickReply('${q.replace(/'/g, "\\'")}')">${q}</button>`).join('') +
-        '</div>';
-    }
- 
-    wrapper.innerHTML = bubbleHTML;
-    const time = document.createElement('div');
-    time.className = 'tz-msg-time';
-    time.textContent = new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
-    wrapper.appendChild(time);
-    msgs.appendChild(wrapper);
-    msgs.scrollTop = msgs.scrollHeight;
+  function tzBotMsg(text,qr=null,esc=false){
+    const msgs=document.getElementById('tzMessages'),w=document.createElement('div');w.className='tz-msg bot';
+    let html=text.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/^[-•] (.+)$/gm,'<li>$1</li>').replace(/(<li>.*<\/li>)/gs,'<ul style="margin:4px 0 0 14px;padding:0;font-size:13px;line-height:1.6">$1</ul>').replace(/\n\n/g,'<br><br>').replace(/\n/g,'<br>');
+    let ex='';
+    if(text.toLowerCase().includes('verification')||text.toLowerCase().includes('verify'))ex+=`<a class="tz-action-link" href="https://tradezyhq.com/alltrades-verification.html" target="_blank">✅ Go to Verification →</a>`;
+    if(text.toLowerCase().includes('dispute'))ex+=`<a class="tz-action-link" href="https://tradezyhq.com/alltrades-disputes.html" target="_blank">⚖️ File a Dispute →</a>`;
+    let bh=`<div class="tz-bubble">${html}</div>`;if(ex)bh+=ex;
+    if(esc)bh+=`<div class="tz-escalate-card"><div class="tz-escalate-title">🙋 Want to talk to a person?</div><div style="color:#92400e;font-size:12px">Our support team is standing by.</div><div style="display:flex;gap:7px;flex-wrap:wrap;margin-top:7px;"><a class="tz-escalate-btn" href="mailto:support@tradezyhq.com">📧 Email Support</a><a class="tz-escalate-btn" href="https://tradezyhq.com/alltrades-disputes.html" target="_blank" style="background:#1a56db">⚖️ File Dispute</a></div></div>`;
+    if(qr&&qr.length)bh+='<div class="tz-quick-btns">'+qr.map(q=>`<button class="tz-quick-btn" onclick="tzQuickReply('${q.replace(/'/g,"\\'")}')">${q}</button>`).join('')+'</div>';
+    w.innerHTML=bh;
+    const t=document.createElement('div');t.className='tz-msg-time';t.textContent=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+    w.appendChild(t);msgs.appendChild(w);msgs.scrollTop=msgs.scrollHeight;
   }
- 
-  // ── RENDER USER MESSAGE ──
-  function tzUserMessage(text) {
-    const msgs = document.getElementById('tzMessages');
-    const wrapper = document.createElement('div');
-    wrapper.className = 'tz-msg user';
-    wrapper.innerHTML = `
-      <div class="tz-bubble">${escHtml(text)}</div>
-      <div class="tz-msg-time">${new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})}</div>`;
-    msgs.appendChild(wrapper);
-    msgs.scrollTop = msgs.scrollHeight;
+  function tzUserMsg(text){
+    const msgs=document.getElementById('tzMessages'),w=document.createElement('div');w.className='tz-msg user';
+    w.innerHTML=`<div class="tz-bubble">${esc(text)}</div><div class="tz-msg-time">${new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}</div>`;
+    msgs.appendChild(w);msgs.scrollTop=msgs.scrollHeight;
   }
- 
-  // ── QUICK REPLY ──
-  window.tzQuickReply = function(text) {
-    document.getElementById('tzInput').value = text;
-    tzSend();
-  };
- 
-  function escHtml(str) {
-    return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-  }
- 
+  window.tzQuickReply=function(t){document.getElementById('tzInput').value=t;tzSend();};
+  function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 })();
 </script>
 <!-- TRADEZY HELP WIDGET END -->
