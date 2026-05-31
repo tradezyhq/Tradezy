@@ -188,8 +188,7 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);height
 .msg-flag{display:none;position:absolute;top:50%;transform:translateY(-50%);background:#dc2626;color:#fff;border:none;border-radius:50%;width:24px;height:24px;font-size:.65rem;cursor:pointer;align-items:center;justify-content:center;opacity:0;transition:opacity .15s;z-index:10;box-shadow:0 2px 8px rgba(220,38,38,.4);}
 .msg-wrap.mine .msg-flag{left:-32px;}
 .msg-wrap.theirs .msg-flag{right:-32px;}
-body.report-mode .msg-flag{display:flex;}
-body.report-mode .msg-wrap:hover .msg-flag{opacity:1;}
+body.report-mode .msg-flag{display:flex;opacity:1;}
 body.report-mode .msgs-area{cursor:crosshair;}
 body.report-mode .bubble{transition:opacity .15s;}
 body.report-mode .msg-wrap:hover .bubble{opacity:.85;}
