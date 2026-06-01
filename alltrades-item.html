@@ -156,6 +156,17 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);}
 .cash-wrap{display:flex;align-items:center;border:1.5px solid #fde68a;border-radius:7px;overflow:hidden;background:#fff;}
 .cash-prefix{padding:9px 11px;background:#fef3c7;font-family:'Barlow Condensed',sans-serif;font-weight:800;color:var(--gold);font-size:1rem;border-right:1px solid #fde68a;}
 .cash-wrap input{flex:1;border:none;outline:none;padding:9px 11px;font-size:14px;font-family:'Lato',sans-serif;}
+/* PAYMENT METHOD PICKER */
+.pay-method-wrap{margin-top:10px;}
+.pay-method-label{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:7px;display:block;}
+.pay-method-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;}
+.pay-pill{border:1.5px solid var(--border);border-radius:7px;padding:7px 5px;text-align:center;cursor:pointer;transition:all .15s;background:#fff;}
+.pay-pill:hover{border-color:var(--blue);background:#eff6ff;}
+.pay-pill.selected{border-color:var(--green);background:#f0fdf4;}
+.pay-pill.selected .pp-name{color:var(--green);}
+.pay-pill.hidden{display:none;}
+.pp-icon{font-size:1.1rem;margin-bottom:2px;}
+.pp-name{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.72rem;color:var(--muted);line-height:1.2;}
 .fee-box{border-radius:10px;padding:14px 16px;margin-bottom:14px;}
 .fee-box.local-fee{background:linear-gradient(135deg,#1e3a8a,#1e2d6e);}
 .fee-box.shipit-fee{background:linear-gradient(135deg,#0c4a6e,#0369a1);}
@@ -301,7 +312,7 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);}
         </div>
         <div class="shipit-offer-banner" id="shipItBanner" style="display:none">
           <span class="sob-icon">🚚</span>
-          <div>
+          <div style="flex:1">
             <div class="sob-title">Ship-It Trade — State to State</div>
             <div class="sob-desc">This is a state-to-state trade. Both parties must be ID verified. Payment is peer-to-peer — Tradezy never holds funds.</div>
             <ul class="sob-steps">
@@ -310,6 +321,22 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);}
               <li>Both confirm delivery → ratings unlock</li>
               <li>10% platform fee per party at acceptance</li>
             </ul>
+            <div style="margin-top:12px;border-top:1px solid rgba(255,255,255,.15);padding-top:10px;">
+              <div style="font-size:11px;font-weight:700;color:#bae6fd;margin-bottom:7px;text-transform:uppercase;letter-spacing:.5px;">💸 Optional Cash Top-Up</div>
+              <div style="display:flex;align-items:center;border:1.5px solid rgba(255,255,255,.2);border-radius:7px;overflow:hidden;background:rgba(255,255,255,.08);margin-bottom:8px;">
+                <span style="padding:8px 10px;background:rgba(255,255,255,.1);font-family:'Barlow Condensed',sans-serif;font-weight:800;color:#7dd3fc;font-size:1rem;border-right:1px solid rgba(255,255,255,.15);">$</span>
+                <input type="number" id="shipitCashAmt" placeholder="0.00" min="0" style="flex:1;border:none;outline:none;padding:8px 10px;font-size:13px;font-family:'Lato',sans-serif;background:transparent;color:#fff;" oninput="updateFees()" placeholder="Add cash top-up (optional)">
+              </div>
+              <div style="font-size:11px;font-weight:700;color:#bae6fd;margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px;">How will you send?</div>
+              <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:5px;" id="shipitPayGrid">
+                <div class="pay-pill" style="background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.2);" onclick="selectPayMethod(this,'shipit','Zelle')"><div class="pp-icon">💙</div><div class="pp-name" style="color:#bae6fd">Zelle</div></div>
+                <div class="pay-pill" style="background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.2);" onclick="selectPayMethod(this,'shipit','PayPal')"><div class="pp-icon">🅿️</div><div class="pp-name" style="color:#bae6fd">PayPal</div></div>
+                <div class="pay-pill" style="background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.2);" onclick="selectPayMethod(this,'shipit','Venmo')"><div class="pp-icon">💜</div><div class="pp-name" style="color:#bae6fd">Venmo</div></div>
+                <div class="pay-pill" style="background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.2);" onclick="selectPayMethod(this,'shipit','Apple Pay')"><div class="pp-icon">🍎</div><div class="pp-name" style="color:#bae6fd">Apple Pay</div></div>
+                <div class="pay-pill" style="background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.2);" onclick="selectPayMethod(this,'shipit','Google Pay')"><div class="pp-icon">🔵</div><div class="pp-name" style="color:#bae6fd">Google Pay</div></div>
+                <div class="pay-pill" style="background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.2);" onclick="selectPayMethod(this,'shipit','Cash App')"><div class="pp-icon">💚</div><div class="pp-name" style="color:#bae6fd">Cash App</div></div>
+              </div>
+            </div>
           </div>
         </div>
         <div class="shipit-id-gate" id="shipItIdGate">
@@ -351,12 +378,36 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);}
         <div class="cash-box" id="cashBox">
           <div style="font-size:12px;font-weight:700;color:#92400e;margin-bottom:7px">💵 Cash to add on top</div>
           <div class="cash-wrap"><span class="cash-prefix">$</span><input type="number" id="cashAmt" placeholder="Amount" min="0" oninput="updateFees()"></div>
+          <div class="pay-method-wrap" id="tcPayMethodWrap">
+            <span class="pay-method-label">How will you send the cash?</span>
+            <div class="pay-method-grid" id="tcPayGrid">
+              <div class="pay-pill" onclick="selectPayMethod(this,'tc','Zelle')"><div class="pp-icon">💙</div><div class="pp-name">Zelle</div></div>
+              <div class="pay-pill" onclick="selectPayMethod(this,'tc','PayPal')"><div class="pp-icon">🅿️</div><div class="pp-name">PayPal</div></div>
+              <div class="pay-pill" onclick="selectPayMethod(this,'tc','Venmo')"><div class="pp-icon">💜</div><div class="pp-name">Venmo</div></div>
+              <div class="pay-pill" onclick="selectPayMethod(this,'tc','Apple Pay')"><div class="pp-icon">🍎</div><div class="pp-name">Apple Pay</div></div>
+              <div class="pay-pill" onclick="selectPayMethod(this,'tc','Google Pay')"><div class="pp-icon">🔵</div><div class="pp-name">Google Pay</div></div>
+              <div class="pay-pill" onclick="selectPayMethod(this,'tc','Cash App')"><div class="pp-icon">💚</div><div class="pp-name">Cash App</div></div>
+              <div class="pay-pill" id="tcCashInPerson" onclick="selectPayMethod(this,'tc','Cash in Person')"><div class="pp-icon">💵</div><div class="pp-name">Cash in Person</div></div>
+            </div>
+          </div>
         </div>
         <div id="cashOnlySection" style="display:none">
           <div class="field"><label>Your Cash Offer ($)</label>
             <div style="display:flex;align-items:center;border:1.5px solid var(--border);border-radius:7px;overflow:hidden;background:#fff;">
               <span style="padding:9px 11px;background:var(--surface);font-family:'Barlow Condensed',sans-serif;font-weight:800;color:var(--muted);border-right:1px solid var(--border);">$</span>
               <input type="number" id="cashOnlyAmt" placeholder="e.g. 28.00" style="flex:1;border:none;outline:none;padding:9px 11px;font-size:14px;font-family:'Lato',sans-serif;" oninput="updateFees()">
+            </div>
+          </div>
+          <div class="pay-method-wrap">
+            <span class="pay-method-label">How will you send payment?</span>
+            <div class="pay-method-grid" id="cashOnlyPayGrid">
+              <div class="pay-pill" onclick="selectPayMethod(this,'cashonly','Zelle')"><div class="pp-icon">💙</div><div class="pp-name">Zelle</div></div>
+              <div class="pay-pill" onclick="selectPayMethod(this,'cashonly','PayPal')"><div class="pp-icon">🅿️</div><div class="pp-name">PayPal</div></div>
+              <div class="pay-pill" onclick="selectPayMethod(this,'cashonly','Venmo')"><div class="pp-icon">💜</div><div class="pp-name">Venmo</div></div>
+              <div class="pay-pill" onclick="selectPayMethod(this,'cashonly','Apple Pay')"><div class="pp-icon">🍎</div><div class="pp-name">Apple Pay</div></div>
+              <div class="pay-pill" onclick="selectPayMethod(this,'cashonly','Google Pay')"><div class="pp-icon">🔵</div><div class="pp-name">Google Pay</div></div>
+              <div class="pay-pill" onclick="selectPayMethod(this,'cashonly','Cash App')"><div class="pp-icon">💚</div><div class="pp-name">Cash App</div></div>
+              <div class="pay-pill" id="cashOnlyCashInPerson" onclick="selectPayMethod(this,'cashonly','Cash in Person')"><div class="pp-icon">💵</div><div class="pp-name">Cash in Person</div></div>
             </div>
           </div>
         </div>
@@ -416,6 +467,15 @@ const sb = window.supabase.createClient(
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVxdXZ3YXNwY29lZXRmc2V4cWtpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgyNzc2MjQsImV4cCI6MjA5Mzg1MzYyNH0.TP6Kk3pzHW1PYMUu5D9Vu2lJrazIEagzu5csYhqkrfI'
 );
 let currentUser=null,currentUserData=null,listing=null,offerType='trade',watching=false,selectedPhotos=[],lightboxPhotos=[],lightboxIndex=0;
+let selectedPayMethod = { tc: null, cashonly: null, shipit: null };
+
+function selectPayMethod(el, context, method) {
+  // Deselect all pills in this grid
+  const grid = el.closest('.pay-method-grid, [id$="PayGrid"]');
+  if (grid) grid.querySelectorAll('.pay-pill').forEach(p => p.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedPayMethod[context] = method;
+}
 const CAT_EMOJI={'Food & Water':'🥫','Garden':'🌱','Electronics':'⚡','Tools':'🔧','Sports':'🚲','Music':'🎵','Gaming':'🎮','Clothing':'👗','Books':'📚','Trading Cards':'🃏','Other':'📦'};
 (async()=>{
   const{data:{session}}=await sb.auth.getSession();
@@ -597,6 +657,11 @@ function setOfferType(type){
   document.getElementById('cashOnlySection').style.display=type==='cash'?'block':'none';
   if(type!=='trade'&&type!=='shipit')document.getElementById('compareBox').style.display='none';
   document.getElementById('yourItemTitle').textContent=isShipIt?'Your Item to Trade (Ships to Seller)':'Your Item to Trade';
+  // Cash in Person only for local trades — hide on Ship-It
+  const tcCIP = document.getElementById('tcCashInPerson');
+  const coCIP = document.getElementById('cashOnlyCashInPerson');
+  if (tcCIP) tcCIP.classList.toggle('hidden', isShipIt);
+  if (coCIP) coCIP.classList.toggle('hidden', isShipIt);
   const feeBox=document.getElementById('feeBox');
   if(isShipIt){
     feeBox.className='fee-box shipit-fee';
@@ -690,11 +755,25 @@ async function submitOffer(){
     if(selectedPhotos.length===0){showToast('📸','Please add at least 1 photo of your item.');return;}
   }
   if(offerType==='cash'&&!cashOnly){showToast('⚠️','Please enter your cash offer amount.');return;}
+  // Validate payment method for cash-involved offers
+  const needsPayMethod = offerType === 'tc' || offerType === 'cash';
+  const payMethodContext = offerType === 'tc' ? 'tc' : offerType === 'cash' ? 'cashonly' : 'shipit';
+  const hasCashTopUp = isShipIt && (parseFloat(document.getElementById('shipitCashAmt')?.value)||0) > 0;
+  if (needsPayMethod && !selectedPayMethod[payMethodContext]) {
+    showToast('💸','Please select how you\'ll send the payment.');return;
+  }
+  if (hasCashTopUp && !selectedPayMethod.shipit) {
+    showToast('💸','Please select how you\'ll send the cash top-up.');return;
+  }
+  const resolvedPayMethod = isShipIt
+    ? (selectedPayMethod.shipit || null)
+    : (selectedPayMethod[payMethodContext] || null);
   const btn=document.getElementById('submitOfferBtn');btn.disabled=true;
   try{
     let photoUrls=[];
     if(offerType!=='cash'&&selectedPhotos.length>0){btn.textContent='⏳ Uploading photos…';photoUrls=await uploadPhotos();}
     btn.textContent='⏳ Sending offer…';
+    const shipitCash = isShipIt ? (parseFloat(document.getElementById('shipitCashAmt')?.value)||0) : 0;
     const{error}=await sb.from('offers').insert({
       listing_id:listing.id,offerer_id:currentUser.id,status:'pending',
       offer_type:isShipIt?'trade':offerType,is_ship_it:isShipIt,
@@ -702,7 +781,8 @@ async function submitOffer(){
       offered_item_value:offerType!=='cash'?itemVal:cashOnly,
       offered_condition:offerType!=='cash'?itemCond:null,
       offered_photos:photoUrls.length>0?photoUrls:null,
-      cash_amount:offerType==='tc'?cashAdd:offerType==='cash'?cashOnly:0,
+      cash_amount:isShipIt?shipitCash:offerType==='tc'?cashAdd:offerType==='cash'?cashOnly:0,
+      payment_method:resolvedPayMethod,
       message:msg||null,
     });
     if(error)throw error;
@@ -717,7 +797,10 @@ async function submitOffer(){
       document.getElementById('successHeading').textContent='Offer Sent!';
       document.getElementById('successDesc').textContent="The seller has been notified. They have 48 hours to accept or decline. You won't be charged until they accept.";
     }
-    openModal('successModal');selectedPhotos=[];renderPhotoPreviews();loadOffers(listing.id);
+    openModal('successModal');selectedPhotos=[];renderPhotoPreviews();
+    selectedPayMethod = { tc: null, cashonly: null, shipit: null };
+    document.querySelectorAll('.pay-pill.selected').forEach(p => p.classList.remove('selected'));
+    loadOffers(listing.id);
   }catch(e){showToast('⚠️','Error sending offer. Please try again.');console.error(e);}
   finally{btn.textContent=isShipIt?'🚚 Send Ship-It Offer':'🤝 Send Trade Offer';btn.disabled=false;}
 }
