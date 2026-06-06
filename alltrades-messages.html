@@ -93,7 +93,7 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);height
 .msgs-area{flex:1;overflow-y:auto;padding:18px;display:flex;flex-direction:column;gap:14px;background:var(--bg);}
 .date-div{text-align:center;margin:6px 0;}
 .date-div span{background:var(--border);color:var(--muted);font-size:10px;font-weight:700;padding:3px 12px;border-radius:99px;text-transform:uppercase;letter-spacing:.5px;}
-.msg-wrap{display:flex;gap:8px;max-width:75%;animation:fadeIn .2s ease;}
+.msg-wrap{display:flex;gap:8px;max-width:75%;animation:fadeIn .2s ease;position:relative;}
 @keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
 .msg-wrap.mine{align-self:flex-end;flex-direction:row-reverse;}
 .msg-wrap.theirs{align-self:flex-start;}
@@ -108,6 +108,15 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);height
 .sys-msg{text-align:center;font-size:11px;color:var(--muted);background:var(--surface);border:1px solid var(--border);border-radius:99px;padding:5px 14px;width:fit-content;margin:0 auto;}
 .sys-msg.warn{background:#fef2f2;border-color:#fecaca;color:#991b1b;}
 .sys-msg.success{background:#f0fdf4;border-color:#bbf7d0;color:#14532d;}
+/* NEW OFFER BANNER — shown when an offer is declined */
+.new-offer-banner{display:none;background:linear-gradient(90deg,#1e3a8a,#1d4ed8);padding:10px 16px;align-items:center;gap:12px;flex-shrink:0;}
+.new-offer-banner.show{display:flex;}
+.nob-text{flex:1;font-size:12px;color:#93c5fd;line-height:1.4;}
+.nob-text strong{color:#fff;display:block;margin-bottom:2px;}
+.nob-btn{background:var(--gold);color:var(--navy);border:none;border-radius:6px;padding:7px 14px;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.82rem;cursor:pointer;white-space:nowrap;flex-shrink:0;transition:all .15s;}
+.nob-btn:hover{background:var(--gold-l);transform:translateY(-1px);}
+.nob-dismiss{color:rgba(255,255,255,.4);cursor:pointer;font-size:.85rem;padding:4px;flex-shrink:0;}
+.nob-dismiss:hover{color:rgba(255,255,255,.8);}
 .bypass-warn{background:linear-gradient(90deg,#7f1d1d,#991b1b);padding:11px 16px;display:flex;align-items:flex-start;gap:10px;border-bottom:1px solid rgba(248,113,113,.3);flex-shrink:0;}
 .bw-icon{font-size:1.2rem;flex-shrink:0;margin-top:1px;}
 .bw-text{flex:1;}
@@ -184,7 +193,6 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);height
 .rmb-text{flex:1;font-size:12px;color:#fca5a5;font-family:'Barlow Condensed',sans-serif;font-weight:700;letter-spacing:.3px;}
 .rmb-cancel{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);color:#fff;padding:4px 12px;border-radius:5px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.78rem;cursor:pointer;}
 .rmb-cancel:hover{background:rgba(255,255,255,.25);}
-.msg-wrap{position:relative;}
 .msg-flag{display:none;position:absolute;top:50%;transform:translateY(-50%);background:#dc2626;color:#fff;border:none;border-radius:50%;width:24px;height:24px;font-size:.65rem;cursor:pointer;align-items:center;justify-content:center;opacity:0;transition:opacity .15s;z-index:10;box-shadow:0 2px 8px rgba(220,38,38,.4);}
 .msg-wrap.mine .msg-flag{left:-32px;}
 .msg-wrap.theirs .msg-flag{right:-32px;}
@@ -303,12 +311,24 @@ const TradezyScan = (() => {
         <button class="ch-btn danger" id="reportModeBtn" onclick="toggleReportMode()">⚑ Report a Problem</button>
       </div>
     </div>
+
     <!-- Report mode banner -->
     <div class="report-mode-banner" id="reportModeBanner">
       <span style="font-size:1rem">⚑</span>
       <span class="rmb-text">Tap the flag on the message you want to report — then we'll take it from there</span>
       <button class="rmb-cancel" onclick="toggleReportMode()">✕ Cancel</button>
     </div>
+
+    <!-- NEW OFFER BANNER — shown when offer is declined -->
+    <div class="new-offer-banner" id="newOfferBanner">
+      <div class="nob-text">
+        <strong>Offer Declined</strong>
+        Their offer was declined — you can make a new offer on this listing.
+      </div>
+      <button class="nob-btn" id="newOfferBtn" onclick="goMakeNewOffer()">🔄 Make a New Offer</button>
+      <span class="nob-dismiss" onclick="document.getElementById('newOfferBanner').classList.remove('show')" title="Dismiss">✕</span>
+    </div>
+
     <div class="trade-context" id="tradeContextBar" style="display:none">
       <span class="tc-icon">🔄</span>
       <div class="tc-text" id="tradeContextText"><strong>Active trade</strong></div>
@@ -377,7 +397,7 @@ const TradezyScan = (() => {
       <button class="mhd-close" onclick="closeModal('reportModal')">✕</button>
     </div>
     <div class="mbody">
-      <p style="font-size:13px;color:var(--muted);margin-bottom:14px;line-height:1.5">What's the issue? Our team reviews all reports within 24 hours.</p>
+      <p style="font-size:13px;color:var(--muted);margin-bottom:14px;line-height:1.5">What's the issue? Our team reviews all reports within 16 hours.</p>
       <div style="display:flex;flex-direction:column;gap:7px;margin-bottom:14px" id="reportOptions">
         <label style="display:flex;align-items:center;gap:10px;padding:10px 12px;border:1.5px solid var(--border);border-radius:7px;cursor:pointer;font-size:13px" onclick="selectReport(this)"><input type="radio" name="report" value="Tried to take conversation off-platform" style="accent-color:var(--red)"> Tried to take conversation off-platform</label>
         <label style="display:flex;align-items:center;gap:10px;padding:10px 12px;border:1.5px solid var(--border);border-radius:7px;cursor:pointer;font-size:13px" onclick="selectReport(this)"><input type="radio" name="report" value="Item not as described" style="accent-color:var(--red)"> Item not as described</label>
@@ -387,7 +407,7 @@ const TradezyScan = (() => {
         <label style="display:flex;align-items:center;gap:10px;padding:10px 12px;border:1.5px solid var(--border);border-radius:7px;cursor:pointer;font-size:13px" onclick="selectReport(this)"><input type="radio" name="report" value="Other" style="accent-color:var(--red)"> Other</label>
       </div>
       <textarea id="reportDetails" placeholder="Additional details (optional) — the more you share, the faster we can act…" style="width:100%;border:1.5px solid var(--border);border-radius:7px;padding:9px 11px;font-family:'Lato',sans-serif;font-size:13px;outline:none;resize:vertical;min-height:80px;" onfocus="this.style.borderColor='var(--red)'" onblur="this.style.borderColor='var(--border)'"></textarea>
-      <div style="margin:12px 0;font-size:11px;color:var(--muted)">Reports are reviewed by our team within 24 hours. False reports may affect your account standing.</div>
+      <div style="margin:12px 0;font-size:11px;color:var(--muted)">Reports are reviewed by our team within 16 hours. False reports may affect your account standing.</div>
       <button class="mbtn red" id="submitReportBtn" onclick="submitReport()">⚑ Submit Report</button>
       <button class="mbtn outline" onclick="closeModal('reportModal')">Cancel</button>
     </div>
@@ -494,6 +514,8 @@ function renderThreadList(filter = '') {
 
 async function openThread(otherId, listingId) {
   activeOtherId = otherId; activeListingId = listingId || null;
+  // Hide new offer banner when switching threads
+  document.getElementById('newOfferBanner').classList.remove('show');
   renderThreadList();
   document.getElementById('chatEmpty').style.display = 'none';
   document.getElementById('chatHead').style.display = 'flex';
@@ -511,9 +533,39 @@ async function openThread(otherId, listingId) {
   if (listingId || thread?.listingId) await loadListingContext(listingId || thread.listingId);
   else { document.getElementById('tradeContextBar').style.display = 'none'; renderRightPanelDefault(); }
   await loadMessages(otherId);
+  await checkForDeclinedOffer(otherId, listingId || thread?.listingId);
   markAsRead(otherId);
   subscribeToMessages(otherId);
   if (thread) { thread.unreadCount = 0; renderThreadList(); }
+}
+
+// Check if the most recent offer on this listing was declined — show New Offer banner if so
+async function checkForDeclinedOffer(otherId, listingId) {
+  if (!listingId) return;
+  try {
+    const { data: offers } = await sb.from('offers')
+      .select('id, status, offerer_id')
+      .eq('listing_id', listingId)
+      .order('created_at', { ascending: false })
+      .limit(5);
+    if (!offers?.length) return;
+    // Find the most recent offer involving current user
+    const myOffer = offers.find(o => o.offerer_id === currentUser.id && o.status === 'declined');
+    if (myOffer) {
+      // My offer was declined — show the banner
+      document.getElementById('newOfferBtn').dataset.listingId = listingId;
+      document.getElementById('newOfferBanner').classList.add('show');
+    }
+  } catch(e) { /* silently fail */ }
+}
+
+function goMakeNewOffer() {
+  const listingId = document.getElementById('newOfferBtn').dataset.listingId || activeListingId;
+  if (listingId) {
+    window.location.href = `alltrades-item.html?id=${listingId}`;
+  } else {
+    showToast('📦', 'Could not find listing. Check your dashboard for details.');
+  }
 }
 
 async function loadListingContext(listingId) {
@@ -738,10 +790,8 @@ function flagMessage(flagBtn) {
   const wrap = flagBtn.closest('.msg-wrap');
   reportingMessageContent = wrap.dataset.msgContent || '';
   reportingMessageSender  = wrap.dataset.msgSender  || 'Trader';
-  // Pre-fill details textarea with the flagged message
   const details = document.getElementById('reportDetails');
   details.value = `Flagged message from ${reportingMessageSender}:\n"${reportingMessageContent}"`;
-  // Exit report mode and open modal
   toggleReportMode();
   openModal('reportModal');
 }
@@ -755,41 +805,34 @@ function selectReport(el) {
 }
 
 async function submitReport() {
-  // Get selected reason
   const selected = document.querySelector('#reportOptions input[type="radio"]:checked');
   if (!selected) { showToast('⚠️', 'Please select a reason for your report.'); return; }
   const reason  = selected.value;
   const details = document.getElementById('reportDetails').value.trim();
-
   const btn = document.getElementById('submitReportBtn');
-  btn.disabled = true;
-  btn.textContent = '⏳ Submitting…';
-
+  btn.disabled = true; btn.textContent = '⏳ Submitting…';
   try {
-    // Insert to disputes table
     const { error } = await sb.from('disputes').insert({
-      status:      'open',
-      description: `Reported user: ${activeOtherId}\nReason: ${reason}${reportingMessageContent ? '\n\nFlagged message from ' + reportingMessageSender + ':\n"' + reportingMessageContent + '"' : ''}${details ? '\n\nAdditional details: ' + details : ''}`,
-      reason:      reason,
+      status:            'open',
+      description:       `Reported user: ${activeOtherId}\nReason: ${reason}${reportingMessageContent ? '\n\nFlagged message from ' + reportingMessageSender + ':\n"' + reportingMessageContent + '"' : ''}${details ? '\n\nAdditional details: ' + details : ''}`,
+      reason:            reason,
+      listing_id:        activeListingId || null,
+      reported_user_id:  activeOtherId || null,
+      reporter_id:       currentUser.id,
     });
     if (error) throw error;
-
     closeModal('reportModal');
-
-    // Reset form
     document.querySelectorAll('#reportOptions input[type="radio"]').forEach(r => r.checked = false);
     document.querySelectorAll('#reportOptions label').forEach(l => { l.style.borderColor='var(--border)'; l.style.background=''; });
     document.getElementById('reportDetails').value = '';
     reportingMessageContent = '';
     reportingMessageSender  = '';
-
-    showToast('✅', 'Report submitted. Our team reviews within 24 hours. Thank you for keeping Tradezy safe.');
+    showToast('✅', 'Report submitted. Our team reviews within 16 hours. Thank you for keeping Tradezy safe.');
   } catch(e) {
     console.error('submitReport error:', e);
     showToast('⚠️', 'Could not submit report. Please email disputes@tradezyhq.com directly.');
   } finally {
-    btn.disabled = false;
-    btn.textContent = '⚑ Submit Report';
+    btn.disabled = false; btn.textContent = '⚑ Submit Report';
   }
 }
 
@@ -850,6 +893,7 @@ function showToast(icon, msg) {
 .tz-quick-btn{background:#fff;border:1px solid #e2e8f0;color:#1a56db;font-size:11px;font-weight:700;padding:4px 10px;border-radius:99px;cursor:pointer;transition:all .12s;font-family:inherit;}
 .tz-quick-btn:hover{background:#eff6ff;border-color:#1a56db;}
 .tz-action-link{display:inline-flex;align-items:center;gap:5px;background:#eff6ff;border:1px solid #bfdbfe;color:#1a56db;font-size:12px;font-weight:700;padding:6px 12px;border-radius:7px;cursor:pointer;text-decoration:none;margin-top:5px;transition:all .12s;}
+.tz-action-link:hover{background:#dbeafe;}
 .tz-escalate-card{background:#fff7ed;border:1px solid #fed7aa;border-radius:10px;padding:11px 13px;margin-top:6px;font-size:12px;}
 .tz-escalate-title{font-weight:800;color:#92400e;margin-bottom:5px;font-size:12px;}
 .tz-escalate-btn{display:inline-block;background:#ea580c;color:#fff;font-size:11px;font-weight:700;padding:5px 12px;border-radius:6px;text-decoration:none;margin-top:6px;cursor:pointer;border:none;font-family:inherit;}
@@ -917,25 +961,26 @@ SHIP-IT TRADES (July 31+):
 - 10% fee per party at trade acceptance
 - Payment via Zelle, PayPal, Venmo, Apple Pay, Google Pay, or Cash App (peer-to-peer, Tradezy never holds funds)
 - Buyer uploads payment screenshot as proof
+- Seller confirms receipt — fee fires immediately
 - Seller enters tracking number
 - Both confirm delivery to close trade
 
-TCG CATEGORIES: Pokémon, One Piece, MTG, Yu-Gi-Oh, Lorcana, Flesh & Blood
+TCG CATEGORIES: Pokemon, One Piece, MTG, Yu-Gi-Oh, Lorcana, Flesh and Blood
 SPORTS CARDS: Baseball, Football, Basketball, Hockey, Soccer
 Card grading supported: PSA, BGS, SGC, TAG
 
 ACCOUNT HELP:
-- Password reset: direct users to https://tradezyhq.com/alltrades-auth.html
-- Account locked/banned: direct to support@tradezyhq.com
-- Verification issues: direct to https://tradezyhq.com/alltrades-verification.html
+- Password reset: https://tradezyhq.com/alltrades-auth.html
+- Account locked/banned: support@tradezyhq.com
+- Verification issues: https://tradezyhq.com/alltrades-verification.html
 
 DISPUTE RESOLUTION:
 - File a dispute at https://tradezyhq.com/alltrades-disputes.html
 - Email disputes@tradezyhq.com
-- SLA: CRITICAL issues 4hrs, HIGH 24hrs, MEDIUM 48hrs, LOW 72hrs
+- SLA targets: CRITICAL 8hrs, HIGH 16hrs, MEDIUM 24hrs, LOW 48hrs
 
 ESCALATION RULES — escalate to human immediately if:
-- User reports fraud, scam, or didn't receive item
+- User reports fraud, scam, or did not receive item
 - User mentions safety concern, threat, or harassment
 - User is clearly distressed or frustrated after multiple exchanges
 - User explicitly requests a human agent
@@ -943,7 +988,8 @@ ESCALATION RULES — escalate to human immediately if:
 
 ESCALATION: When escalating, provide support@tradezyhq.com for general issues or disputes@tradezyhq.com for trade disputes.
 
-TONE: Warm, clear, concise. Never give legal or financial advice. Never make up information — if unsure, direct to support@tradezyhq.com. Keep responses short and scannable — use bullet points for multi-step answers.`;
+TONE: Warm, clear, concise. Never give legal or financial advice. Never make up information. Keep responses short and scannable.`;
+
   let isOpen=false,isLoading=false,exchangeCount=0,hasShownWelcome=false;
   const history=[];
   window.tzToggle=function(){
