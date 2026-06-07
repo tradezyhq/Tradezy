@@ -3,24 +3,18 @@
 <head>
 <!-- Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-0NSDNDFP0H"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag("js", new Date());
-  gtag("config", "G-0NSDNDFP0H");
-</script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-0NSDNDFP0H');</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Tradezy — My Dashboard | Local Trading & Bartering</title>
 <meta name="description" content="Manage your Tradezy trades, listings, offers, and messages.">
 <meta property="og:title" content="Tradezy — My Dashboard">
 <meta property="og:url" content="https://tradezyhq.com/alltrades-dashboard.html">
-<meta property="og:image" content="https://tradezyhq.com/tradezy-preview.png">
 <link rel="canonical" href="https://tradezyhq.com/alltrades-dashboard.html">
 <script src="supabase.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
 <style>
-:root{--navy:#0a1628;--navy2:#112240;--blue:#1a56db;--blue-l:#2563eb;--gold:#f59e0b;--gold-l:#fbbf24;--green:#16a34a;--green-l:#22c55e;--red:#dc2626;--orange:#ea580c;--cyan:#0ea5e9;--cyan-l:#0284c7;--text:#1a1a2e;--muted:#475569;--light:#94a3b8;--border:#e2e8f0;--bg:#f0f4f8;--white:#fff;--surface:#f8fafc;}
+:root{--navy:#0a1628;--navy2:#112240;--blue:#1a56db;--blue-l:#2563eb;--gold:#f59e0b;--gold-l:#fbbf24;--green:#16a34a;--green-l:#22c55e;--red:#dc2626;--orange:#ea580c;--cyan:#0ea5e9;--cyan-l:#0284c7;--purple:#7c3aed;--text:#1a1a2e;--muted:#475569;--light:#94a3b8;--border:#e2e8f0;--bg:#f0f4f8;--white:#fff;--surface:#f8fafc;}
 *{margin:0;padding:0;box-sizing:border-box;}
 body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column;}
 .topbar{background:var(--navy);padding:0 24px;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:300;}
@@ -47,8 +41,7 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
 .nav-item.active{background:#eff6ff;color:var(--blue);}
 .ni-ic{font-size:1rem;width:18px;text-align:center;flex-shrink:0;}
 .ni-badge{margin-left:auto;font-size:9px;font-weight:800;border-radius:99px;padding:1px 6px;color:#fff;background:var(--red);}
-.ni-badge.gold{background:var(--gold);color:var(--navy);}
-.ni-badge.green{background:var(--green);}
+.ni-badge.gold{background:var(--gold);color:var(--navy);}.ni-badge.green{background:var(--green);}
 .sb-div{height:1px;background:var(--border);margin:6px 12px;}
 .sb-bottom{padding:12px;margin-top:auto;}
 .post-btn{width:100%;padding:10px;background:var(--gold);color:var(--navy);border:none;border-radius:8px;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.95rem;cursor:pointer;transition:all .15s;}
@@ -68,15 +61,14 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
 .alert.urgent{background:rgba(220,38,38,.06);border:1px solid rgba(220,38,38,.2);color:#991b1b;}
 .alert.info{background:rgba(26,86,219,.06);border:1px solid rgba(26,86,219,.18);color:#1e3a8a;}
 .alert.success{background:rgba(22,163,74,.06);border:1px solid rgba(22,163,74,.18);color:#14532d;}
-.al-ic{font-size:1rem;flex-shrink:0;}
-.al-txt{flex:1;line-height:1.4;}
-.al-btn{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.78rem;padding:4px 10px;border-radius:5px;cursor:pointer;border:none;transition:all .15s;letter-spacing:.3px;flex-shrink:0;}
+.al-ic{font-size:1rem;flex-shrink:0;}.al-txt{flex:1;line-height:1.4;}
+.al-btn{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.78rem;padding:4px 10px;border-radius:5px;cursor:pointer;border:none;transition:all .15s;flex-shrink:0;}
 .alert.urgent .al-btn{background:var(--red);color:#fff;}
 .alert.info .al-btn{background:var(--blue);color:#fff;}
 .alert.success .al-btn{background:var(--green);color:#fff;}
 .al-close{color:var(--light);cursor:pointer;font-size:.85rem;padding:2px 6px;flex-shrink:0;}
 .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px;}
-.stat-card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:15px 17px;position:relative;overflow:hidden;transition:all .2s;}
+.stat-card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:15px 17px;position:relative;overflow:hidden;}
 .stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:12px 12px 0 0;}
 .sc-blue::before{background:var(--blue);}.sc-gold::before{background:var(--gold);}.sc-green::before{background:var(--green);}.sc-red::before{background:var(--red);}
 .sc-icon{font-size:1.5rem;margin-bottom:7px;}
@@ -86,29 +78,67 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
 .sec-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
 .sec-ttl{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1rem;color:var(--text);}
 .sec-cnt{font-size:.75rem;border-radius:99px;padding:1px 7px;margin-left:5px;vertical-align:middle;font-weight:800;color:#fff;background:var(--red);}
-.sec-cnt.gold{background:var(--gold);color:var(--navy);}.sec-cnt.green{background:var(--green);}
+.sec-cnt.gold{background:var(--gold);color:var(--navy);}.sec-cnt.green{background:var(--green);}.sec-cnt.purple{background:var(--purple);}
 .sec-lnk{font-size:12px;color:var(--blue);font-weight:700;cursor:pointer;}
-.panel{background:var(--white);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:18px;}
-.offer-row{display:flex;align-items:center;gap:11px;padding:12px 15px;border-bottom:1px solid var(--border);transition:background .15s;cursor:pointer;}
+.panel{background:var(--white);border:1px solid var(--border);border-radius:12px;overflow:hidden;}
+/* OFFERS + COLLECTION 50/50 */
+.offers-collection-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:18px;align-items:start;}
+/* OFFERS */
+.offer-row{display:flex;align-items:center;gap:10px;padding:11px 14px;border-bottom:1px solid var(--border);transition:background .15s;cursor:pointer;}
 .offer-row:last-child{border-bottom:none;}
 .offer-row:hover{background:var(--surface);}
 .offer-row.shipit-row{border-left:3px solid var(--cyan);background:#f0f9ff;}
 .offer-row.shipit-row:hover{background:#e0f2fe;}
-.or-em{width:42px;height:42px;background:var(--surface);border:1px solid var(--border);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0;overflow:hidden;}
-.or-em img{width:100%;height:100%;object-fit:cover;border-radius:8px;}
+.or-em{width:38px;height:38px;background:var(--surface);border:1px solid var(--border);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;overflow:hidden;}
+.or-em img{width:100%;height:100%;object-fit:cover;border-radius:7px;}
 .or-info{flex:1;min-width:0;}
-.or-ttl{font-weight:700;font-size:13px;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.or-meta{font-size:11px;color:var(--muted);display:flex;align-items:center;gap:5px;flex-wrap:wrap;}
-.or-shipit-pill{display:inline-flex;align-items:center;gap:3px;background:#e0f2fe;color:#0369a1;border:1px solid #7dd3fc;border-radius:3px;font-size:10px;font-weight:800;padding:1px 6px;letter-spacing:.3px;}
+.or-ttl{font-weight:700;font-size:12px;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.or-meta{font-size:10px;color:var(--muted);display:flex;align-items:center;gap:4px;flex-wrap:wrap;}
+.or-shipit-pill{background:#e0f2fe;color:#0369a1;border:1px solid #7dd3fc;border-radius:3px;font-size:9px;font-weight:800;padding:1px 5px;}
 .or-rt{text-align:right;flex-shrink:0;}
-.or-st{font-size:10px;font-weight:800;padding:2px 7px;border-radius:4px;letter-spacing:.3px;}
+.or-st{font-size:9px;font-weight:800;padding:2px 6px;border-radius:4px;}
 .st-pend{background:#fffbeb;color:#92400e;border:1px solid #fde68a;}
-.or-acts{display:flex;gap:4px;margin-top:3px;}
-.or-btn{padding:4px 9px;border-radius:5px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.72rem;cursor:pointer;border:none;transition:all .15s;}
+.or-acts{display:flex;gap:3px;margin-top:3px;flex-wrap:wrap;justify-content:flex-end;}
+.or-btn{padding:3px 7px;border-radius:4px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.68rem;cursor:pointer;border:none;transition:all .15s;}
 .btn-acc{background:var(--green);color:#fff;}
 .btn-acc.shipit-acc{background:var(--cyan);}
 .btn-dec{background:transparent;border:1px solid var(--border);color:var(--muted);}
 .btn-dec:hover{border-color:var(--red);color:var(--red);}
+.btn-view-sm{background:#eff6ff;border:1px solid #bfdbfe;color:var(--blue);}
+/* COLLECTION WIDGET */
+.collection-widget{background:var(--white);border:1px solid var(--border);border-radius:12px;overflow:hidden;}
+.cw-head{background:linear-gradient(135deg,#4c1d95,#6d28d9);padding:12px 15px;display:flex;align-items:center;justify-content:space-between;}
+.cw-head-title{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.92rem;color:#fff;display:flex;align-items:center;gap:7px;}
+.cw-add-btn{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.28);color:#fff;border-radius:6px;padding:4px 10px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.72rem;cursor:pointer;transition:all .15s;}
+.cw-add-btn:hover{background:rgba(255,255,255,.28);}
+.cw-stats{display:grid;grid-template-columns:1fr 1fr 1fr;border-bottom:1px solid var(--border);}
+.cw-stat{text-align:center;padding:9px 6px;border-right:1px solid var(--border);}
+.cw-stat:last-child{border-right:none;}
+.cw-stat-num{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.2rem;color:var(--purple);}
+.cw-stat-lbl{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.3px;margin-top:1px;}
+.cw-items{overflow-y:auto;max-height:195px;}
+.cw-item{display:flex;align-items:center;gap:8px;padding:8px 12px;border-bottom:1px solid var(--border);transition:background .15s;}
+.cw-item:last-child{border-bottom:none;}
+.cw-item:hover{background:var(--surface);}
+.cw-item-thumb{width:32px;height:32px;border-radius:5px;background:var(--surface);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:.8rem;flex-shrink:0;overflow:hidden;}
+.cw-item-thumb img{width:100%;height:100%;object-fit:cover;border-radius:4px;}
+.cw-item-info{flex:1;min-width:0;}
+.cw-item-title{font-weight:700;font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:1px;}
+.cw-item-meta{font-size:9px;color:var(--muted);display:flex;gap:4px;align-items:center;flex-wrap:wrap;}
+.cw-grade-badge{background:#f5f3ff;border:1px solid #ddd6fe;color:var(--purple);font-size:8px;font-weight:800;padding:1px 4px;border-radius:2px;}
+.cw-item-val{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.8rem;color:var(--green);flex-shrink:0;margin-right:4px;}
+.cw-trade-btn{background:var(--gold);color:var(--navy);border:none;border-radius:4px;padding:3px 7px;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.65rem;cursor:pointer;transition:all .15s;white-space:nowrap;flex-shrink:0;}
+.cw-trade-btn:hover{background:var(--gold-l);}
+.cw-footer{padding:9px 12px;border-top:1px solid var(--border);display:flex;gap:7px;}
+.cw-footer-btn{flex:1;padding:7px 5px;border-radius:6px;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.74rem;cursor:pointer;border:none;transition:all .15s;text-align:center;}
+.cw-view-btn{background:var(--surface);border:1.5px solid var(--border);color:var(--muted);}
+.cw-view-btn:hover{border-color:var(--purple);color:var(--purple);}
+.cw-trade-col-btn{background:var(--purple);color:#fff;}
+.cw-trade-col-btn:hover{background:#5b21b6;}
+.cw-empty{text-align:center;padding:22px 14px;color:var(--muted);}
+.cw-empty-icon{font-size:1.8rem;margin-bottom:7px;}
+.cw-empty-txt{font-size:11px;line-height:1.5;}
+/* TRADES */
 .two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:18px;}
 .trade-card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:13px 15px;margin-bottom:9px;transition:all .15s;}
 .trade-card:hover{border-color:var(--blue);}
@@ -128,20 +158,23 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
 .tc-prog-bar{height:4px;background:var(--border);border-radius:2px;overflow:hidden;}
 .tc-prog-fill{height:100%;border-radius:2px;}
 .fill-gold{background:var(--gold);}.fill-blue{background:var(--blue);}.fill-cyan{background:var(--cyan);}
-.tc-ftr{display:flex;gap:5px;}
-.tc-btn{flex:1;padding:6px;border-radius:6px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.75rem;cursor:pointer;border:none;transition:all .15s;text-align:center;}
+.tc-ftr{display:flex;gap:4px;}
+.tc-btn{flex:1;padding:6px;border-radius:6px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.72rem;cursor:pointer;border:none;transition:all .15s;text-align:center;}
 .tcb-msg{background:var(--surface);border:1px solid var(--border);color:var(--muted);}
+.tcb-view{background:#eff6ff;border:1px solid #bfdbfe;color:var(--blue);}
 .tcb-confirm{background:var(--green);color:#fff;}
+/* MESSAGES */
 .msg-panel{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:13px;}
 .msg-item{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:8px;cursor:pointer;transition:all .15s;margin-bottom:5px;}
 .msg-item:hover{background:var(--surface);}
 .msg-item.unread{background:#eff6ff;}
-.mi-av{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.8rem;color:#fff;flex-shrink:0;position:relative;background:var(--blue);}
+.mi-av{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.8rem;color:#fff;flex-shrink:0;position:relative;}
 .mi-dot{position:absolute;top:0;right:0;width:9px;height:9px;background:var(--blue);border-radius:50%;border:2px solid var(--white);}
 .mi-info{flex:1;min-width:0;}
 .mi-nm{font-weight:700;font-size:13px;margin-bottom:1px;}
 .mi-prev{font-size:11px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .mi-time{font-size:10px;color:var(--muted);flex-shrink:0;}
+/* LISTINGS */
 .listings-panel{background:var(--white);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:18px;}
 .lr{display:flex;align-items:center;gap:11px;padding:11px 15px;border-bottom:1px solid var(--border);transition:background .15s;cursor:pointer;text-decoration:none;color:inherit;}
 .lr:last-child{border-bottom:none;}
@@ -151,20 +184,21 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
 .lr-info{flex:1;min-width:0;}
 .lr-ttl{font-weight:700;font-size:13px;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .lr-meta{font-size:11px;color:var(--muted);display:flex;gap:7px;flex-wrap:wrap;align-items:center;}
-.lr-views{font-size:10px;color:var(--light);display:flex;align-items:center;gap:2px;}
+.lr-views{font-size:10px;color:var(--light);}
 .lr-rt{text-align:right;flex-shrink:0;}
 .lr-val{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.93rem;margin-bottom:2px;}
 .lr-st{font-size:10px;font-weight:800;padding:2px 7px;border-radius:3px;display:inline-block;margin-bottom:4px;}
 .lst-active{background:#f0fdf4;color:#14532d;border:1px solid #bbf7d0;}
+.lst-trading{background:#e0f2fe;color:#0369a1;border:1px solid #7dd3fc;}
 .lst-paused{background:#f1f5f9;color:var(--muted);border:1px solid var(--border);}
 .lr-acts{display:flex;gap:4px;justify-content:flex-end;}
 .lr-btn{padding:3px 8px;border-radius:4px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.68rem;cursor:pointer;border:none;transition:all .15s;text-decoration:none;display:inline-block;}
 .lrb-view{background:#eff6ff;border:1px solid #bfdbfe;color:var(--blue);}
-.lrb-view:hover{background:#dbeafe;}
 .lrb-edit{background:var(--surface);border:1px solid var(--border);color:var(--muted);}
 .lrb-edit:hover{border-color:var(--blue);color:var(--blue);}
 .lrb-del{background:transparent;border:1px solid transparent;color:var(--light);}
 .lrb-del:hover{border-color:#fecaca;color:var(--red);}
+/* EARNINGS */
 .two-col-bot{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:18px;}
 .earnings-card{background:linear-gradient(135deg,#14532d,#166534);border-radius:12px;padding:15px;margin-bottom:12px;}
 .ec-ttl{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.85rem;color:#86efac;text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px;}
@@ -172,12 +206,14 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
 .ec-item{text-align:center;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1);border-radius:7px;padding:9px;}
 .ec-num{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.15rem;color:#fff;}
 .ec-lbl{font-size:10px;color:#86efac;text-transform:uppercase;letter-spacing:.3px;margin-top:1px;}
+/* MODALS */
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(10,22,40,.8);z-index:500;align-items:center;justify-content:center;padding:20px;}
 .modal-overlay.open{display:flex;}
 .modal{background:var(--white);border-radius:14px;width:100%;max-width:480px;max-height:88vh;overflow-y:auto;animation:slideUp .25s ease;}
 @keyframes slideUp{from{transform:translateY(16px);opacity:0}to{transform:translateY(0);opacity:1}}
 .mhd{background:linear-gradient(135deg,var(--navy),#1a3a6b);padding:17px 21px;display:flex;align-items:center;justify-content:space-between;border-radius:14px 14px 0 0;}
 .mhd.shipit-head{background:linear-gradient(135deg,#0c4a6e,#0369a1);}
+.mhd.purple-head{background:linear-gradient(135deg,#4c1d95,#6d28d9);}
 .mhd-ttl{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.05rem;color:#fff;}
 .mhd-close{background:rgba(255,255,255,.1);border:none;color:#94a3b8;width:27px;height:27px;border-radius:50%;cursor:pointer;font-size:.9rem;display:flex;align-items:center;justify-content:center;transition:all .15s;}
 .mhd-close:hover{background:rgba(255,255,255,.2);color:#fff;}
@@ -186,6 +222,10 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
 .mbtn.green{background:var(--green);color:#fff;}
 .mbtn.cyan{background:var(--cyan);color:#fff;}
 .mbtn.cyan:hover{background:var(--cyan-l);}
+.mbtn.purple{background:var(--purple);color:#fff;}
+.mbtn.purple:hover{background:#5b21b6;}
+.mbtn.gold{background:var(--gold);color:var(--navy);}
+.mbtn.gold:hover{background:var(--gold-l);}
 .mbtn.red{background:var(--red);color:#fff;}
 .mbtn.outline{background:transparent;border:1.5px solid var(--border);color:var(--muted);}
 .mbtn.outline:hover{border-color:#999;color:var(--text);}
@@ -195,7 +235,7 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
 .son-desc{font-size:11px;color:#7dd3fc;line-height:1.5;}
 .shipit-id-gate-modal{background:#fff7ed;border:1.5px solid #fed7aa;border-radius:10px;padding:13px 15px;margin-bottom:14px;}
 .od-listing{display:flex;align-items:center;gap:12px;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:11px;margin-bottom:14px;}
-.od-listing-img{width:52px;height:52px;border-radius:8px;object-fit:cover;background:var(--border);display:flex;align-items:center;justify-content:center;font-size:1.5rem;flex-shrink:0;overflow:hidden;}
+.od-listing-img{width:52px;height:52px;border-radius:8px;background:var(--border);display:flex;align-items:center;justify-content:center;font-size:1.5rem;flex-shrink:0;overflow:hidden;}
 .od-listing-img img{width:100%;height:100%;object-fit:cover;border-radius:8px;}
 .od-listing-info{flex:1;min-width:0;}
 .od-listing-ttl{font-weight:700;font-size:14px;margin-bottom:2px;}
@@ -211,6 +251,12 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
 .od-message{background:#fffbeb;border:1px solid #fde68a;border-radius:8px;padding:10px 13px;font-size:13px;font-style:italic;color:#92400e;line-height:1.5;}
 .od-actions{display:flex;gap:8px;margin-top:16px;}
 .od-actions .mbtn{margin-bottom:0;}
+/* ADD COLLECTION FORM */
+.ac-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;}
+.ac-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);display:block;margin-bottom:4px;}
+.ac-input{width:100%;border:1.5px solid var(--border);border-radius:7px;padding:9px 11px;font-size:13px;font-family:'Lato',sans-serif;outline:none;color:var(--text);background:var(--white);transition:border-color .15s;}
+.ac-input:focus{border-color:var(--purple);}
+/* LIGHTBOX */
 .offer-lightbox{display:none;position:fixed;inset:0;background:rgba(0,0,0,.93);z-index:900;align-items:center;justify-content:center;}
 .offer-lightbox.open{display:flex;}
 .offer-lightbox img{max-width:90vw;max-height:88vh;border-radius:10px;object-fit:contain;}
@@ -220,40 +266,37 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
 .lb-nav:hover{background:rgba(255,255,255,.25);}
 .lb-prev{left:16px;}.lb-next{right:16px;}
 .lb-counter{position:absolute;bottom:16px;left:50%;transform:translateX(-50%);color:rgba(255,255,255,.7);font-size:13px;font-family:'Barlow Condensed',sans-serif;font-weight:700;}
-.empty-state{text-align:center;padding:32px 20px;color:var(--muted);}
-.empty-icon{font-size:2.5rem;margin-bottom:10px;}
+.empty-state{text-align:center;padding:28px 20px;color:var(--muted);}
+.empty-icon{font-size:2.2rem;margin-bottom:8px;}
 .empty-txt{font-size:13px;line-height:1.5;}
 .toast{position:fixed;bottom:20px;right:20px;background:var(--navy);color:#e2e8f0;border:1px solid #1e3a5f;border-left:4px solid var(--green);border-radius:8px;padding:10px 16px;font-size:13px;z-index:9999;display:flex;align-items:center;gap:9px;max-width:280px;box-shadow:0 8px 28px rgba(0,0,0,.25);transform:translateX(120%);transition:transform .3s ease;}
 .toast.show{transform:translateX(0);}
 .loading{text-align:center;padding:20px;color:var(--muted);font-size:13px;}
+@media(max-width:1100px){.offers-collection-grid{grid-template-columns:1fr;}}
 @media(max-width:1000px){.stats-grid{grid-template-columns:repeat(2,1fr);}.two-col,.two-col-bot{grid-template-columns:1fr;}}
 @media(max-width:760px){.sidebar{display:none;}.wb-stats{display:none;}.top-search{display:none;}}
 @media(prefers-color-scheme:dark){
-  :root{--navy:#0a1628;--blue:#3b82f6;--gold:#fbbf24;--green:#22c55e;--red:#f87171;--text:#f1f5f9;--muted:#94a3b8;--light:#64748b;--border:rgba(255,255,255,.1);--bg:#0f172a;--white:#1e293b;--surface:#162032;}
+  :root{--text:#f1f5f9;--muted:#94a3b8;--light:#64748b;--border:rgba(255,255,255,.1);--bg:#0f172a;--white:#1e293b;--surface:#162032;}
   body{background:#0f172a !important;color:#f1f5f9 !important;}
-  .stat-card,.panel,.msg-panel,.listings-panel,.trade-card,.modal{background:#1e293b !important;border-color:rgba(255,255,255,.08) !important;}
+  .stat-card,.panel,.msg-panel,.listings-panel,.trade-card,.modal,.collection-widget{background:#1e293b !important;border-color:rgba(255,255,255,.08) !important;}
   input,select,textarea{background:#162032 !important;border-color:rgba(255,255,255,.12) !important;color:#f1f5f9 !important;}
   .mbody{background:#1e293b !important;}
-  .od-listing,.od-val-box{background:#162032 !important;}
+  .od-listing,.od-val-box,.ac-input{background:#162032 !important;}
   .od-from{background:rgba(59,130,246,.1) !important;}
   .offer-row.shipit-row{background:rgba(14,165,233,.08) !important;}
-  .offer-row.shipit-row:hover{background:rgba(14,165,233,.12) !important;}
-  .trade-card.shipit-trade{background:rgba(14,165,233,.05) !important;}
+  .cw-item:hover{background:rgba(255,255,255,.04) !important;}
+  .cw-stats{border-color:rgba(255,255,255,.08) !important;}
+  .cw-stat{border-color:rgba(255,255,255,.08) !important;}
 }
 </style>
 </head>
 <body>
 <div class="topbar">
-  <a href="alltrades.html" style="text-decoration:none">
-    <div class="logo"><span class="a">Trade</span><span class="t">zy</span><span class="d">.</span></div>
-  </a>
-  <div class="top-search">
-    <input type="text" placeholder="Search listings near you…">
-    <button>Go</button>
-  </div>
+  <a href="alltrades.html" style="text-decoration:none"><div class="logo"><span class="a">Trade</span><span class="t">zy</span><span class="d">.</span></div></a>
+  <div class="top-search"><input type="text" placeholder="Search listings near you…"><button>Go</button></div>
   <div style="display:flex;align-items:center">
     <div class="top-icons">
-      <div class="ti" onclick="showToast('🔔','No new notifications — check back after your first trade!')">🔔<span class="badge" id="notifBadge" style="display:none">0</span></div>
+      <div class="ti" onclick="showToast('🔔','No new notifications!')">🔔<span class="badge" id="notifBadge" style="display:none">0</span></div>
       <div class="ti" onclick="openModal('msgModal')">💬<span class="badge" id="msgBadge" style="display:none">0</span></div>
     </div>
     <div class="user-chip" onclick="doSignOut()">
@@ -262,13 +305,14 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
     </div>
   </div>
 </div>
+
 <div class="layout">
   <div class="sidebar">
     <div class="sb-sec">
       <a href="alltrades.html" class="nav-item" style="background:#eff6ff;color:var(--blue);margin-bottom:6px;border:1px solid #bfdbfe;"><span class="ni-ic">🏪</span>Browse Marketplace</a>
       <div class="sb-label">Overview</div>
       <div class="nav-item active"><span class="ni-ic">🏠</span>Dashboard</div>
-      <div class="nav-item" onclick="document.getElementById('offersPanel').scrollIntoView({behavior:'smooth'})"><span class="ni-ic">📨</span>Offers<span class="ni-badge" id="sbOfferBadge" style="display:none">0</span></div>
+      <div class="nav-item" onclick="document.getElementById('offersColGrid').scrollIntoView({behavior:'smooth'})"><span class="ni-ic">📨</span>Offers<span class="ni-badge" id="sbOfferBadge" style="display:none">0</span></div>
       <div class="nav-item" onclick="window.location.href='alltrades-messages.html'"><span class="ni-ic">💬</span>Messages<span class="ni-badge" id="sbMsgBadge" style="display:none">0</span></div>
       <div class="nav-item" onclick="document.getElementById('tradesPanel').scrollIntoView({behavior:'smooth'})"><span class="ni-ic">🔄</span>Active Trades<span class="ni-badge green" id="sbTradeBadge" style="display:none">0</span></div>
     </div>
@@ -276,6 +320,7 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
     <div class="sb-sec">
       <div class="sb-label">My Items</div>
       <div class="nav-item" onclick="window.location.href='alltrades-post.html'"><span class="ni-ic">📦</span>My Listings</div>
+      <div class="nav-item" onclick="document.getElementById('collectionWidget').scrollIntoView({behavior:'smooth'})"><span class="ni-ic">🃏</span>My Collection<span class="ni-badge" id="sbColBadge" style="display:none;background:var(--purple)">0</span></div>
       <div class="nav-item" onclick="showToast('📋','Trade history coming soon!')"><span class="ni-ic">📋</span>Trade History</div>
     </div>
     <div class="sb-div"></div>
@@ -285,16 +330,15 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
       <div class="nav-item" onclick="window.location.href='alltrades-ratings.html'"><span class="ni-ic">⭐</span>My Ratings</div>
       <div class="nav-item" onclick="doSignOut()"><span class="ni-ic">🚪</span>Sign Out</div>
     </div>
-    <div class="sb-bottom">
-      <button class="post-btn" onclick="window.location.href='alltrades-post.html'">+ Post New Listing</button>
-    </div>
+    <div class="sb-bottom"><button class="post-btn" onclick="window.location.href='alltrades-post.html'">+ Post New Listing</button></div>
   </div>
+
   <div class="main">
     <div class="welcome-bar">
       <div>
         <div class="wb-greet" id="wbGreet">👋 Good morning</div>
         <div class="wb-name" id="wbName">Loading…</div>
-        <div class="wb-sub" id="wbSub">📍 Loading your location…</div>
+        <div class="wb-sub" id="wbSub">📍 Loading…</div>
       </div>
       <div class="wb-stats">
         <div class="wb-stat"><div class="wb-num" id="wbRating">—</div><div class="wb-lbl">Rating</div></div>
@@ -302,18 +346,49 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
         <div class="wb-stat"><div class="wb-num">$0</div><div class="wb-lbl">Listing Fees</div></div>
       </div>
     </div>
+
     <div class="alerts" id="alertsArea"></div>
+
     <div class="stats-grid">
       <div class="stat-card sc-blue"><div class="sc-icon">📨</div><div class="sc-num" id="statOffers" style="color:var(--blue)">—</div><div class="sc-lbl">Offers Received</div><div class="sc-change" id="statOffersSub">Loading…</div></div>
       <div class="stat-card sc-gold"><div class="sc-icon">📦</div><div class="sc-num" id="statListings" style="color:var(--gold)">—</div><div class="sc-lbl">Active Listings</div><div class="sc-change" id="statListingsSub">Loading…</div></div>
       <div class="stat-card sc-green"><div class="sc-icon">🔄</div><div class="sc-num" id="statTrades" style="color:var(--green)">—</div><div class="sc-lbl">Active Trades</div><div class="sc-change" id="statTradesSub">Loading…</div></div>
       <div class="stat-card sc-red"><div class="sc-icon">💰</div><div class="sc-num" id="statValue" style="color:var(--orange)">—</div><div class="sc-lbl">Trade Value (30d)</div><div class="sc-change" id="statValueSub">Loading…</div></div>
     </div>
-    <div class="sec-hdr">
-      <div class="sec-ttl">📨 Incoming Offers <span class="sec-cnt" id="offerCount">0</span></div>
-      <div class="sec-lnk" onclick="window.location.href='alltrades-messages.html'">View all →</div>
+
+    <!-- OFFERS + COLLECTION 50/50 -->
+    <div class="offers-collection-grid" id="offersColGrid">
+      <div>
+        <div class="sec-hdr">
+          <div class="sec-ttl">📨 Incoming Offers <span class="sec-cnt" id="offerCount">0</span></div>
+          <div class="sec-lnk" onclick="window.location.href='alltrades-messages.html'">View all →</div>
+        </div>
+        <div class="panel" id="offersPanel"><div class="loading">Loading offers…</div></div>
+      </div>
+      <div id="collectionWidget">
+        <div class="sec-hdr">
+          <div class="sec-ttl">🃏 My Collection <span class="sec-cnt purple" id="colCount">0</span></div>
+          <div class="sec-lnk" onclick="openCollectionViewModal(currentUser&&currentUser.id,'My')">View all →</div>
+        </div>
+        <div class="collection-widget">
+          <div class="cw-head">
+            <div class="cw-head-title">🃏 Collection Vault</div>
+            <button class="cw-add-btn" onclick="openAddCollectionModal()">+ Add Item</button>
+          </div>
+          <div class="cw-stats">
+            <div class="cw-stat"><div class="cw-stat-num" id="cwItemCount">—</div><div class="cw-stat-lbl">Items</div></div>
+            <div class="cw-stat"><div class="cw-stat-num" id="cwSealedCount">—</div><div class="cw-stat-lbl">Sealed</div></div>
+            <div class="cw-stat"><div class="cw-stat-num" id="cwTotalVal" style="color:var(--green);font-size:1rem">—</div><div class="cw-stat-lbl">Est. Value</div></div>
+          </div>
+          <div class="cw-items" id="cwItemsList"><div class="loading">Loading…</div></div>
+          <div class="cw-footer">
+            <button class="cw-footer-btn cw-view-btn" onclick="openCollectionViewModal(currentUser&&currentUser.id,'My')">👁 View Collection</button>
+            <button class="cw-footer-btn cw-trade-col-btn" onclick="tradeEntireCollection()">🔄 Trade Collection</button>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="panel" id="offersPanel"><div class="loading">Loading offers…</div></div>
+
     <div class="two-col">
       <div>
         <div class="sec-hdr"><div class="sec-ttl">🔄 Active Trades <span class="sec-cnt green" id="tradeCount">0</span></div><div class="sec-lnk">View all →</div></div>
@@ -324,11 +399,13 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
         <div class="msg-panel" id="msgsPanel"><div class="loading">Loading messages…</div></div>
       </div>
     </div>
+
     <div class="sec-hdr">
       <div class="sec-ttl">📦 My Listings <span class="sec-cnt gold" id="listingCount">0</span></div>
       <div class="sec-lnk" onclick="window.location.href='alltrades-post.html'">+ Add New →</div>
     </div>
     <div class="listings-panel" id="listingsPanel"><div class="loading">Loading listings…</div></div>
+
     <div class="two-col-bot">
       <div>
         <div class="sec-hdr"><div class="sec-ttl">💰 Trade Value Summary</div></div>
@@ -342,7 +419,7 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
         </div>
         <div style="background:var(--white);border:1px solid var(--border);border-radius:12px;padding:13px;">
           <div class="sec-ttl" style="margin-bottom:9px;font-size:.88rem">All Time</div>
-          <div class="ec-grid" style="margin-bottom:0">
+          <div class="ec-grid">
             <div class="ec-item" style="background:var(--surface);border:1px solid var(--border)"><div class="ec-num" style="color:var(--green)" id="evAllValue">$0</div><div class="ec-lbl" style="color:var(--muted)">Total Value</div></div>
             <div class="ec-item" style="background:var(--surface);border:1px solid var(--border)"><div class="ec-num" style="color:var(--blue)" id="evAllFees">$0</div><div class="ec-lbl" style="color:var(--muted)">Total Fees</div></div>
             <div class="ec-item" style="background:var(--surface);border:1px solid var(--border)"><div class="ec-num" style="color:var(--gold)" id="evAllCount">0</div><div class="ec-lbl" style="color:var(--muted)">All Trades</div></div>
@@ -391,6 +468,72 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
   </div>
 </div>
 
+<!-- ADD TO COLLECTION MODAL -->
+<div class="modal-overlay" id="addCollectionModal">
+  <div class="modal" style="max-width:500px">
+    <div class="mhd purple-head"><div class="mhd-ttl">🃏 Add to Collection</div><button class="mhd-close" onclick="closeModal('addCollectionModal')">✕</button></div>
+    <div class="mbody">
+      <div class="ac-grid">
+        <div style="grid-column:1/-1"><label class="ac-label">Item Title *</label><input type="text" id="acTitle" class="ac-input" placeholder="e.g. Charizard ex Full Art"></div>
+        <div><label class="ac-label">Category *</label>
+          <select id="acCategory" class="ac-input">
+            <option value="TCG">TCG Card</option>
+            <option value="Sports Card">Sports Card</option>
+            <option value="Sealed">Sealed Product</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+        <div><label class="ac-label">Set / Series</label><input type="text" id="acSet" class="ac-input" placeholder="e.g. Scarlet & Violet 151"></div>
+        <div><label class="ac-label">Condition *</label>
+          <select id="acCondition" class="ac-input">
+            <option>Mint</option><option>Near Mint</option><option>Lightly Played</option><option>Moderately Played</option><option>Heavily Played</option><option>Damaged</option>
+          </select>
+        </div>
+        <div><label class="ac-label">Grader</label>
+          <select id="acGrader" class="ac-input" onchange="toggleGradeField()">
+            <option value="">Raw (Ungraded)</option>
+            <option value="PSA">PSA</option>
+            <option value="BGS">BGS / Beckett</option>
+            <option value="SGC">SGC</option>
+            <option value="TAG">TAG</option>
+          </select>
+        </div>
+        <div id="acGradeFieldWrap" style="display:none"><label class="ac-label">Grade</label><input type="text" id="acGrade" class="ac-input" placeholder="e.g. 9, 9.5, 10"></div>
+        <div><label class="ac-label">Est. Value ($)</label><input type="number" id="acValue" class="ac-input" placeholder="0.00" min="0" step="0.01"></div>
+        <div><label class="ac-label">Quantity</label><input type="number" id="acQty" class="ac-input" placeholder="1" min="1" value="1"></div>
+        <div style="grid-column:1/-1"><label class="ac-label">Notes (optional)</label><input type="text" id="acNotes" class="ac-input" placeholder="e.g. Foil, holo, first edition…"></div>
+      </div>
+      <button class="mbtn purple" id="saveColBtn" onclick="saveCollectionItem()">🃏 Add to Collection</button>
+      <button class="mbtn outline" onclick="closeModal('addCollectionModal')">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- TRADE ITEM CONFIRMATION MODAL -->
+<div class="modal-overlay" id="tradeItemModal">
+  <div class="modal" style="max-width:440px">
+    <div class="mhd purple-head"><div class="mhd-ttl">🔄 Trade This Item</div><button class="mhd-close" onclick="closeModal('tradeItemModal')">✕</button></div>
+    <div class="mbody">
+      <div style="background:#f5f3ff;border:1px solid #ddd6fe;border-radius:10px;padding:13px;margin-bottom:14px;">
+        <div style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.95rem;color:var(--purple);margin-bottom:4px" id="tradeItemName">—</div>
+        <div style="font-size:12px;color:var(--muted)" id="tradeItemMeta">—</div>
+        <div style="font-size:13px;font-weight:700;color:var(--green);margin-top:5px" id="tradeItemVal">Est. —</div>
+      </div>
+      <p style="font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:16px">You'll be taken to the listing form with this item pre-filled. Set your trade preferences — accept cards, cards + cash, or cash only.</p>
+      <button class="mbtn gold" onclick="goToPostWithItem()">📦 Set Up Trade Listing →</button>
+      <button class="mbtn outline" onclick="closeModal('tradeItemModal')">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- COLLECTION VIEW MODAL (seller own + buyer view) -->
+<div class="modal-overlay" id="collectionViewModal">
+  <div class="modal" style="max-width:560px">
+    <div class="mhd purple-head"><div class="mhd-ttl" id="colViewTitle">🃏 Collection</div><button class="mhd-close" onclick="closeModal('collectionViewModal')">✕</button></div>
+    <div class="mbody" id="colViewBody"><div class="loading">Loading collection…</div></div>
+  </div>
+</div>
+
 <!-- OFFER PHOTO LIGHTBOX -->
 <div class="offer-lightbox" id="offerLightbox" onclick="closeLightbox()">
   <button class="lb-close" onclick="closeLightbox()">✕</button>
@@ -408,30 +551,26 @@ const sb = window.supabase.createClient(
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVxdXZ3YXNwY29lZXRmc2V4cWtpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgyNzc2MjQsImV4cCI6MjA5Mzg1MzYyNH0.TP6Kk3pzHW1PYMUu5D9Vu2lJrazIEagzu5csYhqkrfI'
 );
 
-let currentUser    = null;
-let currentUserData = null;
-let currentTradeId = null;
-let currentOfferId = null;
-let currentTradeIsShipIt = false;
-let lbPhotos = [];
-let lbIndex  = 0;
+let currentUser = null, currentUserData = null;
+let currentTradeId = null, currentTradeIsShipIt = false;
+let currentTradeItemData = null;
+let lbPhotos = [], lbIndex = 0;
 
-const CAT_EMOJI = {'Food & Water':'🥫','Garden':'🌱','Electronics':'⚡','Tools':'🔧','Sports':'🚲','Music':'🎵','Gaming':'🎮','Clothing':'👗','Books':'📚','Trading Cards':'🃏','Other':'📦'};
+const CAT_EMOJI = {'Food & Water':'🥫','Garden':'🌱','Electronics':'⚡','Tools':'🔧','Sports':'🚲','Music':'🎵','Gaming':'🎮','Clothing':'👗','Books':'📚','Trading Cards':'🃏','Sports Card':'⚾','TCG':'🃏','Sealed':'📦','Other':'📦'};
 const AV_COLORS = ['var(--blue)','var(--green)','var(--orange)','var(--gold)','#64748b'];
 
 (async () => {
   const { data: { session } } = await sb.auth.getSession();
   if (!session) { window.location.href = 'alltrades-auth.html'; return; }
   currentUser = session.user;
-  // Load seller verification status for Ship-It acceptance gate
-  const { data: ud } = await sb.from('users').select('display_name, location_city, location_state, id_verified').eq('id', currentUser.id).single();
+  const { data: ud } = await sb.from('users').select('display_name,location_city,location_state,id_verified').eq('id', currentUser.id).single();
   currentUserData = ud;
   initDashboard();
 })();
 
 async function initDashboard() {
   setGreeting();
-  await Promise.all([loadUserProfile(), loadOffers(), loadTrades(), loadListings(), loadMessages(), loadTradeValue(), loadRatings()]);
+  await Promise.all([loadUserProfile(), loadOffers(), loadTrades(), loadListings(), loadMessages(), loadTradeValue(), loadRatings(), loadCollection()]);
 }
 
 function setGreeting() {
@@ -442,31 +581,190 @@ function setGreeting() {
 async function loadUserProfile() {
   try {
     const name     = currentUserData?.display_name || currentUser.email?.split('@')[0] || 'Trader';
-    const initials = name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0,2);
-    const location = currentUserData?.location_city ? `📍 ${currentUserData.location_city}${currentUserData.location_state ? ', '+currentUserData.location_state : ''}` : '📍 Location not set';
+    const initials = name.split(' ').map(n=>n[0]).join('').toUpperCase().slice(0,2);
+    const loc      = currentUserData?.location_city ? `📍 ${currentUserData.location_city}${currentUserData.location_state?', '+currentUserData.location_state:''}` : '📍 Location not set';
     document.getElementById('userName').textContent = name;
     document.getElementById('userAv').textContent   = initials;
     document.getElementById('wbName').textContent   = name;
-    document.getElementById('wbSub').innerHTML      = `${location} · <a href="alltrades-verification.html" style="color:var(--gold-l);font-weight:700;text-decoration:none">Verify your account →</a>`;
-  } catch(e) {
-    document.getElementById('wbName').textContent  = 'Trader';
-    document.getElementById('userName').textContent = 'Trader';
-  }
+    document.getElementById('wbSub').innerHTML      = `${loc} · <a href="alltrades-verification.html" style="color:var(--gold-l);font-weight:700;text-decoration:none">Verify your account →</a>`;
+  } catch(e) { document.getElementById('wbName').textContent = 'Trader'; }
 }
 
+/* ── COLLECTION ── */
+async function loadCollection() {
+  try {
+    const { data: items } = await sb.from('collections').select('*').eq('user_id', currentUser.id).order('created_at', { ascending: false });
+    const total    = items?.length || 0;
+    const sealed   = items?.filter(i => i.sealed).length || 0;
+    const totalVal = (items||[]).reduce((s,i) => s + (Number(i.estimated_value)||0) * (Number(i.quantity)||1), 0);
+    document.getElementById('cwItemCount').textContent   = total;
+    document.getElementById('cwSealedCount').textContent = sealed;
+    document.getElementById('cwTotalVal').textContent    = total > 0 ? '$' + totalVal.toLocaleString(undefined,{maximumFractionDigits:0}) : '—';
+    document.getElementById('colCount').textContent      = total;
+    if (total > 0) { document.getElementById('sbColBadge').textContent = total; document.getElementById('sbColBadge').style.display = 'inline'; }
+    const list = document.getElementById('cwItemsList');
+    if (!total) { list.innerHTML = `<div class="cw-empty"><div class="cw-empty-icon">🃏</div><div class="cw-empty-txt">No items yet. Add your first card or sealed product!</div></div>`; return; }
+    list.innerHTML = (items||[]).slice(0,8).map(item => {
+      const gradeDisplay = item.graded && item.grader ? `${item.grader} ${item.grade||''}`.trim() : null;
+      const firstPhoto   = item.photos?.[0];
+      const thumbHtml    = firstPhoto ? `<img src="${firstPhoto}" alt="${item.title}" loading="lazy">` : (CAT_EMOJI[item.category]||'🃏');
+      const val          = item.estimated_value ? '$'+Number(item.estimated_value).toLocaleString(undefined,{maximumFractionDigits:0}) : '—';
+      const safeItem     = JSON.stringify(item).replace(/'/g,'&#39;').replace(/"/g,'&quot;');
+      return `<div class="cw-item">
+        <div class="cw-item-thumb">${thumbHtml}</div>
+        <div class="cw-item-info">
+          <div class="cw-item-title">${item.title}</div>
+          <div class="cw-item-meta">
+            ${item.set_name?`<span>${item.set_name}</span><span>·</span>`:''}
+            <span>${item.condition||'—'}</span>
+            ${gradeDisplay?`<span class="cw-grade-badge">${gradeDisplay}</span>`:''}
+          </div>
+        </div>
+        <div class="cw-item-val">${val}</div>
+        <button class="cw-trade-btn" onclick='openTradeItemModal(${JSON.stringify(item)})'>Trade Item</button>
+      </div>`;
+    }).join('');
+  } catch(e) { document.getElementById('cwItemsList').innerHTML = `<div class="cw-empty"><div class="cw-empty-txt">Could not load collection.</div></div>`; }
+}
+
+function openTradeItemModal(item) {
+  currentTradeItemData = item;
+  document.getElementById('tradeItemName').textContent = item.title;
+  document.getElementById('tradeItemMeta').textContent = [item.set_name, item.condition, item.graded&&item.grader?(item.grader+(item.grade?' '+item.grade:'')):'Raw'].filter(Boolean).join(' · ');
+  document.getElementById('tradeItemVal').textContent  = item.estimated_value ? `Est. $${Number(item.estimated_value).toLocaleString()}` : 'Est. —';
+  openModal('tradeItemModal');
+}
+
+function goToPostWithItem() {
+  if (!currentTradeItemData) return;
+  const i = currentTradeItemData;
+  const p = new URLSearchParams({
+    prefill:   '1',
+    title:     i.title||'',
+    category:  i.category==='TCG'?'Trading Cards':i.category==='Sports Card'?'Sports Cards':i.category||'',
+    set:       i.set_name||'',
+    condition: i.condition||'',
+    value:     i.estimated_value||'',
+    grader:    i.grader||'',
+    grade:     i.grade||'',
+    notes:     i.notes||'',
+    col_id:    i.id||'',
+  });
+  window.location.href = `alltrades-post.html?${p.toString()}`;
+}
+
+function tradeEntireCollection() {
+  showToast('🃏', 'Trade Collection listing coming soon — August Collection Vault release!');
+}
+
+async function openCollectionViewModal(userId, namePrefix) {
+  if (!userId) return;
+  openModal('collectionViewModal');
+  const isOwn = userId === currentUser?.id;
+  const label = isOwn ? 'My Collection' : `${namePrefix}'s Collection`;
+  document.getElementById('colViewTitle').textContent = `🃏 ${label}`;
+  const body = document.getElementById('colViewBody');
+  body.innerHTML = '<div class="loading">Loading collection…</div>';
+  try {
+    let query = sb.from('collections').select('*').eq('user_id', userId).order('created_at', { ascending: false });
+    if (!isOwn) query = query.eq('public_profile', true);
+    const { data: items } = await query;
+    if (!items?.length) {
+      body.innerHTML = `<div class="empty-state"><div class="empty-icon">🃏</div><div class="empty-txt">${isOwn ? 'Your collection is empty. Add items above!' : `${namePrefix} hasn't made their collection public yet.`}</div></div>`;
+      return;
+    }
+    const totalVal = (items||[]).reduce((s,i) => s + (Number(i.estimated_value)||0) * (Number(i.quantity)||1), 0);
+    body.innerHTML = `
+      <div style="display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap">
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:9px 14px;text-align:center">
+          <div style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.2rem;color:var(--purple)">${items.length}</div>
+          <div style="font-size:10px;color:var(--muted);text-transform:uppercase">Items</div>
+        </div>
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:9px 14px;text-align:center">
+          <div style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.2rem;color:var(--green)">$${totalVal.toLocaleString(undefined,{maximumFractionDigits:0})}</div>
+          <div style="font-size:10px;color:var(--muted);text-transform:uppercase">Est. Value</div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:7px;max-height:380px;overflow-y:auto">
+        ${items.map(item => {
+          const gd  = item.graded && item.grader ? `${item.grader} ${item.grade||''}`.trim() : null;
+          const val = item.estimated_value ? '$'+Number(item.estimated_value).toLocaleString(undefined,{maximumFractionDigits:0}) : '—';
+          return `<div style="display:flex;align-items:center;gap:10px;padding:9px 12px;background:var(--surface);border:1px solid var(--border);border-radius:8px">
+            <div style="width:32px;height:32px;border-radius:5px;background:var(--white);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:.85rem;flex-shrink:0">${CAT_EMOJI[item.category]||'🃏'}</div>
+            <div style="flex:1;min-width:0">
+              <div style="font-weight:700;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${item.title}</div>
+              <div style="font-size:10px;color:var(--muted);display:flex;gap:4px;align-items:center;flex-wrap:wrap">
+                ${item.set_name?`<span>${item.set_name}</span><span>·</span>`:''}
+                <span>${item.condition||'—'}</span>
+                ${gd?`<span style="background:#f5f3ff;border:1px solid #ddd6fe;color:var(--purple);font-size:9px;font-weight:800;padding:1px 4px;border-radius:2px">${gd}</span>`:''}
+                ${item.quantity>1?`<span>· Qty: ${item.quantity}</span>`:''}
+              </div>
+            </div>
+            <div style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.85rem;color:var(--green);flex-shrink:0">${val}</div>
+          </div>`;
+        }).join('')}
+      </div>
+      ${isOwn ? `<div style="margin-top:14px;display:flex;gap:8px">
+        <button class="mbtn purple" style="margin-bottom:0" onclick="tradeEntireCollection()">🔄 Trade Entire Collection</button>
+        <button class="mbtn outline" style="margin-bottom:0;flex:0.5" onclick="closeModal('collectionViewModal')">Close</button>
+      </div>` : `<button class="mbtn outline" style="margin-top:14px;margin-bottom:0" onclick="closeModal('collectionViewModal')">Close</button>`}`;
+  } catch(e) { body.innerHTML = `<div class="empty-state"><div class="empty-txt">Could not load collection.</div></div>`; }
+}
+
+/* ── ADD COLLECTION ITEM ── */
+function openAddCollectionModal() {
+  ['acTitle','acSet','acGrade','acNotes'].forEach(id => { const el = document.getElementById(id); if(el) el.value=''; });
+  document.getElementById('acValue').value = '';
+  document.getElementById('acQty').value   = '1';
+  document.getElementById('acCategory').value  = 'TCG';
+  document.getElementById('acCondition').value = 'Mint';
+  document.getElementById('acGrader').value    = '';
+  document.getElementById('acGradeFieldWrap').style.display = 'none';
+  openModal('addCollectionModal');
+}
+function toggleGradeField() {
+  document.getElementById('acGradeFieldWrap').style.display = document.getElementById('acGrader').value ? 'block' : 'none';
+}
+async function saveCollectionItem() {
+  const title = document.getElementById('acTitle').value.trim();
+  if (!title) { showToast('⚠️','Please enter an item title.'); return; }
+  const btn = document.getElementById('saveColBtn');
+  btn.disabled = true; btn.textContent = '⏳ Saving…';
+  try {
+    const grader = document.getElementById('acGrader').value;
+    const { error } = await sb.from('collections').insert({
+      user_id:         currentUser.id,
+      title,
+      category:        document.getElementById('acCategory').value,
+      set_name:        document.getElementById('acSet').value.trim()||null,
+      condition:       document.getElementById('acCondition').value,
+      graded:          !!grader,
+      grader:          grader||null,
+      grade:           grader?(document.getElementById('acGrade').value.trim()||null):null,
+      estimated_value: parseFloat(document.getElementById('acValue').value)||null,
+      quantity:        parseInt(document.getElementById('acQty').value)||1,
+      notes:           document.getElementById('acNotes').value.trim()||null,
+    });
+    if (error) throw error;
+    closeModal('addCollectionModal');
+    showToast('🃏',`"${title}" added to your collection!`);
+    loadCollection();
+  } catch(e) {
+    console.error(e); showToast('⚠️','Error saving item. Please try again.');
+  } finally { btn.disabled = false; btn.textContent = '🃏 Add to Collection'; }
+}
+
+/* ── OFFERS ── */
 async function loadOffers() {
   try {
     const { data: myListings } = await sb.from('listings').select('id').eq('user_id', currentUser.id);
     const listingIds = myListings?.map(l => l.id) || [];
     let offers = [];
     if (listingIds.length > 0) {
-      const { data } = await sb
-        .from('offers')
-        .select('*, listing:listing_id(title, photos, category, estimated_value, condition)')
-        .in('listing_id', listingIds)
-        .eq('status', 'pending')
-        .order('created_at', { ascending: false })
-        .limit(10);
+      const { data } = await sb.from('offers')
+        .select('*, listing:listing_id(title,photos,category,estimated_value,condition)')
+        .in('listing_id', listingIds).eq('status','pending')
+        .order('created_at',{ascending:false}).limit(8);
       offers = data || [];
     }
     const count = offers.length;
@@ -476,482 +774,281 @@ async function loadOffers() {
     if (count > 0) {
       document.getElementById('sbOfferBadge').textContent   = count;
       document.getElementById('sbOfferBadge').style.display = 'inline';
-      addAlert('urgent', '📨', `<strong>${count} offer${count>1?'s':''} waiting</strong> — Review and accept or decline.`, 'Review Now', "document.getElementById('offersPanel').scrollIntoView({behavior:'smooth'})");
+      addAlert('urgent','📨',`<strong>${count} offer${count>1?'s':''} waiting</strong> — Review and accept or decline.`,'Review Now',"document.getElementById('offersColGrid').scrollIntoView({behavior:'smooth'})");
     }
     const panel = document.getElementById('offersPanel');
-    if (!offers.length) {
-      panel.innerHTML = `<div class="empty-state"><div class="empty-icon">📭</div><div class="empty-txt">No pending offers yet.<br>Post a listing to start receiving offers!</div></div>`;
-      return;
-    }
+    if (!offers.length) { panel.innerHTML = `<div class="empty-state"><div class="empty-icon">📭</div><div class="empty-txt">No pending offers yet.<br>Post a listing to start receiving offers!</div></div>`; return; }
     panel.innerHTML = offers.map(o => {
       const isShipIt     = o.is_ship_it === true;
       const listingTitle = o.listing?.title || 'Listing';
       const firstPhoto   = o.listing?.photos?.[0];
       const cat          = o.listing?.category || '';
-      const thumbHtml    = firstPhoto ? `<img src="${firstPhoto}" alt="${listingTitle}" loading="lazy">` : (CAT_EMOJI[cat] || '📦');
-      const offerDesc    = isShipIt
-        ? `🚚 Ship-It trade: ${o.offered_item_title || 'Item'}`
-        : o.offer_type === 'cash' ? `Cash offer: $${Number(o.cash_amount||0).toFixed(2)}`
-        : o.offer_type === 'item' ? `Item trade: ${o.offered_item_title || 'Item'}`
-        : `Trade offer`;
-      return `
-        <div class="offer-row${isShipIt?' shipit-row':''}" onclick="openOfferModal('${o.id}')">
-          <div class="or-em">${thumbHtml}</div>
-          <div class="or-info">
-            <div class="or-ttl">${listingTitle}</div>
-            <div class="or-meta">
-              ${isShipIt ? '<span class="or-shipit-pill">🚚 Ship-It — State to State</span>' : ''}
-              <span>${offerDesc}</span><span>·</span><span>${timeAgo(o.created_at)}</span>
-              ${o.message ? `<span>·</span><span style="font-style:italic">"${o.message.slice(0,40)}${o.message.length>40?'…':''}"</span>` : ''}
-            </div>
+      const thumbHtml    = firstPhoto ? `<img src="${firstPhoto}" alt="${listingTitle}" loading="lazy">` : (CAT_EMOJI[cat]||'📦');
+      const offerDesc    = o.offer_type==='cash' ? `Cash: $${Number(o.cash_amount||0).toFixed(0)}` : `Item: ${(o.offered_item_title||'Item').slice(0,18)}`;
+      return `<div class="offer-row${isShipIt?' shipit-row':''}" onclick="openOfferModal('${o.id}')">
+        <div class="or-em">${thumbHtml}</div>
+        <div class="or-info">
+          <div class="or-ttl">${listingTitle}</div>
+          <div class="or-meta">${isShipIt?'<span class="or-shipit-pill">🚚 Ship-It</span>':''}<span>${offerDesc}</span><span>·</span><span>${timeAgo(o.created_at)}</span></div>
+        </div>
+        <div class="or-rt">
+          <div class="or-st st-pend">${isShipIt?'🚚':'PEND'}</div>
+          <div class="or-acts">
+            <button class="or-btn btn-view-sm" onclick="event.stopPropagation();openOfferModal('${o.id}')">👁 View</button>
+            <button class="or-btn btn-acc${isShipIt?' shipit-acc':''}" onclick="event.stopPropagation();acceptOffer('${o.id}',${isShipIt})">${isShipIt?'🚚':'✓'}</button>
+            <button class="or-btn btn-dec" onclick="event.stopPropagation();declineOffer('${o.id}',this)">✕</button>
           </div>
-          <div class="or-rt">
-            <div class="or-st st-pend">${isShipIt?'🚚 SHIP-IT':'PENDING'}</div>
-            <div class="or-acts">
-              <button class="or-btn btn-acc${isShipIt?' shipit-acc':''}" onclick="event.stopPropagation();acceptOffer('${o.id}',${isShipIt})">${isShipIt?'🚚 Accept':'✓ Accept'}</button>
-              <button class="or-btn btn-dec" onclick="event.stopPropagation();declineOffer('${o.id}',this)">✕</button>
-            </div>
-          </div>
-        </div>`;
+        </div>
+      </div>`;
     }).join('');
-  } catch(e) {
-    document.getElementById('offersPanel').innerHTML = `<div class="empty-state"><div class="empty-txt">Could not load offers.</div></div>`;
-  }
+  } catch(e) { document.getElementById('offersPanel').innerHTML = `<div class="empty-state"><div class="empty-txt">Could not load offers.</div></div>`; }
 }
 
 async function openOfferModal(offerId) {
-  currentOfferId = offerId;
   openModal('offerModal');
   document.getElementById('offerModalBody').innerHTML = '<div class="loading">Loading offer details…</div>';
   try {
-    const { data: o } = await sb
-      .from('offers')
-      .select('*, listing:listing_id(title, photos, category, estimated_value, condition)')
-      .eq('id', offerId)
-      .single();
-
+    const { data: o } = await sb.from('offers').select('*, listing:listing_id(title,photos,category,estimated_value,condition)').eq('id',offerId).single();
     const { data: offerer } = await sb.from('users').select('display_name').eq('id', o.offerer_id).single();
     const offererName     = offerer?.display_name || 'Trader';
-    const offererInitials = offererName.split(' ').map(n => n[0]).join('').toUpperCase().slice(0,2);
+    const offererInitials = offererName.split(' ').map(n=>n[0]).join('').toUpperCase().slice(0,2);
     const isShipIt        = o.is_ship_it === true;
-
-    // Update modal header for Ship-It
-    const modalHead  = document.getElementById('offerModalHead');
-    const modalTitle = document.getElementById('offerModalTitle');
-    if (isShipIt) {
-      modalHead.classList.add('shipit-head');
-      modalTitle.textContent = '🚚 Ship-It Offer Details';
-    } else {
-      modalHead.classList.remove('shipit-head');
-      modalTitle.textContent = '📨 Offer Details';
-    }
-
+    document.getElementById('offerModalHead').className = `mhd${isShipIt?' shipit-head':''}`;
+    document.getElementById('offerModalTitle').textContent = isShipIt ? '🚚 Ship-It Offer Details' : '📨 Offer Details';
     const listingTitle = o.listing?.title || 'Listing';
     const firstPhoto   = o.listing?.photos?.[0];
     const cat          = o.listing?.category || '';
-    const thumbHtml    = firstPhoto
-      ? `<img src="${firstPhoto}" alt="${listingTitle}">`
-      : `<span style="font-size:1.5rem">${CAT_EMOJI[cat] || '📦'}</span>`;
-
-    // Ship-It notice block
-    const shipItNotice = isShipIt ? `
-      <div class="shipit-offer-notice">
-        <span class="son-icon">🚚</span>
-        <div>
-          <div class="son-title">Ship-It Trade — State to State</div>
-          <div class="son-desc">This buyer wants a state-to-state Ship-It trade. If you accept, you'll need to ship the item with a tracking number. Both parties must be ID verified. 10% platform fee at acceptance.</div>
-        </div>
-      </div>` : '';
-
-    // Seller ID gate for Ship-It
-    const sellerIdGate = isShipIt && !currentUserData?.id_verified ? `
-      <div class="shipit-id-gate-modal">
-        <div style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.92rem;color:#92400e;margin-bottom:5px">🪪 ID Verification Required to Accept Ship-It</div>
-        <div style="font-size:12px;color:#a16207;line-height:1.5;margin-bottom:10px">You need ID verification before you can accept a Ship-It trade. This protects both parties in state-to-state trades.</div>
-        <button class="mbtn outline" onclick="window.location.href='alltrades-verification.html'" style="margin-bottom:0;font-size:.85rem;padding:8px">🪪 Get ID Verified →</button>
-      </div>` : '';
-
+    const thumbHtml    = firstPhoto ? `<img src="${firstPhoto}" alt="${listingTitle}">` : `<span style="font-size:1.5rem">${CAT_EMOJI[cat]||'📦'}</span>`;
+    const shipItNotice = isShipIt ? `<div class="shipit-offer-notice"><span class="son-icon">🚚</span><div><div class="son-title">Ship-It Trade — State to State</div><div class="son-desc">This buyer wants a Ship-It trade. 10% fee at acceptance. ID verification required for both parties.</div></div></div>` : '';
+    const sellerIdGate = isShipIt && !currentUserData?.id_verified ? `<div class="shipit-id-gate-modal"><div style="font-family:'Barlow Condensed',sans-serif;font-weight:800;color:#92400e;margin-bottom:5px">🪪 ID Verification Required</div><div style="font-size:12px;color:#a16207;margin-bottom:10px">You need ID verification before accepting Ship-It trades.</div><button class="mbtn outline" onclick="window.location.href='alltrades-verification.html'" style="margin-bottom:0;font-size:.82rem;padding:8px">🪪 Get ID Verified →</button></div>` : '';
     let offerContent = '';
-    if (o.offer_type === 'cash') {
-      offerContent = `
-        <div class="od-section">
-          <div class="od-section-lbl">Cash Offer</div>
-          <div class="od-val-box" style="font-size:1.4rem;font-family:'Barlow Condensed',sans-serif;font-weight:900;color:var(--green)">
-            $${Number(o.cash_amount||0).toFixed(2)}
-          </div>
-        </div>`;
+    if (o.offer_type==='cash') {
+      offerContent = `<div class="od-section"><div class="od-section-lbl">Cash Offer</div><div class="od-val-box" style="font-size:1.4rem;font-family:'Barlow Condensed',sans-serif;font-weight:900;color:var(--green)">$${Number(o.cash_amount||0).toFixed(2)}</div></div>`;
     } else {
-      offerContent = `
-        <div class="od-section">
-          <div class="od-section-lbl">Offered Item</div>
-          <div class="od-val-box">
-            <div style="font-weight:700;margin-bottom:4px">${o.offered_item_title || 'Item'}</div>
-            ${o.offered_item_value ? `<div style="font-size:12px;color:var(--muted)">Est. value: ~$${Number(o.offered_item_value).toFixed(0)}</div>` : ''}
-            ${o.offered_condition ? `<div style="font-size:12px;color:var(--muted)">Condition: ${o.offered_condition}</div>` : ''}
-          </div>
-        </div>
-        ${Number(o.cash_amount) > 0 ? `
-        <div class="od-section">
-          <div class="od-section-lbl">+ Cash Add-on</div>
-          <div class="od-val-box" style="color:var(--green);font-weight:700">+$${Number(o.cash_amount).toFixed(2)}</div>
-        </div>` : ''}`;
+      offerContent = `<div class="od-section"><div class="od-section-lbl">Offered Item</div><div class="od-val-box"><div style="font-weight:700;margin-bottom:4px">${o.offered_item_title||'Item'}</div>${o.offered_item_value?`<div style="font-size:12px;color:var(--muted)">Est. ~$${Number(o.offered_item_value).toFixed(0)}</div>`:''} ${o.offered_condition?`<div style="font-size:12px;color:var(--muted)">Condition: ${o.offered_condition}</div>`:''}</div></div>${Number(o.cash_amount)>0?`<div class="od-section"><div class="od-section-lbl">+ Cash Add-on</div><div class="od-val-box" style="color:var(--green);font-weight:700">+$${Number(o.cash_amount).toFixed(2)}</div></div>`:''}`;
     }
-
     const photos = o.offered_photos || [];
-    const photosHtml = photos.length ? `
-      <div class="od-section">
-        <div class="od-section-lbl">Photos of offered item</div>
-        <div class="od-item-photos">
-          ${photos.map((p, i) => `<img class="od-item-photo" src="${p}" alt="offered item" onclick="openLightbox(this)" data-photos='${JSON.stringify(photos)}' data-index="${i}" title="Click to expand">`).join('')}
-        </div>
-      </div>` : '';
-
-    const messageHtml = o.message ? `
-      <div class="od-section">
-        <div class="od-section-lbl">Message from ${offererName}</div>
-        <div class="od-message">"${o.message}"</div>
-      </div>` : '';
-
-    // Accept button — disabled + gate shown if Ship-It and seller not verified
+    const photosHtml = photos.length ? `<div class="od-section"><div class="od-section-lbl">Photos of offered item</div><div class="od-item-photos">${photos.map((p,i)=>`<img class="od-item-photo" src="${p}" alt="offered item" onclick="openLightbox(this)" data-photos='${JSON.stringify(photos)}' data-index="${i}">`).join('')}</div></div>` : '';
+    const messageHtml = o.message ? `<div class="od-section"><div class="od-section-lbl">Message from ${offererName}</div><div class="od-message">"${o.message}"</div></div>` : '';
     const canAccept = !isShipIt || currentUserData?.id_verified;
     const acceptBtn = isShipIt
-      ? `<button class="mbtn cyan" style="margin-bottom:0" ${canAccept?'':'disabled style="opacity:.4;cursor:not-allowed"'} onclick="closeModal('offerModal');acceptOffer('${o.id}',true)">🚚 Accept Ship-It Offer</button>`
+      ? `<button class="mbtn cyan" style="margin-bottom:0" ${canAccept?'':'disabled'} onclick="closeModal('offerModal');acceptOffer('${o.id}',true)">🚚 Accept Ship-It</button>`
       : `<button class="mbtn green" style="margin-bottom:0" onclick="closeModal('offerModal');acceptOffer('${o.id}',false)">✓ Accept Offer</button>`;
-
+    // Check if offerer has public collection
+    const { data: offererCol } = await sb.from('collections').select('id').eq('user_id', o.offerer_id).eq('public_profile', true).limit(1);
+    const viewColBtn = offererCol?.length ? `<button class="mbtn outline" style="margin-top:6px;margin-bottom:0;font-size:.82rem" onclick="closeModal('offerModal');openCollectionViewModal('${o.offerer_id}','${offererName}')">🃏 View Their Collection</button>` : '';
     document.getElementById('offerModalBody').innerHTML = `
-      ${shipItNotice}
-      ${sellerIdGate}
-      <div class="od-listing">
-        <div class="od-listing-img">${thumbHtml}</div>
-        <div class="od-listing-info">
-          <div class="od-listing-ttl">${listingTitle}</div>
-          <div class="od-listing-meta">${cat}${o.listing?.condition ? ' · '+o.listing.condition : ''}${o.listing?.estimated_value ? ' · ~$'+Number(o.listing.estimated_value).toFixed(0) : ''}</div>
-        </div>
-      </div>
-      <div class="od-from">
-        <div class="od-from-av">${offererInitials}</div>
-        <div><strong>${offererName}</strong> wants to trade · <span style="color:var(--muted)">${timeAgo(o.created_at)}</span></div>
-      </div>
-      ${offerContent}
-      ${photosHtml}
-      ${messageHtml}
-      <div class="od-actions">
-        ${acceptBtn}
-        <button class="mbtn outline" style="margin-bottom:0;flex:0.5" onclick="closeModal('offerModal');declineOfferById('${o.id}')">✕ Decline</button>
-      </div>
-      <div style="text-align:center;margin-top:10px">
-        <a href="alltrades-item.html?id=${o.listing_id}" style="font-size:12px;color:var(--blue);font-weight:700;text-decoration:none">View full listing →</a>
-      </div>`;
-  } catch(e) {
-    document.getElementById('offerModalBody').innerHTML = `<div class="empty-state"><div class="empty-txt">Could not load offer details.</div></div>`;
-  }
+      ${shipItNotice}${sellerIdGate}
+      <div class="od-listing"><div class="od-listing-img">${thumbHtml}</div><div class="od-listing-info"><div class="od-listing-ttl">${listingTitle}</div><div class="od-listing-meta">${cat}${o.listing?.estimated_value?' · ~$'+Number(o.listing.estimated_value).toFixed(0):''}</div></div></div>
+      <div class="od-from"><div class="od-from-av">${offererInitials}</div><div><strong>${offererName}</strong> wants to trade · <span style="color:var(--muted)">${timeAgo(o.created_at)}</span></div></div>
+      ${offerContent}${photosHtml}${messageHtml}
+      <div class="od-actions">${acceptBtn}<button class="mbtn outline" style="margin-bottom:0;flex:0.5" onclick="closeModal('offerModal');declineOfferById('${o.id}')">✕ Decline</button></div>
+      ${viewColBtn}
+      <div style="text-align:center;margin-top:10px"><a href="alltrades-item.html?id=${o.listing_id}" style="font-size:12px;color:var(--blue);font-weight:700;text-decoration:none">View full listing →</a></div>`;
+  } catch(e) { document.getElementById('offerModalBody').innerHTML = `<div class="empty-state"><div class="empty-txt">Could not load offer details.</div></div>`; }
 }
 
-/* ── Lightbox ── */
+/* ── LIGHTBOX ── */
 function openLightbox(el) {
-  lbPhotos = JSON.parse(el.dataset.photos);
-  lbIndex  = parseInt(el.dataset.index);
+  lbPhotos = JSON.parse(el.dataset.photos); lbIndex = parseInt(el.dataset.index);
   document.getElementById('lbImg').src = lbPhotos[lbIndex];
-  document.getElementById('lbCounter').textContent = lbPhotos.length > 1 ? `${lbIndex+1} / ${lbPhotos.length}` : '';
-  document.getElementById('offerLightbox').classList.add('open');
-  document.body.style.overflow = 'hidden';
-  document.querySelector('.lb-prev').style.display = lbPhotos.length > 1 ? 'flex' : 'none';
-  document.querySelector('.lb-next').style.display = lbPhotos.length > 1 ? 'flex' : 'none';
+  document.getElementById('lbCounter').textContent = lbPhotos.length>1?`${lbIndex+1} / ${lbPhotos.length}`:'';
+  document.getElementById('offerLightbox').classList.add('open'); document.body.style.overflow='hidden';
+  document.querySelector('.lb-prev').style.display = lbPhotos.length>1?'flex':'none';
+  document.querySelector('.lb-next').style.display = lbPhotos.length>1?'flex':'none';
 }
-function closeLightbox() { document.getElementById('offerLightbox').classList.remove('open'); document.body.style.overflow = ''; }
-function lbNav(dir) {
-  lbIndex = (lbIndex + dir + lbPhotos.length) % lbPhotos.length;
-  document.getElementById('lbImg').src = lbPhotos[lbIndex];
-  document.getElementById('lbCounter').textContent = `${lbIndex+1} / ${lbPhotos.length}`;
-}
+function closeLightbox() { document.getElementById('offerLightbox').classList.remove('open'); document.body.style.overflow=''; }
+function lbNav(dir) { lbIndex=(lbIndex+dir+lbPhotos.length)%lbPhotos.length; document.getElementById('lbImg').src=lbPhotos[lbIndex]; document.getElementById('lbCounter').textContent=`${lbIndex+1} / ${lbPhotos.length}`; }
 document.addEventListener('keydown', e => {
   if (!document.getElementById('offerLightbox').classList.contains('open')) return;
-  if (e.key === 'Escape') closeLightbox();
-  if (e.key === 'ArrowLeft') lbNav(-1);
-  if (e.key === 'ArrowRight') lbNav(1);
+  if (e.key==='Escape') closeLightbox();
+  if (e.key==='ArrowLeft') lbNav(-1);
+  if (e.key==='ArrowRight') lbNav(1);
 });
 
+/* ── TRADES ── */
 async function loadTrades() {
   try {
     const { data: trades } = await sb.from('trades')
       .select('*, offer:offer_id(is_ship_it)')
       .or(`trader_a_id.eq.${currentUser.id},trader_b_id.eq.${currentUser.id}`)
-      .in('status', ['accepted','meetup_scheduled'])
-      .order('created_at', { ascending: false })
-      .limit(5);
+      .in('status',['accepted','meetup_scheduled'])
+      .order('created_at',{ascending:false}).limit(5);
     const count = trades?.length || 0;
     document.getElementById('tradeCount').textContent    = count;
     document.getElementById('statTrades').textContent    = count;
-    document.getElementById('statTradesSub').textContent = count > 0 ? `${count} in progress` : 'No active trades';
-    if (count > 0) {
-      document.getElementById('sbTradeBadge').textContent   = count;
-      document.getElementById('sbTradeBadge').style.display = 'inline';
-    }
+    document.getElementById('statTradesSub').textContent = count>0?`${count} in progress`:'No active trades';
+    if (count>0) { document.getElementById('sbTradeBadge').textContent=count; document.getElementById('sbTradeBadge').style.display='inline'; }
     const panel = document.getElementById('tradesPanel');
-    if (!trades?.length) {
-      panel.innerHTML = `<div class="empty-state"><div class="empty-icon">🔄</div><div class="empty-txt">No active trades.<br>Accept an offer to start trading!</div></div>`;
-      return;
-    }
+    if (!trades?.length) { panel.innerHTML=`<div class="empty-state"><div class="empty-icon">🔄</div><div class="empty-txt">No active trades.<br>Accept an offer to start trading!</div></div>`; return; }
     panel.innerHTML = trades.map(t => {
       const isShipIt    = t.offer?.is_ship_it === true;
       const isMeetup    = t.status === 'meetup_scheduled';
-      const myConfirmed = t.trader_a_id === currentUser.id ? t.trade_confirmed_a : t.trade_confirmed_b;
-      const fee         = t.trader_a_id === currentUser.id ? t.fee_a : t.fee_b;
-      const stageLabel  = isShipIt ? '🚚 SHIP-IT ACTIVE' : isMeetup ? '📍 MEETUP PENDING' : '✅ ACCEPTED';
-      const stageClass  = isShipIt ? 'stg-shipit' : isMeetup ? 'stg-meet' : 'stg-agree';
-      const fillClass   = isShipIt ? 'fill-cyan' : isMeetup ? 'fill-gold' : 'fill-blue';
+      const myConfirmed = t.trader_a_id===currentUser.id ? t.trade_confirmed_a : t.trade_confirmed_b;
+      const fee         = t.trader_a_id===currentUser.id ? t.fee_a : t.fee_b;
+      const stageLabel  = isShipIt?'🚚 SHIP-IT':isMeetup?'📍 MEETUP':'✅ ACCEPTED';
+      const stageClass  = isShipIt?'stg-shipit':isMeetup?'stg-meet':'stg-agree';
+      const fillClass   = isShipIt?'fill-cyan':isMeetup?'fill-gold':'fill-blue';
       return `<div class="trade-card${isShipIt?' shipit-trade':''}">
-        <div class="tc-hdr">
-          <div class="tc-id">Trade #${t.id.slice(0,8).toUpperCase()}${isShipIt?' · 🚚':''}</div>
-          <div class="tc-stage ${stageClass}">${stageLabel}</div>
-        </div>
-        <div class="tc-items">
-          <div class="tc-itm">
-            <div class="tc-itm-nm">${isShipIt?'Ship-It Trade':'Trade in progress'}</div>
-            <div class="tc-itm-vl">${t.total_value ? '~$'+Number(t.total_value).toFixed(0) : 'Value TBD'}</div>
-          </div>
-        </div>
+        <div class="tc-hdr"><div class="tc-id">Trade #${t.id.slice(0,8).toUpperCase()}</div><div class="tc-stage ${stageClass}">${stageLabel}</div></div>
+        <div class="tc-items"><div class="tc-itm"><div class="tc-itm-nm">${isShipIt?'Ship-It Trade':'Trade in progress'}</div><div class="tc-itm-vl">${t.total_value?'~$'+Number(t.total_value).toFixed(0):'Value TBD'}</div></div></div>
         <div class="tc-prog">
           <div class="tc-prog-lbl"><span>Progress</span><span style="color:var(--${isShipIt?'cyan':isMeetup?'gold':'blue'});font-weight:700">Step ${isMeetup?'2':'1'} of 3</span></div>
           <div class="tc-prog-bar"><div class="tc-prog-fill ${fillClass}" style="width:${isMeetup?'66':'33'}%"></div></div>
         </div>
         <div class="tc-ftr">
           <div class="tc-btn tcb-msg" onclick="window.location.href='alltrades-messages.html'">💬 Message</div>
+          <div class="tc-btn tcb-view" onclick="window.location.href='alltrades-item.html?id=${t.listing_id}'">👁 View</div>
           ${!myConfirmed
-            ? `<div class="tc-btn tcb-confirm" onclick="openConfirmModal('${t.id}',${fee||0},${isShipIt})">✓ Confirm Done</div>`
-            : `<div class="tc-btn" style="background:#f0fdf4;border:1px solid #bbf7d0;color:#14532d">✅ You confirmed</div>`}
+            ? `<div class="tc-btn tcb-confirm" onclick="openConfirmModal('${t.id}',${fee||0},${isShipIt})">✓ Done</div>`
+            : `<div class="tc-btn" style="background:#f0fdf4;border:1px solid #bbf7d0;color:#14532d;font-size:.65rem">✅ Confirmed</div>`}
         </div>
       </div>`;
     }).join('');
-  } catch(e) {
-    document.getElementById('tradesPanel').innerHTML = `<div class="empty-state"><div class="empty-txt">Could not load trades.</div></div>`;
-  }
+  } catch(e) { document.getElementById('tradesPanel').innerHTML=`<div class="empty-state"><div class="empty-txt">Could not load trades.</div></div>`; }
 }
 
+/* ── LISTINGS ── */
 async function loadListings() {
   try {
     const { data: listings } = await sb.from('listings')
       .select('id,title,category,condition,estimated_value,status,created_at,photos,view_count')
-      .eq('user_id', currentUser.id)
-      .order('created_at', { ascending: false })
-      .limit(10);
+      .eq('user_id', currentUser.id).order('created_at',{ascending:false}).limit(10);
     const count = listings?.length || 0;
     document.getElementById('listingCount').textContent    = count;
     document.getElementById('statListings').textContent    = count;
-    document.getElementById('statListingsSub').textContent = count > 0 ? `${count} listed` : 'No listings yet';
+    document.getElementById('statListingsSub').textContent = count>0?`${count} listed`:'No listings yet';
     const panel = document.getElementById('listingsPanel');
-    if (!listings?.length) {
-      panel.innerHTML = `<div class="empty-state"><div class="empty-icon">📦</div><div class="empty-txt">No listings yet.<br><a href="alltrades-post.html" style="color:var(--blue);font-weight:700">Post your first item →</a></div></div>`;
-      return;
-    }
+    if (!listings?.length) { panel.innerHTML=`<div class="empty-state"><div class="empty-icon">📦</div><div class="empty-txt">No listings yet.<br><a href="alltrades-post.html" style="color:var(--blue);font-weight:700">Post your first item →</a></div></div>`; return; }
     panel.innerHTML = listings.map(l => {
       const firstPhoto = l.photos?.[0];
-      const thumbHtml  = firstPhoto ? `<img src="${firstPhoto}" alt="${l.title}" loading="lazy">` : (CAT_EMOJI[l.category] || '📦');
+      const thumbHtml  = firstPhoto?`<img src="${firstPhoto}" alt="${l.title}" loading="lazy">`:(CAT_EMOJI[l.category]||'📦');
       const views      = l.view_count || 0;
-      const isActive   = (l.status || 'active') === 'active';
-      return `
-        <a class="lr" href="alltrades-item.html?id=${l.id}">
-          <div class="lr-thumb">${thumbHtml}</div>
-          <div class="lr-info">
-            <div class="lr-ttl">${l.title}</div>
-            <div class="lr-meta">
-              <span>${l.category || 'General'}</span>
-              ${l.condition ? `<span>·</span><span>${l.condition}</span>` : ''}
-              <span>·</span><span>${timeAgo(l.created_at)}</span>
-              <span class="lr-views">👁 ${views}</span>
-            </div>
+      const status     = l.status || 'active';
+      const stClass    = status==='trading'?'lst-trading':status==='active'?'lst-active':'lst-paused';
+      const stLabel    = status==='trading'?'🔄 IN TRADE':status==='active'?'ACTIVE':status.toUpperCase();
+      return `<a class="lr" href="alltrades-item.html?id=${l.id}">
+        <div class="lr-thumb">${thumbHtml}</div>
+        <div class="lr-info">
+          <div class="lr-ttl">${l.title}</div>
+          <div class="lr-meta"><span>${l.category||'General'}</span>${l.condition?`<span>·</span><span>${l.condition}</span>`:''}<span>·</span><span>${timeAgo(l.created_at)}</span><span class="lr-views">👁 ${views}</span></div>
+        </div>
+        <div class="lr-rt">
+          <div class="lr-val">${l.estimated_value?'~$'+Number(l.estimated_value).toFixed(0):'—'}</div>
+          <span class="lr-st ${stClass}">${stLabel}</span>
+          <div class="lr-acts">
+            <a class="lr-btn lrb-view" href="alltrades-item.html?id=${l.id}" onclick="event.stopPropagation()">👁 View</a>
+            <a class="lr-btn lrb-edit" href="alltrades-post.html?id=${l.id}" onclick="event.stopPropagation()">Edit</a>
+            <button class="lr-btn lrb-del" onclick="event.stopPropagation();deleteListing('${l.id}',this)">✕</button>
           </div>
-          <div class="lr-rt">
-            <div class="lr-val">${l.estimated_value ? '~$'+Number(l.estimated_value).toFixed(0) : '—'}</div>
-            <span class="lr-st ${isActive ? 'lst-active' : 'lst-paused'}">${isActive ? 'ACTIVE' : (l.status||'PAUSED').toUpperCase()}</span>
-            <div class="lr-acts">
-              <a class="lr-btn lrb-view" href="alltrades-item.html?id=${l.id}" onclick="event.stopPropagation()">👁 View</a>
-              <a class="lr-btn lrb-edit" href="alltrades-post.html?id=${l.id}" onclick="event.stopPropagation()">Edit</a>
-              <button class="lr-btn lrb-del" onclick="event.stopPropagation();deleteListing('${l.id}',this)">✕</button>
-            </div>
-          </div>
-        </a>`;
+        </div>
+      </a>`;
     }).join('');
-  } catch(e) {
-    document.getElementById('listingsPanel').innerHTML = `<div class="empty-state"><div class="empty-txt">Could not load listings.</div></div>`;
-  }
+  } catch(e) { document.getElementById('listingsPanel').innerHTML=`<div class="empty-state"><div class="empty-txt">Could not load listings.</div></div>`; }
 }
 
+/* ── MESSAGES ── */
 async function loadMessages() {
   try {
-    const { data: messages } = await sb.from('messages')
-      .select('*')
-      .or(`sender_id.eq.${currentUser.id},receiver_id.eq.${currentUser.id}`)
-      .order('created_at', { ascending: false })
-      .limit(50);
+    const { data: messages } = await sb.from('messages').select('*').or(`sender_id.eq.${currentUser.id},receiver_id.eq.${currentUser.id}`).order('created_at',{ascending:false}).limit(50);
     const seen = new Set();
-    const uniqueMessages = (messages || []).filter(m => {
-      const otherId = m.sender_id === currentUser.id ? m.receiver_id : m.sender_id;
-      if (seen.has(otherId)) return false;
-      seen.add(otherId);
-      return true;
-    }).slice(0, 5);
-    if (!uniqueMessages.length) {
-      const empty = `<div class="empty-state"><div class="empty-icon">💬</div><div class="empty-txt">No messages yet.</div></div>`;
-      document.getElementById('msgsPanel').innerHTML    = empty;
-      document.getElementById('msgModalBody').innerHTML = empty;
-      return;
-    }
-    const otherIds = [...new Set(uniqueMessages.map(m => m.sender_id === currentUser.id ? m.receiver_id : m.sender_id))];
-    const { data: userRows } = await sb.from('users').select('id,display_name').in('id', otherIds);
-    const nameMap = {};
-    (userRows || []).forEach(u => { nameMap[u.id] = u.display_name || 'Trader'; });
-    const unread      = uniqueMessages.filter(m => m.receiver_id === currentUser.id && !m.read_at);
-    const unreadCount = unread.length;
-    document.getElementById('msgCount').textContent = unreadCount;
-    if (unreadCount > 0) {
-      ['msgBadge','sbMsgBadge'].forEach(id => {
-        document.getElementById(id).textContent   = unreadCount;
-        document.getElementById(id).style.display = 'inline';
-      });
-    }
-    const msgHtml = uniqueMessages.map((m, i) => {
-      const isUnread = m.receiver_id === currentUser.id && !m.read_at;
-      const otherId  = m.sender_id === currentUser.id ? m.receiver_id : m.sender_id;
-      const name     = nameMap[otherId] || 'Trader';
-      const initials = name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0,2);
-      return `
-        <div class="msg-item ${isUnread ? 'unread' : ''}" onclick="window.location.href='alltrades-messages.html'">
-          <div class="mi-av" style="background:${AV_COLORS[i % AV_COLORS.length]}">${initials}${isUnread ? '<div class="mi-dot"></div>' : ''}</div>
-          <div class="mi-info">
-            <div class="mi-nm">${name}</div>
-            <div class="mi-prev">${m.content ? m.content.slice(0,50)+(m.content.length>50?'…':'') : 'Message'}</div>
-          </div>
-          <div class="mi-time">${timeAgo(m.created_at)}</div>
-        </div>`;
+    const unique = (messages||[]).filter(m => { const o=m.sender_id===currentUser.id?m.receiver_id:m.sender_id; if(seen.has(o))return false; seen.add(o); return true; }).slice(0,5);
+    if (!unique.length) { const e=`<div class="empty-state"><div class="empty-icon">💬</div><div class="empty-txt">No messages yet.</div></div>`; document.getElementById('msgsPanel').innerHTML=e; document.getElementById('msgModalBody').innerHTML=e; return; }
+    const otherIds = [...new Set(unique.map(m=>m.sender_id===currentUser.id?m.receiver_id:m.sender_id))];
+    const { data: userRows } = await sb.from('users').select('id,display_name').in('id',otherIds);
+    const nameMap = {}; (userRows||[]).forEach(u=>{nameMap[u.id]=u.display_name||'Trader';});
+    const unread = unique.filter(m=>m.receiver_id===currentUser.id&&!m.read_at);
+    if (unread.length) { ['msgBadge','sbMsgBadge'].forEach(id=>{document.getElementById(id).textContent=unread.length;document.getElementById(id).style.display='inline';}); }
+    document.getElementById('msgCount').textContent = unread.length;
+    const html = unique.map((m,i) => {
+      const isUnread=m.receiver_id===currentUser.id&&!m.read_at;
+      const otherId=m.sender_id===currentUser.id?m.receiver_id:m.sender_id;
+      const name=nameMap[otherId]||'Trader';
+      const initials=name.split(' ').map(n=>n[0]).join('').toUpperCase().slice(0,2);
+      return `<div class="msg-item${isUnread?' unread':''}" onclick="window.location.href='alltrades-messages.html'"><div class="mi-av" style="background:${AV_COLORS[i%AV_COLORS.length]}">${initials}${isUnread?'<div class="mi-dot"></div>':''}</div><div class="mi-info"><div class="mi-nm">${name}</div><div class="mi-prev">${m.content?m.content.slice(0,50)+(m.content.length>50?'…':''):'Message'}</div></div><div class="mi-time">${timeAgo(m.created_at)}</div></div>`;
     }).join('');
-    document.getElementById('msgsPanel').innerHTML    = msgHtml;
-    document.getElementById('msgModalBody').innerHTML = msgHtml;
-  } catch(e) {
-    document.getElementById('msgsPanel').innerHTML = `<div class="empty-state"><div class="empty-txt">Could not load messages.</div></div>`;
-  }
+    document.getElementById('msgsPanel').innerHTML=html; document.getElementById('msgModalBody').innerHTML=html;
+  } catch(e) { document.getElementById('msgsPanel').innerHTML=`<div class="empty-state"><div class="empty-txt">Could not load messages.</div></div>`; }
 }
 
+/* ── TRADE VALUE ── */
 async function loadTradeValue() {
   try {
-    const { data: allTrades } = await sb.from('trades')
-      .select('total_value,fee_a,fee_b,trader_a_id,created_at')
-      .or(`trader_a_id.eq.${currentUser.id},trader_b_id.eq.${currentUser.id}`)
-      .eq('status','completed');
-    const now   = new Date();
-    const ago30 = new Date(now - 30*24*60*60*1000);
-    const t30   = (allTrades||[]).filter(t => new Date(t.created_at) > ago30);
-    const sum   = (arr, fn) => arr.reduce((s,t) => s + (fn(t)||0), 0);
-    const myFee = t => t.trader_a_id === currentUser.id ? (t.fee_a||0) : (t.fee_b||0);
-    const v30  = sum(t30, t => t.total_value||0),           f30  = sum(t30, myFee);
-    const vAll = sum(allTrades||[], t => t.total_value||0), fAll = sum(allTrades||[], myFee);
-    document.getElementById('statValue').textContent    = '$' + v30.toFixed(0);
-    document.getElementById('statValueSub').textContent = t30.length > 0 ? `${t30.length} trade${t30.length>1?'s':''} this month` : 'No completed trades yet';
-    document.getElementById('ev30Value').textContent    = '$' + v30.toFixed(2);
-    document.getElementById('ev30Fees').textContent     = '$' + f30.toFixed(2);
-    document.getElementById('ev30Count').textContent    = t30.length;
-    document.getElementById('evAllValue').textContent   = '$' + vAll.toFixed(2);
-    document.getElementById('evAllFees').textContent    = '$' + fAll.toFixed(2);
-    document.getElementById('evAllCount').textContent   = allTrades?.length || 0;
-    document.getElementById('wbTrades').textContent     = allTrades?.length || 0;
-  } catch(e) { document.getElementById('statValue').textContent = '$0'; }
+    const { data: allTrades } = await sb.from('trades').select('total_value,fee_a,fee_b,trader_a_id,created_at').or(`trader_a_id.eq.${currentUser.id},trader_b_id.eq.${currentUser.id}`).eq('status','completed');
+    const ago30=new Date(Date.now()-30*24*60*60*1000);
+    const t30=(allTrades||[]).filter(t=>new Date(t.created_at)>ago30);
+    const sum=(arr,fn)=>arr.reduce((s,t)=>s+(fn(t)||0),0);
+    const myFee=t=>t.trader_a_id===currentUser.id?(t.fee_a||0):(t.fee_b||0);
+    const v30=sum(t30,t=>t.total_value||0),f30=sum(t30,myFee);
+    const vAll=sum(allTrades||[],t=>t.total_value||0),fAll=sum(allTrades||[],myFee);
+    document.getElementById('statValue').textContent='$'+v30.toFixed(0);
+    document.getElementById('statValueSub').textContent=t30.length>0?`${t30.length} trade${t30.length>1?'s':''} this month`:'No completed trades yet';
+    document.getElementById('ev30Value').textContent='$'+v30.toFixed(2);
+    document.getElementById('ev30Fees').textContent='$'+f30.toFixed(2);
+    document.getElementById('ev30Count').textContent=t30.length;
+    document.getElementById('evAllValue').textContent='$'+vAll.toFixed(2);
+    document.getElementById('evAllFees').textContent='$'+fAll.toFixed(2);
+    document.getElementById('evAllCount').textContent=allTrades?.length||0;
+    document.getElementById('wbTrades').textContent=allTrades?.length||0;
+  } catch(e) { document.getElementById('statValue').textContent='$0'; }
 }
 
+/* ── RATINGS ── */
 async function loadRatings() {
   try {
-    const { data: ratings } = await sb.from('ratings').select('*').eq('rated_id', currentUser.id).order('created_at', { ascending: false });
-    const panel = document.getElementById('ratingsPanel');
-    if (!ratings?.length) {
-      document.getElementById('wbRating').textContent = '—';
-      panel.innerHTML = `<div class="empty-state"><div class="empty-icon">⭐</div><div class="empty-txt">No ratings yet.<br>Complete a trade to earn your first rating!</div></div>`;
-      return;
-    }
-    const avg = ratings.reduce((s,r) => s+r.stars, 0) / ratings.length;
-    document.getElementById('wbRating').textContent = avg.toFixed(1) + '★';
-    panel.innerHTML = `
-      <div style="margin-bottom:12px">
-        <div style="font-family:'Barlow Condensed',sans-serif;font-size:2.8rem;font-weight:900;line-height:1">${avg.toFixed(1)}</div>
-        <div style="color:var(--gold)">${'★'.repeat(Math.round(avg))}${'☆'.repeat(5-Math.round(avg))}</div>
-        <div style="font-size:11px;color:var(--muted)">${ratings.length} trade${ratings.length>1?'s':''}</div>
-      </div>
-      ${ratings.slice(0,2).map(r=>`
-        <div style="background:var(--surface);border:1px solid var(--border);border-radius:7px;padding:9px 11px;font-size:12px;color:var(--muted);font-style:italic;margin-bottom:7px;line-height:1.5">
-          "${r.review||'Great trade!'}" <span style="color:var(--gold);font-style:normal">${'★'.repeat(r.stars)}</span>
-        </div>`).join('')}
-      <a href="alltrades-ratings.html" style="font-size:12px;color:var(--blue);font-weight:700;text-decoration:none">See all ratings →</a>`;
-  } catch(e) {
-    document.getElementById('ratingsPanel').innerHTML = `<div class="empty-state"><div class="empty-txt">Could not load ratings.</div></div>`;
-  }
+    const { data: ratings } = await sb.from('ratings').select('*').eq('rated_id',currentUser.id).order('created_at',{ascending:false});
+    const panel=document.getElementById('ratingsPanel');
+    if (!ratings?.length) { document.getElementById('wbRating').textContent='—'; panel.innerHTML=`<div class="empty-state"><div class="empty-icon">⭐</div><div class="empty-txt">No ratings yet.<br>Complete a trade to earn your first rating!</div></div>`; return; }
+    const avg=ratings.reduce((s,r)=>s+r.stars,0)/ratings.length;
+    document.getElementById('wbRating').textContent=avg.toFixed(1)+'★';
+    panel.innerHTML=`<div style="margin-bottom:12px"><div style="font-family:'Barlow Condensed',sans-serif;font-size:2.8rem;font-weight:900;line-height:1">${avg.toFixed(1)}</div><div style="color:var(--gold)">${'★'.repeat(Math.round(avg))}${'☆'.repeat(5-Math.round(avg))}</div><div style="font-size:11px;color:var(--muted)">${ratings.length} trade${ratings.length>1?'s':''}</div></div>${ratings.slice(0,2).map(r=>`<div style="background:var(--surface);border:1px solid var(--border);border-radius:7px;padding:9px 11px;font-size:12px;color:var(--muted);font-style:italic;margin-bottom:7px;line-height:1.5">"${r.review||'Great trade!'}" <span style="color:var(--gold);font-style:normal">${'★'.repeat(r.stars)}</span></div>`).join('')}<a href="alltrades-ratings.html" style="font-size:12px;color:var(--blue);font-weight:700;text-decoration:none">See all ratings →</a>`;
+  } catch(e) { document.getElementById('ratingsPanel').innerHTML=`<div class="empty-state"><div class="empty-txt">Could not load ratings.</div></div>`; }
 }
 
 /* ── ACTIONS ── */
-
 async function acceptOffer(id, isShipIt) {
-  // Seller Ship-It ID gate
-  if (isShipIt && !currentUserData?.id_verified) {
-    showToast('🪪', 'ID verification required to accept Ship-It trades.');
-    setTimeout(() => window.location.href = 'alltrades-verification.html', 1800);
-    return;
-  }
+  if (isShipIt && !currentUserData?.id_verified) { showToast('🪪','ID verification required to accept Ship-It trades.'); setTimeout(()=>window.location.href='alltrades-verification.html',1800); return; }
   try {
-    const { data: offer } = await sb.from('offers').select('*').eq('id', id).single();
+    const { data: offer } = await sb.from('offers').select('*').eq('id',id).single();
     if (!offer) throw new Error('Offer not found');
-    await sb.from('offers').update({ status: 'accepted' }).eq('id', id);
-    await sb.from('trades').insert({
-      offer_id:    offer.id,
-      listing_id:  offer.listing_id,
-      trader_a_id: currentUser.id,
-      trader_b_id: offer.offerer_id,
-      status:      'accepted',
-    });
-    showToast(isShipIt ? '🚚' : '🎉', isShipIt ? 'Ship-It offer accepted! Get ready to ship.' : 'Offer accepted! Trade created.');
-    loadOffers();
-    loadTrades();
-  } catch(e) {
-    showToast('⚠️', 'Error accepting offer.');
-    console.error('acceptOffer error:', e);
-  }
+    await sb.from('offers').update({status:'accepted'}).eq('id',id);
+    // Flip listing to 'trading' so it no longer shows as available
+    await sb.from('listings').update({status:'trading'}).eq('id',offer.listing_id);
+    await sb.from('trades').insert({offer_id:offer.id,listing_id:offer.listing_id,trader_a_id:currentUser.id,trader_b_id:offer.offerer_id,status:'accepted'});
+    showToast(isShipIt?'🚚':'🎉',isShipIt?'Ship-It offer accepted! Get ready to ship.':'Offer accepted! Trade created.');
+    loadOffers(); loadTrades(); loadListings();
+  } catch(e) { showToast('⚠️','Error accepting offer.'); console.error(e); }
 }
 
 async function declineOffer(id, btn) {
-  try {
-    await sb.from('offers').update({ status: 'declined' }).eq('id', id);
-    btn.closest('.offer-row').style.opacity = '.4';
-    showToast('👋', 'Offer declined.');
-  } catch(e) { showToast('⚠️', 'Error declining offer.'); }
+  try { await sb.from('offers').update({status:'declined'}).eq('id',id); btn.closest('.offer-row').style.opacity='.4'; showToast('👋','Offer declined.'); }
+  catch(e) { showToast('⚠️','Error declining offer.'); }
 }
 
 async function declineOfferById(id) {
-  try {
-    await sb.from('offers').update({ status: 'declined' }).eq('id', id);
-    showToast('👋', 'Offer declined.');
-    loadOffers();
-  } catch(e) { showToast('⚠️', 'Error declining offer.'); }
+  try { await sb.from('offers').update({status:'declined'}).eq('id',id); showToast('👋','Offer declined.'); loadOffers(); }
+  catch(e) { showToast('⚠️','Error declining offer.'); }
 }
 
 function openConfirmModal(tradeId, fee, isShipIt) {
-  currentTradeId = tradeId;
-  currentTradeIsShipIt = isShipIt;
-  const feeRate = isShipIt ? 0.10 : 0.05;
-  const feeLabel = isShipIt ? '10% Ship-It platform fee' : '5% platform fee';
-  const feeAmt = fee ? `: $${(Number(fee) * (isShipIt ? 2 : 1)).toFixed(2)}` : '';
-  const feeNote = document.getElementById('confirmFeeNote');
-  feeNote.style.cssText = isShipIt
-    ? 'background:#e0f2fe;border:1px solid #7dd3fc;border-radius:8px;padding:11px;margin-bottom:13px;font-size:12px;color:#0369a1'
-    : 'background:#fffbeb;border:1px solid #fde68a;border-radius:8px;padding:11px;margin-bottom:13px;font-size:12px;color:#92400e';
-  feeNote.textContent = `Your ${feeLabel}${feeAmt} will be recorded when you confirm.`;
+  currentTradeId=tradeId; currentTradeIsShipIt=isShipIt;
+  const feeLabel=isShipIt?'10% Ship-It platform fee':'5% platform fee';
+  const feeAmt=fee?`: $${(Number(fee)*(isShipIt?2:1)).toFixed(2)}`:'';
+  const feeNote=document.getElementById('confirmFeeNote');
+  feeNote.style.cssText=isShipIt?'background:#e0f2fe;border:1px solid #7dd3fc;border-radius:8px;padding:11px;margin-bottom:13px;font-size:12px;color:#0369a1':'background:#fffbeb;border:1px solid #fde68a;border-radius:8px;padding:11px;margin-bottom:13px;font-size:12px;color:#92400e';
+  feeNote.textContent=`Your ${feeLabel}${feeAmt} will be recorded when you confirm.`;
   if (isShipIt) {
-    document.getElementById('confirmEmoji').textContent   = '🚚';
-    document.getElementById('confirmTitle').textContent   = 'Confirm Ship-It Trade Complete?';
-    document.getElementById('confirmSubtitle').textContent = 'Confirm that the item was delivered and the trade is complete.';
-    document.getElementById('confirmBtn').className = 'mbtn cyan';
-    document.getElementById('confirmBtn').textContent = '🚚 Yes — Ship-It Trade Complete!';
+    document.getElementById('confirmEmoji').textContent='🚚';
+    document.getElementById('confirmTitle').textContent='Confirm Ship-It Trade Complete?';
+    document.getElementById('confirmSubtitle').textContent='Confirm that the item was delivered and the trade is complete.';
+    document.getElementById('confirmBtn').className='mbtn cyan';
+    document.getElementById('confirmBtn').textContent='🚚 Yes — Ship-It Trade Complete!';
   } else {
-    document.getElementById('confirmEmoji').textContent   = '🤝';
-    document.getElementById('confirmTitle').textContent   = 'Did the trade happen successfully?';
-    document.getElementById('confirmSubtitle').textContent = 'Both traders must confirm for the trade to close.';
-    document.getElementById('confirmBtn').className = 'mbtn green';
-    document.getElementById('confirmBtn').textContent = '✅ Yes — Trade Complete!';
+    document.getElementById('confirmEmoji').textContent='🤝';
+    document.getElementById('confirmTitle').textContent='Did the trade happen successfully?';
+    document.getElementById('confirmSubtitle').textContent='Both traders must confirm for the trade to close.';
+    document.getElementById('confirmBtn').className='mbtn green';
+    document.getElementById('confirmBtn').textContent='✅ Yes — Trade Complete!';
   }
   openModal('confirmModal');
 }
@@ -959,65 +1056,49 @@ function openConfirmModal(tradeId, fee, isShipIt) {
 async function doConfirmTrade() {
   if (!currentTradeId) return;
   try {
-    const { data: t } = await sb.from('trades').select('trader_a_id,trade_confirmed_a,trade_confirmed_b').eq('id', currentTradeId).single();
-    const isA       = t.trader_a_id === currentUser.id;
-    const field     = isA ? 'trade_confirmed_a' : 'trade_confirmed_b';
-    const otherDone = isA ? t.trade_confirmed_b : t.trade_confirmed_a;
-    const update    = { [field]: true };
-    if (otherDone) update.status = 'completed';
-    await sb.from('trades').update(update).eq('id', currentTradeId);
+    const { data: t } = await sb.from('trades').select('trader_a_id,trade_confirmed_a,trade_confirmed_b,listing_id').eq('id',currentTradeId).single();
+    const isA=t.trader_a_id===currentUser.id;
+    const field=isA?'trade_confirmed_a':'trade_confirmed_b';
+    const otherDone=isA?t.trade_confirmed_b:t.trade_confirmed_a;
+    const update={[field]:true};
+    if (otherDone) {
+      update.status='completed';
+      // Flip listing back to active when trade completes
+      if (t.listing_id) await sb.from('listings').update({status:'active'}).eq('id',t.listing_id);
+    }
+    await sb.from('trades').update(update).eq('id',currentTradeId);
     closeModal('confirmModal');
-    showToast(otherDone ? '🎉' : '✅', otherDone ? 'Trade complete! Ratings now unlocked.' : 'Confirmed! Waiting for the other trader.');
-    loadTrades();
-    loadTradeValue();
-  } catch(e) { showToast('⚠️', 'Error confirming trade.'); }
+    showToast(otherDone?'🎉':'✅',otherDone?'Trade complete! Ratings now unlocked.':'Confirmed! Waiting for the other trader.');
+    loadTrades(); loadTradeValue(); loadListings();
+  } catch(e) { showToast('⚠️','Error confirming trade.'); }
 }
 
 async function deleteListing(id, btn) {
   if (!confirm('Delete this listing?')) return;
-  try {
-    await sb.from('listings').delete().eq('id', id).eq('user_id', currentUser.id);
-    btn.closest('.lr').remove();
-    showToast('🗑️', 'Listing deleted.');
-    loadListings();
-  } catch(e) { showToast('⚠️', 'Error deleting listing.'); }
+  try { await sb.from('listings').delete().eq('id',id).eq('user_id',currentUser.id); btn.closest('.lr').remove(); showToast('🗑️','Listing deleted.'); loadListings(); }
+  catch(e) { showToast('⚠️','Error deleting listing.'); }
 }
 
-async function doSignOut() {
-  await sb.auth.signOut();
-  window.location.href = 'alltrades-auth.html';
-}
+async function doSignOut() { await sb.auth.signOut(); window.location.href='alltrades-auth.html'; }
 
 /* ── HELPERS ── */
-
-function addAlert(type, icon, text, btnLabel, btnAction) {
-  const div = document.createElement('div');
-  div.className = `alert ${type}`;
-  div.innerHTML = `<span class="al-ic">${icon}</span><div class="al-txt">${text}</div>${btnLabel ? `<button class="al-btn" onclick="${btnAction}">${btnLabel}</button>` : ''}<span class="al-close" onclick="this.closest('.alert').remove()">✕</span>`;
+function addAlert(type,icon,text,btnLabel,btnAction) {
+  const div=document.createElement('div'); div.className=`alert ${type}`;
+  div.innerHTML=`<span class="al-ic">${icon}</span><div class="al-txt">${text}</div>${btnLabel?`<button class="al-btn" onclick="${btnAction}">${btnLabel}</button>`:''}<span class="al-close" onclick="this.closest('.alert').remove()">✕</span>`;
   document.getElementById('alertsArea').appendChild(div);
 }
-
 function timeAgo(ts) {
-  if (!ts) return '';
-  const m = Math.floor((Date.now() - new Date(ts)) / 60000);
-  if (m < 1)  return 'just now';
-  if (m < 60) return m + 'm ago';
-  const h = Math.floor(m/60);
-  if (h < 24) return h + 'h ago';
-  return Math.floor(h/24) + 'd ago';
+  if(!ts)return''; const m=Math.floor((Date.now()-new Date(ts))/60000);
+  if(m<1)return'just now'; if(m<60)return m+'m ago';
+  const h=Math.floor(m/60); if(h<24)return h+'h ago'; return Math.floor(h/24)+'d ago';
 }
-
-function openModal(id)  { document.getElementById(id).classList.add('open'); }
-function closeModal(id) { document.getElementById(id).classList.remove('open'); }
-document.querySelectorAll('.modal-overlay').forEach(o => o.addEventListener('click', e => { if (e.target === o) o.classList.remove('open'); }));
-
-function showToast(icon, msg) {
-  document.getElementById('toastIc').textContent = icon;
-  document.getElementById('toastTx').textContent = msg;
-  const t = document.getElementById('toastEl');
-  t.classList.add('show');
-  clearTimeout(window._tt);
-  window._tt = setTimeout(() => t.classList.remove('show'), 3800);
+function openModal(id){document.getElementById(id).classList.add('open');}
+function closeModal(id){document.getElementById(id).classList.remove('open');}
+document.querySelectorAll('.modal-overlay').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('open');}));
+function showToast(icon,msg){
+  document.getElementById('toastIc').textContent=icon; document.getElementById('toastTx').textContent=msg;
+  const t=document.getElementById('toastEl'); t.classList.add('show'); clearTimeout(window._tt);
+  window._tt=setTimeout(()=>t.classList.remove('show'),3800);
 }
 </script>
 <!-- TRADEZY HELP WIDGET START -->
@@ -1089,9 +1170,7 @@ ABOUT TRADEZY:
 - Free local trading platform where users list items and trade with verified neighbors
 - Platform fee: 5% per party on completed trades (Founding Traders pay 3% lifetime)
 - Ship-It trades (state-to-state): 10% fee, fully verified users only, launching July 31 2026
-- Every listing supports both local meetup AND Ship-It trading
-- Phase 1 launch: July 17 2026 — Connecticut and Ohio statewide
-- Phase 2: July 31 2026 — Nationwide
+- Phase 1 launch: July 17 2026 — Connecticut and Ohio. Phase 2: July 31 2026 — Nationwide
 
 HOW TRADING WORKS:
 1. Post a listing with photos, condition, what you want in return
@@ -1100,70 +1179,50 @@ HOW TRADING WORKS:
 4. Both parties confirm the exchange in-app — this unlocks ratings
 5. Leave ratings after confirmed exchange
 
-VERIFICATION & TRUST:
-- Email verification required to use platform
-- Address verification adds trust score
-- ID verification required for Ship-It trades
-- W-9 tax form required before posting listings
-- Trust score shown on profiles
+COLLECTION VAULT:
+- Add cards and sealed products to your personal collection
+- Each item shows: title, set, condition, grade (PSA/BGS/SGC/TAG), estimated value
+- Trade Item button pre-fills the post listing form for that specific card
+- Trade Collection lists your entire collection as one tradeable offer
+- Buyers can view a seller public collection before making an offer
 
-PROHIBITED ITEMS (permanent ban): Firearms, weapons, alcohol, tobacco, drugs, live animals, adult content, stolen goods, cash, gift cards, cryptocurrency
-
-FEES EXPLAINED:
-- 5% of total trade value per party — example: $100 item trade = $5 fee each party
-- $90 item + $40 cash top-up = $130 total = $6.50 fee each party
-- Founding Traders: 3% lifetime (signed up before July 17 launch)
+FEES:
+- 5% per party for local trades (Founding Traders 3% lifetime)
+- Ship-It: 10% per party at trade acceptance
+- Under $500: fee at offer acceptance. $500+: fee at settlement after peer-to-peer payment confirmed
 - Listing is always free
 
-SHIP-IT TRADES (July 31+):
-- Available on ALL listings — buyers choose local or Ship-It when making an offer
-- State-to-state trading for fully ID-verified users only
-- 10% fee per party at trade acceptance
-- Payment via Zelle, PayPal, Venmo, Apple Pay, Google Pay, or Cash App (peer-to-peer, Tradezy never holds funds)
-- Buyer uploads payment screenshot as proof
-- Seller enters tracking number
-- Both confirm delivery to close trade
-
-TCG CATEGORIES: Pokémon, One Piece, MTG, Yu-Gi-Oh, Lorcana, Flesh & Blood
-SPORTS CARDS: Baseball, Football, Basketball, Hockey, Soccer
-Card grading supported: PSA, BGS, SGC, TAG
-
-ACCOUNT HELP:
-- Password reset: direct users to https://tradezyhq.com/alltrades-auth.html
-- Account locked/banned: direct to support@tradezyhq.com
-- Verification issues: direct to https://tradezyhq.com/alltrades-verification.html
+PROHIBITED ITEMS: Firearms, weapons, alcohol, tobacco, drugs, live animals, adult content, stolen goods, cash, gift cards, cryptocurrency
 
 DISPUTE RESOLUTION:
-- File a dispute at https://tradezyhq.com/alltrades-disputes.html
-- Email disputes@tradezyhq.com
-- SLA: CRITICAL issues 4hrs, HIGH 24hrs, MEDIUM 48hrs, LOW 72hrs
+- File at https://tradezyhq.com/alltrades-disputes.html or disputes@tradezyhq.com
+- SLA: CRITICAL 8hrs, HIGH 16hrs, MEDIUM 24hrs, LOW 48hrs
 
 ESCALATION RULES — escalate to human immediately if:
-- User reports fraud, scam, or didn't receive item
+- User reports fraud, scam, or did not receive item
 - User mentions safety concern, threat, or harassment
-- User is clearly distressed or frustrated after multiple exchanges
+- User is clearly distressed after multiple exchanges
 - User explicitly requests a human agent
 - Issue involves account ban or suspension
 
-ESCALATION: When escalating, provide support@tradezyhq.com for general issues or disputes@tradezyhq.com for trade disputes.
+ESCALATION: support@tradezyhq.com for general issues, disputes@tradezyhq.com for trade disputes.
 
-TONE: Warm, clear, concise. Never give legal or financial advice. Never make up information — if unsure, direct to support@tradezyhq.com. Keep responses short and scannable — use bullet points for multi-step answers.`;
+TONE: Warm, clear, concise. Never give legal or financial advice. Keep responses short and scannable.`;
+
   let isOpen=false,isLoading=false,exchangeCount=0,hasShownWelcome=false;
   const history=[];
   window.tzToggle=function(){
     isOpen=!isOpen;
     const panel=document.getElementById('tz-chat-panel'),btn=document.getElementById('tz-bubble-btn');
-    if(isOpen){
-      panel.classList.add('open');btn.innerHTML='✕<div class="tz-notif" id="tzNotif"></div>';
-      if(!hasShownWelcome){hasShownWelcome=true;tzBotMsg("👋 Hey! I'm the Tradezy support assistant. I can help with:",["How trading works","Ship-It trades","Fees & verification","Reporting a problem"]);}
+    if(isOpen){panel.classList.add('open');btn.innerHTML='✕<div class="tz-notif" id="tzNotif"></div>';
+      if(!hasShownWelcome){hasShownWelcome=true;tzBotMsg("👋 Hey! I'm the Tradezy support assistant. I can help with:",["How trading works","My Collection Vault","Ship-It trades","Reporting a problem"]);}
       setTimeout(()=>document.getElementById('tzInput')?.focus(),200);
     }else{panel.classList.remove('open');btn.innerHTML='💬<div class="tz-notif" id="tzNotif"></div>';}
   };
   window.tzSend=async function(){
     const input=document.getElementById('tzInput'),text=input.value.trim();
     if(!text||isLoading)return;
-    input.value='';tzAutoResize(input);tzUserMsg(text);
-    history.push({role:'user',content:text});exchangeCount++;await tzGetResp();
+    input.value='';tzAutoResize(input);tzUserMsg(text);history.push({role:'user',content:text});exchangeCount++;await tzGetResp();
   };
   window.tzKeyDown=function(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();tzSend();}};
   window.tzAutoResize=function(el){el.style.height='38px';el.style.height=Math.min(el.scrollHeight,90)+'px';};
@@ -1186,7 +1245,7 @@ TONE: Warm, clear, concise. Never give legal or financial advice. Never make up 
     const msgs=document.getElementById('tzMessages'),w=document.createElement('div');w.className='tz-msg bot';
     let html=text.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/^[-•] (.+)$/gm,'<li>$1</li>').replace(/(<li>.*<\/li>)/gs,'<ul style="margin:4px 0 0 14px;padding:0;font-size:13px;line-height:1.6">$1</ul>').replace(/\n\n/g,'<br><br>').replace(/\n/g,'<br>');
     let ex='';
-    if(text.toLowerCase().includes('verification')||text.toLowerCase().includes('verify'))ex+=`<a class="tz-action-link" href="https://tradezyhq.com/alltrades-verification.html" target="_blank">✅ Go to Verification →</a>`;
+    if(text.toLowerCase().includes('verification'))ex+=`<a class="tz-action-link" href="https://tradezyhq.com/alltrades-verification.html" target="_blank">✅ Go to Verification →</a>`;
     if(text.toLowerCase().includes('dispute'))ex+=`<a class="tz-action-link" href="https://tradezyhq.com/alltrades-disputes.html" target="_blank">⚖️ File a Dispute →</a>`;
     let bh=`<div class="tz-bubble">${html}</div>`;if(ex)bh+=ex;
     if(esc)bh+=`<div class="tz-escalate-card"><div class="tz-escalate-title">🙋 Want to talk to a person?</div><div style="color:#92400e;font-size:12px">Our support team is standing by.</div><div style="display:flex;gap:7px;flex-wrap:wrap;margin-top:7px;"><a class="tz-escalate-btn" href="mailto:support@tradezyhq.com">📧 Email Support</a><a class="tz-escalate-btn" href="https://tradezyhq.com/alltrades-disputes.html" target="_blank" style="background:#1a56db">⚖️ File Dispute</a></div></div>`;
