@@ -385,7 +385,7 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
           <div class="cw-items" id="cwItemsList"><div class="loading">Loading…</div></div>
           <div class="cw-footer">
             <button class="cw-footer-btn cw-view-btn" onclick="openCollectionViewModal(currentUser&&currentUser.id,'My')">👁 View Collection</button>
-            <button class="cw-footer-btn cw-trade-col-btn" onclick="tradeEntireCollection()">🔄 Trade Collection</button>
+            <button class="cw-footer-btn cw-trade-col-btn" onclick="openTradeCollectionModal()">🔄 Trade Collection</button>
           </div>
         </div>
       </div>
@@ -536,6 +536,53 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
   </div>
 </div>
 
+<!-- TRADE COLLECTION MODAL -->
+<div class="modal-overlay" id="tradeCollectionModal">
+  <div class="modal" style="max-width:500px">
+    <div class="mhd purple-head"><div class="mhd-ttl">🔄 List Entire Collection</div><button class="mhd-close" onclick="closeModal('tradeCollectionModal')">✕</button></div>
+    <div class="mbody" id="tradeCollectionBody">
+      <div style="background:linear-gradient(135deg,#4c1d95,#6d28d9);border-radius:10px;padding:14px 16px;margin-bottom:16px;display:flex;align-items:center;gap:12px;">
+        <span style="font-size:2rem;flex-shrink:0">🃏</span>
+        <div>
+          <div style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1rem;color:#fff;margin-bottom:3px">Trade Your Entire Collection</div>
+          <div style="font-size:11px;color:#c4b5fd;line-height:1.5">Creates a single listing buyers can browse and make an offer on. Your full collection stays private — only the listing is public.</div>
+        </div>
+      </div>
+      <div id="tcol-stats" style="display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap"></div>
+      <div style="margin-bottom:12px">
+        <label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);display:block;margin-bottom:5px">Listing Title *</label>
+        <input type="text" id="tcolTitle" class="ac-input" placeholder="e.g. Full PSA 10 Pokémon 151 Set — 50+ Cards" maxlength="80">
+      </div>
+      <div style="margin-bottom:12px">
+        <label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);display:block;margin-bottom:5px">Short Pitch *</label>
+        <input type="text" id="tcolPitch" class="ac-input" placeholder="e.g. Entire collection worth $50K — asking $45K or best offer in cards/cash" maxlength="120">
+        <div style="font-size:11px;color:var(--muted);margin-top:4px">Buyers see this instantly — your asking price or key selling point.</div>
+      </div>
+      <div style="margin-bottom:12px">
+        <label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);display:block;margin-bottom:5px">Asking Value ($) *</label>
+        <input type="number" id="tcolValue" class="ac-input" placeholder="e.g. 45000" min="0" step="0.01">
+        <div style="font-size:11px;color:var(--muted);margin-top:4px">Set your asking price — buyers can make offers above or below.</div>
+      </div>
+      <div style="margin-bottom:16px">
+        <label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);display:block;margin-bottom:7px">What Will You Accept?</label>
+        <div style="display:flex;flex-direction:column;gap:6px" id="tcolPrefs">
+          <label style="display:flex;align-items:center;gap:10px;padding:9px 12px;border:1.5px solid var(--border);border-radius:7px;cursor:pointer;font-size:13px;transition:all .15s" onclick="this.style.borderColor='var(--purple)';this.style.background='#f5f3ff'">
+            <input type="checkbox" id="tcolTrade" checked style="accent-color:var(--purple)"> 🔄 Cards / Items in Trade
+          </label>
+          <label style="display:flex;align-items:center;gap:10px;padding:9px 12px;border:1.5px solid var(--border);border-radius:7px;cursor:pointer;font-size:13px;transition:all .15s" onclick="this.style.borderColor='var(--purple)';this.style.background='#f5f3ff'">
+            <input type="checkbox" id="tcolCash" checked style="accent-color:var(--purple)"> 💵 Cash Offers (in person)
+          </label>
+          <label style="display:flex;align-items:center;gap:10px;padding:9px 12px;border:1.5px solid var(--border);border-radius:7px;cursor:pointer;font-size:13px;transition:all .15s" onclick="this.style.borderColor='var(--purple)';this.style.background='#f5f3ff'">
+            <input type="checkbox" id="tcolCombo" checked style="accent-color:var(--purple)"> 🔄💵 Cards + Cash Combo
+          </label>
+        </div>
+      </div>
+      <button class="mbtn purple" id="publishColBtn" onclick="publishCollectionListing()">🚀 Publish Collection Listing</button>
+      <button class="mbtn outline" onclick="closeModal('tradeCollectionModal')">Cancel</button>
+    </div>
+  </div>
+</div>
+
 <!-- OFFER PHOTO LIGHTBOX -->
 <div class="offer-lightbox" id="offerLightbox" onclick="closeLightbox()">
   <button class="lb-close" onclick="closeLightbox()">✕</button>
@@ -668,8 +715,87 @@ async function removeCollectionItem(id) {
   } catch(e) { console.error(e); showToast('⚠️', 'Error removing item. Please try again.'); }
 }
 
-function tradeEntireCollection() {
-  showToast('🃏', 'Trade Collection listing coming soon — August Collection Vault release!');
+async function openTradeCollectionModal() {
+  openModal('tradeCollectionModal');
+  // Load collection stats
+  try {
+    const { data: items } = await sb.from('collections').select('*').eq('user_id', currentUser.id);
+    const total    = items?.length || 0;
+    const totalVal = (items||[]).reduce((s,i) => s+(Number(i.estimated_value)||0)*(Number(i.quantity)||1), 0);
+    const name     = currentUserData?.display_name || currentUser.email?.split('@')[0] || 'My';
+    document.getElementById('tcol-stats').innerHTML = `
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:9px 14px;text-align:center">
+        <div style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.2rem;color:var(--purple)">${total}</div>
+        <div style="font-size:10px;color:var(--muted);text-transform:uppercase">Items</div>
+      </div>
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:9px 14px;text-align:center">
+        <div style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.2rem;color:var(--green)">$${totalVal.toLocaleString(undefined,{maximumFractionDigits:0})}</div>
+        <div style="font-size:10px;color:var(--muted);text-transform:uppercase">Est. Value</div>
+      </div>`;
+    // Pre-fill title
+    if (!document.getElementById('tcolTitle').value) {
+      document.getElementById('tcolTitle').value = `${name}'s Full Card Collection — ${total} Items`;
+    }
+    if (!document.getElementById('tcolValue').value && totalVal > 0) {
+      document.getElementById('tcolValue').value = totalVal.toFixed(0);
+    }
+    if (total === 0) {
+      document.getElementById('tradeCollectionBody').innerHTML = `<div class="empty-state"><div class="empty-icon">🃏</div><div class="empty-txt">Your collection is empty.<br>Add items to your Collection Vault first, then list it for trade.</div></div><button class="mbtn outline" onclick="closeModal('tradeCollectionModal');openAddCollectionModal()">+ Add Items to Collection</button>`;
+    }
+  } catch(e) { console.error(e); }
+}
+
+async function publishCollectionListing() {
+  const title = document.getElementById('tcolTitle')?.value.trim();
+  const pitch = document.getElementById('tcolPitch')?.value.trim();
+  const value = parseFloat(document.getElementById('tcolValue')?.value) || 0;
+  if (!title) { showToast('⚠️','Please add a listing title.'); return; }
+  if (!pitch) { showToast('⚠️','Please add a short pitch so buyers know your asking price.'); return; }
+  if (!value) { showToast('⚠️','Please set an asking value.'); return; }
+  const tradePref = document.getElementById('tcolTrade')?.checked;
+  const cashPref  = document.getElementById('tcolCash')?.checked;
+  const comboPref = document.getElementById('tcolCombo')?.checked;
+  if (!tradePref && !cashPref && !comboPref) { showToast('⚠️','Please select at least one offer type.'); return; }
+  let tradeType = 'item';
+  if (cashPref && !tradePref && !comboPref) tradeType = 'cash';
+  else if (cashPref || comboPref) tradeType = 'item_plus_cash';
+  const btn = document.getElementById('publishColBtn');
+  btn.disabled = true; btn.textContent = '⏳ Publishing…';
+  try {
+    const name = currentUserData?.display_name || currentUser.email?.split('@')[0] || 'Trader';
+    const { data: listing, error } = await sb.from('listings').insert({
+      user_id:         currentUser.id,
+      title,
+      description:     `${pitch}\n\nThis listing represents my full card collection. All items are available for trade or purchase as a complete set. Message me to discuss the contents, arrange a viewing, or make an offer.`,
+      short_pitch:     pitch,
+      estimated_value: value,
+      category:        'Trading Cards',
+      condition:       'Mixed',
+      trade_type:      tradeType,
+      listing_type:    'collection',
+      status:          'active',
+      wants:           'Best offer — cards, cash, or combo welcome',
+      meetup_style:    'public',
+      availability:    'Flexible — anytime',
+    }).select().single();
+    if (error) throw error;
+    closeModal('tradeCollectionModal');
+    showToast('🚀', `Collection listing live! Listing ID: ${listing.id.slice(0,8).toUpperCase()}`);
+    // Reset form
+    ['tcolTitle','tcolPitch','tcolValue'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
+    loadListings();
+    // Offer to view the listing
+    setTimeout(() => {
+      if (confirm('Collection listing published! View it now?')) {
+        window.location.href = `alltrades-item.html?id=${listing.id}`;
+      }
+    }, 500);
+  } catch(e) {
+    console.error(e);
+    showToast('⚠️', 'Error publishing collection listing. Please try again.');
+  } finally {
+    btn.disabled = false; btn.textContent = '🚀 Publish Collection Listing';
+  }
 }
 
 async function openCollectionViewModal(userId, namePrefix) {
@@ -720,7 +846,7 @@ async function openCollectionViewModal(userId, namePrefix) {
         }).join('')}
       </div>
       ${isOwn ? `<div style="margin-top:14px;display:flex;gap:8px">
-        <button class="mbtn purple" style="margin-bottom:0" onclick="tradeEntireCollection()">🔄 Trade Entire Collection</button>
+        <button class="mbtn purple" style="margin-bottom:0" onclick="closeModal('collectionViewModal');openTradeCollectionModal()">🔄 Trade Entire Collection</button>
         <button class="mbtn outline" style="margin-bottom:0;flex:0.5" onclick="closeModal('collectionViewModal')">Close</button>
       </div>` : `<button class="mbtn outline" style="margin-top:14px;margin-bottom:0" onclick="closeModal('collectionViewModal')">Close</button>`}`;
   } catch(e) { body.innerHTML = `<div class="empty-state"><div class="empty-txt">Could not load collection.</div></div>`; }
