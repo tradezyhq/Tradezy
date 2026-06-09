@@ -43,9 +43,16 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);}
 .thumb{width:64px;height:64px;border-radius:8px;background:var(--surface);border:2px solid transparent;display:flex;align-items:center;justify-content:center;font-size:1.6rem;cursor:pointer;transition:all .15s;flex-shrink:0;overflow:hidden;}
 .thumb img{width:100%;height:100%;object-fit:cover;}
 .thumb:hover,.thumb.active{border-color:var(--blue);}
+/* COLLECTION LISTING BANNER */
+.collection-listing-banner{background:linear-gradient(135deg,#4c1d95,#6d28d9);border-radius:12px;padding:14px 18px;margin-bottom:16px;display:none;align-items:center;gap:12px;}
+.clb-icon{font-size:1.6rem;flex-shrink:0;}
+.clb-info{flex:1;}
+.clb-title{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1rem;color:#fff;margin-bottom:3px;}
+.clb-desc{font-size:11px;color:#c4b5fd;line-height:1.5;}
 .detail-card{background:var(--white);border:1px solid var(--border);border-radius:14px;padding:22px;margin-bottom:16px;}
 .item-category{font-size:11px;font-weight:700;color:var(--blue);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;}
-.item-title{font-family:'Barlow Condensed',sans-serif;font-size:1.8rem;font-weight:900;line-height:1.1;margin-bottom:10px;letter-spacing:-.3px;}
+.item-title{font-family:'Barlow Condensed',sans-serif;font-size:1.8rem;font-weight:900;line-height:1.1;margin-bottom:6px;letter-spacing:-.3px;}
+.item-short-pitch{font-size:13px;color:var(--muted);font-style:italic;margin-bottom:10px;line-height:1.5;}
 .item-meta-row{display:flex;align-items:center;gap:8px;margin-bottom:14px;flex-wrap:wrap;}
 .meta-chip{display:flex;align-items:center;gap:5px;font-size:12px;color:var(--muted);background:var(--surface);border:1px solid var(--border);border-radius:99px;padding:3px 10px;}
 .value-banner{background:linear-gradient(135deg,#1e3a8a,#1d4ed8);border-radius:10px;padding:16px 18px;margin-bottom:14px;display:flex;align-items:center;gap:14px;}
@@ -156,7 +163,6 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);}
 .cash-wrap{display:flex;align-items:center;border:1.5px solid #fde68a;border-radius:7px;overflow:hidden;background:#fff;}
 .cash-prefix{padding:9px 11px;background:#fef3c7;font-family:'Barlow Condensed',sans-serif;font-weight:800;color:var(--gold);font-size:1rem;border-right:1px solid #fde68a;}
 .cash-wrap input{flex:1;border:none;outline:none;padding:9px 11px;font-size:14px;font-family:'Lato',sans-serif;}
-/* PAYMENT METHOD PICKER */
 .pay-method-wrap{margin-top:10px;}
 .pay-method-label{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:7px;display:block;}
 .pay-method-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;}
@@ -248,9 +254,18 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);}
       </div>
       <div class="thumbs" id="thumbsRow"></div>
     </div>
+    <!-- COLLECTION LISTING BANNER — shown when listing_type === 'collection' -->
+    <div class="collection-listing-banner" id="collectionListingBanner">
+      <div class="clb-icon">🃏</div>
+      <div class="clb-info">
+        <div class="clb-title">Full Collection Listing</div>
+        <div class="clb-desc">The seller is offering their entire collection as a single trade. Message the seller to discuss contents, arrange a viewing, or make an offer on the whole lot.</div>
+      </div>
+    </div>
     <div class="detail-card">
       <div class="item-category" id="itemCategory">Category</div>
       <div class="item-title" id="itemTitle">Loading…</div>
+      <div class="item-short-pitch" id="itemShortPitch" style="display:none"></div>
       <div class="item-meta-row">
         <div class="meta-chip" id="metaCondition">—</div>
         <div class="meta-chip" id="metaTime">—</div>
@@ -325,7 +340,7 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);}
               <div style="font-size:11px;font-weight:700;color:#bae6fd;margin-bottom:7px;text-transform:uppercase;letter-spacing:.5px;">💸 Optional Cash Top-Up</div>
               <div style="display:flex;align-items:center;border:1.5px solid rgba(255,255,255,.2);border-radius:7px;overflow:hidden;background:rgba(255,255,255,.08);margin-bottom:8px;">
                 <span style="padding:8px 10px;background:rgba(255,255,255,.1);font-family:'Barlow Condensed',sans-serif;font-weight:800;color:#7dd3fc;font-size:1rem;border-right:1px solid rgba(255,255,255,.15);">$</span>
-                <input type="number" id="shipitCashAmt" placeholder="0.00" min="0" style="flex:1;border:none;outline:none;padding:8px 10px;font-size:13px;font-family:'Lato',sans-serif;background:transparent;color:#fff;" oninput="updateFees()" placeholder="Add cash top-up (optional)">
+                <input type="number" id="shipitCashAmt" placeholder="0.00" min="0" style="flex:1;border:none;outline:none;padding:8px 10px;font-size:13px;font-family:'Lato',sans-serif;background:transparent;color:#fff;" oninput="updateFees()">
               </div>
               <div style="font-size:11px;font-weight:700;color:#bae6fd;margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px;">How will you send?</div>
               <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:5px;" id="shipitPayGrid">
@@ -470,7 +485,6 @@ let currentUser=null,currentUserData=null,listing=null,offerType='trade',watchin
 let selectedPayMethod = { tc: null, cashonly: null, shipit: null };
 
 function selectPayMethod(el, context, method) {
-  // Deselect all pills in this grid
   const grid = el.closest('.pay-method-grid, [id$="PayGrid"]');
   if (grid) grid.querySelectorAll('.pay-pill').forEach(p => p.classList.remove('selected'));
   el.classList.add('selected');
@@ -573,6 +587,19 @@ function renderListing(l){
   document.querySelector('meta[name="description"]').content=`${l.title} — ${l.description?.slice(0,120)||'View this listing on Tradezy.'}`;
   document.getElementById('bcCategory').textContent=l.category||'Browse';
   document.getElementById('bcTitle').textContent=l.title;
+
+  // Collection listing banner — show when listing_type === 'collection'
+  if (l.listing_type === 'collection') {
+    document.getElementById('collectionListingBanner').style.display = 'flex';
+  }
+
+  // Short pitch — show below title if present
+  if (l.short_pitch) {
+    const pitchEl = document.getElementById('itemShortPitch');
+    pitchEl.textContent = `"${l.short_pitch}"`;
+    pitchEl.style.display = 'block';
+  }
+
   const hasCash=l.trade_type==='cash'||l.trade_type==='item_plus_cash';
   const isEss=['Food & Water','Garden'].includes(l.category);
   document.getElementById('imgBadges').innerHTML=[
@@ -657,7 +684,6 @@ function setOfferType(type){
   document.getElementById('cashOnlySection').style.display=type==='cash'?'block':'none';
   if(type!=='trade'&&type!=='shipit')document.getElementById('compareBox').style.display='none';
   document.getElementById('yourItemTitle').textContent=isShipIt?'Your Item to Trade (Ships to Seller)':'Your Item to Trade';
-  // Cash in Person only for local trades — hide on Ship-It
   const tcCIP = document.getElementById('tcCashInPerson');
   const coCIP = document.getElementById('cashOnlyCashInPerson');
   if (tcCIP) tcCIP.classList.toggle('hidden', isShipIt);
@@ -755,7 +781,6 @@ async function submitOffer(){
     if(selectedPhotos.length===0){showToast('📸','Please add at least 1 photo of your item.');return;}
   }
   if(offerType==='cash'&&!cashOnly){showToast('⚠️','Please enter your cash offer amount.');return;}
-  // Validate payment method for cash-involved offers
   const needsPayMethod = offerType === 'tc' || offerType === 'cash';
   const payMethodContext = offerType === 'tc' ? 'tc' : offerType === 'cash' ? 'cashonly' : 'shipit';
   const hasCashTopUp = isShipIt && (parseFloat(document.getElementById('shipitCashAmt')?.value)||0) > 0;
@@ -939,7 +964,7 @@ ACCOUNT HELP:
 DISPUTE RESOLUTION:
 - File a dispute at https://tradezyhq.com/alltrades-disputes.html
 - Email disputes@tradezyhq.com
-- SLA: CRITICAL issues 4hrs, HIGH 24hrs, MEDIUM 48hrs, LOW 72hrs
+- SLA: CRITICAL 8hrs, HIGH 16hrs, MEDIUM 24hrs, LOW 48hrs
 
 ESCALATION RULES — escalate to human immediately if:
 - User reports fraud, scam, or didn't receive item
