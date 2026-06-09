@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-0NSDNDFP0H"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","G-0NSDNDFP0H");</script>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tradezy — Collection</title>
+<meta name="description" content="Browse this trader's full collection on Tradezy — the peer-to-peer trading marketplace.">
+<meta property="og:title" content="Tradezy — Trader Collection">
+<meta property="og:description" content="Browse cards and sealed products on Tradezy.">
+<meta property="og:url" content="https://tradezyhq.com/alltrades-collection.html">
+<meta property="og:image" content="https://tradezyhq.com/tradezy-preview.png">
+<link rel="canonical" href="https://tradezyhq.com/alltrades-collection.html">
+<script src="supabase.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Lato:ital,wght@0,300;0,400;0,700;1,300&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#0a1628;--navy2:#112240;--blue:#1a56db;--blue-l:#2563eb;--gold:#f59e0b;--gold-l:#fbbf24;--green:#16a34a;--green-l:#22c55e;--red:#dc2626;--orange:#ea580c;--cyan:#0ea5e9;--cyan-l:#0284c7;--purple:#7c3aed;--purple-l:#8b5cf6;--text:#1a1a2e;--muted:#475569;--border:#e2e8f0;--bg:#f1f5f9;--white:#fff;--surface:#f8fafc;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);}
+
+/* NAV */
+.nav{background:var(--navy);padding:11px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;}
+.logo{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.55rem;letter-spacing:-1px;cursor:pointer;text-decoration:none;}
+.logo .a{color:#fff;}.logo .t{color:var(--blue);}.logo .d{color:var(--gold);}
+.nav-links{display:flex;align-items:center;gap:6px;}
+.nav-btn{padding:7px 14px;border-radius:6px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.9rem;cursor:pointer;border:none;transition:all .15s;}
+.nav-btn.ghost{background:transparent;color:#94a3b8;border:1px solid rgba(255,255,255,.1);}
+.nav-btn.ghost:hover{color:#fff;border-color:rgba(255,255,255,.25);}
+.nav-btn.gold{background:var(--gold);color:var(--navy);}
+.nav-btn.gold:hover{background:var(--gold-l);}
+
+/* BREADCRUMB */
+.breadcrumb{background:var(--white);border-bottom:1px solid var(--border);padding:10px 24px;font-size:12px;color:var(--muted);}
+.breadcrumb a{color:var(--blue);cursor:pointer;font-weight:700;text-decoration:none;}
+.breadcrumb span{margin:0 6px;color:#cbd5e1;}
+
+/* HERO BANNER */
+.collection-hero{background:linear-gradient(135deg,var(--navy) 0%,#1a2f5e 60%,#1e3a8a 100%);padding:32px 24px 28px;border-bottom:1px solid rgba(255,255,255,.06);}
+.hero-inner{max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;}
+.hero-left{display:flex;align-items:center;gap:16px;}
+.seller-avatar{width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--purple));color:#fff;font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.5rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;border:3px solid rgba(255,255,255,.15);}
+.hero-title{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.9rem;color:#fff;letter-spacing:-.3px;margin-bottom:4px;}
+.hero-sub{font-size:13px;color:#93c5fd;display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+.hero-sub span{display:flex;align-items:center;gap:4px;}
+.hero-right{display:flex;gap:8px;flex-wrap:wrap;}
+.btn-msg{padding:10px 18px;background:var(--gold);color:var(--navy);border:none;border-radius:8px;font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:.95rem;cursor:pointer;transition:all .15s;display:flex;align-items:center;gap:6px;}
+.btn-msg:hover{background:var(--gold-l);transform:translateY(-1px);}
+.btn-browse{padding:10px 18px;background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.2);border-radius:8px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.95rem;cursor:pointer;transition:all .15s;display:flex;align-items:center;gap:6px;text-decoration:none;}
+.btn-browse:hover{background:rgba(255,255,255,.18);}
+
+/* STATS ROW */
+.stats-row{background:rgba(255,255,255,.06);border-top:1px solid rgba(255,255,255,.08);margin-top:20px;padding-top:16px;display:flex;gap:24px;flex-wrap:wrap;}
+.stat-item{text-align:left;}
+.stat-num{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.4rem;color:#fff;}
+.stat-label{font-size:11px;color:#64748b;text-transform:uppercase;letter-spacing:.5px;}
+
+/* MAIN LAYOUT */
+.page{max-width:1100px;margin:0 auto;padding:24px 20px;}
+
+/* TABS */
+.tab-bar{display:flex;gap:0;border-bottom:2px solid var(--border);margin-bottom:24px;}
+.tab-btn{padding:12px 24px;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1rem;cursor:pointer;border:none;background:transparent;color:var(--muted);border-bottom:3px solid transparent;margin-bottom:-2px;transition:all .15s;display:flex;align-items:center;gap:7px;letter-spacing:.3px;}
+.tab-btn:hover{color:var(--text);}
+.tab-btn.active{color:var(--blue);border-bottom-color:var(--blue);}
+.tab-btn.active.sealed-tab{color:var(--purple);border-bottom-color:var(--purple);}
+.tab-count{font-size:11px;font-weight:800;padding:2px 7px;border-radius:99px;background:var(--surface);border:1px solid var(--border);color:var(--muted);}
+.tab-btn.active .tab-count{background:#eff6ff;border-color:#bfdbfe;color:var(--blue);}
+.tab-btn.active.sealed-tab .tab-count{background:#f5f3ff;border-color:#ddd6fe;color:var(--purple);}
+
+/* FILTERS */
+.filter-bar{display:flex;align-items:center;gap:10px;margin-bottom:20px;flex-wrap:wrap;}
+.filter-select{border:1.5px solid var(--border);border-radius:7px;padding:7px 12px;font-size:13px;font-family:'Lato',sans-serif;color:var(--text);outline:none;background:#fff;cursor:pointer;transition:border-color .15s;}
+.filter-select:focus{border-color:var(--blue);}
+.search-wrap{flex:1;min-width:200px;position:relative;}
+.search-wrap input{width:100%;border:1.5px solid var(--border);border-radius:7px;padding:7px 12px 7px 34px;font-size:13px;font-family:'Lato',sans-serif;color:var(--text);outline:none;background:#fff;transition:border-color .15s;}
+.search-wrap input:focus{border-color:var(--blue);}
+.search-icon{position:absolute;left:10px;top:50%;transform:translateY(-50%);font-size:.9rem;color:var(--muted);}
+.filter-count{font-size:12px;color:var(--muted);margin-left:auto;white-space:nowrap;}
+
+/* GRID */
+.cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px;}
+.sealed-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;}
+
+/* CARD ITEM */
+.card-item{background:var(--white);border:1px solid var(--border);border-radius:12px;overflow:hidden;transition:all .2s;cursor:default;}
+.card-item:hover{border-color:#94a3b8;box-shadow:0 4px 16px rgba(0,0,0,.08);transform:translateY(-2px);}
+.card-img-wrap{width:100%;aspect-ratio:3/4;background:linear-gradient(135deg,#1e293b,#0f172a);display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative;}
+.card-img-wrap img{width:100%;height:100%;object-fit:cover;}
+.card-img-emoji{font-size:3.5rem;}
+.card-badges{position:absolute;top:8px;left:8px;display:flex;flex-direction:column;gap:4px;}
+.cbadge{font-size:10px;font-weight:800;padding:2px 7px;border-radius:4px;letter-spacing:.3px;display:inline-block;}
+.cbadge.listed{background:var(--green);color:#fff;}
+.cbadge.graded{background:var(--gold);color:var(--navy);}
+.cbadge.foil{background:linear-gradient(90deg,#a855f7,#ec4899);color:#fff;}
+.cbadge.qty{background:rgba(0,0,0,.6);color:#fff;backdrop-filter:blur(4px);}
+.ebay-chip{position:absolute;bottom:8px;right:8px;background:rgba(0,0,0,.65);backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.15);border-radius:5px;padding:3px 7px;font-size:10px;font-weight:700;color:#fbbf24;display:flex;align-items:center;gap:3px;}
+.card-body{padding:12px;}
+.card-title{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1rem;line-height:1.2;margin-bottom:4px;color:var(--text);}
+.card-meta{font-size:11px;color:var(--muted);margin-bottom:6px;line-height:1.4;}
+.card-footer{display:flex;align-items:center;justify-content:space-between;margin-top:8px;}
+.card-value{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1rem;color:var(--blue);}
+.card-cond{font-size:10px;font-weight:700;padding:2px 7px;border-radius:99px;background:var(--surface);border:1px solid var(--border);color:var(--muted);}
+
+/* SEALED ITEM */
+.sealed-item{background:var(--white);border:1px solid var(--border);border-radius:12px;overflow:hidden;transition:all .2s;display:flex;gap:0;flex-direction:column;}
+.sealed-item:hover{border-color:#94a3b8;box-shadow:0 4px 16px rgba(0,0,0,.08);transform:translateY(-2px);}
+.sealed-img-wrap{width:100%;aspect-ratio:16/9;background:linear-gradient(135deg,#2d1b69,#4c1d95);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;}
+.sealed-img-wrap img{width:100%;height:100%;object-fit:cover;}
+.sealed-img-emoji{font-size:3rem;}
+.sealed-body{padding:14px;}
+.sealed-type-badge{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:800;padding:2px 8px;border-radius:99px;background:#f5f3ff;border:1px solid #ddd6fe;color:var(--purple);margin-bottom:7px;letter-spacing:.3px;}
+.sealed-title{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.1rem;line-height:1.2;margin-bottom:4px;}
+.sealed-meta{font-size:11px;color:var(--muted);margin-bottom:10px;line-height:1.5;}
+.sealed-footer{display:flex;align-items:center;justify-content:space-between;}
+.sealed-value{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.1rem;color:var(--purple);}
+.sealed-qty{font-size:11px;font-weight:800;padding:3px 9px;border-radius:99px;background:#f5f3ff;border:1px solid #ddd6fe;color:var(--purple);}
+
+/* LISTED LISTING LINK */
+.view-listing-link{display:block;width:100%;padding:8px;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:7px;text-align:center;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.85rem;color:var(--green);text-decoration:none;margin-top:8px;transition:all .15s;}
+.view-listing-link:hover{background:#dcfce7;border-color:#86efac;}
+
+/* EMPTY STATES */
+.empty-state{text-align:center;padding:60px 20px;color:var(--muted);}
+.empty-icon{font-size:3rem;margin-bottom:14px;}
+.empty-title{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.4rem;color:var(--text);margin-bottom:6px;}
+.empty-desc{font-size:13px;line-height:1.6;max-width:320px;margin:0 auto;}
+
+/* LOADING */
+.loading-state{text-align:center;padding:60px 20px;}
+.loading-spinner{font-size:2rem;margin-bottom:12px;animation:spin 1s linear infinite;}
+@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+
+/* EBAY NOTICE BANNER */
+.ebay-notice{background:linear-gradient(135deg,#fef3c7,#fffbeb);border:1px solid #fde68a;border-radius:10px;padding:12px 16px;margin-bottom:20px;display:flex;align-items:center;gap:10px;font-size:12px;color:#92400e;}
+.ebay-notice strong{font-weight:800;}
+
+/* NOT FOUND */
+.not-found{text-align:center;padding:80px 20px;}
+
+/* TOAST */
+.toast{position:fixed;bottom:22px;right:22px;background:var(--navy);color:#e2e8f0;border:1px solid #1e3a5f;border-left:4px solid var(--green);border-radius:8px;padding:11px 16px;font-size:13px;z-index:9999;display:flex;align-items:center;gap:9px;max-width:290px;box-shadow:0 8px 28px rgba(0,0,0,.25);transform:translateX(120%);transition:transform .3s ease;}
+.toast.show{transform:translateX(0);}
+
+/* LIGHTBOX */
+.lightbox{display:none;position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:900;align-items:center;justify-content:center;}
+.lightbox.open{display:flex;}
+.lightbox img{max-width:90vw;max-height:88vh;border-radius:10px;object-fit:contain;}
+.lightbox-close{position:absolute;top:16px;right:20px;background:rgba(255,255,255,.12);border:none;color:#fff;font-size:1.4rem;width:38px;height:38px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.lightbox-close:hover{background:rgba(255,255,255,.25);}
+
+@media(max-width:700px){
+  .hero-inner{flex-direction:column;align-items:flex-start;}
+  .hero-right{width:100%;}
+  .btn-msg,.btn-browse{flex:1;justify-content:center;}
+  .tab-btn{padding:10px 14px;font-size:.9rem;}
+  .cards-grid{grid-template-columns:repeat(auto-fill,minmax(160px,1fr));}
+}
+
+@media(prefers-color-scheme:dark){
+  :root{--text:#f1f5f9;--muted:#94a3b8;--border:rgba(255,255,255,.1);--bg:#0f172a;--white:#1e293b;--surface:#162032;}
+  body{background:#0f172a !important;color:#f1f5f9 !important;}
+  .filter-select,.search-wrap input{background:#162032 !important;border-color:rgba(255,255,255,.12) !important;color:#f1f5f9 !important;}
+  .card-item,.sealed-item{background:#1e293b !important;border-color:rgba(255,255,255,.08) !important;}
+  .tab-bar{border-color:rgba(255,255,255,.1);}
+  .ebay-notice{background:rgba(251,191,36,.08) !important;border-color:rgba(251,191,36,.2) !important;color:#fbbf24 !important;}
+}
+</style>
+</head>
+<body>
+
+<div class="nav">
+  <a href="alltrades.html" class="logo"><span class="a">Trade</span><span class="t">zy</span><span class="d">.</span></a>
+  <div class="nav-links">
+    <button class="nav-btn ghost" onclick="window.location.href='alltrades-messages.html'">💬 Messages</button>
+    <button class="nav-btn ghost" onclick="window.location.href='alltrades-dashboard.html'">📋 My Trades</button>
+    <button class="nav-btn gold" onclick="window.location.href='alltrades-post.html'">+ List Item</button>
+  </div>
+</div>
+
+<div class="breadcrumb">
+  <a href="alltrades.html">Home</a><span>›</span>
+  <span id="bcName">Collection</span>
+</div>
+
+<div id="loadingState" class="loading-state">
+  <div class="loading-spinner">⏳</div>
+  <div style="font-size:14px;color:var(--muted)">Loading collection…</div>
+</div>
+
+<div id="notFoundState" class="not-found" style="display:none">
+  <div style="font-size:3rem;margin-bottom:12px">🔍</div>
+  <div style="font-family:'Barlow Condensed',sans-serif;font-size:1.5rem;font-weight:900;margin-bottom:8px">Collection Not Found</div>
+  <div style="font-size:13px;color:var(--muted);margin-bottom:16px">This collection may be private or the link is incorrect.</div>
+  <button onclick="window.location.href='alltrades.html'" style="padding:10px 20px;background:var(--gold);color:var(--navy);border:none;border-radius:8px;font-family:'Barlow Condensed',sans-serif;font-weight:900;cursor:pointer;">← Back to Home</button>
+</div>
+
+<div id="pageContent" style="display:none">
+
+  <!-- HERO -->
+  <div class="collection-hero">
+    <div class="hero-inner">
+      <div style="flex:1">
+        <div class="hero-left">
+          <div class="seller-avatar" id="sellerAvatar">?</div>
+          <div>
+            <div class="hero-title" id="heroTitle">Loading…</div>
+            <div class="hero-sub" id="heroSub"></div>
+          </div>
+        </div>
+        <div class="stats-row" id="statsRow"></div>
+      </div>
+      <div class="hero-right">
+        <button class="btn-msg" id="msgBtn" onclick="messageSeller()">💬 Message Seller</button>
+        <a class="btn-browse" href="alltrades.html">← Browse All Listings</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="page">
+
+    <!-- EBAY COMING SOON NOTICE -->
+    <div class="ebay-notice">
+      <span style="font-size:1.2rem">📈</span>
+      <div><strong>Market Pricing Coming Soon</strong> — We're adding eBay last-sold data to every item so you can see real market values at a glance. Stay tuned.</div>
+    </div>
+
+    <!-- TABS -->
+    <div class="tab-bar">
+      <button class="tab-btn active" id="tabCards" onclick="switchTab('cards')">
+        🃏 Cards <span class="tab-count" id="cardsCount">0</span>
+      </button>
+      <button class="tab-btn sealed-tab" id="tabSealed" onclick="switchTab('sealed')">
+        📦 Sealed Products <span class="tab-count" id="sealedCount">0</span>
+      </button>
+    </div>
+
+    <!-- CARDS TAB -->
+    <div id="cardsTab">
+      <div class="filter-bar" id="cardsFilterBar">
+        <div class="search-wrap">
+          <span class="search-icon">🔍</span>
+          <input type="text" id="cardsSearch" placeholder="Search cards…" oninput="filterCards()">
+        </div>
+        <select class="filter-select" id="cardsCategory" onchange="filterCards()">
+          <option value="">All Games</option>
+          <option>Pokémon</option>
+          <option>MTG</option>
+          <option>One Piece</option>
+          <option>Yu-Gi-Oh</option>
+          <option>Lorcana</option>
+          <option>Flesh and Blood</option>
+          <option>Baseball</option>
+          <option>Football</option>
+          <option>Basketball</option>
+          <option>Hockey</option>
+          <option>Soccer</option>
+          <option>Other</option>
+        </select>
+        <select class="filter-select" id="cardsGraded" onchange="filterCards()">
+          <option value="">Graded &amp; Raw</option>
+          <option value="graded">Graded Only</option>
+          <option value="raw">Raw Only</option>
+        </select>
+        <select class="filter-select" id="cardsListed" onchange="filterCards()">
+          <option value="">All Items</option>
+          <option value="listed">Listed for Trade</option>
+          <option value="unlisted">Not Listed</option>
+        </select>
+        <div class="filter-count" id="cardsFilterCount"></div>
+      </div>
+      <div class="cards-grid" id="cardsGrid">
+        <div class="empty-state" style="grid-column:1/-1">
+          <div class="empty-icon">🃏</div>
+          <div class="empty-title">No Cards Yet</div>
+          <div class="empty-desc">This collector hasn't added any cards to their vault yet.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SEALED TAB -->
+    <div id="sealedTab" style="display:none">
+      <div class="filter-bar" id="sealedFilterBar">
+        <div class="search-wrap">
+          <span class="search-icon">🔍</span>
+          <input type="text" id="sealedSearch" placeholder="Search sealed products…" oninput="filterSealed()">
+        </div>
+        <select class="filter-select" id="sealedType" onchange="filterSealed()">
+          <option value="">All Types</option>
+          <option>Booster Box</option>
+          <option>Elite Trainer Box</option>
+          <option>Booster Bundle</option>
+          <option>Loose Packs</option>
+        </select>
+        <select class="filter-select" id="sealedListedFilter" onchange="filterSealed()">
+          <option value="">All Items</option>
+          <option value="listed">Listed for Trade</option>
+          <option value="unlisted">Not Listed</option>
+        </select>
+        <div class="filter-count" id="sealedFilterCount"></div>
+      </div>
+      <div class="sealed-grid" id="sealedGrid">
+        <div class="empty-state" style="grid-column:1/-1">
+          <div class="empty-icon">📦</div>
+          <div class="empty-title">No Sealed Products Yet</div>
+          <div class="empty-desc">This collector hasn't added any sealed products to their vault yet.</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+  <img id="lightboxImg" src="" alt="collection photo" onclick="event.stopPropagation()">
+</div>
+
+<div class="toast" id="toastEl"><span id="toastIc">✅</span><span id="toastTx">Done!</span></div>
+
+<script>
+const sb = window.supabase.createClient(
+  'https://equvwaspcoeetfsexqki.supabase.co',
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVxdXZ3YXNwY29lZXRmc2V4cWtpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgyNzc2MjQsImV4cCI6MjA5Mzg1MzYyNH0.TP6Kk3pzHW1PYMUu5D9Vu2lJrazIEagzu5csYhqkrfI'
+);
+
+let ownerUserId = null;
+let allCards = [];
+let allSealed = [];
+let currentTab = 'cards';
+
+const GAME_EMOJI = {
+  'Pokémon':'⚡','MTG':'🧙','One Piece':'🏴‍☠️','Yu-Gi-Oh':'👁️',
+  'Lorcana':'🕯️','Flesh and Blood':'⚔️','Baseball':'⚾','Football':'🏈',
+  'Basketball':'🏀','Hockey':'🏒','Soccer':'⚽','Other':'🃏'
+};
+const SEALED_EMOJI = {
+  'Booster Box':'📦','Elite Trainer Box':'🎁','Booster Bundle':'🎴','Loose Packs':'📋'
+};
+
+(async () => {
+  const params = new URLSearchParams(window.location.search);
+  ownerUserId = params.get('user');
+  if (!ownerUserId) { showNotFound(); return; }
+  await Promise.all([loadOwner(), loadCollection()]);
+})();
+
+async function loadOwner() {
+  try {
+    const { data: user } = await sb.from('users').select('display_name, created_at').eq('id', ownerUserId).single();
+    if (!user) { showNotFound(); return; }
+
+    const name = user.display_name || 'Trader';
+    const initials = name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
+    const joined = user.created_at ? new Date(user.created_at).toLocaleDateString('en-US', { month: 'short', year: 'numeric' }) : '';
+
+    document.getElementById('bcName').textContent = `${name}'s Collection`;
+    document.getElementById('heroTitle').textContent = `${name}'s Collection`;
+    document.getElementById('sellerAvatar').textContent = initials;
+    document.title = `Tradezy — ${name}'s Collection`;
+
+    const [{ count: tradeCount }, { data: ratings }] = await Promise.all([
+      sb.from('trades').select('*', { count: 'exact', head: true }).or(`trader_a_id.eq.${ownerUserId},trader_b_id.eq.${ownerUserId}`).eq('status', 'completed'),
+      sb.from('ratings').select('stars').eq('rated_id', ownerUserId)
+    ]);
+    const avg = ratings?.length ? (ratings.reduce((s, r) => s + r.stars, 0) / ratings.length).toFixed(1) : null;
+
+    document.getElementById('heroSub').innerHTML = `
+      <span>📅 Member since ${joined}</span>
+      <span>🤝 ${tradeCount || 0} trades completed</span>
+      ${avg ? `<span>⭐ ${avg} rating (${ratings.length})</span>` : ''}
+    `;
+  } catch(e) { showNotFound(); }
+}
+
+async function loadCollection() {
+  try {
+    const { data, error } = await sb
+      .from('collections')
+      .select('*')
+      .eq('user_id', ownerUserId)
+      .order('created_at', { ascending: false });
+
+    if (error) throw error;
+
+    allCards = (data || []).filter(i => !i.sealed);
+    allSealed = (data || []).filter(i => i.sealed);
+
+    // Update stats
+    const totalVal = (data || []).reduce((s, i) => s + (Number(i.estimated_value) || 0), 0);
+    const listedCount = (data || []).filter(i => i.listed).length;
+    document.getElementById('statsRow').innerHTML = `
+      <div class="stat-item"><div class="stat-num">${allCards.length}</div><div class="stat-label">Cards</div></div>
+      <div class="stat-item"><div class="stat-num">${allSealed.length}</div><div class="stat-label">Sealed</div></div>
+      <div class="stat-item"><div class="stat-num">${listedCount}</div><div class="stat-label">Listed</div></div>
+      ${totalVal > 0 ? `<div class="stat-item"><div class="stat-num">$${totalVal.toFixed(0)}</div><div class="stat-label">Est. Value</div></div>` : ''}
+    `;
+
+    document.getElementById('cardsCount').textContent = allCards.length;
+    document.getElementById('sealedCount').textContent = allSealed.length;
+
+    renderCards(allCards);
+    renderSealed(allSealed);
+
+    document.getElementById('loadingState').style.display = 'none';
+    document.getElementById('pageContent').style.display = 'block';
+  } catch(e) {
+    console.error(e);
+    showNotFound();
+  }
+}
+
+function renderCards(items) {
+  const grid = document.getElementById('cardsGrid');
+  document.getElementById('cardsFilterCount').textContent = `${items.length} card${items.length !== 1 ? 's' : ''}`;
+
+  if (!items.length) {
+    grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1">
+      <div class="empty-icon">🃏</div>
+      <div class="empty-title">No Cards Found</div>
+      <div class="empty-desc">Try adjusting your filters.</div>
+    </div>`;
+    return;
+  }
+
+  grid.innerHTML = items.map(item => {
+    const emoji = GAME_EMOJI[item.subcategory] || GAME_EMOJI[item.category] || '🃏';
+    const hasPhoto = item.photos?.length > 0;
+    const imgHtml = hasPhoto
+      ? `<img src="${item.photos[0]}" alt="${item.title}" loading="lazy" onclick="openLightbox('${item.photos[0]}')">`
+      : `<span class="card-img-emoji">${emoji}</span>`;
+
+    const badges = [
+      item.listed ? `<span class="cbadge listed">✅ Listed</span>` : '',
+      item.graded ? `<span class="cbadge graded">🏆 ${item.grader || 'Graded'} ${item.grade || ''}</span>` : '',
+      item.foil ? `<span class="cbadge foil">✨ Foil</span>` : '',
+      (item.quantity > 1) ? `<span class="cbadge qty">Qty: ${item.quantity}</span>` : '',
+    ].filter(Boolean).join('');
+
+    const metaParts = [
+      item.subcategory || item.category,
+      item.set_name,
+      item.card_number ? `#${item.card_number}` : ''
+    ].filter(Boolean).join(' · ');
+
+    const listingLink = item.listed && item.listing_id
+      ? `<a class="view-listing-link" href="alltrades-item.html?id=${item.listing_id}">🔗 View Listing →</a>`
+      : '';
+
+    return `<div class="card-item">
+      <div class="card-img-wrap">
+        ${imgHtml}
+        ${badges ? `<div class="card-badges">${badges}</div>` : ''}
+        <div class="ebay-chip">📈 Market data soon</div>
+      </div>
+      <div class="card-body">
+        <div class="card-title">${item.title}</div>
+        ${metaParts ? `<div class="card-meta">${metaParts}</div>` : ''}
+        <div class="card-footer">
+          <span class="card-value">${item.estimated_value ? '$' + Number(item.estimated_value).toFixed(0) : '—'}</span>
+          ${item.condition ? `<span class="card-cond">${item.condition}</span>` : ''}
+        </div>
+        ${item.notes ? `<div style="font-size:11px;color:var(--muted);margin-top:6px;font-style:italic;line-height:1.4">"${item.notes}"</div>` : ''}
+        ${listingLink}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function renderSealed(items) {
+  const grid = document.getElementById('sealedGrid');
+  document.getElementById('sealedFilterCount').textContent = `${items.length} item${items.length !== 1 ? 's' : ''}`;
+
+  if (!items.length) {
+    grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1">
+      <div class="empty-icon">📦</div>
+      <div class="empty-title">No Sealed Products Found</div>
+      <div class="empty-desc">Try adjusting your filters.</div>
+    </div>`;
+    return;
+  }
+
+  grid.innerHTML = items.map(item => {
+    const emoji = SEALED_EMOJI[item.sealed_type] || '📦';
+    const hasPhoto = item.photos?.length > 0;
+    const imgHtml = hasPhoto
+      ? `<img src="${item.photos[0]}" alt="${item.title}" loading="lazy" onclick="openLightbox('${item.photos[0]}')">`
+      : `<span class="sealed-img-emoji">${emoji}</span>`;
+
+    const listingLink = item.listed && item.listing_id
+      ? `<a class="view-listing-link" href="alltrades-item.html?id=${item.listing_id}">🔗 View Listing →</a>`
+      : '';
+
+    return `<div class="sealed-item">
+      <div class="sealed-img-wrap">
+        ${imgHtml}
+        ${item.listed ? `<div style="position:absolute;top:8px;left:8px"><span class="cbadge listed">✅ Listed</span></div>` : ''}
+        <div class="ebay-chip">📈 Market data soon</div>
+      </div>
+      <div class="sealed-body">
+        ${item.sealed_type ? `<div class="sealed-type-badge">📦 ${item.sealed_type}</div>` : ''}
+        <div class="sealed-title">${item.title}</div>
+        <div class="sealed-meta">
+          ${[item.subcategory || item.category, item.set_name, item.condition].filter(Boolean).join(' · ')}
+        </div>
+        <div class="sealed-footer">
+          <span class="sealed-value">${item.estimated_value ? '$' + Number(item.estimated_value).toFixed(0) : '—'}</span>
+          ${item.quantity > 1 ? `<span class="sealed-qty">Qty: ${item.quantity}</span>` : ''}
+        </div>
+        ${item.notes ? `<div style="font-size:11px;color:var(--muted);margin-top:8px;font-style:italic;line-height:1.4">"${item.notes}"</div>` : ''}
+        ${listingLink}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function filterCards() {
+  const q = document.getElementById('cardsSearch').value.toLowerCase();
+  const cat = document.getElementById('cardsCategory').value;
+  const gradeFilter = document.getElementById('cardsGraded').value;
+  const listedFilter = document.getElementById('cardsListed').value;
+
+  let results = allCards.filter(item => {
+    const matchQ = !q || item.title?.toLowerCase().includes(q) || item.set_name?.toLowerCase().includes(q) || item.card_number?.toLowerCase().includes(q);
+    const matchCat = !cat || item.subcategory === cat || item.category === cat;
+    const matchGrade = !gradeFilter || (gradeFilter === 'graded' ? item.graded : !item.graded);
+    const matchListed = !listedFilter || (listedFilter === 'listed' ? item.listed : !item.listed);
+    return matchQ && matchCat && matchGrade && matchListed;
+  });
+  renderCards(results);
+}
+
+function filterSealed() {
+  const q = document.getElementById('sealedSearch').value.toLowerCase();
+  const type = document.getElementById('sealedType').value;
+  const listedFilter = document.getElementById('sealedListedFilter').value;
+
+  let results = allSealed.filter(item => {
+    const matchQ = !q || item.title?.toLowerCase().includes(q) || item.set_name?.toLowerCase().includes(q);
+    const matchType = !type || item.sealed_type === type;
+    const matchListed = !listedFilter || (listedFilter === 'listed' ? item.listed : !item.listed);
+    return matchQ && matchType && matchListed;
+  });
+  renderSealed(results);
+}
+
+function switchTab(tab) {
+  currentTab = tab;
+  document.getElementById('cardsTab').style.display = tab === 'cards' ? 'block' : 'none';
+  document.getElementById('sealedTab').style.display = tab === 'sealed' ? 'block' : 'none';
+  document.getElementById('tabCards').classList.toggle('active', tab === 'cards');
+  document.getElementById('tabSealed').classList.toggle('active', tab === 'sealed');
+}
+
+function messageSeller() {
+  if (!ownerUserId) return;
+  window.location.href = `alltrades-messages.html?user=${ownerUserId}`;
+}
+
+function openLightbox(src) {
+  document.getElementById('lightboxImg').src = src;
+  document.getElementById('lightbox').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeLightbox() {
+  document.getElementById('lightbox').classList.remove('open');
+  document.body.style.overflow = '';
+}
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeLightbox();
+});
+
+function showNotFound() {
+  document.getElementById('loadingState').style.display = 'none';
+  document.getElementById('notFoundState').style.display = 'block';
+}
+
+function showToast(icon, msg) {
+  document.getElementById('toastIc').textContent = icon;
+  document.getElementById('toastTx').textContent = msg;
+  const t = document.getElementById('toastEl');
+  t.classList.add('show');
+  clearTimeout(window._tt);
+  window._tt = setTimeout(() => t.classList.remove('show'), 3500);
+}
+</script>
+
+<!-- TRADEZY HELP WIDGET START -->
+<style>
+#tz-help-bubble{position:fixed;bottom:24px;right:24px;z-index:9999;display:flex;flex-direction:column;align-items:flex-end;gap:10px;font-family:'Lato',system-ui,sans-serif;}
+#tz-bubble-btn{width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#0a1628,#1a56db);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1.4rem;box-shadow:0 4px 20px rgba(26,86,219,.4);transition:all .2s;position:relative;}
+#tz-bubble-btn:hover{transform:scale(1.08);}
+#tz-bubble-btn .tz-notif{position:absolute;top:0;right:0;width:14px;height:14px;background:#dc2626;border-radius:50%;border:2px solid #fff;display:none;}
+#tz-chat-panel{display:none;width:360px;height:520px;background:#fff;border-radius:16px;box-shadow:0 20px 60px rgba(0,0,0,.18);flex-direction:column;overflow:hidden;border:1px solid #e2e8f0;animation:tzSlideUp .2s ease;}
+#tz-chat-panel.open{display:flex;}
+@keyframes tzSlideUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.tz-panel-head{background:linear-gradient(135deg,#0a1628,#112240);padding:14px 16px;display:flex;align-items:center;gap:10px;flex-shrink:0;}
+.tz-head-icon{width:34px;height:34px;background:rgba(245,158,11,.2);border:1px solid rgba(245,158,11,.3);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0;}
+.tz-head-info{flex:1;}.tz-head-title{font-weight:800;font-size:.88rem;color:#fff;font-family:'Barlow Condensed',system-ui,sans-serif;letter-spacing:.3px;}
+.tz-head-status{font-size:10px;color:#22c55e;display:flex;align-items:center;gap:4px;}
+.tz-head-dot{width:6px;height:6px;background:#22c55e;border-radius:50%;animation:tzPulse 2s infinite;}
+@keyframes tzPulse{0%,100%{opacity:1}50%{opacity:.5}}
+.tz-head-close{background:rgba(255,255,255,.1);border:none;color:#94a3b8;width:26px;height:26px;border-radius:50%;cursor:pointer;font-size:.85rem;display:flex;align-items:center;justify-content:center;transition:all .15s;}
+.tz-head-close:hover{background:rgba(255,255,255,.2);color:#fff;}
+.tz-messages{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px;scroll-behavior:smooth;}
+.tz-messages::-webkit-scrollbar{width:4px;}.tz-messages::-webkit-scrollbar-track{background:transparent;}.tz-messages::-webkit-scrollbar-thumb{background:#e2e8f0;border-radius:2px;}
+.tz-msg{max-width:84%;display:flex;flex-direction:column;gap:2px;}
+.tz-msg.bot{align-self:flex-start;}.tz-msg.user{align-self:flex-end;}
+.tz-bubble{padding:9px 12px;border-radius:12px;font-size:13px;line-height:1.5;}
+.tz-msg.bot .tz-bubble{background:#f1f5f9;color:#1a1a2e;border-radius:4px 12px 12px 12px;}
+.tz-msg.user .tz-bubble{background:linear-gradient(135deg,#1a56db,#2563eb);color:#fff;border-radius:12px 4px 12px 12px;}
+.tz-msg-time{font-size:10px;color:#94a3b8;padding:0 4px;}.tz-msg.user .tz-msg-time{text-align:right;}
+.tz-typing{display:flex;align-items:center;gap:4px;padding:9px 12px;background:#f1f5f9;border-radius:4px 12px 12px 12px;width:fit-content;}
+.tz-typing span{width:6px;height:6px;background:#94a3b8;border-radius:50%;animation:tzDot 1.2s infinite;}
+.tz-typing span:nth-child(2){animation-delay:.2s;}.tz-typing span:nth-child(3){animation-delay:.4s;}
+@keyframes tzDot{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-4px)}}
+.tz-quick-btns{display:flex;flex-wrap:wrap;gap:5px;margin-top:4px;}
+.tz-quick-btn{background:#fff;border:1px solid #e2e8f0;color:#1a56db;font-size:11px;font-weight:700;padding:4px 10px;border-radius:99px;cursor:pointer;transition:all .12s;font-family:inherit;}
+.tz-quick-btn:hover{background:#eff6ff;border-color:#1a56db;}
+.tz-action-link{display:inline-flex;align-items:center;gap:5px;background:#eff6ff;border:1px solid #bfdbfe;color:#1a56db;font-size:12px;font-weight:700;padding:6px 12px;border-radius:7px;cursor:pointer;text-decoration:none;margin-top:5px;transition:all .12s;}
+.tz-action-link:hover{background:#dbeafe;}
+.tz-escalate-card{background:#fff7ed;border:1px solid #fed7aa;border-radius:10px;padding:11px 13px;margin-top:6px;font-size:12px;}
+.tz-escalate-title{font-weight:800;color:#92400e;margin-bottom:5px;font-size:12px;}
+.tz-escalate-btn{display:inline-block;background:#ea580c;color:#fff;font-size:11px;font-weight:700;padding:5px 12px;border-radius:6px;text-decoration:none;margin-top:6px;cursor:pointer;border:none;font-family:inherit;}
+.tz-escalate-btn:hover{background:#c2410c;}
+.tz-input-area{padding:10px 12px;border-top:1px solid #f1f5f9;display:flex;gap:7px;flex-shrink:0;background:#fafafa;}
+.tz-input{flex:1;border:1.5px solid #e2e8f0;border-radius:8px;padding:8px 11px;font-size:13px;font-family:inherit;color:#1a1a2e;outline:none;resize:none;height:38px;max-height:90px;overflow-y:auto;transition:border-color .15s;background:#fff;}
+.tz-input:focus{border-color:#1a56db;box-shadow:0 0 0 3px rgba(26,86,219,.07);}
+.tz-send-btn{width:36px;height:36px;background:linear-gradient(135deg,#1a56db,#2563eb);border:none;border-radius:8px;color:#fff;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s;align-self:flex-end;}
+.tz-send-btn:hover{transform:scale(1.05);}.tz-send-btn:disabled{opacity:.5;cursor:not-allowed;transform:none;}
+.tz-powered{text-align:center;font-size:10px;color:#cbd5e1;padding:5px 0 2px;flex-shrink:0;}
+</style>
+<div id="tz-help-bubble">
+  <div id="tz-chat-panel">
+    <div class="tz-panel-head">
+      <div class="tz-head-icon">🤖</div>
+      <div class="tz-head-info"><div class="tz-head-title">Tradezy Support</div><div class="tz-head-status"><span class="tz-head-dot"></span>Online — AI Assistant</div></div>
+      <button class="tz-head-close" onclick="tzToggle()">✕</button>
+    </div>
+    <div class="tz-messages" id="tzMessages"></div>
+    <div class="tz-input-area">
+      <textarea class="tz-input" id="tzInput" placeholder="Ask anything about Tradezy…" rows="1" onkeydown="tzKeyDown(event)" oninput="tzAutoResize(this)"></textarea>
+      <button class="tz-send-btn" id="tzSendBtn" onclick="tzSend()">➤</button>
+    </div>
+    <div class="tz-powered">Powered by Claude AI · Tradezy Support</div>
+  </div>
+  <button id="tz-bubble-btn" onclick="tzToggle()" title="Get Help">💬<div class="tz-notif" id="tzNotif"></div></button>
+</div>
+<script>
+(function(){
+  const SP=`You are the Tradezy support assistant — a helpful, friendly AI for Tradezy, a peer-to-peer local trading marketplace.
+
+ABOUT TRADEZY:
+- Free local trading platform where users list items and trade with verified neighbors
+- Platform fee: 5% per party on completed trades (Founding Traders pay 3% lifetime)
+- Ship-It trades (state-to-state): 10% fee, fully verified users only, launching July 31 2026
+- Every listing supports both local meetup AND Ship-It trading
+- Phase 1 launch: July 17 2026 — Connecticut and Ohio statewide
+- Phase 2: July 31 2026 — Nationwide
+
+HOW TRADING WORKS:
+1. Post a listing with photos, condition, what you want in return
+2. Browse listings, make offers (item-for-item, item + cash top-up, or cash)
+3. Accept an offer, agree on a meetup spot (local) or Ship-It flow
+4. Both parties confirm the exchange in-app — this unlocks ratings
+5. Leave ratings after confirmed exchange
+
+VERIFICATION & TRUST:
+- Email verification required to use platform
+- Address verification adds trust score
+- ID verification required for Ship-It trades
+- W-9 tax form required before posting listings
+- Trust score shown on profiles
+
+PROHIBITED ITEMS (permanent ban): Firearms, weapons, alcohol, tobacco, drugs, live animals, adult content, stolen goods, cash, gift cards, cryptocurrency
+
+FEES EXPLAINED:
+- 5% of total trade value per party — example: $100 item trade = $5 fee each party
+- $90 item + $40 cash top-up = $130 total = $6.50 fee each party
+- Founding Traders: 3% lifetime (signed up before July 17 launch)
+- Listing is always free
+
+SHIP-IT TRADES (July 31+):
+- Available on ALL listings — buyers choose local or Ship-It when making an offer
+- State-to-state trading for fully ID-verified users only
+- 10% fee per party at trade acceptance
+- Payment via Zelle, PayPal, Venmo, Apple Pay, Google Pay, or Cash App (peer-to-peer, Tradezy never holds funds)
+- Buyer uploads payment screenshot as proof
+- Seller enters tracking number
+- Both confirm delivery to close trade
+
+TCG CATEGORIES: Pokémon, One Piece, MTG, Yu-Gi-Oh, Lorcana, Flesh & Blood
+SPORTS CARDS: Baseball, Football, Basketball, Hockey, Soccer
+Card grading supported: PSA, BGS, SGC, TAG
+
+ACCOUNT HELP:
+- Password reset: direct users to https://tradezyhq.com/alltrades-auth.html
+- Account locked/banned: direct to support@tradezyhq.com
+- Verification issues: direct to https://tradezyhq.com/alltrades-verification.html
+
+DISPUTE RESOLUTION:
+- File a dispute at https://tradezyhq.com/alltrades-disputes.html
+- Email disputes@tradezyhq.com
+- SLA: CRITICAL 8hrs, HIGH 16hrs, MEDIUM 24hrs, LOW 48hrs
+
+ESCALATION RULES — escalate to human immediately if:
+- User reports fraud, scam, or didn't receive item
+- User mentions safety concern, threat, or harassment
+- User is clearly distressed or frustrated after multiple exchanges
+- User explicitly requests a human agent
+- Issue involves account ban or suspension
+
+ESCALATION: When escalating, provide support@tradezyhq.com for general issues or disputes@tradezyhq.com for trade disputes.
+
+TONE: Warm, clear, concise. Never give legal or financial advice. Never make up information — if unsure, direct to support@tradezyhq.com. Keep responses short and scannable — use bullet points for multi-step answers.`;
+  let isOpen=false,isLoading=false,exchangeCount=0,hasShownWelcome=false;
+  const history=[];
+  window.tzToggle=function(){
+    isOpen=!isOpen;
+    const panel=document.getElementById('tz-chat-panel'),btn=document.getElementById('tz-bubble-btn');
+    if(isOpen){
+      panel.classList.add('open');btn.innerHTML='✕<div class="tz-notif" id="tzNotif"></div>';
+      if(!hasShownWelcome){hasShownWelcome=true;tzBotMsg("👋 Hey! I'm the Tradezy support assistant. I can help with:",["How trading works","Ship-It trades","Fees & verification","Reporting a problem"]);}
+      setTimeout(()=>document.getElementById('tzInput')?.focus(),200);
+    }else{panel.classList.remove('open');btn.innerHTML='💬<div class="tz-notif" id="tzNotif"></div>';}
+  };
+  window.tzSend=async function(){
+    const input=document.getElementById('tzInput'),text=input.value.trim();
+    if(!text||isLoading)return;
+    input.value='';tzAutoResize(input);tzUserMsg(text);
+    history.push({role:'user',content:text});exchangeCount++;await tzGetResp();
+  };
+  window.tzKeyDown=function(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();tzSend();}};
+  window.tzAutoResize=function(el){el.style.height='38px';el.style.height=Math.min(el.scrollHeight,90)+'px';};
+  async function tzGetResp(){
+    isLoading=true;document.getElementById('tzSendBtn').disabled=true;
+    const tid='tz-t-'+Date.now(),msgs=document.getElementById('tzMessages');
+    const tel=document.createElement('div');tel.id=tid;tel.className='tz-msg bot';tel.innerHTML='<div class="tz-typing"><span></span><span></span><span></span></div>';
+    msgs.appendChild(tel);msgs.scrollTop=msgs.scrollHeight;
+    try{
+      const r=await fetch('https://tradezy-ai-proxy.throbbing-lake-08ed.workers.dev',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:1000,system:SP,messages:history})});
+      const d=await r.json();const reply=d.content?.[0]?.text||"I'm having trouble responding. Please email support@tradezyhq.com.";
+      document.getElementById(tid)?.remove();history.push({role:'assistant',content:reply});
+      const ut=history.filter(m=>m.role==='user').map(m=>m.content).join(' ').toLowerCase();
+      const esc=['scam','fraud','didn\'t receive','threat','harass','human','agent','banned','suspended','unsafe'].some(k=>ut.includes(k))||exchangeCount>=4;
+      tzBotMsg(reply,null,esc);
+    }catch(e){document.getElementById(tid)?.remove();tzBotMsg("I'm having trouble connecting. Please email support@tradezyhq.com.",null,true);}
+    isLoading=false;document.getElementById('tzSendBtn').disabled=false;
+  }
+  function tzBotMsg(text,qr=null,esc=false){
+    const msgs=document.getElementById('tzMessages'),w=document.createElement('div');w.className='tz-msg bot';
+    let html=text.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/^[-•] (.+)$/gm,'<li>$1</li>').replace(/(<li>.*<\/li>)/gs,'<ul style="margin:4px 0 0 14px;padding:0;font-size:13px;line-height:1.6">$1</ul>').replace(/\n\n/g,'<br><br>').replace(/\n/g,'<br>');
+    let ex='';
+    if(text.toLowerCase().includes('verification')||text.toLowerCase().includes('verify'))ex+=`<a class="tz-action-link" href="https://tradezyhq.com/alltrades-verification.html" target="_blank">✅ Go to Verification →</a>`;
+    if(text.toLowerCase().includes('dispute'))ex+=`<a class="tz-action-link" href="https://tradezyhq.com/alltrades-disputes.html" target="_blank">⚖️ File a Dispute →</a>`;
+    let bh=`<div class="tz-bubble">${html}</div>`;if(ex)bh+=ex;
+    if(esc)bh+=`<div class="tz-escalate-card"><div class="tz-escalate-title">🙋 Want to talk to a person?</div><div style="color:#92400e;font-size:12px">Our support team is standing by.</div><div style="display:flex;gap:7px;flex-wrap:wrap;margin-top:7px;"><a class="tz-escalate-btn" href="mailto:support@tradezyhq.com">📧 Email Support</a><a class="tz-escalate-btn" href="https://tradezyhq.com/alltrades-disputes.html" target="_blank" style="background:#1a56db">⚖️ File Dispute</a></div></div>`;
+    if(qr&&qr.length)bh+='<div class="tz-quick-btns">'+qr.map(q=>`<button class="tz-quick-btn" onclick="tzQuickReply('${q.replace(/'/g,"\\'")}')">${q}</button>`).join('')+'</div>';
+    w.innerHTML=bh;
+    const t=document.createElement('div');t.className='tz-msg-time';t.textContent=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+    w.appendChild(t);msgs.appendChild(w);msgs.scrollTop=msgs.scrollHeight;
+  }
+  function tzUserMsg(text){
+    const msgs=document.getElementById('tzMessages'),w=document.createElement('div');w.className='tz-msg user';
+    w.innerHTML=`<div class="tz-bubble">${esc(text)}</div><div class="tz-msg-time">${new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}</div>`;
+    msgs.appendChild(w);msgs.scrollTop=msgs.scrollHeight;
+  }
+  window.tzQuickReply=function(t){document.getElementById('tzInput').value=t;tzSend();};
+  function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+})();
+</script>
+<!-- TRADEZY HELP WIDGET END -->
+
+</body>
+</html>
