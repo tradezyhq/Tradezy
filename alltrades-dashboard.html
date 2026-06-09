@@ -81,9 +81,7 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
 .sec-cnt.gold{background:var(--gold);color:var(--navy);}.sec-cnt.green{background:var(--green);}.sec-cnt.purple{background:var(--purple);}
 .sec-lnk{font-size:12px;color:var(--blue);font-weight:700;cursor:pointer;}
 .panel{background:var(--white);border:1px solid var(--border);border-radius:12px;overflow:hidden;}
-/* OFFERS + COLLECTION 50/50 */
 .offers-collection-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:18px;align-items:start;}
-/* OFFERS */
 .offer-row{display:flex;align-items:center;gap:10px;padding:11px 14px;border-bottom:1px solid var(--border);transition:background .15s;cursor:pointer;}
 .offer-row:last-child{border-bottom:none;}
 .offer-row:hover{background:var(--surface);}
@@ -105,7 +103,6 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
 .btn-dec{background:transparent;border:1px solid var(--border);color:var(--muted);}
 .btn-dec:hover{border-color:var(--red);color:var(--red);}
 .btn-view-sm{background:#eff6ff;border:1px solid #bfdbfe;color:var(--blue);}
-/* COLLECTION WIDGET */
 .collection-widget{background:var(--white);border:1px solid var(--border);border-radius:12px;overflow:hidden;}
 .cw-head{background:linear-gradient(135deg,#4c1d95,#6d28d9);padding:12px 15px;display:flex;align-items:center;justify-content:space-between;}
 .cw-head-title{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.92rem;color:#fff;display:flex;align-items:center;gap:7px;}
@@ -140,7 +137,6 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
 .cw-empty{text-align:center;padding:22px 14px;color:var(--muted);}
 .cw-empty-icon{font-size:1.8rem;margin-bottom:7px;}
 .cw-empty-txt{font-size:11px;line-height:1.5;}
-/* TRADES */
 .two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:18px;}
 .trade-card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:13px 15px;margin-bottom:9px;transition:all .15s;}
 .trade-card:hover{border-color:var(--blue);}
@@ -165,7 +161,6 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
 .tcb-msg{background:var(--surface);border:1px solid var(--border);color:var(--muted);}
 .tcb-view{background:#eff6ff;border:1px solid #bfdbfe;color:var(--blue);}
 .tcb-confirm{background:var(--green);color:#fff;}
-/* MESSAGES */
 .msg-panel{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:13px;}
 .msg-item{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:8px;cursor:pointer;transition:all .15s;margin-bottom:5px;}
 .msg-item:hover{background:var(--surface);}
@@ -176,7 +171,6 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
 .mi-nm{font-weight:700;font-size:13px;margin-bottom:1px;}
 .mi-prev{font-size:11px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .mi-time{font-size:10px;color:var(--muted);flex-shrink:0;}
-/* LISTINGS */
 .listings-panel{background:var(--white);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:18px;}
 .lr{display:flex;align-items:center;gap:11px;padding:11px 15px;border-bottom:1px solid var(--border);transition:background .15s;cursor:pointer;text-decoration:none;color:inherit;}
 .lr:last-child{border-bottom:none;}
@@ -200,7 +194,12 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
 .lrb-edit:hover{border-color:var(--blue);color:var(--blue);}
 .lrb-del{background:transparent;border:1px solid transparent;color:var(--light);}
 .lrb-del:hover{border-color:#fecaca;color:var(--red);}
-/* EARNINGS */
+/* CASH CONFIRM STEP */
+.cash-confirm-box{background:#fffbeb;border:1.5px solid #fde68a;border-radius:10px;padding:14px 16px;margin-bottom:14px;}
+.ccb-title{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:.95rem;color:#92400e;margin-bottom:5px;display:flex;align-items:center;gap:6px;}
+.ccb-desc{font-size:13px;color:#78350f;line-height:1.5;margin-bottom:12px;}
+.ccb-amount{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.3rem;color:var(--green);}
+.ccb-method{font-size:12px;color:var(--muted);margin-top:2px;}
 .two-col-bot{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:18px;}
 .earnings-card{background:linear-gradient(135deg,#14532d,#166534);border-radius:12px;padding:15px;margin-bottom:12px;}
 .ec-ttl{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.85rem;color:#86efac;text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px;}
@@ -208,7 +207,6 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
 .ec-item{text-align:center;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1);border-radius:7px;padding:9px;}
 .ec-num{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.15rem;color:#fff;}
 .ec-lbl{font-size:10px;color:#86efac;text-transform:uppercase;letter-spacing:.3px;margin-top:1px;}
-/* MODALS */
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(10,22,40,.8);z-index:500;align-items:center;justify-content:center;padding:20px;}
 .modal-overlay.open{display:flex;}
 .modal{background:var(--white);border-radius:14px;width:100%;max-width:480px;max-height:88vh;overflow-y:auto;animation:slideUp .25s ease;}
@@ -253,12 +251,10 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
 .od-message{background:#fffbeb;border:1px solid #fde68a;border-radius:8px;padding:10px 13px;font-size:13px;font-style:italic;color:#92400e;line-height:1.5;}
 .od-actions{display:flex;gap:8px;margin-top:16px;}
 .od-actions .mbtn{margin-bottom:0;}
-/* ADD COLLECTION FORM */
 .ac-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;}
 .ac-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);display:block;margin-bottom:4px;}
 .ac-input{width:100%;border:1.5px solid var(--border);border-radius:7px;padding:9px 11px;font-size:13px;font-family:'Lato',sans-serif;outline:none;color:var(--text);background:var(--white);transition:border-color .15s;}
 .ac-input:focus{border-color:var(--purple);}
-/* LIGHTBOX */
 .offer-lightbox{display:none;position:fixed;inset:0;background:rgba(0,0,0,.93);z-index:900;align-items:center;justify-content:center;}
 .offer-lightbox.open{display:flex;}
 .offer-lightbox img{max-width:90vw;max-height:88vh;border-radius:10px;object-fit:contain;}
@@ -289,6 +285,7 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
   .cw-item:hover{background:rgba(255,255,255,.04) !important;}
   .cw-stats{border-color:rgba(255,255,255,.08) !important;}
   .cw-stat{border-color:rgba(255,255,255,.08) !important;}
+  .cash-confirm-box{background:rgba(251,191,36,.08) !important;border-color:rgba(251,191,36,.2) !important;}
 }
 </style>
 </head>
@@ -307,7 +304,6 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
     </div>
   </div>
 </div>
-
 <div class="layout">
   <div class="sidebar">
     <div class="sb-sec">
@@ -334,7 +330,6 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
     </div>
     <div class="sb-bottom"><button class="post-btn" onclick="window.location.href='alltrades-post.html'">+ Post New Listing</button></div>
   </div>
-
   <div class="main">
     <div class="welcome-bar">
       <div>
@@ -348,17 +343,13 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
         <div class="wb-stat"><div class="wb-num">$0</div><div class="wb-lbl">Listing Fees</div></div>
       </div>
     </div>
-
     <div class="alerts" id="alertsArea"></div>
-
     <div class="stats-grid">
       <div class="stat-card sc-blue"><div class="sc-icon">📨</div><div class="sc-num" id="statOffers" style="color:var(--blue)">—</div><div class="sc-lbl">Offers Received</div><div class="sc-change" id="statOffersSub">Loading…</div></div>
       <div class="stat-card sc-gold"><div class="sc-icon">📦</div><div class="sc-num" id="statListings" style="color:var(--gold)">—</div><div class="sc-lbl">Active Listings</div><div class="sc-change" id="statListingsSub">Loading…</div></div>
       <div class="stat-card sc-green"><div class="sc-icon">🔄</div><div class="sc-num" id="statTrades" style="color:var(--green)">—</div><div class="sc-lbl">Active Trades</div><div class="sc-change" id="statTradesSub">Loading…</div></div>
       <div class="stat-card sc-red"><div class="sc-icon">💰</div><div class="sc-num" id="statValue" style="color:var(--orange)">—</div><div class="sc-lbl">Trade Value (30d)</div><div class="sc-change" id="statValueSub">Loading…</div></div>
     </div>
-
-    <!-- OFFERS + COLLECTION 50/50 -->
     <div class="offers-collection-grid" id="offersColGrid">
       <div>
         <div class="sec-hdr">
@@ -390,7 +381,6 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
         </div>
       </div>
     </div>
-
     <div class="two-col">
       <div>
         <div class="sec-hdr"><div class="sec-ttl">🔄 Active Trades <span class="sec-cnt green" id="tradeCount">0</span></div><div class="sec-lnk">View all →</div></div>
@@ -401,13 +391,11 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
         <div class="msg-panel" id="msgsPanel"><div class="loading">Loading messages…</div></div>
       </div>
     </div>
-
     <div class="sec-hdr">
       <div class="sec-ttl">📦 My Listings <span class="sec-cnt gold" id="listingCount">0</span></div>
       <div class="sec-lnk" onclick="window.location.href='alltrades-post.html'">+ Add New →</div>
     </div>
     <div class="listings-panel" id="listingsPanel"><div class="loading">Loading listings…</div></div>
-
     <div class="two-col-bot">
       <div>
         <div class="sec-hdr"><div class="sec-ttl">💰 Trade Value Summary</div></div>
@@ -455,6 +443,7 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
         <div style="font-size:13px;color:var(--muted);line-height:1.5" id="confirmSubtitle">Both traders must confirm for the trade to close.</div>
       </div>
       <div style="border-radius:8px;padding:11px;margin-bottom:13px;font-size:12px" id="confirmFeeNote">Your 5% platform fee will be recorded when you confirm.</div>
+      <div id="cashConfirmStep" style="display:none"></div>
       <button class="mbtn green" id="confirmBtn" onclick="doConfirmTrade()">✅ Yes — Trade Complete!</button>
       <button class="mbtn red" onclick="closeModal('confirmModal');showToast('⚠️','Issue reported. Support will follow up.')">⚠️ There Was a Problem</button>
       <button class="mbtn outline" onclick="closeModal('confirmModal')">← Not Yet</button>
@@ -479,10 +468,8 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
         <div style="grid-column:1/-1"><label class="ac-label">Item Title *</label><input type="text" id="acTitle" class="ac-input" placeholder="e.g. Charizard ex Full Art"></div>
         <div><label class="ac-label">Category *</label>
           <select id="acCategory" class="ac-input">
-            <option value="TCG">TCG Card</option>
-            <option value="Sports Card">Sports Card</option>
-            <option value="Sealed">Sealed Product</option>
-            <option value="Other">Other</option>
+            <option value="TCG">TCG Card</option><option value="Sports Card">Sports Card</option>
+            <option value="Sealed">Sealed Product</option><option value="Other">Other</option>
           </select>
         </div>
         <div><label class="ac-label">Set / Series</label><input type="text" id="acSet" class="ac-input" placeholder="e.g. Scarlet & Violet 151"></div>
@@ -493,11 +480,8 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
         </div>
         <div><label class="ac-label">Grader</label>
           <select id="acGrader" class="ac-input" onchange="toggleGradeField()">
-            <option value="">Raw (Ungraded)</option>
-            <option value="PSA">PSA</option>
-            <option value="BGS">BGS / Beckett</option>
-            <option value="SGC">SGC</option>
-            <option value="TAG">TAG</option>
+            <option value="">Raw (Ungraded)</option><option value="PSA">PSA</option>
+            <option value="BGS">BGS / Beckett</option><option value="SGC">SGC</option><option value="TAG">TAG</option>
           </select>
         </div>
         <div id="acGradeFieldWrap" style="display:none"><label class="ac-label">Grade</label><input type="text" id="acGrade" class="ac-input" placeholder="e.g. 9, 9.5, 10"></div>
@@ -528,7 +512,7 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
   </div>
 </div>
 
-<!-- COLLECTION VIEW MODAL (seller own + buyer view) -->
+<!-- COLLECTION VIEW MODAL -->
 <div class="modal-overlay" id="collectionViewModal">
   <div class="modal" style="max-width:560px">
     <div class="mhd purple-head"><div class="mhd-ttl" id="colViewTitle">🃏 Collection</div><button class="mhd-close" onclick="closeModal('collectionViewModal')">✕</button></div>
@@ -561,18 +545,17 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
       <div style="margin-bottom:12px">
         <label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);display:block;margin-bottom:5px">Asking Value ($) *</label>
         <input type="number" id="tcolValue" class="ac-input" placeholder="e.g. 45000" min="0" step="0.01">
-        <div style="font-size:11px;color:var(--muted);margin-top:4px">Set your asking price — buyers can make offers above or below.</div>
       </div>
       <div style="margin-bottom:16px">
         <label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);display:block;margin-bottom:7px">What Will You Accept?</label>
         <div style="display:flex;flex-direction:column;gap:6px" id="tcolPrefs">
-          <label style="display:flex;align-items:center;gap:10px;padding:9px 12px;border:1.5px solid var(--border);border-radius:7px;cursor:pointer;font-size:13px;transition:all .15s" onclick="this.style.borderColor='var(--purple)';this.style.background='#f5f3ff'">
+          <label style="display:flex;align-items:center;gap:10px;padding:9px 12px;border:1.5px solid var(--border);border-radius:7px;cursor:pointer;font-size:13px;" onclick="this.style.borderColor='var(--purple)';this.style.background='#f5f3ff'">
             <input type="checkbox" id="tcolTrade" checked style="accent-color:var(--purple)"> 🔄 Cards / Items in Trade
           </label>
-          <label style="display:flex;align-items:center;gap:10px;padding:9px 12px;border:1.5px solid var(--border);border-radius:7px;cursor:pointer;font-size:13px;transition:all .15s" onclick="this.style.borderColor='var(--purple)';this.style.background='#f5f3ff'">
+          <label style="display:flex;align-items:center;gap:10px;padding:9px 12px;border:1.5px solid var(--border);border-radius:7px;cursor:pointer;font-size:13px;" onclick="this.style.borderColor='var(--purple)';this.style.background='#f5f3ff'">
             <input type="checkbox" id="tcolCash" checked style="accent-color:var(--purple)"> 💵 Cash Offers (in person)
           </label>
-          <label style="display:flex;align-items:center;gap:10px;padding:9px 12px;border:1.5px solid var(--border);border-radius:7px;cursor:pointer;font-size:13px;transition:all .15s" onclick="this.style.borderColor='var(--purple)';this.style.background='#f5f3ff'">
+          <label style="display:flex;align-items:center;gap:10px;padding:9px 12px;border:1.5px solid var(--border);border-radius:7px;cursor:pointer;font-size:13px;" onclick="this.style.borderColor='var(--purple)';this.style.background='#f5f3ff'">
             <input type="checkbox" id="tcolCombo" checked style="accent-color:var(--purple)"> 🔄💵 Cards + Cash Combo
           </label>
         </div>
@@ -602,6 +585,8 @@ const sb = window.supabase.createClient(
 
 let currentUser = null, currentUserData = null;
 let currentTradeId = null, currentTradeIsShipIt = false;
+let currentTradeCashAmount = 0, currentTradePayMethod = null;
+let cashConfirmed = false;
 let currentTradeItemData = null;
 let lbPhotos = [], lbIndex = 0;
 
@@ -629,36 +614,34 @@ function setGreeting() {
 
 async function loadUserProfile() {
   try {
-    const name     = currentUserData?.display_name || currentUser.email?.split('@')[0] || 'Trader';
+    const name = currentUserData?.display_name || currentUser.email?.split('@')[0] || 'Trader';
     const initials = name.split(' ').map(n=>n[0]).join('').toUpperCase().slice(0,2);
-    const loc      = currentUserData?.location_city ? `📍 ${currentUserData.location_city}${currentUserData.location_state?', '+currentUserData.location_state:''}` : '📍 Location not set';
+    const loc = currentUserData?.location_city ? `📍 ${currentUserData.location_city}${currentUserData.location_state?', '+currentUserData.location_state:''}` : '📍 Location not set';
     document.getElementById('userName').textContent = name;
-    document.getElementById('userAv').textContent   = initials;
-    document.getElementById('wbName').textContent   = name;
-    document.getElementById('wbSub').innerHTML      = `${loc} · <a href="alltrades-verification.html" style="color:var(--gold-l);font-weight:700;text-decoration:none">Verify your account →</a>`;
+    document.getElementById('userAv').textContent = initials;
+    document.getElementById('wbName').textContent = name;
+    document.getElementById('wbSub').innerHTML = `${loc} · <a href="alltrades-verification.html" style="color:var(--gold-l);font-weight:700;text-decoration:none">Verify your account →</a>`;
   } catch(e) { document.getElementById('wbName').textContent = 'Trader'; }
 }
 
-/* ── COLLECTION ── */
 async function loadCollection() {
   try {
     const { data: items } = await sb.from('collections').select('*').eq('user_id', currentUser.id).order('created_at', { ascending: false });
-    const total    = items?.length || 0;
-    const sealed   = items?.filter(i => i.sealed).length || 0;
+    const total = items?.length || 0;
+    const sealed = items?.filter(i => i.sealed).length || 0;
     const totalVal = (items||[]).reduce((s,i) => s + (Number(i.estimated_value)||0) * (Number(i.quantity)||1), 0);
-    document.getElementById('cwItemCount').textContent   = total;
+    document.getElementById('cwItemCount').textContent = total;
     document.getElementById('cwSealedCount').textContent = sealed;
-    document.getElementById('cwTotalVal').textContent    = total > 0 ? '$' + totalVal.toLocaleString(undefined,{maximumFractionDigits:0}) : '—';
-    document.getElementById('colCount').textContent      = total;
+    document.getElementById('cwTotalVal').textContent = total > 0 ? '$' + totalVal.toLocaleString(undefined,{maximumFractionDigits:0}) : '—';
+    document.getElementById('colCount').textContent = total;
     if (total > 0) { document.getElementById('sbColBadge').textContent = total; document.getElementById('sbColBadge').style.display = 'inline'; }
     const list = document.getElementById('cwItemsList');
     if (!total) { list.innerHTML = `<div class="cw-empty"><div class="cw-empty-icon">🃏</div><div class="cw-empty-txt">No items yet. Add your first card or sealed product!</div></div>`; return; }
     list.innerHTML = (items||[]).slice(0,8).map(item => {
       const gradeDisplay = item.graded && item.grader ? `${item.grader} ${item.grade||''}`.trim() : null;
-      const firstPhoto   = item.photos?.[0];
-      const thumbHtml    = firstPhoto ? `<img src="${firstPhoto}" alt="${item.title}" loading="lazy">` : (CAT_EMOJI[item.category]||'🃏');
-      const val          = item.estimated_value ? '$'+Number(item.estimated_value).toLocaleString(undefined,{maximumFractionDigits:0}) : '—';
-      const safeItem     = JSON.stringify(item).replace(/'/g,'&#39;').replace(/"/g,'&quot;');
+      const firstPhoto = item.photos?.[0];
+      const thumbHtml = firstPhoto ? `<img src="${firstPhoto}" alt="${item.title}" loading="lazy">` : (CAT_EMOJI[item.category]||'🃏');
+      const val = item.estimated_value ? '$'+Number(item.estimated_value).toLocaleString(undefined,{maximumFractionDigits:0}) : '—';
       return `<div class="cw-item">
         <div class="cw-item-thumb">${thumbHtml}</div>
         <div class="cw-item-info">
@@ -683,25 +666,14 @@ function openTradeItemModal(item) {
   currentTradeItemData = item;
   document.getElementById('tradeItemName').textContent = item.title;
   document.getElementById('tradeItemMeta').textContent = [item.set_name, item.condition, item.graded&&item.grader?(item.grader+(item.grade?' '+item.grade:'')):'Raw'].filter(Boolean).join(' · ');
-  document.getElementById('tradeItemVal').textContent  = item.estimated_value ? `Est. $${Number(item.estimated_value).toLocaleString()}` : 'Est. —';
+  document.getElementById('tradeItemVal').textContent = item.estimated_value ? `Est. $${Number(item.estimated_value).toLocaleString()}` : 'Est. —';
   openModal('tradeItemModal');
 }
 
 function goToPostWithItem() {
   if (!currentTradeItemData) return;
   const i = currentTradeItemData;
-  const p = new URLSearchParams({
-    prefill:   '1',
-    title:     i.title||'',
-    category:  i.category==='TCG'?'Trading Cards':i.category==='Sports Card'?'Sports Cards':i.category||'',
-    set:       i.set_name||'',
-    condition: i.condition||'',
-    value:     i.estimated_value||'',
-    grader:    i.grader||'',
-    grade:     i.grade||'',
-    notes:     i.notes||'',
-    col_id:    i.id||'',
-  });
+  const p = new URLSearchParams({prefill:'1',title:i.title||'',category:i.category==='TCG'?'Trading Cards':i.category==='Sports Card'?'Sports Cards':i.category||'',set:i.set_name||'',condition:i.condition||'',value:i.estimated_value||'',grader:i.grader||'',grade:i.grade||'',notes:i.notes||'',col_id:i.id||''});
   window.location.href = `alltrades-post.html?${p.toString()}`;
 }
 
@@ -717,12 +689,11 @@ async function removeCollectionItem(id) {
 
 async function openTradeCollectionModal() {
   openModal('tradeCollectionModal');
-  // Load collection stats
   try {
     const { data: items } = await sb.from('collections').select('*').eq('user_id', currentUser.id);
-    const total    = items?.length || 0;
+    const total = items?.length || 0;
     const totalVal = (items||[]).reduce((s,i) => s+(Number(i.estimated_value)||0)*(Number(i.quantity)||1), 0);
-    const name     = currentUserData?.display_name || currentUser.email?.split('@')[0] || 'My';
+    const name = currentUserData?.display_name || currentUser.email?.split('@')[0] || 'My';
     document.getElementById('tcol-stats').innerHTML = `
       <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:9px 14px;text-align:center">
         <div style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.2rem;color:var(--purple)">${total}</div>
@@ -732,15 +703,10 @@ async function openTradeCollectionModal() {
         <div style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.2rem;color:var(--green)">$${totalVal.toLocaleString(undefined,{maximumFractionDigits:0})}</div>
         <div style="font-size:10px;color:var(--muted);text-transform:uppercase">Est. Value</div>
       </div>`;
-    // Pre-fill title
-    if (!document.getElementById('tcolTitle').value) {
-      document.getElementById('tcolTitle').value = `${name}'s Full Card Collection — ${total} Items`;
-    }
-    if (!document.getElementById('tcolValue').value && totalVal > 0) {
-      document.getElementById('tcolValue').value = totalVal.toFixed(0);
-    }
+    if (!document.getElementById('tcolTitle').value) document.getElementById('tcolTitle').value = `${name}'s Full Card Collection — ${total} Items`;
+    if (!document.getElementById('tcolValue').value && totalVal > 0) document.getElementById('tcolValue').value = totalVal.toFixed(0);
     if (total === 0) {
-      document.getElementById('tradeCollectionBody').innerHTML = `<div class="empty-state"><div class="empty-icon">🃏</div><div class="empty-txt">Your collection is empty.<br>Add items to your Collection Vault first, then list it for trade.</div></div><button class="mbtn outline" onclick="closeModal('tradeCollectionModal');openAddCollectionModal()">+ Add Items to Collection</button>`;
+      document.getElementById('tradeCollectionBody').innerHTML = `<div class="empty-state"><div class="empty-icon">🃏</div><div class="empty-txt">Your collection is empty.<br>Add items to your Collection Vault first.</div></div><button class="mbtn outline" onclick="closeModal('tradeCollectionModal');openAddCollectionModal()">+ Add Items to Collection</button>`;
     }
   } catch(e) { console.error(e); }
 }
@@ -750,10 +716,10 @@ async function publishCollectionListing() {
   const pitch = document.getElementById('tcolPitch')?.value.trim();
   const value = parseFloat(document.getElementById('tcolValue')?.value) || 0;
   if (!title) { showToast('⚠️','Please add a listing title.'); return; }
-  if (!pitch) { showToast('⚠️','Please add a short pitch so buyers know your asking price.'); return; }
+  if (!pitch) { showToast('⚠️','Please add a short pitch.'); return; }
   if (!value) { showToast('⚠️','Please set an asking value.'); return; }
   const tradePref = document.getElementById('tcolTrade')?.checked;
-  const cashPref  = document.getElementById('tcolCash')?.checked;
+  const cashPref = document.getElementById('tcolCash')?.checked;
   const comboPref = document.getElementById('tcolCombo')?.checked;
   if (!tradePref && !cashPref && !comboPref) { showToast('⚠️','Please select at least one offer type.'); return; }
   let tradeType = 'item';
@@ -762,104 +728,63 @@ async function publishCollectionListing() {
   const btn = document.getElementById('publishColBtn');
   btn.disabled = true; btn.textContent = '⏳ Publishing…';
   try {
-    const name = currentUserData?.display_name || currentUser.email?.split('@')[0] || 'Trader';
     const { data: listing, error } = await sb.from('listings').insert({
-      user_id:         currentUser.id,
-      title,
-      description:     `${pitch}\n\nThis listing represents my full card collection. All items are available for trade or purchase as a complete set. Message me to discuss the contents, arrange a viewing, or make an offer.`,
-      short_pitch:     pitch,
-      estimated_value: value,
-      category:        'Trading Cards',
-      condition:       'Mixed',
-      trade_type:      tradeType,
-      listing_type:    'collection',
-      status:          'active',
-      wants:           'Best offer — cards, cash, or combo welcome',
-      meetup_style:    'public',
-      availability:    'Flexible — anytime',
+      user_id:currentUser.id, title, description:`${pitch}\n\nThis listing represents my full card collection.`,
+      short_pitch:pitch, estimated_value:value, category:'Trading Cards', condition:'Mixed',
+      trade_type:tradeType, listing_type:'collection', status:'active',
+      wants:'Best offer — cards, cash, or combo welcome', meetup_style:'public', availability:'Flexible — anytime',
     }).select().single();
     if (error) throw error;
     closeModal('tradeCollectionModal');
-    showToast('🚀', `Collection listing live! Listing ID: ${listing.id.slice(0,8).toUpperCase()}`);
-    // Reset form
+    showToast('🚀', `Collection listing live!`);
     ['tcolTitle','tcolPitch','tcolValue'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
     loadListings();
-    // Offer to view the listing
-    setTimeout(() => {
-      if (confirm('Collection listing published! View it now?')) {
-        window.location.href = `alltrades-item.html?id=${listing.id}`;
-      }
-    }, 500);
-  } catch(e) {
-    console.error(e);
-    showToast('⚠️', 'Error publishing collection listing. Please try again.');
-  } finally {
-    btn.disabled = false; btn.textContent = '🚀 Publish Collection Listing';
-  }
+    setTimeout(() => { if (confirm('Collection listing published! View it now?')) window.location.href = `alltrades-item.html?id=${listing.id}`; }, 500);
+  } catch(e) { console.error(e); showToast('⚠️', 'Error publishing. Please try again.');
+  } finally { btn.disabled = false; btn.textContent = '🚀 Publish Collection Listing'; }
 }
 
 async function openCollectionViewModal(userId, namePrefix) {
   if (!userId) return;
   openModal('collectionViewModal');
   const isOwn = userId === currentUser?.id;
-  const label = isOwn ? 'My Collection' : `${namePrefix}'s Collection`;
-  document.getElementById('colViewTitle').textContent = `🃏 ${label}`;
+  document.getElementById('colViewTitle').textContent = `🃏 ${isOwn ? 'My Collection' : `${namePrefix}'s Collection`}`;
   const body = document.getElementById('colViewBody');
   body.innerHTML = '<div class="loading">Loading collection…</div>';
   try {
     let query = sb.from('collections').select('*').eq('user_id', userId).order('created_at', { ascending: false });
     if (!isOwn) query = query.eq('public_profile', true);
     const { data: items } = await query;
-    if (!items?.length) {
-      body.innerHTML = `<div class="empty-state"><div class="empty-icon">🃏</div><div class="empty-txt">${isOwn ? 'Your collection is empty. Add items above!' : `${namePrefix} hasn't made their collection public yet.`}</div></div>`;
-      return;
-    }
+    if (!items?.length) { body.innerHTML = `<div class="empty-state"><div class="empty-icon">🃏</div><div class="empty-txt">${isOwn ? 'Your collection is empty.' : `${namePrefix} hasn't made their collection public yet.`}</div></div>`; return; }
     const totalVal = (items||[]).reduce((s,i) => s + (Number(i.estimated_value)||0) * (Number(i.quantity)||1), 0);
     body.innerHTML = `
       <div style="display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap">
-        <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:9px 14px;text-align:center">
-          <div style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.2rem;color:var(--purple)">${items.length}</div>
-          <div style="font-size:10px;color:var(--muted);text-transform:uppercase">Items</div>
-        </div>
-        <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:9px 14px;text-align:center">
-          <div style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.2rem;color:var(--green)">$${totalVal.toLocaleString(undefined,{maximumFractionDigits:0})}</div>
-          <div style="font-size:10px;color:var(--muted);text-transform:uppercase">Est. Value</div>
-        </div>
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:9px 14px;text-align:center"><div style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.2rem;color:var(--purple)">${items.length}</div><div style="font-size:10px;color:var(--muted);text-transform:uppercase">Items</div></div>
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:9px 14px;text-align:center"><div style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.2rem;color:var(--green)">$${totalVal.toLocaleString(undefined,{maximumFractionDigits:0})}</div><div style="font-size:10px;color:var(--muted);text-transform:uppercase">Est. Value</div></div>
       </div>
       <div style="display:flex;flex-direction:column;gap:7px;max-height:380px;overflow-y:auto">
         ${items.map(item => {
-          const gd  = item.graded && item.grader ? `${item.grader} ${item.grade||''}`.trim() : null;
+          const gd = item.graded && item.grader ? `${item.grader} ${item.grade||''}`.trim() : null;
           const val = item.estimated_value ? '$'+Number(item.estimated_value).toLocaleString(undefined,{maximumFractionDigits:0}) : '—';
           return `<div style="display:flex;align-items:center;gap:10px;padding:9px 12px;background:var(--surface);border:1px solid var(--border);border-radius:8px">
             <div style="width:32px;height:32px;border-radius:5px;background:var(--white);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:.85rem;flex-shrink:0">${CAT_EMOJI[item.category]||'🃏'}</div>
-            <div style="flex:1;min-width:0">
-              <div style="font-weight:700;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${item.title}</div>
-              <div style="font-size:10px;color:var(--muted);display:flex;gap:4px;align-items:center;flex-wrap:wrap">
-                ${item.set_name?`<span>${item.set_name}</span><span>·</span>`:''}
-                <span>${item.condition||'—'}</span>
-                ${gd?`<span style="background:#f5f3ff;border:1px solid #ddd6fe;color:var(--purple);font-size:9px;font-weight:800;padding:1px 4px;border-radius:2px">${gd}</span>`:''}
-                ${item.quantity>1?`<span>· Qty: ${item.quantity}</span>`:''}
-              </div>
-            </div>
+            <div style="flex:1;min-width:0"><div style="font-weight:700;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${item.title}</div>
+            <div style="font-size:10px;color:var(--muted);display:flex;gap:4px;align-items:center;flex-wrap:wrap">${item.set_name?`<span>${item.set_name}</span><span>·</span>`:''}<span>${item.condition||'—'}</span>${gd?`<span style="background:#f5f3ff;border:1px solid #ddd6fe;color:var(--purple);font-size:9px;font-weight:800;padding:1px 4px;border-radius:2px">${gd}</span>`:''}</div></div>
             <div style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.85rem;color:var(--green);flex-shrink:0">${val}</div>
           </div>`;
         }).join('')}
       </div>
-      ${isOwn ? `<div style="margin-top:14px;display:flex;gap:8px">
-        <button class="mbtn purple" style="margin-bottom:0" onclick="closeModal('collectionViewModal');openTradeCollectionModal()">🔄 Trade Entire Collection</button>
-        <button class="mbtn outline" style="margin-bottom:0;flex:0.5" onclick="closeModal('collectionViewModal')">Close</button>
-      </div>` : `<button class="mbtn outline" style="margin-top:14px;margin-bottom:0" onclick="closeModal('collectionViewModal')">Close</button>`}`;
+      ${isOwn ? `<div style="margin-top:14px;display:flex;gap:8px"><button class="mbtn purple" style="margin-bottom:0" onclick="closeModal('collectionViewModal');openTradeCollectionModal()">🔄 Trade Entire Collection</button><button class="mbtn outline" style="margin-bottom:0;flex:0.5" onclick="closeModal('collectionViewModal')">Close</button></div>` : `<button class="mbtn outline" style="margin-top:14px;margin-bottom:0" onclick="closeModal('collectionViewModal')">Close</button>`}`;
   } catch(e) { body.innerHTML = `<div class="empty-state"><div class="empty-txt">Could not load collection.</div></div>`; }
 }
 
-/* ── ADD COLLECTION ITEM ── */
 function openAddCollectionModal() {
   ['acTitle','acSet','acGrade','acNotes'].forEach(id => { const el = document.getElementById(id); if(el) el.value=''; });
   document.getElementById('acValue').value = '';
-  document.getElementById('acQty').value   = '1';
-  document.getElementById('acCategory').value  = 'TCG';
+  document.getElementById('acQty').value = '1';
+  document.getElementById('acCategory').value = 'TCG';
   document.getElementById('acCondition').value = 'Mint';
-  document.getElementById('acGrader').value    = '';
+  document.getElementById('acGrader').value = '';
   document.getElementById('acGradeFieldWrap').style.display = 'none';
   openModal('addCollectionModal');
 }
@@ -874,64 +799,50 @@ async function saveCollectionItem() {
   try {
     const grader = document.getElementById('acGrader').value;
     const { error } = await sb.from('collections').insert({
-      user_id:         currentUser.id,
-      title,
-      category:        document.getElementById('acCategory').value,
-      set_name:        document.getElementById('acSet').value.trim()||null,
-      condition:       document.getElementById('acCondition').value,
-      graded:          !!grader,
-      grader:          grader||null,
-      grade:           grader?(document.getElementById('acGrade').value.trim()||null):null,
-      estimated_value: parseFloat(document.getElementById('acValue').value)||null,
-      quantity:        parseInt(document.getElementById('acQty').value)||1,
-      notes:           document.getElementById('acNotes').value.trim()||null,
+      user_id:currentUser.id, title, category:document.getElementById('acCategory').value,
+      set_name:document.getElementById('acSet').value.trim()||null, condition:document.getElementById('acCondition').value,
+      graded:!!grader, grader:grader||null, grade:grader?(document.getElementById('acGrade').value.trim()||null):null,
+      estimated_value:parseFloat(document.getElementById('acValue').value)||null,
+      quantity:parseInt(document.getElementById('acQty').value)||1, notes:document.getElementById('acNotes').value.trim()||null,
     });
     if (error) throw error;
     closeModal('addCollectionModal');
     showToast('🃏',`"${title}" added to your collection!`);
     loadCollection();
-  } catch(e) {
-    console.error(e); showToast('⚠️','Error saving item. Please try again.');
+  } catch(e) { console.error(e); showToast('⚠️','Error saving item. Please try again.');
   } finally { btn.disabled = false; btn.textContent = '🃏 Add to Collection'; }
 }
 
-/* ── OFFERS ── */
 async function loadOffers() {
   try {
     const { data: myListings } = await sb.from('listings').select('id').eq('user_id', currentUser.id);
     const listingIds = myListings?.map(l => l.id) || [];
     let offers = [];
     if (listingIds.length > 0) {
-      const { data } = await sb.from('offers')
-        .select('*, listing:listing_id(title,photos,category,estimated_value,condition)')
-        .in('listing_id', listingIds).eq('status','pending')
-        .order('created_at',{ascending:false}).limit(8);
+      const { data } = await sb.from('offers').select('*, listing:listing_id(title,photos,category,estimated_value,condition)').in('listing_id', listingIds).eq('status','pending').order('created_at',{ascending:false}).limit(8);
       offers = data || [];
     }
     const count = offers.length;
-    document.getElementById('offerCount').textContent    = count;
-    document.getElementById('statOffers').textContent    = count;
+    document.getElementById('offerCount').textContent = count;
+    document.getElementById('statOffers').textContent = count;
     document.getElementById('statOffersSub').textContent = count > 0 ? `${count} pending review` : 'No pending offers';
     if (count > 0) {
-      document.getElementById('sbOfferBadge').textContent   = count;
+      document.getElementById('sbOfferBadge').textContent = count;
       document.getElementById('sbOfferBadge').style.display = 'inline';
       addAlert('urgent','📨',`<strong>${count} offer${count>1?'s':''} waiting</strong> — Review and accept or decline.`,'Review Now',"document.getElementById('offersColGrid').scrollIntoView({behavior:'smooth'})");
     }
     const panel = document.getElementById('offersPanel');
     if (!offers.length) { panel.innerHTML = `<div class="empty-state"><div class="empty-icon">📭</div><div class="empty-txt">No pending offers yet.<br>Post a listing to start receiving offers!</div></div>`; return; }
     panel.innerHTML = offers.map(o => {
-      const isShipIt     = o.is_ship_it === true;
+      const isShipIt = o.is_ship_it === true;
       const listingTitle = o.listing?.title || 'Listing';
-      const firstPhoto   = o.listing?.photos?.[0];
-      const cat          = o.listing?.category || '';
-      const thumbHtml    = firstPhoto ? `<img src="${firstPhoto}" alt="${listingTitle}" loading="lazy">` : (CAT_EMOJI[cat]||'📦');
-      const offerDesc    = o.offer_type==='cash' ? `Cash: $${Number(o.cash_amount||0).toFixed(0)}` : `Item: ${(o.offered_item_title||'Item').slice(0,18)}`;
+      const firstPhoto = o.listing?.photos?.[0];
+      const cat = o.listing?.category || '';
+      const thumbHtml = firstPhoto ? `<img src="${firstPhoto}" alt="${listingTitle}" loading="lazy">` : (CAT_EMOJI[cat]||'📦');
+      const offerDesc = o.offer_type==='cash' ? `Cash: $${Number(o.cash_amount||0).toFixed(0)}` : `Item: ${(o.offered_item_title||'Item').slice(0,18)}`;
       return `<div class="offer-row${isShipIt?' shipit-row':''}" onclick="openOfferModal('${o.id}')">
         <div class="or-em">${thumbHtml}</div>
-        <div class="or-info">
-          <div class="or-ttl">${listingTitle}</div>
-          <div class="or-meta">${isShipIt?'<span class="or-shipit-pill">🚚 Ship-It</span>':''}<span>${offerDesc}</span><span>·</span><span>${timeAgo(o.created_at)}</span></div>
-        </div>
+        <div class="or-info"><div class="or-ttl">${listingTitle}</div><div class="or-meta">${isShipIt?'<span class="or-shipit-pill">🚚 Ship-It</span>':''}<span>${offerDesc}</span><span>·</span><span>${timeAgo(o.created_at)}</span></div></div>
         <div class="or-rt">
           <div class="or-st st-pend">${isShipIt?'🚚':'PEND'}</div>
           <div class="or-acts">
@@ -951,15 +862,15 @@ async function openOfferModal(offerId) {
   try {
     const { data: o } = await sb.from('offers').select('*, listing:listing_id(title,photos,category,estimated_value,condition)').eq('id',offerId).single();
     const { data: offerer } = await sb.from('users').select('display_name').eq('id', o.offerer_id).single();
-    const offererName     = offerer?.display_name || 'Trader';
+    const offererName = offerer?.display_name || 'Trader';
     const offererInitials = offererName.split(' ').map(n=>n[0]).join('').toUpperCase().slice(0,2);
-    const isShipIt        = o.is_ship_it === true;
+    const isShipIt = o.is_ship_it === true;
     document.getElementById('offerModalHead').className = `mhd${isShipIt?' shipit-head':''}`;
     document.getElementById('offerModalTitle').textContent = isShipIt ? '🚚 Ship-It Offer Details' : '📨 Offer Details';
     const listingTitle = o.listing?.title || 'Listing';
-    const firstPhoto   = o.listing?.photos?.[0];
-    const cat          = o.listing?.category || '';
-    const thumbHtml    = firstPhoto ? `<img src="${firstPhoto}" alt="${listingTitle}">` : `<span style="font-size:1.5rem">${CAT_EMOJI[cat]||'📦'}</span>`;
+    const firstPhoto = o.listing?.photos?.[0];
+    const cat = o.listing?.category || '';
+    const thumbHtml = firstPhoto ? `<img src="${firstPhoto}" alt="${listingTitle}">` : `<span style="font-size:1.5rem">${CAT_EMOJI[cat]||'📦'}</span>`;
     const shipItNotice = isShipIt ? `<div class="shipit-offer-notice"><span class="son-icon">🚚</span><div><div class="son-title">Ship-It Trade — State to State</div><div class="son-desc">This buyer wants a Ship-It trade. 10% fee at acceptance. ID verification required for both parties.</div></div></div>` : '';
     const sellerIdGate = isShipIt && !currentUserData?.id_verified ? `<div class="shipit-id-gate-modal"><div style="font-family:'Barlow Condensed',sans-serif;font-weight:800;color:#92400e;margin-bottom:5px">🪪 ID Verification Required</div><div style="font-size:12px;color:#a16207;margin-bottom:10px">You need ID verification before accepting Ship-It trades.</div><button class="mbtn outline" onclick="window.location.href='alltrades-verification.html'" style="margin-bottom:0;font-size:.82rem;padding:8px">🪪 Get ID Verified →</button></div>` : '';
     let offerContent = '';
@@ -975,7 +886,6 @@ async function openOfferModal(offerId) {
     const acceptBtn = isShipIt
       ? `<button class="mbtn cyan" style="margin-bottom:0" ${canAccept?'':'disabled'} onclick="closeModal('offerModal');acceptOffer('${o.id}',true)">🚚 Accept Ship-It</button>`
       : `<button class="mbtn green" style="margin-bottom:0" onclick="closeModal('offerModal');acceptOffer('${o.id}',false)">✓ Accept Offer</button>`;
-    // Check if offerer has public collection
     const { data: offererCol } = await sb.from('collections').select('id').eq('user_id', o.offerer_id).eq('public_profile', true).limit(1);
     const viewColBtn = offererCol?.length ? `<button class="mbtn outline" style="margin-top:6px;margin-bottom:0;font-size:.82rem" onclick="closeModal('offerModal');openCollectionViewModal('${o.offerer_id}','${offererName}')">🃏 View Their Collection</button>` : '';
     document.getElementById('offerModalBody').innerHTML = `
@@ -989,7 +899,6 @@ async function openOfferModal(offerId) {
   } catch(e) { document.getElementById('offerModalBody').innerHTML = `<div class="empty-state"><div class="empty-txt">Could not load offer details.</div></div>`; }
 }
 
-/* ── LIGHTBOX ── */
 function openLightbox(el) {
   lbPhotos = JSON.parse(el.dataset.photos); lbIndex = parseInt(el.dataset.index);
   document.getElementById('lbImg').src = lbPhotos[lbIndex];
@@ -1007,29 +916,24 @@ document.addEventListener('keydown', e => {
   if (e.key==='ArrowRight') lbNav(1);
 });
 
-/* ── TRADES ── */
 async function loadTrades() {
   try {
-    const { data: trades } = await sb.from('trades')
-      .select('*, offer:offer_id(is_ship_it)')
-      .or(`trader_a_id.eq.${currentUser.id},trader_b_id.eq.${currentUser.id}`)
-      .in('status',['accepted','meetup_scheduled'])
-      .order('created_at',{ascending:false}).limit(5);
+    const { data: trades } = await sb.from('trades').select('*, offer:offer_id(is_ship_it)').or(`trader_a_id.eq.${currentUser.id},trader_b_id.eq.${currentUser.id}`).in('status',['accepted','meetup_scheduled']).order('created_at',{ascending:false}).limit(5);
     const count = trades?.length || 0;
-    document.getElementById('tradeCount').textContent    = count;
-    document.getElementById('statTrades').textContent    = count;
+    document.getElementById('tradeCount').textContent = count;
+    document.getElementById('statTrades').textContent = count;
     document.getElementById('statTradesSub').textContent = count>0?`${count} in progress`:'No active trades';
     if (count>0) { document.getElementById('sbTradeBadge').textContent=count; document.getElementById('sbTradeBadge').style.display='inline'; }
     const panel = document.getElementById('tradesPanel');
     if (!trades?.length) { panel.innerHTML=`<div class="empty-state"><div class="empty-icon">🔄</div><div class="empty-txt">No active trades.<br>Accept an offer to start trading!</div></div>`; return; }
     panel.innerHTML = trades.map(t => {
-      const isShipIt    = t.offer?.is_ship_it === true;
-      const isMeetup    = t.status === 'meetup_scheduled';
+      const isShipIt = t.offer?.is_ship_it === true;
+      const isMeetup = t.status === 'meetup_scheduled';
       const myConfirmed = t.trader_a_id===currentUser.id ? t.trade_confirmed_a : t.trade_confirmed_b;
-      const fee         = t.trader_a_id===currentUser.id ? t.fee_a : t.fee_b;
-      const stageLabel  = isShipIt?'🚚 SHIP-IT':isMeetup?'📍 MEETUP':'✅ ACCEPTED';
-      const stageClass  = isShipIt?'stg-shipit':isMeetup?'stg-meet':'stg-agree';
-      const fillClass   = isShipIt?'fill-cyan':isMeetup?'fill-gold':'fill-blue';
+      const fee = t.trader_a_id===currentUser.id ? t.fee_a : t.fee_b;
+      const stageLabel = isShipIt?'🚚 SHIP-IT':isMeetup?'📍 MEETUP':'✅ ACCEPTED';
+      const stageClass = isShipIt?'stg-shipit':isMeetup?'stg-meet':'stg-agree';
+      const fillClass = isShipIt?'fill-cyan':isMeetup?'fill-gold':'fill-blue';
       return `<div class="trade-card${isShipIt?' shipit-trade':''}">
         <div class="tc-hdr"><div class="tc-id">Trade #${t.id.slice(0,8).toUpperCase()}</div><div class="tc-stage ${stageClass}">${stageLabel}</div></div>
         <div class="tc-items"><div class="tc-itm"><div class="tc-itm-nm">${isShipIt?'Ship-It Trade':'Trade in progress'}</div><div class="tc-itm-vl">${t.total_value?'~$'+Number(t.total_value).toFixed(0):'Value TBD'}</div></div></div>
@@ -1049,31 +953,25 @@ async function loadTrades() {
   } catch(e) { document.getElementById('tradesPanel').innerHTML=`<div class="empty-state"><div class="empty-txt">Could not load trades.</div></div>`; }
 }
 
-/* ── LISTINGS ── */
 async function loadListings() {
   try {
-    const { data: listings } = await sb.from('listings')
-      .select('id,title,category,condition,estimated_value,status,created_at,photos,view_count')
-      .eq('user_id', currentUser.id).order('created_at',{ascending:false}).limit(10);
+    const { data: listings } = await sb.from('listings').select('id,title,category,condition,estimated_value,status,created_at,photos,view_count').eq('user_id', currentUser.id).order('created_at',{ascending:false}).limit(10);
     const count = listings?.length || 0;
-    document.getElementById('listingCount').textContent    = count;
-    document.getElementById('statListings').textContent    = count;
+    document.getElementById('listingCount').textContent = count;
+    document.getElementById('statListings').textContent = count;
     document.getElementById('statListingsSub').textContent = count>0?`${count} listed`:'No listings yet';
     const panel = document.getElementById('listingsPanel');
     if (!listings?.length) { panel.innerHTML=`<div class="empty-state"><div class="empty-icon">📦</div><div class="empty-txt">No listings yet.<br><a href="alltrades-post.html" style="color:var(--blue);font-weight:700">Post your first item →</a></div></div>`; return; }
     panel.innerHTML = listings.map(l => {
       const firstPhoto = l.photos?.[0];
-      const thumbHtml  = firstPhoto?`<img src="${firstPhoto}" alt="${l.title}" loading="lazy">`:(CAT_EMOJI[l.category]||'📦');
-      const views      = l.view_count || 0;
-      const status     = l.status || 'active';
-      const stClass    = status==='trading'?'lst-trading':status==='active'?'lst-active':'lst-paused';
-      const stLabel    = status==='trading'?'🔄 IN TRADE':status==='active'?'ACTIVE':status.toUpperCase();
+      const thumbHtml = firstPhoto?`<img src="${firstPhoto}" alt="${l.title}" loading="lazy">`:(CAT_EMOJI[l.category]||'📦');
+      const views = l.view_count || 0;
+      const status = l.status || 'active';
+      const stClass = status==='trading'?'lst-trading':status==='active'?'lst-active':'lst-paused';
+      const stLabel = status==='trading'?'🔄 IN TRADE':status==='active'?'ACTIVE':status.toUpperCase();
       return `<a class="lr" href="alltrades-item.html?id=${l.id}">
         <div class="lr-thumb">${thumbHtml}</div>
-        <div class="lr-info">
-          <div class="lr-ttl">${l.title}</div>
-          <div class="lr-meta"><span>${l.category||'General'}</span>${l.condition?`<span>·</span><span>${l.condition}</span>`:''}<span>·</span><span>${timeAgo(l.created_at)}</span><span class="lr-views">👁 ${views}</span></div>
-        </div>
+        <div class="lr-info"><div class="lr-ttl">${l.title}</div><div class="lr-meta"><span>${l.category||'General'}</span>${l.condition?`<span>·</span><span>${l.condition}</span>`:''}<span>·</span><span>${timeAgo(l.created_at)}</span><span class="lr-views">👁 ${views}</span></div></div>
         <div class="lr-rt">
           <div class="lr-val">${l.estimated_value?'~$'+Number(l.estimated_value).toFixed(0):'—'}</div>
           <span class="lr-st ${stClass}">${stLabel}</span>
@@ -1088,7 +986,6 @@ async function loadListings() {
   } catch(e) { document.getElementById('listingsPanel').innerHTML=`<div class="empty-state"><div class="empty-txt">Could not load listings.</div></div>`; }
 }
 
-/* ── MESSAGES ── */
 async function loadMessages() {
   try {
     const { data: messages } = await sb.from('messages').select('*').or(`sender_id.eq.${currentUser.id},receiver_id.eq.${currentUser.id}`).order('created_at',{ascending:false}).limit(50);
@@ -1112,7 +1009,6 @@ async function loadMessages() {
   } catch(e) { document.getElementById('msgsPanel').innerHTML=`<div class="empty-state"><div class="empty-txt">Could not load messages.</div></div>`; }
 }
 
-/* ── TRADE VALUE ── */
 async function loadTradeValue() {
   try {
     const { data: allTrades } = await sb.from('trades').select('total_value,fee_a,fee_b,trader_a_id,created_at').or(`trader_a_id.eq.${currentUser.id},trader_b_id.eq.${currentUser.id}`).eq('status','completed');
@@ -1134,7 +1030,6 @@ async function loadTradeValue() {
   } catch(e) { document.getElementById('statValue').textContent='$0'; }
 }
 
-/* ── RATINGS ── */
 async function loadRatings() {
   try {
     const { data: ratings } = await sb.from('ratings').select('*').eq('rated_id',currentUser.id).order('created_at',{ascending:false});
@@ -1146,14 +1041,12 @@ async function loadRatings() {
   } catch(e) { document.getElementById('ratingsPanel').innerHTML=`<div class="empty-state"><div class="empty-txt">Could not load ratings.</div></div>`; }
 }
 
-/* ── ACTIONS ── */
 async function acceptOffer(id, isShipIt) {
   if (isShipIt && !currentUserData?.id_verified) { showToast('🪪','ID verification required to accept Ship-It trades.'); setTimeout(()=>window.location.href='alltrades-verification.html',1800); return; }
   try {
     const { data: offer } = await sb.from('offers').select('*').eq('id',id).single();
     if (!offer) throw new Error('Offer not found');
     await sb.from('offers').update({status:'accepted'}).eq('id',id);
-    // Flip listing to 'trading' so it no longer shows as available
     await sb.from('listings').update({status:'trading'}).eq('id',offer.listing_id);
     await sb.from('trades').insert({offer_id:offer.id,listing_id:offer.listing_id,trader_a_id:currentUser.id,trader_b_id:offer.offerer_id,status:'accepted'});
     showToast(isShipIt?'🚚':'🎉',isShipIt?'Ship-It offer accepted! Get ready to ship.':'Offer accepted! Trade created.');
@@ -1171,45 +1064,121 @@ async function declineOfferById(id) {
   catch(e) { showToast('⚠️','Error declining offer.'); }
 }
 
-function openConfirmModal(tradeId, fee, isShipIt) {
-  currentTradeId=tradeId; currentTradeIsShipIt=isShipIt;
-  const feeLabel=isShipIt?'10% Ship-It platform fee':'5% platform fee';
-  const feeAmt=fee?`: $${(Number(fee)*(isShipIt?2:1)).toFixed(2)}`:'';
-  const feeNote=document.getElementById('confirmFeeNote');
-  feeNote.style.cssText=isShipIt?'background:#e0f2fe;border:1px solid #7dd3fc;border-radius:8px;padding:11px;margin-bottom:13px;font-size:12px;color:#0369a1':'background:#fffbeb;border:1px solid #fde68a;border-radius:8px;padding:11px;margin-bottom:13px;font-size:12px;color:#92400e';
-  feeNote.textContent=`Your ${feeLabel}${feeAmt} will be recorded when you confirm.`;
-  if (isShipIt) {
-    document.getElementById('confirmEmoji').textContent='🚚';
-    document.getElementById('confirmTitle').textContent='Confirm Ship-It Trade Complete?';
-    document.getElementById('confirmSubtitle').textContent='Confirm that the item was delivered and the trade is complete.';
-    document.getElementById('confirmBtn').className='mbtn cyan';
-    document.getElementById('confirmBtn').textContent='🚚 Yes — Ship-It Trade Complete!';
+/* ── CONFIRM TRADE MODAL — cash confirmation step ── */
+async function openConfirmModal(tradeId, fee, isShipIt) {
+  currentTradeId = tradeId;
+  currentTradeIsShipIt = isShipIt;
+  cashConfirmed = false;
+
+  // Fetch linked offer to check for cash
+  let cashAmount = 0, payMethod = null;
+  try {
+    const { data: trade } = await sb.from('trades').select('offer_id').eq('id', tradeId).single();
+    if (trade?.offer_id) {
+      const { data: offer } = await sb.from('offers').select('cash_amount,payment_method').eq('id', trade.offer_id).single();
+      cashAmount = Number(offer?.cash_amount) || 0;
+      payMethod  = offer?.payment_method || null;
+    }
+  } catch(e) { console.error('Could not load offer for cash check', e); }
+
+  currentTradeCashAmount = cashAmount;
+  currentTradePayMethod  = payMethod;
+
+  const feeLabel = isShipIt ? '10% Ship-It platform fee' : '5% platform fee';
+  const feeAmt   = fee ? `: $${(Number(fee)*(isShipIt?2:1)).toFixed(2)}` : '';
+  const feeNote  = document.getElementById('confirmFeeNote');
+  feeNote.style.cssText = isShipIt
+    ? 'background:#e0f2fe;border:1px solid #7dd3fc;border-radius:8px;padding:11px;margin-bottom:13px;font-size:12px;color:#0369a1'
+    : 'background:#fffbeb;border:1px solid #fde68a;border-radius:8px;padding:11px;margin-bottom:13px;font-size:12px;color:#92400e';
+  feeNote.textContent = `Your ${feeLabel}${feeAmt} will be recorded when you confirm.`;
+
+  // Cash confirmation step — only shown when cash_amount > 0
+  const cashStep = document.getElementById('cashConfirmStep');
+  if (cashAmount > 0) {
+    const methodLine = payMethod && payMethod !== 'Cash in Person'
+      ? `via <strong>${payMethod}</strong>`
+      : 'in person';
+    cashStep.innerHTML = `
+      <div class="cash-confirm-box">
+        <div class="ccb-title">💵 Cash Payment Confirmation</div>
+        <div class="ccb-desc">Before closing this trade, confirm you received the cash from the buyer.</div>
+        <div class="ccb-amount">$${cashAmount.toFixed(2)}</div>
+        <div class="ccb-method">Expected ${methodLine}</div>
+        <div style="display:flex;gap:8px;margin-top:12px">
+          <button id="cashYesBtn" class="mbtn green" style="margin-bottom:0;flex:1" onclick="setCashConfirmed(true)">✅ Yes, I received it</button>
+          <button id="cashNoBtn" class="mbtn outline" style="margin-bottom:0;flex:1;border-color:var(--red);color:var(--red)" onclick="setCashConfirmed(false)">❌ Not yet</button>
+        </div>
+        <div id="cashConfirmStatus" style="font-size:11px;text-align:center;margin-top:8px;color:var(--muted)">Confirm cash receipt before closing the trade.</div>
+      </div>`;
+    cashStep.style.display = 'block';
+    document.getElementById('confirmBtn').disabled = true;
+    document.getElementById('confirmBtn').style.opacity = '0.5';
   } else {
-    document.getElementById('confirmEmoji').textContent='🤝';
-    document.getElementById('confirmTitle').textContent='Did the trade happen successfully?';
-    document.getElementById('confirmSubtitle').textContent='Both traders must confirm for the trade to close.';
-    document.getElementById('confirmBtn').className='mbtn green';
-    document.getElementById('confirmBtn').textContent='✅ Yes — Trade Complete!';
+    cashStep.style.display = 'none';
+    cashStep.innerHTML = '';
+    document.getElementById('confirmBtn').disabled = false;
+    document.getElementById('confirmBtn').style.opacity = '1';
+  }
+
+  if (isShipIt) {
+    document.getElementById('confirmEmoji').textContent    = '🚚';
+    document.getElementById('confirmTitle').textContent    = 'Confirm Ship-It Trade Complete?';
+    document.getElementById('confirmSubtitle').textContent = 'Confirm that the item was delivered and the trade is complete.';
+    document.getElementById('confirmBtn').className        = 'mbtn cyan';
+    document.getElementById('confirmBtn').textContent      = '🚚 Yes — Ship-It Trade Complete!';
+  } else {
+    document.getElementById('confirmEmoji').textContent    = '🤝';
+    document.getElementById('confirmTitle').textContent    = 'Did the trade happen successfully?';
+    document.getElementById('confirmSubtitle').textContent = 'Both traders must confirm for the trade to close.';
+    document.getElementById('confirmBtn').className        = 'mbtn green';
+    document.getElementById('confirmBtn').textContent      = '✅ Yes — Trade Complete!';
   }
   openModal('confirmModal');
 }
 
+function setCashConfirmed(confirmed) {
+  cashConfirmed = confirmed;
+  const yesBtn     = document.getElementById('cashYesBtn');
+  const noBtn      = document.getElementById('cashNoBtn');
+  const status     = document.getElementById('cashConfirmStatus');
+  const confirmBtn = document.getElementById('confirmBtn');
+  if (confirmed) {
+    yesBtn.style.opacity     = '1';
+    noBtn.style.opacity      = '0.4';
+    status.textContent       = '✅ Cash confirmed — you can now close the trade.';
+    status.style.color       = 'var(--green)';
+    confirmBtn.disabled      = false;
+    confirmBtn.style.opacity = '1';
+  } else {
+    yesBtn.style.opacity     = '0.4';
+    noBtn.style.opacity      = '1';
+    status.textContent       = '⏳ Waiting on cash — do not close until you receive payment.';
+    status.style.color       = 'var(--orange)';
+    confirmBtn.disabled      = true;
+    confirmBtn.style.opacity = '0.5';
+  }
+}
+
 async function doConfirmTrade() {
   if (!currentTradeId) return;
+  if (currentTradeCashAmount > 0 && !cashConfirmed) {
+    showToast('💵', 'Please confirm you received the cash before closing this trade.');
+    return;
+  }
   try {
     const { data: t } = await sb.from('trades').select('trader_a_id,trade_confirmed_a,trade_confirmed_b,listing_id').eq('id',currentTradeId).single();
-    const isA=t.trader_a_id===currentUser.id;
-    const field=isA?'trade_confirmed_a':'trade_confirmed_b';
-    const otherDone=isA?t.trade_confirmed_b:t.trade_confirmed_a;
-    const update={[field]:true};
+    const isA       = t.trader_a_id === currentUser.id;
+    const field     = isA ? 'trade_confirmed_a' : 'trade_confirmed_b';
+    const otherDone = isA ? t.trade_confirmed_b : t.trade_confirmed_a;
+    const update    = { [field]: true };
     if (otherDone) {
-      update.status='completed';
-      // Flip listing back to active when trade completes
+      update.status = 'completed';
       if (t.listing_id) await sb.from('listings').update({status:'active'}).eq('id',t.listing_id);
     }
-    await sb.from('trades').update(update).eq('id',currentTradeId);
+    await sb.from('trades').update(update).eq('id', currentTradeId);
     closeModal('confirmModal');
-    showToast(otherDone?'🎉':'✅',otherDone?'Trade complete! Ratings now unlocked.':'Confirmed! Waiting for the other trader.');
+    cashConfirmed = false; currentTradeCashAmount = 0; currentTradePayMethod = null;
+    showToast(otherDone?'🎉':'✅', otherDone?'Trade complete! Ratings now unlocked.':'Confirmed! Waiting for the other trader.');
     loadTrades(); loadTradeValue(); loadListings();
   } catch(e) { showToast('⚠️','Error confirming trade.'); }
 }
@@ -1222,7 +1191,6 @@ async function deleteListing(id, btn) {
 
 async function doSignOut() { await sb.auth.signOut(); window.location.href='alltrades-auth.html'; }
 
-/* ── HELPERS ── */
 function addAlert(type,icon,text,btnLabel,btnAction) {
   const div=document.createElement('div'); div.className=`alert ${type}`;
   div.innerHTML=`<span class="al-ic">${icon}</span><div class="al-txt">${text}</div>${btnLabel?`<button class="al-btn" onclick="${btnAction}">${btnLabel}</button>`:''}<span class="al-close" onclick="this.closest('.alert').remove()">✕</span>`;
@@ -1349,7 +1317,6 @@ ESCALATION RULES — escalate to human immediately if:
 ESCALATION: support@tradezyhq.com for general issues, disputes@tradezyhq.com for trade disputes.
 
 TONE: Warm, clear, concise. Never give legal or financial advice. Keep responses short and scannable.`;
-
   let isOpen=false,isLoading=false,exchangeCount=0,hasShownWelcome=false;
   const history=[];
   window.tzToggle=function(){
