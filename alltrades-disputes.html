@@ -24,7 +24,6 @@
 }
 *{margin:0;padding:0;box-sizing:border-box;}
 body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
-
 .nav{background:var(--navy);padding:0 24px;height:54px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;}
 .logo{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.5rem;letter-spacing:-1px;cursor:pointer;}
 .logo .a{color:#fff;}.logo .t{color:var(--blue);}.logo .d{color:var(--gold);}
@@ -32,16 +31,13 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
 .nav-btn{padding:6px 14px;border-radius:6px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.88rem;cursor:pointer;border:1px solid rgba(255,255,255,.1);transition:all .15s;background:transparent;color:#94a3b8;}
 .nav-btn:hover{color:#fff;}
 .u-av{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--orange));color:var(--navy);font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:.8rem;display:flex;align-items:center;justify-content:center;cursor:pointer;}
-
 .page-tabs{background:var(--white);border-bottom:1px solid var(--border);}
 .pti{max-width:1100px;margin:0 auto;padding:0 20px;display:flex;}
 .ptab{padding:13px 18px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.9rem;cursor:pointer;border-bottom:3px solid transparent;transition:all .15s;color:var(--muted);}
 .ptab:hover{color:var(--text);}
 .ptab.active{color:var(--blue);border-bottom-color:var(--blue);}
 .ptab-badge{background:var(--red);color:#fff;font-size:9px;font-weight:800;border-radius:99px;padding:1px 5px;margin-left:3px;}
-
 .page{max-width:1100px;margin:0 auto;padding:24px 20px;}
-
 .protection-hero{background:linear-gradient(135deg,var(--navy) 0%,#1a3a6b 60%,#0f2a50 100%);border-radius:16px;padding:28px 32px;margin-bottom:20px;display:grid;grid-template-columns:1fr auto;gap:24px;align-items:center;position:relative;overflow:hidden;}
 .protection-hero::before{content:'🛡️';position:absolute;right:160px;top:50%;transform:translateY(-50%);font-size:8rem;opacity:.05;pointer-events:none;}
 .ph-tag{display:inline-flex;align-items:center;gap:5px;background:rgba(22,163,74,.15);border:1px solid rgba(22,163,74,.3);color:var(--green-l);font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:4px 11px;border-radius:4px;margin-bottom:12px;width:fit-content;}
@@ -51,7 +47,6 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
 .phs-item{text-align:center;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:14px 18px;}
 .phs-num{font-family:'Barlow Condensed',sans-serif;font-size:1.4rem;font-weight:900;color:var(--gold-l);}
 .phs-label{font-size:10px;color:#475569;text-transform:uppercase;letter-spacing:.5px;margin-top:2px;}
-
 .protection-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:24px;}
 .pf-card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:18px;transition:all .2s;}
 .pf-card:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.08);}
@@ -62,8 +57,6 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
 .pf-icon.red{background:#fef2f2;border:1px solid #fecaca;}
 .pf-title{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.95rem;margin-bottom:5px;}
 .pf-desc{font-size:12px;color:var(--muted);line-height:1.5;}
-
-/* SLA BADGE */
 .sla-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px;}
 .sla-card{border-radius:10px;padding:13px;text-align:center;border:1px solid;}
 .sla-card.critical{background:#fef2f2;border-color:#fecaca;}
@@ -81,18 +74,15 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
 .sla-card.medium .sla-label{color:var(--blue);}
 .sla-card.low .sla-label{color:var(--green);}
 .sla-desc{font-size:10px;color:var(--muted);margin-top:3px;}
-
 .trades-section{margin-bottom:24px;}
 .section-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
 .section-title{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1.05rem;}
 .section-link{font-size:12px;color:var(--blue);font-weight:700;cursor:pointer;}
-
 .protected-trade{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:10px;display:grid;grid-template-columns:1fr auto;gap:16px;align-items:center;transition:all .15s;}
 .protected-trade:hover{border-color:#cbd5e1;}
 .pt-id{font-size:11px;color:var(--muted);font-weight:700;margin-bottom:6px;}
 .pt-items{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
 .pt-item{display:flex;align-items:center;gap:5px;font-size:13px;font-weight:700;}
-.pt-arrow{color:var(--muted);}
 .pt-status-row{display:flex;align-items:center;gap:8px;}
 .pt-status{font-size:10px;font-weight:800;padding:2px 8px;border-radius:4px;letter-spacing:.3px;}
 .pts-escrow{background:#f0fdf4;color:#14532d;border:1px solid #bbf7d0;}
@@ -102,14 +92,11 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
 .ptb-dispute{background:#fef2f2;border:1px solid #fecaca;color:#991b1b;}
 .ptb-dispute:hover{background:#fee2e2;}
 .ptb-confirm{background:var(--green);color:#fff;}
-.ptb-details{background:var(--surface);border:1px solid var(--border);color:var(--muted);}
-
 .dispute-flow{background:var(--white);border:1px solid var(--border);border-radius:16px;overflow:hidden;}
 .df-head{background:linear-gradient(135deg,#7f1d1d,#991b1b);padding:18px 22px;display:flex;align-items:center;justify-content:space-between;}
 .df-title{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.1rem;color:#fff;}
 .df-sub{font-size:11px;color:rgba(255,255,255,.6);margin-top:1px;}
 .df-body{padding:22px;}
-
 .dispute-steps{display:flex;align-items:center;margin-bottom:24px;}
 .ds-item{display:flex;flex-direction:column;align-items:center;flex:1;}
 .ds-dot{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.82rem;transition:all .3s;}
@@ -121,11 +108,9 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
 .ds-label.done{color:var(--green);}
 .ds-line{flex:1;height:2px;background:var(--border);margin:0 6px;margin-bottom:16px;transition:background .3s;}
 .ds-line.done{background:var(--green);}
-
 .dstep{display:none;animation:fadeIn .3s ease;}
 .dstep.active{display:block;}
 @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
-
 .issue-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:16px;}
 .issue-option{border:1.5px solid var(--border);border-radius:10px;padding:13px;cursor:pointer;transition:all .15s;}
 .issue-option:hover{border-color:var(--red);}
@@ -133,7 +118,6 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
 .io-icon{font-size:1.5rem;margin-bottom:6px;}
 .io-title{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.9rem;margin-bottom:3px;}
 .io-desc{font-size:11px;color:var(--muted);line-height:1.4;}
-
 .resolution-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:16px;}
 .res-option{border:1.5px solid var(--border);border-radius:10px;padding:13px;cursor:pointer;transition:all .15s;text-align:center;}
 .res-option:hover{border-color:var(--blue);}
@@ -141,24 +125,15 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
 .ro-icon{font-size:1.5rem;margin-bottom:5px;}
 .ro-title{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.82rem;margin-bottom:3px;}
 .ro-desc{font-size:10px;color:var(--muted);}
-
 .field{margin-bottom:14px;}
 .field label{display:block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:5px;}
 .field input,.field select,.field textarea{width:100%;border:1.5px solid var(--border);border-radius:8px;padding:10px 13px;font-size:13px;font-family:'Lato',sans-serif;color:var(--text);outline:none;transition:all .15s;background:var(--white);resize:vertical;}
 .field input:focus,.field select:focus,.field textarea:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(26,86,219,.07);}
-
-.severity-wrap{margin-bottom:14px;}
-.severity-wrap label{display:block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:6px;}
-.severity-slider{width:100%;margin-bottom:6px;accent-color:var(--red);}
-.severity-labels{display:flex;justify-content:space-between;font-size:10px;color:var(--muted);}
-
-/* Severity SLA note */
 .sla-note{border-radius:8px;padding:10px 13px;font-size:12px;font-weight:700;display:flex;align-items:center;gap:8px;margin-bottom:14px;}
 .sla-note.critical{background:#fef2f2;border:1px solid #fecaca;color:#991b1b;}
 .sla-note.high{background:#fffbeb;border:1px solid #fde68a;color:#92400e;}
 .sla-note.medium{background:#eff6ff;border:1px solid #bfdbfe;color:#1e3a8a;}
 .sla-note.low{background:#f0fdf4;border:1px solid #bbf7d0;color:#14532d;}
-
 .btn-row{display:flex;gap:8px;margin-top:16px;}
 .btn{padding:11px 20px;border-radius:8px;font-family:'Barlow Condensed',sans-serif;font-size:.95rem;font-weight:800;cursor:pointer;border:none;transition:all .15s;letter-spacing:.3px;}
 .btn-red{background:var(--red);color:#fff;flex:1;}
@@ -166,18 +141,15 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
 .btn-outline{background:transparent;border:1.5px solid var(--border);color:var(--muted);}
 .btn-outline:hover{border-color:#999;color:var(--text);}
 .btn:disabled{opacity:.5;cursor:not-allowed;transform:none!important;}
-
 .freeze-banner{background:linear-gradient(90deg,#7f1d1d,#991b1b);border-radius:10px;padding:14px 16px;display:flex;align-items:center;gap:11px;margin-bottom:16px;}
 .fb-icon{font-size:1.3rem;flex-shrink:0;}
 .fb-text .fb-title{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.95rem;color:#fca5a5;margin-bottom:2px;}
 .fb-text .fb-desc{font-size:11px;color:rgba(252,165,165,.75);line-height:1.4;}
-
 .info-box{border-radius:9px;padding:12px 14px;margin-bottom:14px;display:flex;gap:8px;font-size:12px;line-height:1.5;}
 .info-box.blue{background:#eff6ff;border:1px solid #bfdbfe;color:#1e3a8a;}
 .info-box.yellow{background:#fffbeb;border:1px solid #fde68a;color:#92400e;}
 .info-box.green{background:#f0fdf4;border:1px solid #bbf7d0;color:#14532d;}
 .info-box.red{background:#fef2f2;border:1px solid #fecaca;color:#991b1b;}
-
 .timeline{position:relative;padding-left:24px;}
 .timeline::before{content:'';position:absolute;left:8px;top:0;bottom:0;width:2px;background:var(--border);}
 .tl-item{position:relative;margin-bottom:16px;padding-bottom:16px;border-bottom:1px solid var(--border);}
@@ -191,7 +163,6 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
 .tl-time{font-size:10px;color:var(--light);font-weight:700;margin-bottom:2px;}
 .tl-title{font-weight:700;font-size:13px;margin-bottom:2px;}
 .tl-desc{font-size:12px;color:var(--muted);line-height:1.4;}
-
 .dispute-status-card{background:var(--white);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:12px;}
 .dsc-head{padding:13px 16px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);}
 .dsc-id{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.88rem;color:var(--muted);}
@@ -200,7 +171,6 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
 .dss-resolved{background:#f0fdf4;color:#14532d;border:1px solid #bbf7d0;}
 .dss-open{background:#fef2f2;color:#991b1b;border:1px solid #fecaca;}
 .dsc-body{padding:14px 16px;}
-
 .success-screen{display:none;text-align:center;padding:28px 20px;}
 .success-screen.show{display:block;animation:popIn .4s ease;}
 @keyframes popIn{0%{opacity:0;transform:scale(.92)}100%{opacity:1;transform:scale(1)}}
@@ -210,11 +180,9 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
 .case-box{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:13px;margin-bottom:16px;text-align:left;}
 .case-row{display:flex;justify-content:space-between;font-size:12px;padding:4px 0;border-bottom:1px solid var(--border);}
 .case-row:last-child{border:none;font-weight:700;}
-
 .empty-state{text-align:center;padding:40px 20px;color:var(--muted);}
 .empty-state .ei{font-size:2.5rem;margin-bottom:10px;}
 .empty-state p{font-size:13px;line-height:1.5;}
-
 .overlay{display:none;position:fixed;inset:0;background:rgba(10,22,40,.8);z-index:500;align-items:center;justify-content:center;padding:20px;}
 .overlay.open{display:flex;}
 .modal{background:var(--white);border-radius:14px;width:100%;max-width:480px;max-height:90vh;overflow-y:auto;animation:slideUp .25s ease;}
@@ -229,11 +197,9 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
 .mbtn.outline{background:transparent;border:1.5px solid var(--border);color:var(--muted);}
 .mbtn.outline:hover{border-color:#999;color:var(--text);}
 .mbtn.red{background:var(--red);color:#fff;}
-
 .toast{position:fixed;bottom:20px;right:20px;background:var(--navy);color:#e2e8f0;border:1px solid #1e3a5f;border-left:4px solid var(--green);border-radius:8px;padding:10px 16px;font-size:13px;z-index:9999;display:flex;align-items:center;gap:9px;max-width:290px;box-shadow:0 8px 26px rgba(0,0,0,.25);transform:translateX(120%);transition:transform .3s ease;}
 .toast.show{transform:translateX(0);}
 .loading{text-align:center;padding:20px;color:var(--muted);font-size:13px;}
-
 @media(max-width:760px){.protection-hero{grid-template-columns:1fr;}.ph-stats{display:none;}.protection-grid{grid-template-columns:1fr 1fr;}.sla-grid{grid-template-columns:1fr 1fr;}.issue-grid{grid-template-columns:1fr;}.resolution-grid{grid-template-columns:1fr;}}
 @media(max-width:480px){.protection-grid{grid-template-columns:1fr;}}
 @media(prefers-color-scheme:dark){
@@ -275,31 +241,30 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
       </div>
       <div class="ph-stats">
         <div class="phs-item"><div class="phs-num">98.7%</div><div class="phs-label">Resolved</div></div>
-        <div class="phs-item"><div class="phs-num">4hr</div><div class="phs-label">Critical SLA</div></div>
+        <div class="phs-item"><div class="phs-num">8hr</div><div class="phs-label">Critical SLA</div></div>
         <div class="phs-item"><div class="phs-num">$0</div><div class="phs-label">To File</div></div>
       </div>
     </div>
 
-    <!-- SLA Response Times -->
     <div style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1rem;margin-bottom:10px">⏱️ Guaranteed Response Times</div>
     <div class="sla-grid" style="margin-bottom:20px">
       <div class="sla-card critical">
-        <div class="sla-time">4 hrs</div>
+        <div class="sla-time">8 hrs</div>
         <div class="sla-label">CRITICAL</div>
         <div class="sla-desc">Fraud, scams, safety threats</div>
       </div>
       <div class="sla-card high">
-        <div class="sla-time">24 hrs</div>
+        <div class="sla-time">16 hrs</div>
         <div class="sla-label">HIGH</div>
         <div class="sla-desc">Item not as described, no-show</div>
       </div>
       <div class="sla-card medium">
-        <div class="sla-time">48 hrs</div>
+        <div class="sla-time">24 hrs</div>
         <div class="sla-label">MEDIUM</div>
         <div class="sla-desc">Condition disputes, minor issues</div>
       </div>
       <div class="sla-card low">
-        <div class="sla-time">72 hrs</div>
+        <div class="sla-time">48 hrs</div>
         <div class="sla-label">LOW</div>
         <div class="sla-desc">General questions, minor concerns</div>
       </div>
@@ -375,8 +340,7 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
             <div class="issue-option" onclick="selectIssue(this,'wrong_item','HIGH')"><div class="io-icon">🔄</div><div class="io-title">Wrong Item Exchanged</div><div class="io-desc">You received a completely different item than agreed.</div></div>
             <div class="issue-option" onclick="selectIssue(this,'other','LOW')"><div class="io-icon">📝</div><div class="io-title">Other Issue</div><div class="io-desc">The problem doesn't fit the categories above.</div></div>
           </div>
-          <!-- SLA note updates dynamically -->
-          <div id="slaNoteBox" style="display:none" class="sla-note medium">⏱️ <span id="slaNoteText">Response time: 48 hours</span></div>
+          <div id="slaNoteBox" style="display:none" class="sla-note medium">⏱️ <span id="slaNoteText">Response time: 24 hours</span></div>
           <div class="btn-row">
             <button class="btn btn-outline" onclick="prevDStep(2)">← Back</button>
             <button class="btn btn-red" id="btnStep2Next" onclick="nextDStep(2)" disabled>Next: Describe Issue →</button>
@@ -387,12 +351,10 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
         <div class="dstep" id="dstep3">
           <div style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1rem;margin-bottom:4px">Describe the Problem</div>
           <div style="font-size:12px;color:var(--muted);margin-bottom:14px">Be specific — include dates, what was agreed, and what actually happened.</div>
-
           <div class="field">
             <label>Describe the problem in detail *</label>
             <textarea id="issueDesc" rows="5" placeholder="Tell us exactly what happened. Include dates, what was agreed, what actually occurred, and any relevant context…"></textarea>
           </div>
-
           <div class="field">
             <label>What outcome are you looking for?</label>
             <div class="resolution-grid">
@@ -401,17 +363,14 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
               <div class="res-option" onclick="selectResolution(this,'ban')"><div class="ro-icon">🚫</div><div class="ro-title">Remove User</div><div class="ro-desc">Ban from Tradezy</div></div>
             </div>
           </div>
-
           <div class="field">
             <label>Additional notes for investigator (optional)</label>
             <textarea id="evidenceNotes" rows="3" placeholder="Any other context our team should know?"></textarea>
           </div>
-
           <div class="info-box green">
             <span>✅</span>
             <div>Your Tradezy messages are <strong>automatically included</strong> as evidence — we always have a full conversation log on file.</div>
           </div>
-
           <div class="btn-row">
             <button class="btn btn-outline" onclick="prevDStep(3)">← Back</button>
             <button class="btn btn-red" id="btnStep3Next" onclick="nextDStep(3)">Review & Submit →</button>
@@ -421,7 +380,6 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
         <!-- STEP 4: REVIEW & SUBMIT -->
         <div class="dstep" id="dstep4">
           <div style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1rem;margin-bottom:14px">Review Your Dispute</div>
-
           <div class="freeze-banner">
             <span class="fb-icon">🔒</span>
             <div class="fb-text">
@@ -429,7 +387,6 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
               <div class="fb-desc">Both parties' funds will be held until this dispute is resolved.</div>
             </div>
           </div>
-
           <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:14px">
             <div style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.85rem;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:10px">Dispute Summary</div>
             <div style="display:flex;flex-direction:column;gap:6px">
@@ -440,20 +397,17 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
               <div style="display:flex;justify-content:space-between;font-size:13px;padding:4px 0"><span style="color:var(--muted)">Desired outcome</span><span style="font-weight:700" id="sumResolution">—</span></div>
             </div>
           </div>
-
           <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:8px">What Happens Next</div>
           <div class="timeline">
             <div class="tl-item"><div class="tl-dot green">✓</div><div class="tl-time">Immediately</div><div class="tl-title">Escrow frozen & case opened</div><div class="tl-desc">Funds locked, case number assigned, both parties notified by email.</div></div>
-            <div class="tl-item"><div class="tl-dot blue pulse">→</div><div class="tl-time" id="responseTimeLine">Within 4–24 hours</div><div class="tl-title">Tradezy team reviews your case</div><div class="tl-desc">Based on severity level, our team begins review per SLA guarantee.</div></div>
+            <div class="tl-item"><div class="tl-dot blue pulse">→</div><div class="tl-time" id="responseTimeLine">Within 8–16 hours</div><div class="tl-title">Tradezy team reviews your case</div><div class="tl-desc">Based on severity level, our team begins review per SLA guarantee.</div></div>
             <div class="tl-item"><div class="tl-dot gold">⚖</div><div class="tl-time">Within 5 business days</div><div class="tl-title">Decision issued</div><div class="tl-desc">Both parties notified of the binding ruling.</div></div>
             <div class="tl-item"><div class="tl-dot green">$</div><div class="tl-time">After decision</div><div class="tl-title">Funds released or refunded</div><div class="tl-desc">Escrow released to the appropriate party within 1–2 business days.</div></div>
           </div>
-
           <div class="info-box red" style="margin-top:14px">
             <span>⚑</span>
             <div><strong>Note:</strong> Filing a false dispute violates our Terms of Service and may result in account suspension.</div>
           </div>
-
           <div class="btn-row">
             <button class="btn btn-outline" onclick="prevDStep(4)">← Back</button>
             <button class="btn btn-red" id="btnSubmitDispute" onclick="submitDispute()">🔒 Submit Dispute & Freeze Escrow</button>
@@ -527,10 +481,10 @@ const sb = window.supabase.createClient(
 const FORMSPREE_DISPUTES = 'xlgverle';
 
 const SLA_MAP = {
-  CRITICAL: { label: 'CRITICAL', time: '4 hours', css: 'critical' },
-  HIGH:     { label: 'HIGH',     time: '24 hours', css: 'high' },
-  MEDIUM:   { label: 'MEDIUM',   time: '48 hours', css: 'medium' },
-  LOW:      { label: 'LOW',      time: '72 hours', css: 'low' },
+  CRITICAL: { label: 'CRITICAL', time: '8 hours',  css: 'critical' },
+  HIGH:     { label: 'HIGH',     time: '16 hours', css: 'high'     },
+  MEDIUM:   { label: 'MEDIUM',   time: '24 hours', css: 'medium'   },
+  LOW:      { label: 'LOW',      time: '48 hours', css: 'low'      },
 };
 
 const ISSUE_LABELS = {
@@ -550,7 +504,6 @@ const RESOLUTION_LABELS = {
 
 const CAT_EMOJI = {'Food & Water':'🥫','Garden':'🌱','Electronics':'⚡','Tools':'🔧','Sports':'🚲','Music':'🎵','Gaming':'🎮','Clothing':'👗','Books':'📚','Trading Cards':'🃏','Other':'📦'};
 
-/* ── STATE ── */
 let currentUser     = null;
 let userEmail       = null;
 let activeTrades    = [];
@@ -560,23 +513,18 @@ let selectedSeverity = null;
 let selectedResolution = null;
 let dStep = 1;
 
-/* ── INIT ── */
 (async () => {
   const { data: { session } } = await sb.auth.getSession();
   if (!session) { window.location.href = 'alltrades-auth.html'; return; }
   currentUser = session.user;
   userEmail   = session.user.email;
-
-  // Set nav avatar
   const { data: profile } = await sb.from('users').select('display_name').eq('id', currentUser.id).single();
   const name = profile?.display_name || userEmail?.split('@')[0] || 'Me';
   const initials = name.split(' ').map(n=>n[0]).join('').toUpperCase().slice(0,2);
   document.getElementById('navAv').textContent = initials;
-
   await Promise.all([loadActiveTrades(), loadActiveDisputes(), loadResolvedDisputes()]);
 })();
 
-/* ── LOAD ACTIVE TRADES ── */
 async function loadActiveTrades() {
   try {
     const { data: trades } = await sb.from('trades')
@@ -587,7 +535,6 @@ async function loadActiveTrades() {
 
     activeTrades = trades || [];
 
-    // Render protected trades on overview tab
     const listEl = document.getElementById('protectedTradesList');
     if (!activeTrades.length) {
       listEl.innerHTML = `<div class="empty-state"><div class="ei">🔄</div><p>No active trades.<br>Accept an offer to get trade protection.</p></div>`;
@@ -596,26 +543,20 @@ async function loadActiveTrades() {
         const emoji = CAT_EMOJI[t.listing?.category] || '📦';
         const title = t.listing?.title || 'Trade';
         const isMeetup = t.status === 'meetup_scheduled';
-        return `
-          <div class="protected-trade">
-            <div>
-              <div class="pt-id">Trade #${t.id.slice(0,8).toUpperCase()} · ${timeAgo(t.created_at)}</div>
-              <div class="pt-items">
-                <div class="pt-item">${emoji} ${title}</div>
-              </div>
-              <div class="pt-status-row">
-                <span class="pt-status ${isMeetup?'pts-active':'pts-escrow'}">${isMeetup?'🔄 MEETUP PENDING':'🏦 ESCROW ACTIVE'}</span>
-              </div>
-            </div>
-            <div class="pt-right">
-              <button class="pt-action-btn ptb-confirm" onclick="openModal('confirmModal')">✓ Confirm Complete</button>
-              <button class="pt-action-btn ptb-dispute" onclick="switchTab('file',document.querySelectorAll('.ptab')[1])">⚑ File Dispute</button>
-            </div>
-          </div>`;
+        return `<div class="protected-trade">
+          <div>
+            <div class="pt-id">Trade #${t.id.slice(0,8).toUpperCase()} · ${timeAgo(t.created_at)}</div>
+            <div class="pt-items"><div class="pt-item">${emoji} ${title}</div></div>
+            <div class="pt-status-row"><span class="pt-status ${isMeetup?'pts-active':'pts-escrow'}">${isMeetup?'🔄 MEETUP PENDING':'🏦 ESCROW ACTIVE'}</span></div>
+          </div>
+          <div class="pt-right">
+            <button class="pt-action-btn ptb-confirm" onclick="openModal('confirmModal')">✓ Confirm Complete</button>
+            <button class="pt-action-btn ptb-dispute" onclick="switchTab('file',document.querySelectorAll('.ptab')[1])">⚑ File Dispute</button>
+          </div>
+        </div>`;
       }).join('');
     }
 
-    // Render trade options in step 1
     const tradeList = document.getElementById('tradeSelectList');
     if (!activeTrades.length) {
       tradeList.innerHTML = `<div class="info-box yellow"><span>⚠️</span><div>You have no active trades to file a dispute for. Disputes can only be filed for trades in progress.</div></div>`;
@@ -624,17 +565,16 @@ async function loadActiveTrades() {
         const emoji = CAT_EMOJI[t.listing?.category] || '📦';
         const title = t.listing?.title || 'Trade';
         const isMeetup = t.status === 'meetup_scheduled';
-        return `
-          <div class="issue-option" id="tradeOpt${i}" onclick="selectTradeOpt(${i}, 'tradeOpt${i}')">
-            <div style="display:flex;align-items:center;gap:10px">
-              <div style="font-size:1.3rem">🔄</div>
-              <div>
-                <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.9rem">Trade #${t.id.slice(0,8).toUpperCase()}</div>
-                <div style="font-size:11px;color:var(--muted)">${emoji} ${title} · ${timeAgo(t.created_at)}</div>
-                <div style="margin-top:3px"><span class="pt-status ${isMeetup?'pts-active':'pts-escrow'}" style="font-size:9px">${isMeetup?'MEETUP PENDING':'ESCROW ACTIVE'}</span></div>
-              </div>
+        return `<div class="issue-option" id="tradeOpt${i}" onclick="selectTradeOpt(${i}, 'tradeOpt${i}')">
+          <div style="display:flex;align-items:center;gap:10px">
+            <div style="font-size:1.3rem">🔄</div>
+            <div>
+              <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.9rem">Trade #${t.id.slice(0,8).toUpperCase()}</div>
+              <div style="font-size:11px;color:var(--muted)">${emoji} ${title} · ${timeAgo(t.created_at)}</div>
+              <div style="margin-top:3px"><span class="pt-status ${isMeetup?'pts-active':'pts-escrow'}" style="font-size:9px">${isMeetup?'MEETUP PENDING':'ESCROW ACTIVE'}</span></div>
             </div>
-          </div>`;
+          </div>
+        </div>`;
       }).join('');
     }
   } catch(e) {
@@ -642,7 +582,6 @@ async function loadActiveTrades() {
   }
 }
 
-/* ── LOAD ACTIVE DISPUTES ── */
 async function loadActiveDisputes() {
   try {
     const { data: disputes } = await sb.from('disputes')
@@ -666,31 +605,29 @@ async function loadActiveDisputes() {
 
     el.innerHTML = disputes.map(d => {
       const sla = SLA_MAP[d.severity] || SLA_MAP.MEDIUM;
-      return `
-        <div class="dispute-status-card">
-          <div class="dsc-head">
-            <div><div class="dsc-id">Case ${d.id.slice(0,8).toUpperCase()} · Filed ${new Date(d.created_at).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})}</div></div>
-            <div class="dsc-status dss-review">🔄 UNDER REVIEW</div>
+      return `<div class="dispute-status-card">
+        <div class="dsc-head">
+          <div><div class="dsc-id">Case ${d.id.slice(0,8).toUpperCase()} · Filed ${new Date(d.created_at).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})}</div></div>
+          <div class="dsc-status dss-review">🔄 UNDER REVIEW</div>
+        </div>
+        <div class="dsc-body">
+          <div style="font-size:13px;margin-bottom:8px"><strong>Issue:</strong> ${ISSUE_LABELS[d.issue_type] || d.reason || 'Dispute filed'}</div>
+          <div style="font-size:12px;color:var(--muted);margin-bottom:8px">${d.description?.slice(0,120) || ''}${(d.description?.length||0)>120?'…':''}</div>
+          <div class="info-box ${sla.css === 'critical' ? 'red' : sla.css === 'high' ? 'yellow' : 'blue'}" style="margin-bottom:10px">
+            <span>⏱️</span><div><strong>Response SLA: ${sla.time}</strong> — ${sla.label} severity</div>
           </div>
-          <div class="dsc-body">
-            <div style="font-size:13px;margin-bottom:8px"><strong>Issue:</strong> ${ISSUE_LABELS[d.issue_type] || d.reason || 'Dispute filed'}</div>
-            <div style="font-size:12px;color:var(--muted);margin-bottom:8px">${d.description?.slice(0,120) || ''}${(d.description?.length||0)>120?'…':''}</div>
-            <div class="info-box ${sla.css === 'critical' ? 'red' : sla.css === 'high' ? 'yellow' : 'blue'}" style="margin-bottom:10px">
-              <span>⏱️</span><div><strong>Response SLA: ${sla.time}</strong> — ${sla.label} severity</div>
-            </div>
-            <div class="freeze-banner" style="margin-bottom:0">
-              <span class="fb-icon">🔒</span>
-              <div class="fb-text"><div class="fb-title">Escrow Frozen</div><div class="fb-desc">Funds held until dispute is resolved.</div></div>
-            </div>
+          <div class="freeze-banner" style="margin-bottom:0">
+            <span class="fb-icon">🔒</span>
+            <div class="fb-text"><div class="fb-title">Escrow Frozen</div><div class="fb-desc">Funds held until dispute is resolved.</div></div>
           </div>
-        </div>`;
+        </div>
+      </div>`;
     }).join('');
   } catch(e) {
     document.getElementById('activeDisputesList').innerHTML = `<div class="empty-state"><div class="empty-txt">Could not load disputes.</div></div>`;
   }
 }
 
-/* ── LOAD RESOLVED DISPUTES ── */
 async function loadResolvedDisputes() {
   try {
     const { data: disputes } = await sb.from('disputes')
@@ -721,7 +658,6 @@ async function loadResolvedDisputes() {
   }
 }
 
-/* ── TRADE SELECTION ── */
 function selectTradeOpt(idx, optId) {
   document.querySelectorAll('#tradeSelectList .issue-option').forEach(o => o.classList.remove('selected'));
   document.getElementById(optId).classList.add('selected');
@@ -731,44 +667,37 @@ function selectTradeOpt(idx, optId) {
   btn.textContent = `Continue with Trade #${selectedTrade.id.slice(0,8).toUpperCase()} →`;
 }
 
-/* ── ISSUE SELECTION ── */
 function selectIssue(el, type, severity) {
   document.querySelectorAll('#dstep2 .issue-option').forEach(o => o.classList.remove('selected'));
   el.classList.add('selected');
   selectedIssue    = type;
   selectedSeverity = severity;
-
-  // Show SLA note
   const sla = SLA_MAP[severity];
   const noteBox  = document.getElementById('slaNoteBox');
   const noteText = document.getElementById('slaNoteText');
   noteBox.style.display = 'flex';
   noteBox.className = `sla-note ${sla.css}`;
   noteText.textContent = `${sla.label} severity — guaranteed response within ${sla.time}${severity === 'CRITICAL' ? ' 🚨 Our team will be emailed immediately' : ''}`;
-
   document.getElementById('btnStep2Next').disabled = false;
 }
 
-/* ── RESOLUTION SELECTION ── */
 function selectResolution(el, type) {
   document.querySelectorAll('.res-option').forEach(o => o.classList.remove('selected'));
   el.classList.add('selected');
   selectedResolution = type;
 }
 
-/* ── STEP NAV ── */
 function nextDStep(from) {
   if (from === 3) {
     const desc = document.getElementById('issueDesc')?.value.trim();
     if (!desc) { showToast('⚠️','Please describe the issue before continuing.'); return; }
     if (!selectedResolution) { showToast('⚠️','Please select your desired outcome.'); return; }
-    // Fill review summary
     const sla = SLA_MAP[selectedSeverity] || SLA_MAP.MEDIUM;
-    document.getElementById('sumTrade').textContent       = '#' + (selectedTrade?.id.slice(0,8).toUpperCase() || '—');
-    document.getElementById('sumIssue').textContent       = ISSUE_LABELS[selectedIssue] || '—';
-    document.getElementById('sumSeverity').textContent    = sla.label;
-    document.getElementById('sumSLA').textContent         = sla.time;
-    document.getElementById('sumResolution').textContent  = RESOLUTION_LABELS[selectedResolution] || '—';
+    document.getElementById('sumTrade').textContent      = '#' + (selectedTrade?.id.slice(0,8).toUpperCase() || '—');
+    document.getElementById('sumIssue').textContent      = ISSUE_LABELS[selectedIssue] || '—';
+    document.getElementById('sumSeverity').textContent   = sla.label;
+    document.getElementById('sumSLA').textContent        = sla.time;
+    document.getElementById('sumResolution').textContent = RESOLUTION_LABELS[selectedResolution] || '—';
     document.getElementById('responseTimeLine').textContent = `Within ${sla.time}`;
   }
   hideDStep(from); dStep = from + 1; showDStep(dStep); updateDStepUI(dStep);
@@ -791,7 +720,6 @@ function updateDStepUI(active) {
   }
 }
 
-/* ── SUBMIT DISPUTE ── */
 async function submitDispute() {
   const btn = document.getElementById('btnSubmitDispute');
   btn.textContent = '⏳ Filing dispute…';
@@ -802,10 +730,15 @@ async function submitDispute() {
   const sla         = SLA_MAP[selectedSeverity] || SLA_MAP.MEDIUM;
 
   try {
-    // 1 — Insert to Supabase disputes table
+    const againstId = selectedTrade?.trader_a_id === currentUser.id
+      ? selectedTrade?.trader_b_id
+      : selectedTrade?.trader_a_id;
+
     const { data: dispute, error } = await sb.from('disputes').insert({
       filed_by:        currentUser.id,
-      against:         selectedTrade?.trader_a_id === currentUser.id ? selectedTrade?.trader_b_id : selectedTrade?.trader_a_id,
+      against:         againstId || null,
+      reporter_id:     currentUser.id,
+      reported_user_id: againstId || null,
       trade_id:        selectedTrade?.id || null,
       reason:          ISSUE_LABELS[selectedIssue] || selectedIssue,
       description:     description + (notes ? '\n\nAdditional notes: ' + notes : ''),
@@ -817,7 +750,7 @@ async function submitDispute() {
 
     if (error) throw error;
 
-    // 2 — Email notification via Formspree
+    // Email notification via Formspree
     const emailBody = {
       _subject: `🚨 [${selectedSeverity}] New Tradezy Dispute — ${ISSUE_LABELS[selectedIssue]}`,
       severity:        selectedSeverity,
@@ -827,7 +760,7 @@ async function submitDispute() {
       trade_id:        selectedTrade?.id || 'N/A',
       filed_by_email:  userEmail,
       filed_by_id:     currentUser.id,
-      against_id:      dispute.against || 'N/A',
+      against_id:      againstId || 'N/A',
       desired_outcome: RESOLUTION_LABELS[selectedResolution],
       description:     description,
       notes:           notes || 'None',
@@ -840,27 +773,27 @@ async function submitDispute() {
       body: JSON.stringify(emailBody),
     });
 
-    // 3 — Show success screen
+    // Show success screen
     document.getElementById('disputeFlow').style.display = 'none';
     const success = document.getElementById('disputeSuccess');
     success.classList.add('show');
-    document.getElementById('successEmail').textContent  = 'disputes@tradezyhq.com';
-    document.getElementById('caseId').textContent        = dispute.id.slice(0,8).toUpperCase();
-    document.getElementById('caseIssue').textContent     = ISSUE_LABELS[selectedIssue];
-    document.getElementById('caseSeverity').textContent  = selectedSeverity;
-    document.getElementById('caseSLA').textContent       = sla.time;
+    document.getElementById('successEmail').textContent = 'disputes@tradezyhq.com';
+    document.getElementById('caseId').textContent       = dispute.id.slice(0,8).toUpperCase();
+    document.getElementById('caseIssue').textContent    = ISSUE_LABELS[selectedIssue];
+    document.getElementById('caseSeverity').textContent = selectedSeverity;
+    document.getElementById('caseSLA').textContent      = sla.time;
 
     showToast('⚖️', `Dispute filed! Team notified. SLA: ${sla.time}.`);
     loadActiveDisputes();
 
   } catch(e) {
+    console.error(e);
     showToast('⚠️', 'Error filing dispute. Please try again.');
     btn.textContent = '🔒 Submit Dispute & Freeze Escrow';
     btn.disabled = false;
   }
 }
 
-/* ── TAB SWITCHING ── */
 function switchTab(tab, el) {
   ['overview','file','active','resolved'].forEach(t => {
     const v = document.getElementById('tab-'+t);
@@ -871,7 +804,6 @@ function switchTab(tab, el) {
   if (el) el.classList.add('active');
 }
 
-/* ── HELPERS ── */
 function timeAgo(ts) {
   if (!ts) return '';
   const m = Math.floor((Date.now() - new Date(ts)) / 60000);
@@ -895,42 +827,37 @@ function showToast(icon, msg) {
   window._tt = setTimeout(() => t.classList.remove('show'), 3800);
 }
 </script>
+
 <div style="text-align:center;padding:24px 16px;font-size:12px;color:#64748b;border-top:1px solid #e2e8f0;margin-top:32px">Tradezy LLC · Connecticut, USA · <a href="mailto:disputes@tradezyhq.com" style="color:#1a56db">disputes@tradezyhq.com</a></div>
-<!-- TRADEZY HELP WIDGET START — paste before </body> on every page -->
+
+<!-- TRADEZY HELP WIDGET START -->
 <style>
-/* ── TRADEZY HELP WIDGET STYLES ── */
 #tz-help-bubble{position:fixed;bottom:24px;right:24px;z-index:9999;display:flex;flex-direction:column;align-items:flex-end;gap:10px;font-family:'Lato',system-ui,sans-serif;}
 #tz-bubble-btn{width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#0a1628,#1a56db);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1.4rem;box-shadow:0 4px 20px rgba(26,86,219,.4);transition:all .2s;position:relative;}
-#tz-bubble-btn:hover{transform:scale(1.08);box-shadow:0 6px 28px rgba(26,86,219,.5);}
+#tz-bubble-btn:hover{transform:scale(1.08);}
 #tz-bubble-btn .tz-notif{position:absolute;top:0;right:0;width:14px;height:14px;background:#dc2626;border-radius:50%;border:2px solid #fff;display:none;}
 #tz-chat-panel{display:none;width:360px;height:520px;background:#fff;border-radius:16px;box-shadow:0 20px 60px rgba(0,0,0,.18);flex-direction:column;overflow:hidden;border:1px solid #e2e8f0;animation:tzSlideUp .2s ease;}
 #tz-chat-panel.open{display:flex;}
 @keyframes tzSlideUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
 .tz-panel-head{background:linear-gradient(135deg,#0a1628,#112240);padding:14px 16px;display:flex;align-items:center;gap:10px;flex-shrink:0;}
 .tz-head-icon{width:34px;height:34px;background:rgba(245,158,11,.2);border:1px solid rgba(245,158,11,.3);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0;}
-.tz-head-info{flex:1;}
-.tz-head-title{font-weight:800;font-size:.88rem;color:#fff;font-family:'Barlow Condensed',system-ui,sans-serif;letter-spacing:.3px;}
+.tz-head-info{flex:1;}.tz-head-title{font-weight:800;font-size:.88rem;color:#fff;font-family:'Barlow Condensed',system-ui,sans-serif;letter-spacing:.3px;}
 .tz-head-status{font-size:10px;color:#22c55e;display:flex;align-items:center;gap:4px;}
 .tz-head-dot{width:6px;height:6px;background:#22c55e;border-radius:50%;animation:tzPulse 2s infinite;}
 @keyframes tzPulse{0%,100%{opacity:1}50%{opacity:.5}}
 .tz-head-close{background:rgba(255,255,255,.1);border:none;color:#94a3b8;width:26px;height:26px;border-radius:50%;cursor:pointer;font-size:.85rem;display:flex;align-items:center;justify-content:center;transition:all .15s;}
 .tz-head-close:hover{background:rgba(255,255,255,.2);color:#fff;}
 .tz-messages{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px;scroll-behavior:smooth;}
-.tz-messages::-webkit-scrollbar{width:4px;}
-.tz-messages::-webkit-scrollbar-track{background:transparent;}
-.tz-messages::-webkit-scrollbar-thumb{background:#e2e8f0;border-radius:2px;}
+.tz-messages::-webkit-scrollbar{width:4px;}.tz-messages::-webkit-scrollbar-track{background:transparent;}.tz-messages::-webkit-scrollbar-thumb{background:#e2e8f0;border-radius:2px;}
 .tz-msg{max-width:84%;display:flex;flex-direction:column;gap:2px;}
-.tz-msg.bot{align-self:flex-start;}
-.tz-msg.user{align-self:flex-end;}
+.tz-msg.bot{align-self:flex-start;}.tz-msg.user{align-self:flex-end;}
 .tz-bubble{padding:9px 12px;border-radius:12px;font-size:13px;line-height:1.5;}
 .tz-msg.bot .tz-bubble{background:#f1f5f9;color:#1a1a2e;border-radius:4px 12px 12px 12px;}
 .tz-msg.user .tz-bubble{background:linear-gradient(135deg,#1a56db,#2563eb);color:#fff;border-radius:12px 4px 12px 12px;}
-.tz-msg-time{font-size:10px;color:#94a3b8;padding:0 4px;}
-.tz-msg.user .tz-msg-time{text-align:right;}
+.tz-msg-time{font-size:10px;color:#94a3b8;padding:0 4px;}.tz-msg.user .tz-msg-time{text-align:right;}
 .tz-typing{display:flex;align-items:center;gap:4px;padding:9px 12px;background:#f1f5f9;border-radius:4px 12px 12px 12px;width:fit-content;}
 .tz-typing span{width:6px;height:6px;background:#94a3b8;border-radius:50%;animation:tzDot 1.2s infinite;}
-.tz-typing span:nth-child(2){animation-delay:.2s;}
-.tz-typing span:nth-child(3){animation-delay:.4s;}
+.tz-typing span:nth-child(2){animation-delay:.2s;}.tz-typing span:nth-child(3){animation-delay:.4s;}
 @keyframes tzDot{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-4px)}}
 .tz-quick-btns{display:flex;flex-wrap:wrap;gap:5px;margin-top:4px;}
 .tz-quick-btn{background:#fff;border:1px solid #e2e8f0;color:#1a56db;font-size:11px;font-weight:700;padding:4px 10px;border-radius:99px;cursor:pointer;transition:all .12s;font-family:inherit;}
@@ -945,19 +872,14 @@ function showToast(icon, msg) {
 .tz-input{flex:1;border:1.5px solid #e2e8f0;border-radius:8px;padding:8px 11px;font-size:13px;font-family:inherit;color:#1a1a2e;outline:none;resize:none;height:38px;max-height:90px;overflow-y:auto;transition:border-color .15s;background:#fff;}
 .tz-input:focus{border-color:#1a56db;box-shadow:0 0 0 3px rgba(26,86,219,.07);}
 .tz-send-btn{width:36px;height:36px;background:linear-gradient(135deg,#1a56db,#2563eb);border:none;border-radius:8px;color:#fff;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s;align-self:flex-end;}
-.tz-send-btn:hover{transform:scale(1.05);}
-.tz-send-btn:disabled{opacity:.5;cursor:not-allowed;transform:none;}
+.tz-send-btn:hover{transform:scale(1.05);}.tz-send-btn:disabled{opacity:.5;cursor:not-allowed;transform:none;}
 .tz-powered{text-align:center;font-size:10px;color:#cbd5e1;padding:5px 0 2px;flex-shrink:0;}
 </style>
- 
 <div id="tz-help-bubble">
   <div id="tz-chat-panel">
     <div class="tz-panel-head">
       <div class="tz-head-icon">🤖</div>
-      <div class="tz-head-info">
-        <div class="tz-head-title">Tradezy Support</div>
-        <div class="tz-head-status"><span class="tz-head-dot"></span>Online — AI Assistant</div>
-      </div>
+      <div class="tz-head-info"><div class="tz-head-title">Tradezy Support</div><div class="tz-head-status"><span class="tz-head-dot"></span>Online — AI Assistant</div></div>
       <button class="tz-head-close" onclick="tzToggle()">✕</button>
     </div>
     <div class="tz-messages" id="tzMessages"></div>
@@ -967,267 +889,105 @@ function showToast(icon, msg) {
     </div>
     <div class="tz-powered">Powered by Claude AI · Tradezy Support</div>
   </div>
-  <button id="tz-bubble-btn" onclick="tzToggle()" title="Get Help">
-    💬
-    <div class="tz-notif" id="tzNotif"></div>
-  </button>
+  <button id="tz-bubble-btn" onclick="tzToggle()" title="Get Help">💬<div class="tz-notif" id="tzNotif"></div></button>
 </div>
- 
 <script>
-(function() {
-  // ── CONFIG ──
-  const SUPABASE_URL = 'https://equvwaspcoeetfsexqki.supabase.co';
-  const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVxdXZ3YXNwY29lZXRmc2V4cWtpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgyNzc2MjQsImV4cCI6MjA5Mzg1MzYyNH0.TP6Kk3pzHW1PYMUu5D9Vu2lJrazIEagzu5csYhqkrfI';
- 
-  const SYSTEM_PROMPT = `You are the Tradezy support assistant — a helpful, friendly AI for Tradezy, a peer-to-peer local trading marketplace.
- 
+(function(){
+  const SP=`You are the Tradezy support assistant — a helpful, friendly AI for Tradezy, a peer-to-peer local trading marketplace.
+
 ABOUT TRADEZY:
 - Free local trading platform where users list items and trade with verified neighbors
 - Platform fee: 5% per party on completed trades (Founding Traders pay 3% lifetime)
 - Ship-It trades (state-to-state): 10% fee, fully verified users only, launching July 31 2026
-- Phase 1 launch: July 17 2026 — Connecticut and Ohio statewide
-- Phase 2: July 31 2026 — Nationwide
- 
+- Phase 1 launch: July 17 2026 — Connecticut and Ohio. Phase 2: July 31 2026 — Nationwide
+
 HOW TRADING WORKS:
 1. Post a listing with photos, condition, what you want in return
 2. Browse listings, make offers (item-for-item, item + cash top-up, or cash)
-3. Accept an offer, agree on a meetup spot
+3. Accept an offer, agree on a meetup spot (local) or Ship-It flow
 4. Both parties confirm the exchange in-app — this unlocks ratings
-5. Leave ratings after confirmed meetup
- 
+5. Leave ratings after confirmed exchange
+
 VERIFICATION & TRUST:
 - Email verification required to use platform
 - Address verification adds trust score
 - ID verification required for Ship-It trades
 - W-9 tax form required before posting listings
-- Trust score shown on profiles
- 
-PROHIBITED ITEMS (permanent ban): Firearms, weapons, alcohol, tobacco, drugs, live animals, adult content, stolen goods, cash, gift cards, cryptocurrency
- 
-FEES EXPLAINED:
-- 5% of total trade value per party — example: $100 item trade = $5 fee each party
-- $90 item + $40 cash top-up = $130 total = $6.50 fee each party
-- Founding Traders: 3% lifetime (signed up before July 17 launch)
+
+PROHIBITED ITEMS: Firearms, weapons, alcohol, tobacco, drugs, live animals, adult content, stolen goods, cash, gift cards, cryptocurrency
+
+FEES:
+- 5% per party for local trades (Founding Traders 3% lifetime)
+- Ship-It: 10% per party at trade acceptance
 - Listing is always free
- 
-SHIP-IT TRADES (July 31+):
-- State-to-state trading for fully ID-verified users only
-- 10% fee per party at trade acceptance
-- Payment via Zelle, PayPal, Venmo, Apple Pay, Google Pay, or Cash App (peer-to-peer, Tradezy never holds funds)
-- Buyer uploads payment screenshot as proof
-- Seller enters tracking number
-- Both confirm delivery to close trade
- 
-TCG CATEGORIES: Pokémon, One Piece, MTG, Yu-Gi-Oh, Lorcana, Flesh & Blood
-SPORTS CARDS: Baseball, Football, Basketball, Hockey, Soccer
-Card grading supported: PSA, BGS, SGC, TAG
- 
-ACCOUNT HELP:
-- Password reset: direct users to https://tradezyhq.com/alltrades-auth.html
-- Account locked/banned: direct to support@tradezyhq.com
-- Verification issues: direct to https://tradezyhq.com/alltrades-verification.html
- 
+
 DISPUTE RESOLUTION:
-- File a dispute at https://tradezyhq.com/alltrades-disputes.html
-- Email disputes@tradezyhq.com
-- SLA: CRITICAL issues 4hrs, HIGH 24hrs, MEDIUM 48hrs, LOW 72hrs
- 
+- File at https://tradezyhq.com/alltrades-disputes.html or disputes@tradezyhq.com
+- SLA: CRITICAL 8hrs, HIGH 16hrs, MEDIUM 24hrs, LOW 48hrs
+
 ESCALATION RULES — escalate to human immediately if:
-- User reports fraud, scam, or didn't receive item
+- User reports fraud, scam, or did not receive item
 - User mentions safety concern, threat, or harassment
-- User is clearly distressed or frustrated after multiple exchanges
+- User is clearly distressed after multiple exchanges
 - User explicitly requests a human agent
 - Issue involves account ban or suspension
- 
-ESCALATION: When escalating, provide support@tradezyhq.com for general issues or disputes@tradezyhq.com for trade disputes. Summarize the issue briefly.
- 
-TONE: Warm, clear, concise. Never give legal or financial advice. Never make up information — if unsure, direct to support@tradezyhq.com. Keep responses short and scannable — use bullet points for multi-step answers.`;
- 
-  // ── STATE ──
-  let isOpen = false;
-  let isLoading = false;
-  let exchangeCount = 0;
-  let hasShownWelcome = false;
-  const history = [];
- 
-  // ── TOGGLE ──
-  window.tzToggle = function() {
-    isOpen = !isOpen;
-    const panel = document.getElementById('tz-chat-panel');
-    const btn = document.getElementById('tz-bubble-btn');
-    if (isOpen) {
-      panel.classList.add('open');
-      btn.innerHTML = '✕<div class="tz-notif" id="tzNotif"></div>';
-      if (!hasShownWelcome) {
-        hasShownWelcome = true;
-        tzBotMessage("👋 Hey! I'm the Tradezy support assistant. I can help with:", [
-          "How trading works",
-          "Fees & verification",
-          "Account issues",
-          "Reporting a problem"
-        ]);
-      }
-      setTimeout(() => document.getElementById('tzInput')?.focus(), 200);
-    } else {
-      panel.classList.remove('open');
-      btn.innerHTML = '💬<div class="tz-notif" id="tzNotif"></div>';
-    }
+
+ESCALATION: support@tradezyhq.com for general issues, disputes@tradezyhq.com for trade disputes.
+
+TONE: Warm, clear, concise. Never give legal or financial advice. Keep responses short and scannable.`;
+  let isOpen=false,isLoading=false,exchangeCount=0,hasShownWelcome=false;
+  const history=[];
+  window.tzToggle=function(){
+    isOpen=!isOpen;
+    const panel=document.getElementById('tz-chat-panel'),btn=document.getElementById('tz-bubble-btn');
+    if(isOpen){panel.classList.add('open');btn.innerHTML='✕<div class="tz-notif" id="tzNotif"></div>';
+      if(!hasShownWelcome){hasShownWelcome=true;tzBotMsg("👋 Hey! I'm the Tradezy support assistant. I can help with:",["How trading works","Ship-It trades","Fees & verification","Reporting a problem"]);}
+      setTimeout(()=>document.getElementById('tzInput')?.focus(),200);
+    }else{panel.classList.remove('open');btn.innerHTML='💬<div class="tz-notif" id="tzNotif"></div>';}
   };
- 
-  // ── SEND ──
-  window.tzSend = async function() {
-    const input = document.getElementById('tzInput');
-    const text = input.value.trim();
-    if (!text || isLoading) return;
-    input.value = '';
-    tzAutoResize(input);
-    tzUserMessage(text);
-    history.push({ role: 'user', content: text });
-    exchangeCount++;
-    await tzGetResponse();
+  window.tzSend=async function(){
+    const input=document.getElementById('tzInput'),text=input.value.trim();
+    if(!text||isLoading)return;
+    input.value='';tzAutoResize(input);tzUserMsg(text);
+    history.push({role:'user',content:text});exchangeCount++;await tzGetResp();
   };
- 
-  window.tzKeyDown = function(e) {
-    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); tzSend(); }
-  };
- 
-  window.tzAutoResize = function(el) {
-    el.style.height = '38px';
-    el.style.height = Math.min(el.scrollHeight, 90) + 'px';
-  };
- 
-  // ── GET AI RESPONSE ──
-  async function tzGetResponse() {
-    isLoading = true;
-    document.getElementById('tzSendBtn').disabled = true;
- 
-    // Show typing indicator
-    const typingId = 'tz-typing-' + Date.now();
-    const msgs = document.getElementById('tzMessages');
-    const typingEl = document.createElement('div');
-    typingEl.id = typingId;
-    typingEl.className = 'tz-msg bot';
-    typingEl.innerHTML = '<div class="tz-typing"><span></span><span></span><span></span></div>';
-    msgs.appendChild(typingEl);
-    msgs.scrollTop = msgs.scrollHeight;
- 
-    try {
-      const response = await fetch('https://tradezy-ai-proxy.throbbing-lake-08ed.workers.dev', {
-        method: 'POST',
-       headers: { 'Content-Type': 'application/json',  },
-        body: JSON.stringify({
-          model: 'claude-sonnet-4-6',
-          max_tokens: 1000,
-          system: SYSTEM_PROMPT,
-          messages: history
-        })
-      });
- 
-      const data = await response.json();
-      const reply = data.content?.[0]?.text || "I'm having trouble responding right now. Please email support@tradezyhq.com.";
- 
-      // Remove typing indicator
-      document.getElementById(typingId)?.remove();
- 
-      // Add to history
-      history.push({ role: 'assistant', content: reply });
- 
-      // Check for escalation triggers
-      const userText = history.filter(m => m.role === 'user').map(m => m.content).join(' ').toLowerCase();
-      const escalateKeywords = ['scam', 'fraud', 'didn\'t receive', 'never received', 'threat', 'harass', 'human', 'agent', 'real person', 'banned', 'suspended', 'unsafe'];
-      const shouldEscalate = escalateKeywords.some(k => userText.includes(k)) || exchangeCount >= 4;
- 
-      // Render response
-      tzBotMessage(reply, null, shouldEscalate);
- 
-    } catch(e) {
-      document.getElementById(typingId)?.remove();
-      tzBotMessage("I'm having trouble connecting right now. For immediate help, please email support@tradezyhq.com or file a dispute at the link below.", null, true);
-    }
- 
-    isLoading = false;
-    document.getElementById('tzSendBtn').disabled = false;
+  window.tzKeyDown=function(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();tzSend();}};
+  window.tzAutoResize=function(el){el.style.height='38px';el.style.height=Math.min(el.scrollHeight,90)+'px';};
+  async function tzGetResp(){
+    isLoading=true;document.getElementById('tzSendBtn').disabled=true;
+    const tid='tz-t-'+Date.now(),msgs=document.getElementById('tzMessages');
+    const tel=document.createElement('div');tel.id=tid;tel.className='tz-msg bot';tel.innerHTML='<div class="tz-typing"><span></span><span></span><span></span></div>';
+    msgs.appendChild(tel);msgs.scrollTop=msgs.scrollHeight;
+    try{
+      const r=await fetch('https://tradezy-ai-proxy.throbbing-lake-08ed.workers.dev',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:1000,system:SP,messages:history})});
+      const d=await r.json();const reply=d.content?.[0]?.text||"I'm having trouble responding. Please email support@tradezyhq.com.";
+      document.getElementById(tid)?.remove();history.push({role:'assistant',content:reply});
+      const ut=history.filter(m=>m.role==='user').map(m=>m.content).join(' ').toLowerCase();
+      const esc=['scam','fraud','didn\'t receive','threat','harass','human','agent','banned','suspended'].some(k=>ut.includes(k))||exchangeCount>=4;
+      tzBotMsg(reply,null,esc);
+    }catch(e){document.getElementById(tid)?.remove();tzBotMsg("I'm having trouble connecting. Please email support@tradezyhq.com.",null,true);}
+    isLoading=false;document.getElementById('tzSendBtn').disabled=false;
   }
- 
-  // ── RENDER BOT MESSAGE ──
-  function tzBotMessage(text, quickReplies = null, showEscalate = false) {
-    const msgs = document.getElementById('tzMessages');
-    const wrapper = document.createElement('div');
-    wrapper.className = 'tz-msg bot';
- 
-    // Parse markdown-lite: bold, bullets
-    let html = text
-      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-      .replace(/^[-•] (.+)$/gm, '<li>$1</li>')
-      .replace(/(<li>.*<\/li>)/gs, '<ul style="margin:4px 0 0 14px;padding:0;font-size:13px;line-height:1.6">$1</ul>')
-      .replace(/\n\n/g, '<br><br>')
-      .replace(/\n/g, '<br>');
- 
-    // Detect and linkify account action hints
-    let extraHTML = '';
- 
-    if (text.toLowerCase().includes('password reset') || text.toLowerCase().includes('reset your password')) {
-      extraHTML += `<a class="tz-action-link" href="https://tradezyhq.com/alltrades-auth.html" target="_blank">🔑 Reset Password →</a>`;
-    }
-    if (text.toLowerCase().includes('verification') || text.toLowerCase().includes('verify your')) {
-      extraHTML += `<a class="tz-action-link" href="https://tradezyhq.com/alltrades-verification.html" target="_blank">✅ Go to Verification →</a>`;
-    }
-    if (text.toLowerCase().includes('dispute') || text.toLowerCase().includes('file a dispute')) {
-      extraHTML += `<a class="tz-action-link" href="https://tradezyhq.com/alltrades-disputes.html" target="_blank">⚖️ File a Dispute →</a>`;
-    }
- 
-    let bubbleHTML = `<div class="tz-bubble">${html}</div>`;
-    if (extraHTML) bubbleHTML += extraHTML;
- 
-    if (showEscalate) {
-      bubbleHTML += `
-        <div class="tz-escalate-card">
-          <div class="tz-escalate-title">🙋 Want to talk to a person?</div>
-          <div style="color:#92400e;font-size:12px;line-height:1.5">Our support team is standing by to help.</div>
-          <div style="display:flex;gap:7px;flex-wrap:wrap;margin-top:7px;">
-            <a class="tz-escalate-btn" href="mailto:support@tradezyhq.com?subject=Support Request from Tradezy Widget">📧 Email Support</a>
-            <a class="tz-escalate-btn" href="https://tradezyhq.com/alltrades-disputes.html" target="_blank" style="background:#1a56db">⚖️ File Dispute</a>
-          </div>
-        </div>`;
-    }
- 
-    if (quickReplies && quickReplies.length) {
-      bubbleHTML += '<div class="tz-quick-btns">' +
-        quickReplies.map(q => `<button class="tz-quick-btn" onclick="tzQuickReply('${q.replace(/'/g, "\\'")}')">${q}</button>`).join('') +
-        '</div>';
-    }
- 
-    wrapper.innerHTML = bubbleHTML;
-    const time = document.createElement('div');
-    time.className = 'tz-msg-time';
-    time.textContent = new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
-    wrapper.appendChild(time);
-    msgs.appendChild(wrapper);
-    msgs.scrollTop = msgs.scrollHeight;
+  function tzBotMsg(text,qr=null,esc=false){
+    const msgs=document.getElementById('tzMessages'),w=document.createElement('div');w.className='tz-msg bot';
+    let html=text.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/^[-•] (.+)$/gm,'<li>$1</li>').replace(/(<li>.*<\/li>)/gs,'<ul style="margin:4px 0 0 14px;padding:0;font-size:13px;line-height:1.6">$1</ul>').replace(/\n\n/g,'<br><br>').replace(/\n/g,'<br>');
+    let ex='';
+    if(text.toLowerCase().includes('verification'))ex+=`<a class="tz-action-link" href="https://tradezyhq.com/alltrades-verification.html" target="_blank">✅ Go to Verification →</a>`;
+    if(text.toLowerCase().includes('dispute'))ex+=`<a class="tz-action-link" href="https://tradezyhq.com/alltrades-disputes.html" target="_blank">⚖️ File a Dispute →</a>`;
+    let bh=`<div class="tz-bubble">${html}</div>`;if(ex)bh+=ex;
+    if(esc)bh+=`<div class="tz-escalate-card"><div class="tz-escalate-title">🙋 Want to talk to a person?</div><div style="color:#92400e;font-size:12px">Our support team is standing by.</div><div style="display:flex;gap:7px;flex-wrap:wrap;margin-top:7px;"><a class="tz-escalate-btn" href="mailto:support@tradezyhq.com">📧 Email Support</a><a class="tz-escalate-btn" href="https://tradezyhq.com/alltrades-disputes.html" target="_blank" style="background:#1a56db">⚖️ File Dispute</a></div></div>`;
+    if(qr&&qr.length)bh+='<div class="tz-quick-btns">'+qr.map(q=>`<button class="tz-quick-btn" onclick="tzQuickReply('${q.replace(/'/g,"\\'")}')">${q}</button>`).join('')+'</div>';
+    w.innerHTML=bh;
+    const t=document.createElement('div');t.className='tz-msg-time';t.textContent=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+    w.appendChild(t);msgs.appendChild(w);msgs.scrollTop=msgs.scrollHeight;
   }
- 
-  // ── RENDER USER MESSAGE ──
-  function tzUserMessage(text) {
-    const msgs = document.getElementById('tzMessages');
-    const wrapper = document.createElement('div');
-    wrapper.className = 'tz-msg user';
-    wrapper.innerHTML = `
-      <div class="tz-bubble">${escHtml(text)}</div>
-      <div class="tz-msg-time">${new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})}</div>`;
-    msgs.appendChild(wrapper);
-    msgs.scrollTop = msgs.scrollHeight;
+  function tzUserMsg(text){
+    const msgs=document.getElementById('tzMessages'),w=document.createElement('div');w.className='tz-msg user';
+    w.innerHTML=`<div class="tz-bubble">${esc(text)}</div><div class="tz-msg-time">${new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}</div>`;
+    msgs.appendChild(w);msgs.scrollTop=msgs.scrollHeight;
   }
- 
-  // ── QUICK REPLY ──
-  window.tzQuickReply = function(text) {
-    document.getElementById('tzInput').value = text;
-    tzSend();
-  };
- 
-  function escHtml(str) {
-    return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-  }
- 
+  window.tzQuickReply=function(t){document.getElementById('tzInput').value=t;tzSend();};
+  function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 })();
 </script>
 <!-- TRADEZY HELP WIDGET END -->
