@@ -30,8 +30,6 @@
 }
 *{margin:0;padding:0;box-sizing:border-box;}
 body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
-
-/* NAV */
 .nav{background:rgba(4,10,22,.97);border-bottom:1px solid var(--border);padding:0 20px;height:52px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:300;backdrop-filter:blur(12px);}
 .logo{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.45rem;letter-spacing:-1px;cursor:pointer;text-decoration:none;}
 .logo .a{color:#fff;}.logo .t{color:var(--blue);}.logo .d{color:var(--gold);}
@@ -41,37 +39,25 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
 .u-av{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--orange));color:var(--navy);font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:.8rem;display:flex;align-items:center;justify-content:center;}
 .u-name{font-size:13px;color:#cbd5e1;font-weight:700;}
 .user-chip{display:flex;align-items:center;gap:7px;padding:4px 10px;border-radius:6px;}
-
-/* TABS */
 .page-tabs{background:rgba(7,15,30,.9);border-bottom:1px solid var(--border);backdrop-filter:blur(8px);}
 .page-tabs-inner{max-width:1100px;margin:0 auto;padding:0 20px;display:flex;gap:0;}
 .ptab{padding:13px 18px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.88rem;cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;color:var(--lighter);}
 .ptab:hover{color:var(--text);}
 .ptab.active{color:var(--blue-l);border-bottom-color:var(--blue);}
 .ptab-cnt{background:var(--red);color:#fff;font-size:9px;font-weight:800;border-radius:99px;padding:1px 5px;margin-left:4px;vertical-align:middle;}
-
-/* PAGE */
 .page{max-width:1100px;margin:0 auto;padding:24px 20px;}
-
-/* LOADING / EMPTY */
 .loading-state{text-align:center;padding:40px;color:var(--lighter);font-size:13px;}
 .empty-state{text-align:center;padding:36px;color:var(--lighter);font-size:13px;}
 .empty-state .em-icon{font-size:2.5rem;margin-bottom:10px;}
 .empty-state .em-title{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1.05rem;color:var(--text);margin-bottom:5px;}
-
-/* INFO BOX */
 .info-box{border-radius:9px;padding:12px 15px;margin-bottom:18px;display:flex;gap:9px;font-size:13px;}
 .info-box.blue{background:rgba(26,86,219,.08);border:1px solid rgba(26,86,219,.2);border-left:3px solid var(--blue);color:#93c5fd;}
 .info-box.gold{background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.2);border-left:3px solid var(--gold);color:var(--gold-l);}
 .info-box.green{background:rgba(22,163,74,.08);border:1px solid rgba(22,163,74,.2);border-left:3px solid var(--green);color:var(--green-l);}
-
-/* PENDING GRID */
 .pending-header{margin-bottom:20px;}
 .pending-title{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.4rem;color:var(--text);margin-bottom:4px;}
 .pending-sub{font-size:13px;color:var(--lighter);}
 .pending-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:16px;margin-bottom:28px;}
-
-/* RATE CARD */
 .rate-card{background:var(--card);border:1px solid var(--border2);border-radius:14px;overflow:hidden;transition:all .2s;}
 .rate-card:hover{box-shadow:0 6px 24px rgba(0,0,0,.3);}
 .rc-head{background:linear-gradient(135deg,var(--navy2),#1a3a6b);padding:12px 16px;display:flex;align-items:center;justify-content:space-between;}
@@ -80,15 +66,6 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
 .rc-badge.pending{background:rgba(245,158,11,.2);border:1px solid rgba(245,158,11,.3);color:var(--gold-l);}
 .rc-badge.done{background:rgba(22,163,74,.2);border:1px solid rgba(22,163,74,.3);color:var(--green-l);}
 .rc-body{padding:16px;}
-
-/* TRADE ITEMS */
-.rc-trade-items{display:flex;align-items:center;gap:8px;margin-bottom:14px;}
-.rc-item{flex:1;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:9px;text-align:center;}
-.rc-item-nm{font-size:11px;font-weight:700;margin-bottom:2px;color:var(--text);}
-.rc-item-vl{font-size:10px;font-weight:700;color:var(--gold-l);}
-.rc-arrow{color:var(--lighter);font-size:.9rem;flex-shrink:0;}
-
-/* TRADER INFO */
 .rc-trader{display:flex;align-items:center;gap:8px;margin-bottom:14px;}
 .rc-av{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:.85rem;color:#fff;flex-shrink:0;}
 .rc-trader-info .rc-name{font-weight:700;font-size:13px;color:var(--text);}
@@ -96,8 +73,6 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
 .rc-deadline{margin-left:auto;text-align:right;}
 .rc-deadline-num{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.9rem;color:var(--orange);}
 .rc-deadline-label{font-size:10px;color:var(--lighter);}
-
-/* STAR WIDGET */
 .star-widget{margin-bottom:14px;}
 .sw-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--lighter);margin-bottom:8px;}
 .stars-row{display:flex;gap:6px;margin-bottom:6px;}
@@ -105,24 +80,18 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
 .star:hover,.star.lit,.star.hov{opacity:1;}
 .star.lit{transform:scale(1.05);}
 .star-hint{font-size:12px;color:var(--lighter);height:16px;transition:all .15s;}
-
-/* MINI STARS */
 .cat-ratings{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;}
 .cat-rate{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:9px 11px;}
 .cat-rate-label{font-size:11px;font-weight:700;color:var(--lighter);margin-bottom:5px;}
 .mini-stars{display:flex;gap:3px;}
 .mini-star{font-size:1rem;cursor:pointer;opacity:.2;transition:all .1s;user-select:none;color:var(--gold-l);}
 .mini-star.lit{opacity:1;}
-
-/* TAGS */
 .tag-section-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--lighter);margin-bottom:6px;margin-top:10px;}
 .review-tags{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:4px;}
 .rtag{padding:4px 10px;border:1.5px solid var(--border2);border-radius:99px;font-size:11px;font-weight:700;cursor:pointer;transition:all .15s;color:var(--lighter);}
 .rtag:hover{border-color:var(--blue);color:var(--blue-l);}
 .rtag.selected{border-color:var(--blue);background:rgba(26,86,219,.15);color:#93c5fd;}
 .rtag.selected.neg{border-color:var(--red);background:rgba(220,38,38,.12);color:#fca5a5;}
-
-/* REVIEW TEXTAREA */
 .review-area{width:100%;background:var(--surface);border:1.5px solid var(--border2);border-radius:8px;padding:10px 12px;font-family:'Lato',sans-serif;font-size:13px;color:var(--text);outline:none;resize:vertical;min-height:80px;transition:border-color .15s;}
 .review-area:focus{border-color:var(--blue);}
 .review-area::placeholder{color:var(--lighter);}
@@ -130,48 +99,16 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
 .review-chars{font-size:11px;color:var(--lighter);}
 .review-chars.warn{color:var(--gold);}
 .review-chars.over{color:var(--red);}
-
-/* BUTTONS */
 .rate-btn{width:100%;padding:11px;background:linear-gradient(135deg,var(--gold),#d97706);color:var(--navy);border:none;border-radius:8px;font-family:'Barlow Condensed',sans-serif;font-size:1rem;font-weight:900;cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center;gap:6px;margin-top:14px;}
 .rate-btn:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 4px 14px rgba(245,158,11,.3);}
 .rate-btn:disabled{background:var(--dim);color:var(--lighter);cursor:not-allowed;transform:none;box-shadow:none;}
 .skip-btn{width:100%;padding:8px;background:transparent;border:1px solid var(--border2);border-radius:7px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.82rem;cursor:pointer;color:var(--lighter);transition:all .15s;margin-top:6px;}
 .skip-btn:hover{border-color:rgba(255,255,255,.25);color:var(--text);}
-
-/* ALREADY RATED */
 .rated-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 16px;display:flex;align-items:center;gap:12px;opacity:.6;margin-bottom:8px;}
 .rated-check{width:36px;height:36px;border-radius:50%;background:rgba(22,163,74,.1);border:1px solid rgba(22,163,74,.25);display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0;}
 .rated-info .rated-name{font-weight:700;font-size:13px;color:var(--text);}
 .rated-info .rated-stars{color:var(--gold-l);font-size:.9rem;}
 .rated-info .rated-meta{font-size:11px;color:var(--lighter);}
-
-/* PROFILE VIEW */
-.profile-layout{display:grid;grid-template-columns:280px 1fr;gap:20px;align-items:start;}
-.profile-card{background:var(--card);border:1px solid var(--border2);border-radius:14px;overflow:hidden;position:sticky;top:78px;}
-.pc-banner{height:72px;background:linear-gradient(135deg,var(--navy2),#1a3a6b);}
-.pc-body{padding:36px 18px 16px;position:relative;}
-.pc-av{width:54px;height:54px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.25rem;color:#fff;border:3px solid var(--navy2);position:absolute;top:-27px;left:18px;}
-.pc-name{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.25rem;color:var(--text);margin-bottom:2px;}
-.pc-since{font-size:11px;color:var(--lighter);margin-bottom:12px;}
-.pc-stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:12px;}
-.pc-stat{text-align:center;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:9px;}
-.pc-stat-num{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.05rem;}
-.pc-stat-label{font-size:9px;color:var(--lighter);text-transform:uppercase;letter-spacing:.4px;margin-top:1px;}
-
-/* RATING OVERVIEW */
-.rating-overview-card{background:var(--card);border:1px solid var(--border2);border-radius:14px;padding:18px;margin-bottom:16px;}
-.roc-top{display:flex;align-items:center;gap:18px;margin-bottom:16px;}
-.roc-big{font-family:'Barlow Condensed',sans-serif;font-size:3rem;font-weight:900;line-height:1;color:var(--text);}
-.roc-stars{color:var(--gold-l);font-size:1.1rem;margin-bottom:3px;}
-.roc-count{font-size:12px;color:var(--lighter);}
-.roc-bars{flex:1;}
-.roc-bar-row{display:flex;align-items:center;gap:6px;margin-bottom:4px;}
-.roc-bar-lbl{width:12px;font-size:11px;text-align:right;color:var(--lighter);}
-.roc-bar-track{flex:1;height:6px;background:var(--surface2);border-radius:4px;overflow:hidden;}
-.roc-bar-fill{height:100%;border-radius:4px;background:var(--gold-l);transition:width .6s ease;}
-.roc-bar-cnt{width:20px;font-size:10px;color:var(--lighter);}
-
-/* REVIEW CARDS */
 .review-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:10px;transition:border-color .15s;}
 .review-card:hover{border-color:var(--border2);}
 .rv-header{display:flex;align-items:flex-start;gap:10px;margin-bottom:10px;}
@@ -182,14 +119,7 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
 .rv-meta{font-size:11px;color:var(--lighter);}
 .rv-verified{display:inline-flex;align-items:center;gap:3px;background:rgba(26,86,219,.15);border:1px solid rgba(26,86,219,.25);color:#93c5fd;font-size:9px;font-weight:800;padding:1px 6px;border-radius:3px;margin-right:4px;}
 .rv-text{font-size:13px;color:var(--light);line-height:1.6;margin-bottom:8px;}
-.rv-response{background:rgba(26,86,219,.06);border:1px solid rgba(26,86,219,.15);border-left:3px solid var(--blue);border-radius:7px;padding:9px 12px;margin-top:8px;}
-.rvr-label{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--blue-l);margin-bottom:3px;}
-.rvr-text{font-size:12px;color:var(--light);line-height:1.5;}
-
-/* PANEL HEADER */
 .sec-title{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1rem;color:var(--text);margin-bottom:14px;}
-
-/* MODAL */
 .overlay{display:none;position:fixed;inset:0;background:rgba(4,10,22,.88);z-index:500;align-items:center;justify-content:center;padding:20px;}
 .overlay.open{display:flex;}
 .modal{background:#0f2341;border:1px solid var(--border2);border-radius:14px;width:100%;max-width:460px;max-height:90vh;overflow-y:auto;animation:slideUp .25s ease;}
@@ -208,22 +138,17 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
 .mbtn.blue:hover{background:var(--blue-l);}
 .mbtn.outline{background:transparent;border:1.5px solid var(--border2);color:var(--light);}
 .mbtn.outline:hover{border-color:rgba(255,255,255,.25);color:var(--text);}
-
-/* TOAST */
 .toast{position:fixed;bottom:20px;right:20px;background:#0f2341;color:var(--text);border:1px solid var(--border2);border-left:4px solid var(--green);border-radius:8px;padding:10px 16px;font-size:13px;z-index:9999;display:flex;align-items:center;gap:9px;max-width:290px;box-shadow:0 8px 26px rgba(0,0,0,.5);transform:translateX(120%);transition:transform .3s ease;}
 .toast.show{transform:translateX(0);}
 .toast.error{border-left-color:var(--red);}
-
 @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 .fade-in{animation:fadeIn .3s ease both;}
-
-@media(max-width:860px){.profile-layout{grid-template-columns:1fr;}.profile-card{position:static;}}
+@media(max-width:860px){.profile-layout{grid-template-columns:1fr;}}
 @media(max-width:560px){.pending-grid{grid-template-columns:1fr;}.cat-ratings{grid-template-columns:1fr;}}
 </style>
 </head>
 <body>
 
-<!-- NAV -->
 <div class="nav">
   <a href="alltrades.html" class="logo"><span class="a">Trade</span><span class="t">zy</span><span class="d">.</span></a>
   <div class="nav-right">
@@ -235,7 +160,6 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
   </div>
 </div>
 
-<!-- TABS -->
 <div class="page-tabs">
   <div class="page-tabs-inner">
     <div class="ptab active" id="tab-pending" onclick="switchView('pending',this)">Rate Trades <span class="ptab-cnt" id="pendingCnt" style="display:none">0</span></div>
@@ -246,15 +170,15 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
 
 <div class="page">
 
-  <!-- ══ PENDING RATINGS ══ -->
+  <!-- PENDING RATINGS -->
   <div id="view-pending">
     <div class="pending-header">
       <div class="pending-title">⭐ Trades Awaiting Your Rating</div>
-      <div class="pending-sub">You can only rate a trader after your meetup is confirmed by both parties.</div>
+      <div class="pending-sub">You can only rate a trader after your trade is confirmed by both parties.</div>
     </div>
     <div class="info-box blue">
       <span>🔒</span>
-      <div><strong>Verified Trades Only:</strong> Ratings are unlocked only after both parties confirm the meetup. This protects every trader on Tradezy.</div>
+      <div><strong>Verified Trades Only:</strong> Ratings are unlocked only after both parties confirm the trade. This protects every trader on Tradezy.</div>
     </div>
     <div class="pending-grid" id="pendingGrid">
       <div class="loading-state">Loading trades…</div>
@@ -265,13 +189,13 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
     </div>
   </div>
 
-  <!-- ══ REVIEWS RECEIVED ══ -->
+  <!-- REVIEWS RECEIVED -->
   <div id="view-received" style="display:none">
     <div class="sec-title">Reviews Others Left For You</div>
     <div id="receivedList"><div class="loading-state">Loading…</div></div>
   </div>
 
-  <!-- ══ REVIEWS GIVEN ══ -->
+  <!-- REVIEWS GIVEN -->
   <div id="view-given" style="display:none">
     <div class="sec-title">Reviews You Left</div>
     <div id="givenList"><div class="loading-state">Loading…</div></div>
@@ -298,7 +222,6 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
   </div>
 </div>
 
-<!-- TOAST -->
 <div class="toast" id="toastEl"><span id="toastIc">✅</span><span id="toastTx"></span></div>
 
 <script>
@@ -309,7 +232,7 @@ const sb = window.supabase.createClient(
 
 let currentUser = null;
 let currentProfile = null;
-let ratingState = {}; // { tradeId: { overall, acc, com, meet, fair, tags, text } }
+let ratingState = {};
 let respondTargetId = null;
 
 const starHints = ['','Terrible — would not trade again','Below average — had issues','Average — it was okay','Good — would trade again','Excellent — highly recommend!'];
@@ -317,7 +240,6 @@ const COLORS = ['#1a56db','#16a34a','#ea580c','#7c3aed','#0891b2','#dc2626','#f5
 const TAGS_POS = ['Item as described','Easy meetup','Great communicator','Fast response','Honest and friendly','Fair trade'];
 const TAGS_NEG = ['Item condition off','Late to meetup','Poor communication','Slow response','Item not as described'];
 
-// ── SESSION CHECK ──
 (async () => {
   const { data: { session } } = await sb.auth.getSession();
   if (!session) { window.location.href = 'alltrades-auth.html'; return; }
@@ -335,7 +257,6 @@ const TAGS_NEG = ['Item condition off','Late to meetup','Poor communication','Sl
   loadPending();
 })();
 
-// ── VIEW SWITCHING ──
 function switchView(view, tab) {
   document.querySelectorAll('[id^="view-"]').forEach(v => v.style.display = 'none');
   document.getElementById('view-' + view).style.display = 'block';
@@ -345,15 +266,15 @@ function switchView(view, tab) {
   if (view === 'given') loadGiven();
 }
 
-// ── LOAD PENDING TRADES ──
 async function loadPending() {
   try {
-    // Get completed trades where current user participated and both meetups confirmed
+    // FIX: use trade_confirmed_a/b (actual schema columns), status=completed
     const { data: trades, error } = await sb.from('trades')
-      .select('id, trader_a_id, trader_b_id, created_at, total_value, trade_type, listing_id, offer_id')
+      .select('id, trader_a_id, trader_b_id, created_at, total_value, listing_id, offer_id')
       .or(`trader_a_id.eq.${currentUser.id},trader_b_id.eq.${currentUser.id}`)
-      .eq('meetup_confirmed_a', true)
-      .eq('meetup_confirmed_b', true)
+      .eq('status', 'completed')
+      .eq('trade_confirmed_a', true)
+      .eq('trade_confirmed_b', true)
       .order('created_at', { ascending: false });
 
     if (error) throw error;
@@ -363,39 +284,34 @@ async function loadPending() {
         <div class="empty-state" style="grid-column:1/-1;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:32px">
           <div class="em-icon">🤝</div>
           <div class="em-title">No completed trades yet</div>
-          <div>Ratings unlock after both parties confirm a meetup. Complete your first trade to start building your reputation!</div>
+          <div>Ratings unlock after both parties confirm a trade. Complete your first trade to start building your reputation!</div>
         </div>`;
       return;
     }
 
-    // Get ratings already submitted by this user
     const { data: myRatings } = await sb.from('ratings')
       .select('trade_id, rated_id, stars')
       .eq('rater_id', currentUser.id);
 
     const ratedTradeIds = new Set((myRatings || []).map(r => r.trade_id));
-
     const pending = trades.filter(t => !ratedTradeIds.has(t.id));
     const alreadyRated = trades.filter(t => ratedTradeIds.has(t.id));
 
-    // Update badge
     if (pending.length > 0) {
       document.getElementById('pendingCnt').textContent = pending.length;
       document.getElementById('pendingCnt').style.display = 'inline';
     }
 
-    // Render pending cards
     const grid = document.getElementById('pendingGrid');
     if (pending.length === 0) {
       grid.innerHTML = `
         <div class="empty-state" style="grid-column:1/-1;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:32px">
           <div class="em-icon">🎉</div>
           <div class="em-title">All caught up!</div>
-          <div>You've rated all your completed trades. New ratings appear here after each confirmed meetup.</div>
+          <div>You've rated all your completed trades. New ratings appear here after each confirmed trade.</div>
         </div>`;
     } else {
       grid.innerHTML = '';
-      // Get the other trader's info for each trade
       for (const trade of pending) {
         const otherUserId = trade.trader_a_id === currentUser.id ? trade.trader_b_id : trade.trader_a_id;
         const { data: otherUser } = await sb.from('users').select('display_name, email').eq('id', otherUserId).single();
@@ -404,7 +320,6 @@ async function loadPending() {
       }
     }
 
-    // Render already-rated section
     if (alreadyRated.length > 0) {
       document.getElementById('alreadyRatedSection').style.display = 'block';
       const list = document.getElementById('alreadyRatedList');
@@ -454,11 +369,10 @@ function renderPendingCard(trade, otherName, otherUserId) {
         <div class="rc-av" style="background:${color}">${initials}</div>
         <div class="rc-trader-info">
           <div class="rc-name">Rate: ${otherName}</div>
-          <div class="rc-meta">Verified meetup confirmed ✓ · ${timeAgo(trade.created_at)}</div>
+          <div class="rc-meta">Trade confirmed ✓ · ${timeAgo(trade.created_at)}</div>
         </div>
         ${trade.total_value ? `<div class="rc-deadline"><div class="rc-deadline-num">$${Number(trade.total_value).toFixed(0)}</div><div class="rc-deadline-label">trade value</div></div>` : ''}
       </div>
-
       <div class="star-widget">
         <div class="sw-label">Overall Rating *</div>
         <div class="stars-row" id="stars-${trade.id}">
@@ -466,32 +380,27 @@ function renderPendingCard(trade, otherName, otherUserId) {
         </div>
         <div class="star-hint" id="hint-${trade.id}">Tap a star to rate</div>
       </div>
-
       <div class="cat-ratings">
         <div class="cat-rate"><div class="cat-rate-label">📦 Item Accuracy</div><div class="mini-stars" id="mini-acc-${trade.id}">${[1,2,3,4,5].map(n=>`<span class="mini-star" onclick="setMini('acc','${trade.id}',${n})">★</span>`).join('')}</div></div>
         <div class="cat-rate"><div class="cat-rate-label">💬 Communication</div><div class="mini-stars" id="mini-com-${trade.id}">${[1,2,3,4,5].map(n=>`<span class="mini-star" onclick="setMini('com','${trade.id}',${n})">★</span>`).join('')}</div></div>
         <div class="cat-rate"><div class="cat-rate-label">📍 Meetup</div><div class="mini-stars" id="mini-meet-${trade.id}">${[1,2,3,4,5].map(n=>`<span class="mini-star" onclick="setMini('meet','${trade.id}',${n})">★</span>`).join('')}</div></div>
         <div class="cat-rate"><div class="cat-rate-label">🤝 Fair Trade</div><div class="mini-stars" id="mini-fair-${trade.id}">${[1,2,3,4,5].map(n=>`<span class="mini-star" onclick="setMini('fair','${trade.id}',${n})">★</span>`).join('')}</div></div>
       </div>
-
       <div class="tag-section-label">What went well?</div>
       <div class="review-tags">${posTags}</div>
       <div class="tag-section-label">Any issues?</div>
       <div class="review-tags">${negTags}</div>
-
       <div class="tag-section-label" style="margin-top:12px">Written Review <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--lighter)">(optional)</span></div>
       <textarea class="review-area" id="text-${trade.id}" placeholder="Tell the community about your experience with ${otherName}…" oninput="countChars(this,'chars-${trade.id}','${trade.id}')"></textarea>
       <div class="review-footer-row">
         <div style="font-size:11px;color:var(--lighter)">Be honest, specific, and respectful.</div>
         <div class="review-chars" id="chars-${trade.id}">0 / 500</div>
       </div>
-
       <button class="rate-btn" id="rateBtn-${trade.id}" onclick="submitRating('${trade.id}','${otherUserId}','${otherName}')" disabled>⭐ Submit Rating for ${otherName}</button>
       <button class="skip-btn" onclick="skipRating('${trade.id}')">Skip for now</button>
     </div>`;
   grid.appendChild(card);
 
-  // Hover effects
   const starsEl = document.getElementById('stars-' + trade.id);
   starsEl.querySelectorAll('.star').forEach(s => {
     s.addEventListener('mouseenter', () => {
@@ -547,23 +456,22 @@ async function submitRating(tradeId, ratedUserId, ratedName) {
     const reviewText = [
       r.text || '',
       r.tags.length ? 'Tags: ' + r.tags.join(', ') : '',
-      r.acc ? `Item Accuracy: ${r.acc}/5` : '',
-      r.com ? `Communication: ${r.com}/5` : '',
-      r.meet ? `Meetup: ${r.meet}/5` : '',
-      r.fair ? `Fair Trade: ${r.fair}/5` : ''
+      r.acc  ? `Item Accuracy: ${r.acc}/5`   : '',
+      r.com  ? `Communication: ${r.com}/5`   : '',
+      r.meet ? `Meetup: ${r.meet}/5`          : '',
+      r.fair ? `Fair Trade: ${r.fair}/5`      : ''
     ].filter(Boolean).join(' | ');
 
     const { error } = await sb.from('ratings').insert({
       rated_id: ratedUserId,
       rater_id: currentUser.id,
       trade_id: tradeId,
-      stars: r.overall,
-      review: reviewText || null
+      stars:    r.overall,
+      review:   reviewText || null
     });
 
     if (error) throw error;
 
-    // Replace card with success state
     const card = document.getElementById('ratecard-' + tradeId);
     card.innerHTML = `
       <div class="rc-head"><div class="rc-trade-id">Trade #${tradeId.slice(0,8).toUpperCase()}</div><div class="rc-badge done">RATED ✓</div></div>
@@ -574,7 +482,6 @@ async function submitRating(tradeId, ratedUserId, ratedName) {
         <div style="font-size:12px;color:var(--lighter)">Your review for ${ratedName} is now live.</div>
       </div>`;
 
-    // Update badge
     const remaining = document.querySelectorAll('.rate-card .rc-badge.pending').length;
     if (remaining > 0) { document.getElementById('pendingCnt').textContent = remaining; }
     else { document.getElementById('pendingCnt').style.display = 'none'; }
@@ -594,7 +501,6 @@ function skipRating(id) {
   showToast('⏰', 'Skipped — you can rate this trade later.');
 }
 
-// ── LOAD REVIEWS RECEIVED ──
 async function loadReceived() {
   const list = document.getElementById('receivedList');
   list.innerHTML = '<div class="loading-state">Loading…</div>';
@@ -605,9 +511,11 @@ async function loadReceived() {
       .order('created_at', { ascending: false });
 
     if (error) throw error;
-    if (!ratings?.length) { list.innerHTML = '<div class="empty-state"><div class="em-icon">💬</div><div class="em-title">No reviews yet</div><div>Complete trades to start receiving reviews.</div></div>'; return; }
+    if (!ratings?.length) {
+      list.innerHTML = '<div class="empty-state"><div class="em-icon">💬</div><div class="em-title">No reviews yet</div><div>Complete trades to start receiving reviews.</div></div>';
+      return;
+    }
 
-    // Fetch rater names
     list.innerHTML = '';
     for (const r of ratings) {
       const { data: rater } = await sb.from('users').select('display_name, email').eq('id', r.rater_id).single();
@@ -619,7 +527,6 @@ async function loadReceived() {
   }
 }
 
-// ── LOAD REVIEWS GIVEN ──
 async function loadGiven() {
   const list = document.getElementById('givenList');
   list.innerHTML = '<div class="loading-state">Loading…</div>';
@@ -630,7 +537,10 @@ async function loadGiven() {
       .order('created_at', { ascending: false });
 
     if (error) throw error;
-    if (!ratings?.length) { list.innerHTML = '<div class="empty-state"><div class="em-icon">⭐</div><div class="em-title">No reviews given yet</div><div>After completing trades you can rate your trading partners.</div></div>'; return; }
+    if (!ratings?.length) {
+      list.innerHTML = '<div class="empty-state"><div class="em-icon">⭐</div><div class="em-title">No reviews given yet</div><div>After completing trades you can rate your trading partners.</div></div>';
+      return;
+    }
 
     list.innerHTML = '';
     for (const r of ratings) {
@@ -648,7 +558,6 @@ function buildReviewCard(r, personName, isReceived) {
   const color = COLORS[personName.charCodeAt(0) % COLORS.length];
   const starsStr = '★'.repeat(r.stars) + '☆'.repeat(5 - r.stars);
   const label = isReceived ? 'Review from' : 'You rated';
-
   return `
     <div class="review-card fade-in">
       <div class="rv-header">
@@ -664,7 +573,6 @@ function buildReviewCard(r, personName, isReceived) {
     </div>`;
 }
 
-// ── RESPOND ──
 function openRespond(ratingId) {
   respondTargetId = ratingId;
   document.getElementById('responseText').value = '';
@@ -674,17 +582,16 @@ function openRespond(ratingId) {
 async function submitResponse() {
   const text = document.getElementById('responseText').value.trim();
   if (!text) { showToast('⚠️', 'Please write a response.', true); return; }
-  // For now store response in review field appended — future: add response column
-  showToast('✅', 'Response posted! Visible on your profile.');
+  // Response column not yet in schema — show confirmation and close
+  // TODO: add response_text column to ratings table, then: await sb.from('ratings').update({ response_text: text }).eq('id', respondTargetId)
+  showToast('✅', 'Response noted — response column coming in next schema update.');
   closeModal('respondModal');
 }
 
-// ── MODAL ──
 function openModal(id) { document.getElementById(id).classList.add('open'); }
 function closeModal(id) { document.getElementById(id).classList.remove('open'); }
 document.querySelectorAll('.overlay').forEach(o => o.addEventListener('click', e => { if (e.target === o) o.classList.remove('open'); }));
 
-// ── UTILITIES ──
 function timeAgo(ts) {
   if (!ts) return '';
   const m = Math.floor((Date.now() - new Date(ts)) / 60000);
@@ -705,41 +612,35 @@ function showToast(icon, msg, isError = false) {
   window._tt = setTimeout(() => t.classList.remove('show'), 4000);
 }
 </script>
-<!-- TRADEZY HELP WIDGET START — paste before </body> on every page -->
+
+<!-- TRADEZY HELP WIDGET START -->
 <style>
-/* ── TRADEZY HELP WIDGET STYLES ── */
 #tz-help-bubble{position:fixed;bottom:24px;right:24px;z-index:9999;display:flex;flex-direction:column;align-items:flex-end;gap:10px;font-family:'Lato',system-ui,sans-serif;}
 #tz-bubble-btn{width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#0a1628,#1a56db);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1.4rem;box-shadow:0 4px 20px rgba(26,86,219,.4);transition:all .2s;position:relative;}
-#tz-bubble-btn:hover{transform:scale(1.08);box-shadow:0 6px 28px rgba(26,86,219,.5);}
+#tz-bubble-btn:hover{transform:scale(1.08);}
 #tz-bubble-btn .tz-notif{position:absolute;top:0;right:0;width:14px;height:14px;background:#dc2626;border-radius:50%;border:2px solid #fff;display:none;}
 #tz-chat-panel{display:none;width:360px;height:520px;background:#fff;border-radius:16px;box-shadow:0 20px 60px rgba(0,0,0,.18);flex-direction:column;overflow:hidden;border:1px solid #e2e8f0;animation:tzSlideUp .2s ease;}
 #tz-chat-panel.open{display:flex;}
 @keyframes tzSlideUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
 .tz-panel-head{background:linear-gradient(135deg,#0a1628,#112240);padding:14px 16px;display:flex;align-items:center;gap:10px;flex-shrink:0;}
 .tz-head-icon{width:34px;height:34px;background:rgba(245,158,11,.2);border:1px solid rgba(245,158,11,.3);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0;}
-.tz-head-info{flex:1;}
-.tz-head-title{font-weight:800;font-size:.88rem;color:#fff;font-family:'Barlow Condensed',system-ui,sans-serif;letter-spacing:.3px;}
+.tz-head-info{flex:1;}.tz-head-title{font-weight:800;font-size:.88rem;color:#fff;font-family:'Barlow Condensed',system-ui,sans-serif;letter-spacing:.3px;}
 .tz-head-status{font-size:10px;color:#22c55e;display:flex;align-items:center;gap:4px;}
 .tz-head-dot{width:6px;height:6px;background:#22c55e;border-radius:50%;animation:tzPulse 2s infinite;}
 @keyframes tzPulse{0%,100%{opacity:1}50%{opacity:.5}}
 .tz-head-close{background:rgba(255,255,255,.1);border:none;color:#94a3b8;width:26px;height:26px;border-radius:50%;cursor:pointer;font-size:.85rem;display:flex;align-items:center;justify-content:center;transition:all .15s;}
 .tz-head-close:hover{background:rgba(255,255,255,.2);color:#fff;}
 .tz-messages{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px;scroll-behavior:smooth;}
-.tz-messages::-webkit-scrollbar{width:4px;}
-.tz-messages::-webkit-scrollbar-track{background:transparent;}
-.tz-messages::-webkit-scrollbar-thumb{background:#e2e8f0;border-radius:2px;}
+.tz-messages::-webkit-scrollbar{width:4px;}.tz-messages::-webkit-scrollbar-track{background:transparent;}.tz-messages::-webkit-scrollbar-thumb{background:#e2e8f0;border-radius:2px;}
 .tz-msg{max-width:84%;display:flex;flex-direction:column;gap:2px;}
-.tz-msg.bot{align-self:flex-start;}
-.tz-msg.user{align-self:flex-end;}
+.tz-msg.bot{align-self:flex-start;}.tz-msg.user{align-self:flex-end;}
 .tz-bubble{padding:9px 12px;border-radius:12px;font-size:13px;line-height:1.5;}
 .tz-msg.bot .tz-bubble{background:#f1f5f9;color:#1a1a2e;border-radius:4px 12px 12px 12px;}
 .tz-msg.user .tz-bubble{background:linear-gradient(135deg,#1a56db,#2563eb);color:#fff;border-radius:12px 4px 12px 12px;}
-.tz-msg-time{font-size:10px;color:#94a3b8;padding:0 4px;}
-.tz-msg.user .tz-msg-time{text-align:right;}
+.tz-msg-time{font-size:10px;color:#94a3b8;padding:0 4px;}.tz-msg.user .tz-msg-time{text-align:right;}
 .tz-typing{display:flex;align-items:center;gap:4px;padding:9px 12px;background:#f1f5f9;border-radius:4px 12px 12px 12px;width:fit-content;}
 .tz-typing span{width:6px;height:6px;background:#94a3b8;border-radius:50%;animation:tzDot 1.2s infinite;}
-.tz-typing span:nth-child(2){animation-delay:.2s;}
-.tz-typing span:nth-child(3){animation-delay:.4s;}
+.tz-typing span:nth-child(2){animation-delay:.2s;}.tz-typing span:nth-child(3){animation-delay:.4s;}
 @keyframes tzDot{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-4px)}}
 .tz-quick-btns{display:flex;flex-wrap:wrap;gap:5px;margin-top:4px;}
 .tz-quick-btn{background:#fff;border:1px solid #e2e8f0;color:#1a56db;font-size:11px;font-weight:700;padding:4px 10px;border-radius:99px;cursor:pointer;transition:all .12s;font-family:inherit;}
@@ -754,19 +655,14 @@ function showToast(icon, msg, isError = false) {
 .tz-input{flex:1;border:1.5px solid #e2e8f0;border-radius:8px;padding:8px 11px;font-size:13px;font-family:inherit;color:#1a1a2e;outline:none;resize:none;height:38px;max-height:90px;overflow-y:auto;transition:border-color .15s;background:#fff;}
 .tz-input:focus{border-color:#1a56db;box-shadow:0 0 0 3px rgba(26,86,219,.07);}
 .tz-send-btn{width:36px;height:36px;background:linear-gradient(135deg,#1a56db,#2563eb);border:none;border-radius:8px;color:#fff;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s;align-self:flex-end;}
-.tz-send-btn:hover{transform:scale(1.05);}
-.tz-send-btn:disabled{opacity:.5;cursor:not-allowed;transform:none;}
+.tz-send-btn:hover{transform:scale(1.05);}.tz-send-btn:disabled{opacity:.5;cursor:not-allowed;transform:none;}
 .tz-powered{text-align:center;font-size:10px;color:#cbd5e1;padding:5px 0 2px;flex-shrink:0;}
 </style>
- 
 <div id="tz-help-bubble">
   <div id="tz-chat-panel">
     <div class="tz-panel-head">
       <div class="tz-head-icon">🤖</div>
-      <div class="tz-head-info">
-        <div class="tz-head-title">Tradezy Support</div>
-        <div class="tz-head-status"><span class="tz-head-dot"></span>Online — AI Assistant</div>
-      </div>
+      <div class="tz-head-info"><div class="tz-head-title">Tradezy Support</div><div class="tz-head-status"><span class="tz-head-dot"></span>Online — AI Assistant</div></div>
       <button class="tz-head-close" onclick="tzToggle()">✕</button>
     </div>
     <div class="tz-messages" id="tzMessages"></div>
@@ -776,267 +672,112 @@ function showToast(icon, msg, isError = false) {
     </div>
     <div class="tz-powered">Powered by Claude AI · Tradezy Support</div>
   </div>
-  <button id="tz-bubble-btn" onclick="tzToggle()" title="Get Help">
-    💬
-    <div class="tz-notif" id="tzNotif"></div>
-  </button>
+  <button id="tz-bubble-btn" onclick="tzToggle()" title="Get Help">💬<div class="tz-notif" id="tzNotif"></div></button>
 </div>
- 
 <script>
-(function() {
-  // ── CONFIG ──
-  const SUPABASE_URL = 'https://equvwaspcoeetfsexqki.supabase.co';
-  const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVxdXZ3YXNwY29lZXRmc2V4cWtpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgyNzc2MjQsImV4cCI6MjA5Mzg1MzYyNH0.TP6Kk3pzHW1PYMUu5D9Vu2lJrazIEagzu5csYhqkrfI';
- 
-  const SYSTEM_PROMPT = `You are the Tradezy support assistant — a helpful, friendly AI for Tradezy, a peer-to-peer local trading marketplace.
- 
+(function(){
+  const SP=`You are the Tradezy support assistant — a helpful, friendly AI for Tradezy, a peer-to-peer local trading marketplace.
+
 ABOUT TRADEZY:
 - Free local trading platform where users list items and trade with verified neighbors
 - Platform fee: 5% per party on completed trades (Founding Traders pay 3% lifetime)
 - Ship-It trades (state-to-state): 10% fee, fully verified users only, launching July 31 2026
-- Phase 1 launch: July 17 2026 — Connecticut and Ohio statewide
-- Phase 2: July 31 2026 — Nationwide
- 
+- Phase 1 launch: July 17 2026 — Connecticut and Ohio. Phase 2: July 31 2026 — Nationwide
+
 HOW TRADING WORKS:
 1. Post a listing with photos, condition, what you want in return
 2. Browse listings, make offers (item-for-item, item + cash top-up, or cash)
-3. Accept an offer, agree on a meetup spot
+3. Accept an offer, agree on a meetup spot (local) or Ship-It flow
 4. Both parties confirm the exchange in-app — this unlocks ratings
-5. Leave ratings after confirmed meetup
- 
+5. Leave ratings after confirmed exchange
+
+RATINGS:
+- Ratings unlock only after both parties confirm the trade in-app
+- Rate on: Overall, Item Accuracy, Communication, Meetup, Fair Trade
+- Tags available: positive and negative quick-select tags
+- Written review optional, max 500 characters
+- You can respond to reviews left for you
+
 VERIFICATION & TRUST:
 - Email verification required to use platform
 - Address verification adds trust score
 - ID verification required for Ship-It trades
 - W-9 tax form required before posting listings
-- Trust score shown on profiles
- 
-PROHIBITED ITEMS (permanent ban): Firearms, weapons, alcohol, tobacco, drugs, live animals, adult content, stolen goods, cash, gift cards, cryptocurrency
- 
-FEES EXPLAINED:
-- 5% of total trade value per party — example: $100 item trade = $5 fee each party
-- $90 item + $40 cash top-up = $130 total = $6.50 fee each party
-- Founding Traders: 3% lifetime (signed up before July 17 launch)
+
+PROHIBITED ITEMS: Firearms, weapons, alcohol, tobacco, drugs, live animals, adult content, stolen goods, cash, gift cards, cryptocurrency
+
+FEES:
+- 5% per party for local trades (Founding Traders 3% lifetime)
+- Ship-It: 10% per party at trade acceptance
 - Listing is always free
- 
-SHIP-IT TRADES (July 31+):
-- State-to-state trading for fully ID-verified users only
-- 10% fee per party at trade acceptance
-- Payment via Zelle, PayPal, Venmo, Apple Pay, Google Pay, or Cash App (peer-to-peer, Tradezy never holds funds)
-- Buyer uploads payment screenshot as proof
-- Seller enters tracking number
-- Both confirm delivery to close trade
- 
-TCG CATEGORIES: Pokémon, One Piece, MTG, Yu-Gi-Oh, Lorcana, Flesh & Blood
-SPORTS CARDS: Baseball, Football, Basketball, Hockey, Soccer
-Card grading supported: PSA, BGS, SGC, TAG
- 
-ACCOUNT HELP:
-- Password reset: direct users to https://tradezyhq.com/alltrades-auth.html
-- Account locked/banned: direct to support@tradezyhq.com
-- Verification issues: direct to https://tradezyhq.com/alltrades-verification.html
- 
+
 DISPUTE RESOLUTION:
-- File a dispute at https://tradezyhq.com/alltrades-disputes.html
-- Email disputes@tradezyhq.com
-- SLA: CRITICAL issues 4hrs, HIGH 24hrs, MEDIUM 48hrs, LOW 72hrs
- 
+- File at https://tradezyhq.com/alltrades-disputes.html or disputes@tradezyhq.com
+- SLA: CRITICAL 8hrs, HIGH 16hrs, MEDIUM 24hrs, LOW 48hrs
+
 ESCALATION RULES — escalate to human immediately if:
-- User reports fraud, scam, or didn't receive item
+- User reports fraud, scam, or did not receive item
 - User mentions safety concern, threat, or harassment
-- User is clearly distressed or frustrated after multiple exchanges
+- User is clearly distressed after multiple exchanges
 - User explicitly requests a human agent
 - Issue involves account ban or suspension
- 
-ESCALATION: When escalating, provide support@tradezyhq.com for general issues or disputes@tradezyhq.com for trade disputes. Summarize the issue briefly.
- 
-TONE: Warm, clear, concise. Never give legal or financial advice. Never make up information — if unsure, direct to support@tradezyhq.com. Keep responses short and scannable — use bullet points for multi-step answers.`;
- 
-  // ── STATE ──
-  let isOpen = false;
-  let isLoading = false;
-  let exchangeCount = 0;
-  let hasShownWelcome = false;
-  const history = [];
- 
-  // ── TOGGLE ──
-  window.tzToggle = function() {
-    isOpen = !isOpen;
-    const panel = document.getElementById('tz-chat-panel');
-    const btn = document.getElementById('tz-bubble-btn');
-    if (isOpen) {
-      panel.classList.add('open');
-      btn.innerHTML = '✕<div class="tz-notif" id="tzNotif"></div>';
-      if (!hasShownWelcome) {
-        hasShownWelcome = true;
-        tzBotMessage("👋 Hey! I'm the Tradezy support assistant. I can help with:", [
-          "How trading works",
-          "Fees & verification",
-          "Account issues",
-          "Reporting a problem"
-        ]);
-      }
-      setTimeout(() => document.getElementById('tzInput')?.focus(), 200);
-    } else {
-      panel.classList.remove('open');
-      btn.innerHTML = '💬<div class="tz-notif" id="tzNotif"></div>';
-    }
+
+ESCALATION: support@tradezyhq.com for general issues, disputes@tradezyhq.com for trade disputes.
+
+TONE: Warm, clear, concise. Never give legal or financial advice. Keep responses short and scannable.`;
+  let isOpen=false,isLoading=false,exchangeCount=0,hasShownWelcome=false;
+  const history=[];
+  window.tzToggle=function(){
+    isOpen=!isOpen;
+    const panel=document.getElementById('tz-chat-panel'),btn=document.getElementById('tz-bubble-btn');
+    if(isOpen){panel.classList.add('open');btn.innerHTML='✕<div class="tz-notif" id="tzNotif"></div>';
+      if(!hasShownWelcome){hasShownWelcome=true;tzBotMsg("👋 Hey! I'm the Tradezy support assistant. I can help with:",["How ratings work","How trading works","Fees & verification","Reporting a problem"]);}
+      setTimeout(()=>document.getElementById('tzInput')?.focus(),200);
+    }else{panel.classList.remove('open');btn.innerHTML='💬<div class="tz-notif" id="tzNotif"></div>';}
   };
- 
-  // ── SEND ──
-  window.tzSend = async function() {
-    const input = document.getElementById('tzInput');
-    const text = input.value.trim();
-    if (!text || isLoading) return;
-    input.value = '';
-    tzAutoResize(input);
-    tzUserMessage(text);
-    history.push({ role: 'user', content: text });
-    exchangeCount++;
-    await tzGetResponse();
+  window.tzSend=async function(){
+    const input=document.getElementById('tzInput'),text=input.value.trim();
+    if(!text||isLoading)return;
+    input.value='';tzAutoResize(input);tzUserMsg(text);
+    history.push({role:'user',content:text});exchangeCount++;await tzGetResp();
   };
- 
-  window.tzKeyDown = function(e) {
-    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); tzSend(); }
-  };
- 
-  window.tzAutoResize = function(el) {
-    el.style.height = '38px';
-    el.style.height = Math.min(el.scrollHeight, 90) + 'px';
-  };
- 
-  // ── GET AI RESPONSE ──
-  async function tzGetResponse() {
-    isLoading = true;
-    document.getElementById('tzSendBtn').disabled = true;
- 
-    // Show typing indicator
-    const typingId = 'tz-typing-' + Date.now();
-    const msgs = document.getElementById('tzMessages');
-    const typingEl = document.createElement('div');
-    typingEl.id = typingId;
-    typingEl.className = 'tz-msg bot';
-    typingEl.innerHTML = '<div class="tz-typing"><span></span><span></span><span></span></div>';
-    msgs.appendChild(typingEl);
-    msgs.scrollTop = msgs.scrollHeight;
- 
-    try {
-      const response = await fetch('https://tradezy-ai-proxy.throbbing-lake-08ed.workers.dev', {
-        method: 'POST',
-       headers: { 'Content-Type': 'application/json',  },
-        body: JSON.stringify({
-          model: 'claude-sonnet-4-6',
-          max_tokens: 1000,
-          system: SYSTEM_PROMPT,
-          messages: history
-        })
-      });
- 
-      const data = await response.json();
-      const reply = data.content?.[0]?.text || "I'm having trouble responding right now. Please email support@tradezyhq.com.";
- 
-      // Remove typing indicator
-      document.getElementById(typingId)?.remove();
- 
-      // Add to history
-      history.push({ role: 'assistant', content: reply });
- 
-      // Check for escalation triggers
-      const userText = history.filter(m => m.role === 'user').map(m => m.content).join(' ').toLowerCase();
-      const escalateKeywords = ['scam', 'fraud', 'didn\'t receive', 'never received', 'threat', 'harass', 'human', 'agent', 'real person', 'banned', 'suspended', 'unsafe'];
-      const shouldEscalate = escalateKeywords.some(k => userText.includes(k)) || exchangeCount >= 4;
- 
-      // Render response
-      tzBotMessage(reply, null, shouldEscalate);
- 
-    } catch(e) {
-      document.getElementById(typingId)?.remove();
-      tzBotMessage("I'm having trouble connecting right now. For immediate help, please email support@tradezyhq.com or file a dispute at the link below.", null, true);
-    }
- 
-    isLoading = false;
-    document.getElementById('tzSendBtn').disabled = false;
+  window.tzKeyDown=function(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();tzSend();}};
+  window.tzAutoResize=function(el){el.style.height='38px';el.style.height=Math.min(el.scrollHeight,90)+'px';};
+  async function tzGetResp(){
+    isLoading=true;document.getElementById('tzSendBtn').disabled=true;
+    const tid='tz-t-'+Date.now(),msgs=document.getElementById('tzMessages');
+    const tel=document.createElement('div');tel.id=tid;tel.className='tz-msg bot';tel.innerHTML='<div class="tz-typing"><span></span><span></span><span></span></div>';
+    msgs.appendChild(tel);msgs.scrollTop=msgs.scrollHeight;
+    try{
+      const r=await fetch('https://tradezy-ai-proxy.throbbing-lake-08ed.workers.dev',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:1000,system:SP,messages:history})});
+      const d=await r.json();const reply=d.content?.[0]?.text||"I'm having trouble responding. Please email support@tradezyhq.com.";
+      document.getElementById(tid)?.remove();history.push({role:'assistant',content:reply});
+      const ut=history.filter(m=>m.role==='user').map(m=>m.content).join(' ').toLowerCase();
+      const esc=['scam','fraud','didn\'t receive','threat','harass','human','agent','banned','suspended'].some(k=>ut.includes(k))||exchangeCount>=4;
+      tzBotMsg(reply,null,esc);
+    }catch(e){document.getElementById(tid)?.remove();tzBotMsg("I'm having trouble connecting. Please email support@tradezyhq.com.",null,true);}
+    isLoading=false;document.getElementById('tzSendBtn').disabled=false;
   }
- 
-  // ── RENDER BOT MESSAGE ──
-  function tzBotMessage(text, quickReplies = null, showEscalate = false) {
-    const msgs = document.getElementById('tzMessages');
-    const wrapper = document.createElement('div');
-    wrapper.className = 'tz-msg bot';
- 
-    // Parse markdown-lite: bold, bullets
-    let html = text
-      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-      .replace(/^[-•] (.+)$/gm, '<li>$1</li>')
-      .replace(/(<li>.*<\/li>)/gs, '<ul style="margin:4px 0 0 14px;padding:0;font-size:13px;line-height:1.6">$1</ul>')
-      .replace(/\n\n/g, '<br><br>')
-      .replace(/\n/g, '<br>');
- 
-    // Detect and linkify account action hints
-    let extraHTML = '';
- 
-    if (text.toLowerCase().includes('password reset') || text.toLowerCase().includes('reset your password')) {
-      extraHTML += `<a class="tz-action-link" href="https://tradezyhq.com/alltrades-auth.html" target="_blank">🔑 Reset Password →</a>`;
-    }
-    if (text.toLowerCase().includes('verification') || text.toLowerCase().includes('verify your')) {
-      extraHTML += `<a class="tz-action-link" href="https://tradezyhq.com/alltrades-verification.html" target="_blank">✅ Go to Verification →</a>`;
-    }
-    if (text.toLowerCase().includes('dispute') || text.toLowerCase().includes('file a dispute')) {
-      extraHTML += `<a class="tz-action-link" href="https://tradezyhq.com/alltrades-disputes.html" target="_blank">⚖️ File a Dispute →</a>`;
-    }
- 
-    let bubbleHTML = `<div class="tz-bubble">${html}</div>`;
-    if (extraHTML) bubbleHTML += extraHTML;
- 
-    if (showEscalate) {
-      bubbleHTML += `
-        <div class="tz-escalate-card">
-          <div class="tz-escalate-title">🙋 Want to talk to a person?</div>
-          <div style="color:#92400e;font-size:12px;line-height:1.5">Our support team is standing by to help.</div>
-          <div style="display:flex;gap:7px;flex-wrap:wrap;margin-top:7px;">
-            <a class="tz-escalate-btn" href="mailto:support@tradezyhq.com?subject=Support Request from Tradezy Widget">📧 Email Support</a>
-            <a class="tz-escalate-btn" href="https://tradezyhq.com/alltrades-disputes.html" target="_blank" style="background:#1a56db">⚖️ File Dispute</a>
-          </div>
-        </div>`;
-    }
- 
-    if (quickReplies && quickReplies.length) {
-      bubbleHTML += '<div class="tz-quick-btns">' +
-        quickReplies.map(q => `<button class="tz-quick-btn" onclick="tzQuickReply('${q.replace(/'/g, "\\'")}')">${q}</button>`).join('') +
-        '</div>';
-    }
- 
-    wrapper.innerHTML = bubbleHTML;
-    const time = document.createElement('div');
-    time.className = 'tz-msg-time';
-    time.textContent = new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
-    wrapper.appendChild(time);
-    msgs.appendChild(wrapper);
-    msgs.scrollTop = msgs.scrollHeight;
+  function tzBotMsg(text,qr=null,esc=false){
+    const msgs=document.getElementById('tzMessages'),w=document.createElement('div');w.className='tz-msg bot';
+    let html=text.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/^[-•] (.+)$/gm,'<li>$1</li>').replace(/(<li>.*<\/li>)/gs,'<ul style="margin:4px 0 0 14px;padding:0;font-size:13px;line-height:1.6">$1</ul>').replace(/\n\n/g,'<br><br>').replace(/\n/g,'<br>');
+    let ex='';
+    if(text.toLowerCase().includes('verification'))ex+=`<a class="tz-action-link" href="https://tradezyhq.com/alltrades-verification.html" target="_blank">✅ Go to Verification →</a>`;
+    if(text.toLowerCase().includes('dispute'))ex+=`<a class="tz-action-link" href="https://tradezyhq.com/alltrades-disputes.html" target="_blank">⚖️ File a Dispute →</a>`;
+    let bh=`<div class="tz-bubble">${html}</div>`;if(ex)bh+=ex;
+    if(esc)bh+=`<div class="tz-escalate-card"><div class="tz-escalate-title">🙋 Want to talk to a person?</div><div style="color:#92400e;font-size:12px">Our support team is standing by.</div><div style="display:flex;gap:7px;flex-wrap:wrap;margin-top:7px;"><a class="tz-escalate-btn" href="mailto:support@tradezyhq.com">📧 Email Support</a><a class="tz-escalate-btn" href="https://tradezyhq.com/alltrades-disputes.html" target="_blank" style="background:#1a56db">⚖️ File Dispute</a></div></div>`;
+    if(qr&&qr.length)bh+='<div class="tz-quick-btns">'+qr.map(q=>`<button class="tz-quick-btn" onclick="tzQuickReply('${q.replace(/'/g,"\\'")}')">${q}</button>`).join('')+'</div>';
+    w.innerHTML=bh;
+    const t=document.createElement('div');t.className='tz-msg-time';t.textContent=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+    w.appendChild(t);msgs.appendChild(w);msgs.scrollTop=msgs.scrollHeight;
   }
- 
-  // ── RENDER USER MESSAGE ──
-  function tzUserMessage(text) {
-    const msgs = document.getElementById('tzMessages');
-    const wrapper = document.createElement('div');
-    wrapper.className = 'tz-msg user';
-    wrapper.innerHTML = `
-      <div class="tz-bubble">${escHtml(text)}</div>
-      <div class="tz-msg-time">${new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})}</div>`;
-    msgs.appendChild(wrapper);
-    msgs.scrollTop = msgs.scrollHeight;
+  function tzUserMsg(text){
+    const msgs=document.getElementById('tzMessages'),w=document.createElement('div');w.className='tz-msg user';
+    w.innerHTML=`<div class="tz-bubble">${esc(text)}</div><div class="tz-msg-time">${new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}</div>`;
+    msgs.appendChild(w);msgs.scrollTop=msgs.scrollHeight;
   }
- 
-  // ── QUICK REPLY ──
-  window.tzQuickReply = function(text) {
-    document.getElementById('tzInput').value = text;
-    tzSend();
-  };
- 
-  function escHtml(str) {
-    return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-  }
- 
+  window.tzQuickReply=function(t){document.getElementById('tzInput').value=t;tzSend();};
+  function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 })();
 </script>
 <!-- TRADEZY HELP WIDGET END -->
