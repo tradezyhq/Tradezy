@@ -46,19 +46,6 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
 .progress-bar{flex:1;height:4px;background:rgba(255,255,255,.1);border-radius:2px;overflow:hidden;}
 .progress-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold-light));border-radius:2px;transition:width .4s ease;width:0%;}
 .progress-label{font-family:'Barlow Condensed',sans-serif;font-size:.85rem;font-weight:700;color:var(--gold-light);white-space:nowrap;min-width:80px;text-align:right;}
-.w9-gate{display:none;max-width:560px;margin:60px auto;background:var(--white);border:1px solid var(--border);border-radius:16px;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,.1);}
-.w9-gate.show{display:block;}
-.w9-gate-head{background:linear-gradient(135deg,#7f1d1d,#991b1b);padding:22px 24px;text-align:center;}
-.w9-gate-icon{font-size:2.8rem;margin-bottom:8px;}
-.w9-gate-title{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.5rem;color:#fff;margin-bottom:4px;}
-.w9-gate-sub{font-size:13px;color:rgba(255,255,255,.7);}
-.w9-gate-body{padding:24px;}
-.w9-gate-body p{font-size:14px;color:var(--text-light);line-height:1.6;margin-bottom:20px;}
-.w9-gate-body strong{color:var(--text);}
-.btn-w9{display:block;width:100%;padding:13px;background:var(--gold);color:var(--navy);border:none;border-radius:8px;font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.05rem;cursor:pointer;text-align:center;text-decoration:none;transition:all .15s;margin-bottom:10px;}
-.btn-w9:hover{background:var(--gold-light);transform:translateY(-1px);}
-.btn-w9-cancel{display:block;width:100%;padding:11px;background:transparent;color:var(--text-light);border:1.5px solid var(--border);border-radius:8px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.95rem;cursor:pointer;text-align:center;transition:all .15s;}
-.btn-w9-cancel:hover{border-color:#999;color:var(--text);}
 .main{max-width:1100px;margin:0 auto;padding:28px 20px;display:grid;grid-template-columns:1fr 340px;gap:24px;align-items:start;}
 .form-card{background:var(--white);border:1px solid var(--border);border-radius:14px;overflow:hidden;}
 .card-head{background:linear-gradient(135deg,var(--navy),#1a3a6b);padding:18px 22px;display:flex;align-items:center;gap:12px;}
@@ -235,7 +222,7 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
 @media(prefers-color-scheme:dark){
   :root{--text:#f1f5f9;--text-light:#94a3b8;--border:rgba(255,255,255,.1);--bg:#0f172a;--white:#1e293b;--surface:#162032;}
   body{background:#0f172a !important;color:#f1f5f9 !important;}
-  .form-card,.preview-card,.tips-card,.w9-gate{background:#1e293b !important;border-color:rgba(255,255,255,.08) !important;}
+  .form-card,.preview-card,.tips-card{background:#1e293b !important;border-color:rgba(255,255,255,.08) !important;}
   input,select,textarea{background:#162032 !important;border-color:rgba(255,255,255,.12) !important;color:#f1f5f9 !important;}
   .tags-wrap,.cash-wrap input{background:#162032 !important;}
   .pref-row{background:#162032 !important;}
@@ -267,23 +254,8 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
   <div class="progress-label" id="pLabel">Step 1 of 4</div>
 </div>
 
-<!-- W-9 GATE -->
-<div class="w9-gate" id="w9Gate">
-  <div class="w9-gate-head">
-    <div class="w9-gate-icon">📋</div>
-    <div class="w9-gate-title">Tax Info Required Before Listing</div>
-    <div class="w9-gate-sub">This takes about 2 minutes to complete</div>
-  </div>
-  <div class="w9-gate-body">
-    <p>The IRS requires platforms like Tradezy to collect a <strong>W-9 form</strong> from sellers before they can list items for trade. This is a one-time step that unlocks your ability to post listings, make offers, and trade on Tradezy.</p>
-    <p style="margin-bottom:20px"><strong>What you'll need:</strong> Your legal name, address, and Social Security Number or EIN. Your information is encrypted and stored securely.</p>
-    <a class="btn-w9" href="alltrades-verification.html">Complete Tax Info → Unlock Listings</a>
-    <button class="btn-w9-cancel" onclick="window.location.href='alltrades.html'">← Back to Marketplace</button>
-  </div>
-</div>
-
 <!-- MAIN FORM -->
-<div id="mainForm" style="display:none">
+<div id="mainForm">
 <div class="main">
   <div>
 
@@ -611,7 +583,7 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
             <div>
               <div class="shipit-title" id="shipItTitle">Ship-It Enabled — Reach Nationwide Traders</div>
               <div class="shipit-desc" id="shipItDesc">Buyers can choose to ship instead of meeting locally. 10% fee per party · ID verification required · Tradezy never holds funds.</div>
-              <div class="shipit-lock-note" id="shipItLockNote" style="display:none">⚠️ Full verification required to enable Ship-It. <a href="alltrades-verification.html">Complete verification →</a></div>
+              <div class="shipit-lock-note" id="shipItLockNote" style="display:none">⚠️ ID verification required to enable Ship-It. <a href="alltrades-verification.html">Complete verification →</a></div>
             </div>
           </div>
           <div class="toggle on" id="tgl-shipit"></div>
@@ -722,26 +694,19 @@ let shipIt = true;
   if (!session) { window.location.href = 'alltrades-auth.html'; return; }
   currentUser = session.user;
 
-  const { data: profile, error } = await sb.from('users')
-    .select('display_name, w9_on_file, phone_verified, id_verified, address_verified')
+  const { data: profile } = await sb.from('users')
+    .select('display_name, phone_verified, id_verified, address_verified')
     .eq('id', currentUser.id).single();
 
-  if (error || !profile?.w9_on_file) {
-    document.getElementById('w9Gate').classList.add('show');
-    return;
-  }
+  // Ship-It requires ID verification
+  fullyVerified = !!(profile?.id_verified);
+  shipIt = fullyVerified;
 
-  // Check full verification for Ship-It
-  fullyVerified = !!(profile.phone_verified && profile.id_verified && profile.address_verified && profile.w9_on_file);
-  shipIt = fullyVerified; // ON by default only if fully verified
-
-  document.getElementById('mainForm').style.display = 'block';
   const name = profile?.display_name || currentUser.email?.split('@')[0] || 'You';
   const initials = name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0,2);
   document.getElementById('prevAv').textContent = initials;
   document.getElementById('prevName').textContent = name;
 
-  // Set initial Ship-It toggle state
   renderShipItToggle();
   renderGrid();
   updateProg(1);
@@ -771,12 +736,11 @@ function renderShipItToggle() {
   const lockNote = document.getElementById('shipItLockNote');
 
   if (!fullyVerified) {
-    // Locked — show disabled state
     row.className = 'shipit-row off locked';
     row.onclick = null;
     tgl.className = 'toggle disabled';
-    title.textContent = 'Ship-It — Verification Required';
-    desc.textContent = 'Complete full verification to enable state-to-state Ship-It trading on your listings.';
+    title.textContent = 'Ship-It — ID Verification Required';
+    desc.textContent = 'Complete ID verification to enable state-to-state Ship-It trading on your listings.';
     lockNote.style.display = 'block';
     shipIt = false;
   } else if (shipIt) {
@@ -971,7 +935,6 @@ function livePreview() {
     (isTCG ? '<span class="pbadge tcg">🃏 TCG</span>' : '') +
     (isSC  ? '<span class="pbadge sportsc">⚾ SPORTS</span>' : '') +
     (shipIt ? '<span class="pbadge shipit">🚚 SHIP-IT</span>' : '');
-  // Show/hide ship-it dist pill
   const shipPill = document.getElementById('prevShipPill');
   if (shipPill) shipPill.style.display = shipIt ? '' : 'none';
 }
@@ -1122,7 +1085,6 @@ function buildReview() {
     cardHtml = rr('⚾','Sports Card',`${scSubcat}${player?' · '+player:''}${year?' · '+year:''} · ${scCond}${gradeInfo}`);
   }
 
-  // Ship-It review row
   const shipItHtml = shipIt
     ? rr('🚚','Ship-It','<span style="background:#e0f2fe;color:#0369a1;border:1px solid #7dd3fc;border-radius:4px;padding:1px 7px;font-size:11px;font-weight:700">✅ Enabled — Local + Nationwide · 10% fee</span>')
     : rr('🚚','Ship-It','<span style="background:#f1f5f9;color:#64748b;border:1px solid #e2e8f0;border-radius:4px;padding:1px 7px;font-size:11px;font-weight:700">❌ Disabled — Local meetup only</span>');
@@ -1175,14 +1137,6 @@ async function publish(btn) {
   btn.textContent = '⏳ Publishing…';
   btn.disabled = true;
   try {
-    const { data: profile } = await sb.from('users').select('w9_on_file').eq('id', currentUser.id).single();
-    if (!profile?.w9_on_file) {
-      toast('⚠️', 'Tax information required before publishing. Redirecting…');
-      setTimeout(() => window.location.href = 'alltrades-verification.html', 1500);
-      btn.textContent = '🚀 Publish — Go Live Now!';
-      btn.disabled = false;
-      return;
-    }
     const isTCG = cat === 'Trading Cards';
     const isSC  = cat === 'Sports Cards';
     const val   = parseFloat(document.getElementById('fVal').value) || 0;
@@ -1262,7 +1216,7 @@ function resetAll() {
   tcgCond = 'Mint'; tcgPref = 'Trade Only'; tcgSubcat = 'Pokémon';
   scSubcat = 'Baseball'; scCond = 'Mint'; tcgGraded = false; scGraded = false; foilOn = false;
   prefs = {trade:true, tc:true, cash:false, bundle:false};
-  shipIt = fullyVerified; // reset to default based on verification
+  shipIt = fullyVerified;
   document.getElementById('successWrap').classList.remove('show');
   document.getElementById('card4').style.display = 'none';
   document.getElementById('reviewRows').style.display = '';
@@ -1304,29 +1258,23 @@ function toast(icon, msg) {
 @keyframes tzSlideUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
 .tz-panel-head{background:linear-gradient(135deg,#0a1628,#112240);padding:14px 16px;display:flex;align-items:center;gap:10px;flex-shrink:0;}
 .tz-head-icon{width:34px;height:34px;background:rgba(245,158,11,.2);border:1px solid rgba(245,158,11,.3);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0;}
-.tz-head-info{flex:1;}
-.tz-head-title{font-weight:800;font-size:.88rem;color:#fff;font-family:'Barlow Condensed',system-ui,sans-serif;letter-spacing:.3px;}
+.tz-head-info{flex:1;}.tz-head-title{font-weight:800;font-size:.88rem;color:#fff;font-family:'Barlow Condensed',system-ui,sans-serif;letter-spacing:.3px;}
 .tz-head-status{font-size:10px;color:#22c55e;display:flex;align-items:center;gap:4px;}
 .tz-head-dot{width:6px;height:6px;background:#22c55e;border-radius:50%;animation:tzPulse 2s infinite;}
 @keyframes tzPulse{0%,100%{opacity:1}50%{opacity:.5}}
 .tz-head-close{background:rgba(255,255,255,.1);border:none;color:#94a3b8;width:26px;height:26px;border-radius:50%;cursor:pointer;font-size:.85rem;display:flex;align-items:center;justify-content:center;transition:all .15s;}
 .tz-head-close:hover{background:rgba(255,255,255,.2);color:#fff;}
 .tz-messages{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px;scroll-behavior:smooth;}
-.tz-messages::-webkit-scrollbar{width:4px;}
-.tz-messages::-webkit-scrollbar-track{background:transparent;}
-.tz-messages::-webkit-scrollbar-thumb{background:#e2e8f0;border-radius:2px;}
+.tz-messages::-webkit-scrollbar{width:4px;}.tz-messages::-webkit-scrollbar-track{background:transparent;}.tz-messages::-webkit-scrollbar-thumb{background:#e2e8f0;border-radius:2px;}
 .tz-msg{max-width:84%;display:flex;flex-direction:column;gap:2px;}
-.tz-msg.bot{align-self:flex-start;}
-.tz-msg.user{align-self:flex-end;}
+.tz-msg.bot{align-self:flex-start;}.tz-msg.user{align-self:flex-end;}
 .tz-bubble{padding:9px 12px;border-radius:12px;font-size:13px;line-height:1.5;}
 .tz-msg.bot .tz-bubble{background:#f1f5f9;color:#1a1a2e;border-radius:4px 12px 12px 12px;}
 .tz-msg.user .tz-bubble{background:linear-gradient(135deg,#1a56db,#2563eb);color:#fff;border-radius:12px 4px 12px 12px;}
-.tz-msg-time{font-size:10px;color:#94a3b8;padding:0 4px;}
-.tz-msg.user .tz-msg-time{text-align:right;}
+.tz-msg-time{font-size:10px;color:#94a3b8;padding:0 4px;}.tz-msg.user .tz-msg-time{text-align:right;}
 .tz-typing{display:flex;align-items:center;gap:4px;padding:9px 12px;background:#f1f5f9;border-radius:4px 12px 12px 12px;width:fit-content;}
 .tz-typing span{width:6px;height:6px;background:#94a3b8;border-radius:50%;animation:tzDot 1.2s infinite;}
-.tz-typing span:nth-child(2){animation-delay:.2s;}
-.tz-typing span:nth-child(3){animation-delay:.4s;}
+.tz-typing span:nth-child(2){animation-delay:.2s;}.tz-typing span:nth-child(3){animation-delay:.4s;}
 @keyframes tzDot{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-4px)}}
 .tz-quick-btns{display:flex;flex-wrap:wrap;gap:5px;margin-top:4px;}
 .tz-quick-btn{background:#fff;border:1px solid #e2e8f0;color:#1a56db;font-size:11px;font-weight:700;padding:4px 10px;border-radius:99px;cursor:pointer;transition:all .12s;font-family:inherit;}
@@ -1341,18 +1289,14 @@ function toast(icon, msg) {
 .tz-input{flex:1;border:1.5px solid #e2e8f0;border-radius:8px;padding:8px 11px;font-size:13px;font-family:inherit;color:#1a1a2e;outline:none;resize:none;height:38px;max-height:90px;overflow-y:auto;transition:border-color .15s;background:#fff;}
 .tz-input:focus{border-color:#1a56db;box-shadow:0 0 0 3px rgba(26,86,219,.07);}
 .tz-send-btn{width:36px;height:36px;background:linear-gradient(135deg,#1a56db,#2563eb);border:none;border-radius:8px;color:#fff;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s;align-self:flex-end;}
-.tz-send-btn:hover{transform:scale(1.05);}
-.tz-send-btn:disabled{opacity:.5;cursor:not-allowed;transform:none;}
+.tz-send-btn:hover{transform:scale(1.05);}.tz-send-btn:disabled{opacity:.5;cursor:not-allowed;transform:none;}
 .tz-powered{text-align:center;font-size:10px;color:#cbd5e1;padding:5px 0 2px;flex-shrink:0;}
 </style>
 <div id="tz-help-bubble">
   <div id="tz-chat-panel">
     <div class="tz-panel-head">
       <div class="tz-head-icon">🤖</div>
-      <div class="tz-head-info">
-        <div class="tz-head-title">Tradezy Support</div>
-        <div class="tz-head-status"><span class="tz-head-dot"></span>Online — AI Assistant</div>
-      </div>
+      <div class="tz-head-info"><div class="tz-head-title">Tradezy Support</div><div class="tz-head-status"><span class="tz-head-dot"></span>Online — AI Assistant</div></div>
       <button class="tz-head-close" onclick="tzToggle()">✕</button>
     </div>
     <div class="tz-messages" id="tzMessages"></div>
@@ -1362,10 +1306,7 @@ function toast(icon, msg) {
     </div>
     <div class="tz-powered">Powered by Claude AI · Tradezy Support</div>
   </div>
-  <button id="tz-bubble-btn" onclick="tzToggle()" title="Get Help">
-    💬
-    <div class="tz-notif" id="tzNotif"></div>
-  </button>
+  <button id="tz-bubble-btn" onclick="tzToggle()" title="Get Help">💬<div class="tz-notif" id="tzNotif"></div></button>
 </div>
 <script>
 (function() {
@@ -1375,7 +1316,7 @@ ABOUT TRADEZY:
 - Free local trading platform where users list items and trade with verified neighbors
 - Platform fee: 5% per party on completed trades (Founding Traders pay 3% lifetime)
 - Ship-It trades (state-to-state): 10% fee, fully verified users only, launching July 31 2026
-- Every listing automatically supports both local meetup AND Ship-It trading (if seller is fully verified)
+- Every listing automatically supports both local meetup AND Ship-It trading (if seller is ID verified)
 - Phase 1 launch: July 17 2026 — Connecticut and Ohio statewide
 - Phase 2: July 31 2026 — Nationwide
 
@@ -1388,10 +1329,11 @@ HOW TRADING WORKS:
 
 VERIFICATION & TRUST:
 - Email verification required to use platform
-- Address verification adds trust score
-- ID verification required for Ship-It trades
-- W-9 tax form required before posting listings
-- Full verification (phone + ID + address + W-9) required to enable Ship-It on listings
+- Phone verification adds +20 trust score, unlocks $150 trades
+- ID verification required for Ship-It trades, unlocks $500 trades
+- Address verification adds +10 trust score
+- Payment methods: sellers set which platforms they accept (Zelle, PayPal, Venmo, Apple Pay, Google Pay, Cash App)
+- Blue checkmark: earned when all verification steps are complete
 
 PROHIBITED ITEMS (permanent ban): Firearms, weapons, alcohol, tobacco, drugs, live animals, adult content, stolen goods, cash, gift cards, cryptocurrency
 
@@ -1401,17 +1343,29 @@ FEES:
 - Ship-It: 10% per party at trade acceptance
 - Listing is always free
 
-SHIP-IT TRADES (July 31+):
-- Sellers must be fully verified to enable Ship-It on their listings
+SHIP-It TRADES (July 31+):
+- Sellers must be ID verified to enable Ship-It on their listings
 - Buyers choose local or Ship-It when making an offer
 - State-to-state trading for fully ID-verified users only
 - Payment via Zelle, PayPal, Venmo, Apple Pay, Google Pay, or Cash App (peer-to-peer)
-- Buyer uploads payment screenshot · Seller confirms receipt · Stripe collects fees · Seller ships · Both confirm delivery
 
 ACCOUNT HELP:
 - Password reset: https://tradezyhq.com/alltrades-auth.html
-- Verification issues: https://tradezyhq.com/alltrades-verification.html
+- Verification: https://tradezyhq.com/alltrades-verification.html
 - Disputes: https://tradezyhq.com/alltrades-disputes.html or disputes@tradezyhq.com
+
+DISPUTE RESOLUTION:
+- File at https://tradezyhq.com/alltrades-disputes.html or disputes@tradezyhq.com
+- SLA: CRITICAL 8hrs, HIGH 16hrs, MEDIUM 24hrs, LOW 48hrs
+
+ESCALATION RULES — escalate to human immediately if:
+- User reports fraud, scam, or did not receive item
+- User mentions safety concern, threat, or harassment
+- User is clearly distressed after multiple exchanges
+- User explicitly requests a human agent
+- Issue involves account ban or suspension
+
+ESCALATION: support@tradezyhq.com for general issues, disputes@tradezyhq.com for trade disputes.
 
 TONE: Warm, clear, concise. Never give legal or financial advice. Keep responses short and scannable.`;
 
@@ -1485,7 +1439,6 @@ TONE: Warm, clear, concise. Never give legal or financial advice. Keep responses
     const wrapper = document.createElement('div'); wrapper.className = 'tz-msg bot';
     let html = text.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/^[-•] (.+)$/gm,'<li>$1</li>').replace(/(<li>.*<\/li>)/gs,'<ul style="margin:4px 0 0 14px;padding:0;font-size:13px;line-height:1.6">$1</ul>').replace(/\n\n/g,'<br><br>').replace(/\n/g,'<br>');
     let extraHTML = '';
-    if (text.toLowerCase().includes('password reset') || text.toLowerCase().includes('reset your password')) extraHTML += `<a class="tz-action-link" href="https://tradezyhq.com/alltrades-auth.html" target="_blank">🔑 Reset Password →</a>`;
     if (text.toLowerCase().includes('verification') || text.toLowerCase().includes('verify your')) extraHTML += `<a class="tz-action-link" href="https://tradezyhq.com/alltrades-verification.html" target="_blank">✅ Go to Verification →</a>`;
     if (text.toLowerCase().includes('dispute') || text.toLowerCase().includes('file a dispute')) extraHTML += `<a class="tz-action-link" href="https://tradezyhq.com/alltrades-disputes.html" target="_blank">⚖️ File a Dispute →</a>`;
     let bubbleHTML = `<div class="tz-bubble">${html}</div>`;
@@ -1494,14 +1447,14 @@ TONE: Warm, clear, concise. Never give legal or financial advice. Keep responses
     if (quickReplies && quickReplies.length) bubbleHTML += '<div class="tz-quick-btns">' + quickReplies.map(q=>`<button class="tz-quick-btn" onclick="tzQuickReply('${q.replace(/'/g,"\\'")}')">${q}</button>`).join('') + '</div>';
     wrapper.innerHTML = bubbleHTML;
     const time = document.createElement('div'); time.className = 'tz-msg-time';
-    time.textContent = new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+    time.textContent = new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
     wrapper.appendChild(time); msgs.appendChild(wrapper); msgs.scrollTop = msgs.scrollHeight;
   }
 
   function tzUserMessage(text) {
     const msgs = document.getElementById('tzMessages');
     const wrapper = document.createElement('div'); wrapper.className = 'tz-msg user';
-    wrapper.innerHTML = `<div class="tz-bubble">${escHtml(text)}</div><div class="tz-msg-time">${new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}</div>`;
+    wrapper.innerHTML = `<div class="tz-bubble">${escHtml(text)}</div><div class="tz-msg-time">${new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})}</div>`;
     msgs.appendChild(wrapper); msgs.scrollTop = msgs.scrollHeight;
   }
 
