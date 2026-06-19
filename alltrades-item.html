@@ -456,18 +456,6 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);}
     </div>
   </div>
 </div>
-<div class="modal-overlay" id="w9GateModal">
-  <div class="modal">
-    <div class="modal-head" style="background:linear-gradient(135deg,#7f1d1d,#991b1b)"><div class="modal-head-title">⚠️ Tax Info Required</div><button class="modal-close" onclick="closeModal('w9GateModal')">✕</button></div>
-    <div class="modal-body" style="text-align:center;padding:32px 24px">
-      <div style="font-size:3rem;margin-bottom:14px">📋</div>
-      <div style="font-family:'Barlow Condensed',sans-serif;font-size:1.5rem;font-weight:900;margin-bottom:8px;color:#111827">Tax Information Required</div>
-      <div style="font-size:13px;color:#475569;line-height:1.7;margin-bottom:20px">Federal law requires Tradezy to collect your tax information before your first trade (IRC §6045). This takes about 2 minutes and only needs to be done once.</div>
-      <button class="modal-btn gold" onclick="window.location.href='alltrades-verification.html'">📋 Complete Tax Info Now →</button>
-      <button class="modal-btn outline" onclick="closeModal('w9GateModal')">Maybe Later</button>
-    </div>
-  </div>
-</div>
 <div class="lightbox" id="lightbox" onclick="closeLightbox()">
   <button class="lightbox-close" onclick="closeLightbox()">✕</button>
   <button class="lightbox-nav lightbox-prev" onclick="event.stopPropagation();lightboxNav(-1)">‹</button>
@@ -495,7 +483,7 @@ const CAT_EMOJI={'Food & Water':'🥫','Garden':'🌱','Electronics':'⚡','Tool
   const{data:{session}}=await sb.auth.getSession();
   if(!session){window.location.href='alltrades-auth.html';return;}
   currentUser=session.user;
-  const{data:ud}=await sb.from('users').select('w9_on_file,id_verified').eq('id',currentUser.id).single();
+  const{data:ud}=await sb.from('users').select('id_verified').eq('id',currentUser.id).single();
   currentUserData=ud;
   loadListing();
 })();
@@ -766,7 +754,6 @@ async function submitOffer(){
   if(!listing)return;
   const isShipIt=offerType==='shipit';
   const{data:userCheck}=await sb.from('users').select('w9_on_file,id_verified').eq('id',currentUser.id).single();
-  if(!userCheck?.w9_on_file){openModal('w9GateModal');return;}
   if(isShipIt&&!userCheck?.id_verified){showToast('🪪','ID verification required for Ship-It trades.');return;}
   const itemTitle=document.getElementById('offerItem')?.value.trim();
   const itemCond=document.getElementById('offerCondition')?.value;
@@ -932,7 +919,6 @@ VERIFICATION & TRUST:
 - Email verification required to use platform
 - Address verification adds trust score
 - ID verification required for Ship-It trades
-- W-9 tax form required before posting listings
 - Trust score shown on profiles
 
 PROHIBITED ITEMS (permanent ban): Firearms, weapons, alcohol, tobacco, drugs, live animals, adult content, stolen goods, cash, gift cards, cryptocurrency
@@ -967,14 +953,13 @@ DISPUTE RESOLUTION:
 - SLA: CRITICAL 8hrs, HIGH 16hrs, MEDIUM 24hrs, LOW 48hrs
 
 ESCALATION RULES — escalate to human immediately if:
-- User reports fraud, scam, or didn't receive item
+- User reports fraud, scam, or did not receive item
 - User mentions safety concern, threat, or harassment
-- User is clearly distressed or frustrated after multiple exchanges
+- User is clearly distressed after multiple exchanges
 - User explicitly requests a human agent
 - Issue involves account ban or suspension
 
-ESCALATION: When escalating, provide support@tradezyhq.com for general issues or disputes@tradezyhq.com for trade disputes.
-
+ESCALATION: support@tradezyhq.com for general, disputes@tradezyhq.com for trade disputes.
 TONE: Warm, clear, concise. Never give legal or financial advice. Never make up information — if unsure, direct to support@tradezyhq.com. Keep responses short and scannable — use bullet points for multi-step answers.`;
   let isOpen=false,isLoading=false,exchangeCount=0,hasShownWelcome=false;
   const history=[];
