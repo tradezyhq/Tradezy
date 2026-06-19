@@ -1185,8 +1185,12 @@ async function doConfirmTrade() {
 
 async function deleteListing(id, btn) {
   if (!confirm('Delete this listing?')) return;
-  try { await sb.from('listings').delete().eq('id',id).eq('user_id',currentUser.id); btn.closest('.lr').remove(); showToast('🗑️','Listing deleted.'); loadListings(); }
-  catch(e) { showToast('⚠️','Error deleting listing.'); }
+  try {
+    const { error } = await sb.from('listings').delete().eq('id',id).eq('user_id',currentUser.id);
+    if (error) throw error;
+    showToast('🗑️','Listing deleted.');
+    loadListings();
+  } catch(e) { console.error(e); showToast('⚠️','Error deleting listing.'); }
 }
 
 async function doSignOut() { await sb.auth.signOut(); window.location.href='alltrades-auth.html'; }
