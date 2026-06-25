@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Tradezy — Identity Verification</title>
 <script src="supabase.min.js"></script>
+<script src="https://js.stripe.com/v3/"></script>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-0NSDNDFP0H"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-0NSDNDFP0H');</script>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
@@ -91,17 +92,6 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
 .cb-title{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.95rem;color:#fff;margin-bottom:2px;}
 .cb-sub{font-size:11px;color:#86efac;}
 .cb-pts{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.1rem;color:var(--gold-l);}
-.coming-soon-banner{background:linear-gradient(135deg,#2e1065,#4c1d95);border-radius:10px;padding:18px 20px;display:flex;align-items:center;gap:14px;margin-bottom:16px;}
-.csb-icon{font-size:2rem;flex-shrink:0;}
-.csb-text{flex:1;}
-.csb-title{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.05rem;color:#fff;margin-bottom:4px;}
-.csb-sub{font-size:12px;color:#c4b5fd;line-height:1.5;}
-.csb-badge{background:rgba(167,139,250,.2);border:1px solid rgba(167,139,250,.4);color:#c4b5fd;font-size:10px;font-weight:800;padding:3px 10px;border-radius:3px;letter-spacing:.5px;white-space:nowrap;flex-shrink:0;}
-.required-banner{background:linear-gradient(135deg,#7f1d1d,#991b1b);border-radius:10px;padding:14px 16px;display:flex;align-items:center;gap:12px;margin-bottom:16px;}
-.rb-icon{font-size:1.5rem;flex-shrink:0;}
-.rb-text{flex:1;}
-.rb-title{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.95rem;color:#fff;margin-bottom:2px;}
-.rb-sub{font-size:11px;color:#fca5a5;line-height:1.5;}
 .info-box{border-radius:9px;padding:11px 13px;margin-bottom:13px;display:flex;gap:8px;font-size:12px;line-height:1.5;}
 .ib-blue{background:#eff6ff;border:1px solid #bfdbfe;color:#1e3a8a;}
 .ib-green{background:#f0fdf4;border:1px solid #bbf7d0;color:#14532d;}
@@ -116,6 +106,8 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
 .vbtn-green:hover:not(:disabled){background:var(--green-l);transform:translateY(-1px);}
 .vbtn-cyan{background:#0ea5e9;color:#fff;}
 .vbtn-cyan:hover:not(:disabled){background:#0284c7;transform:translateY(-1px);}
+.vbtn-gold{background:var(--gold);color:#fff;}
+.vbtn-gold:hover:not(:disabled){background:var(--gold-l);transform:translateY(-1px);}
 .vbtn-outline{background:transparent;border:1.5px solid var(--border);color:var(--muted);margin-top:8px;}
 .vbtn-outline:hover:not(:disabled){border-color:#999;color:var(--text);}
 .verify-btn:disabled{opacity:.4;cursor:not-allowed;transform:none!important;}
@@ -125,7 +117,11 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
 .field input:focus,.field select:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(26,86,219,.07);}
 .field input.valid{border-color:var(--green);}
 .field-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
-
+/* OTP input */
+.otp-wrap{display:flex;gap:8px;justify-content:center;margin:16px 0;}
+.otp-digit{width:48px;height:56px;border:2px solid var(--border);border-radius:10px;font-size:1.4rem;font-weight:700;text-align:center;font-family:'Barlow Condensed',sans-serif;outline:none;transition:all .15s;background:var(--white);color:var(--text);}
+.otp-digit:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(26,86,219,.1);}
+.otp-digit.filled{border-color:var(--blue);}
 /* BLUE CHECKMARK STATUS CARD */
 .verify-status-card{background:var(--white);border:1px solid var(--border);border-radius:14px;overflow:hidden;}
 .vsc-head{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;}
@@ -152,7 +148,6 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
 .vsc-criterion.soon .vsc-crit-name{color:var(--purple);}
 .vsc-crit-status{font-size:10px;color:var(--muted);margin-top:1px;}
 .vsc-crit-check{font-size:.85rem;flex-shrink:0;}
-
 /* MULTI-PLATFORM PAYMENT SETUP */
 .pay-platforms-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px;}
 .pay-plat-card{border:1.5px solid var(--border);border-radius:10px;padding:11px 8px;text-align:center;cursor:pointer;transition:all .15s;background:var(--white);position:relative;}
@@ -178,15 +173,9 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
 .smr-platform{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.9rem;color:var(--text);}
 .smr-handle{font-size:12px;color:var(--muted);}
 .smr-check{color:var(--green);font-size:.9rem;flex-shrink:0;}
-
-/* W-9 */
-.w9-cert{background:var(--surface);border:1.5px solid var(--border);border-radius:10px;padding:14px 16px;margin-bottom:14px;}
-.w9-cert-title{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.88rem;margin-bottom:8px;color:var(--text);}
-.w9-cert-text{font-size:11px;color:var(--muted);line-height:1.6;margin-bottom:12px;}
-.w9-check-row{display:flex;align-items:flex-start;gap:10px;cursor:pointer;}
-.w9-check-row input[type=checkbox]{width:16px;height:16px;accent-color:var(--blue);cursor:pointer;flex-shrink:0;margin-top:2px;}
-.w9-check-label{font-size:12px;color:var(--text);line-height:1.5;}
-.w9-check-label strong{color:var(--red);}
+/* Stripe card element */
+#stripe-card-element{border:1.5px solid var(--border);border-radius:8px;padding:12px 13px;background:var(--white);transition:border-color .15s;}
+#stripe-card-element.focused{border-color:var(--blue);box-shadow:0 0 0 3px rgba(26,86,219,.07);}
 .badge-showcase{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;}
 .badge-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px;display:flex;align-items:center;gap:10px;transition:all .2s;}
 .badge-card.earned{background:var(--white);border-color:#bfdbfe;box-shadow:0 2px 10px rgba(26,86,219,.08);}
@@ -211,26 +200,26 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
 .tb-active{background:#dcfce7;color:#166534;}
 .tb-next{background:#dbeafe;color:#1e40af;}
 .tb-locked{background:#f1f5f9;color:#475569;}
-.tb-required{background:#fef2f2;color:#991b1b;}
 .toast{position:fixed;bottom:20px;right:20px;background:var(--navy);color:#e2e8f0;border:1px solid #1e3a5f;border-left:4px solid var(--green);border-radius:8px;padding:10px 16px;font-size:13px;z-index:9999;display:flex;align-items:center;gap:9px;max-width:290px;box-shadow:0 8px 26px rgba(0,0,0,.25);transform:translateX(120%);transition:transform .3s ease;}
 .toast.show{transform:translateX(0);}
 .toast.error{border-left-color:var(--red);}
-@media(max-width:800px){.steps-layout{grid-template-columns:1fr;}.step-list{position:static;}.hero{grid-template-columns:1fr;}.trust-score-wrap{display:none;}.badge-showcase{grid-template-columns:1fr;}.field-row{grid-template-columns:1fr;}.pay-platforms-grid{grid-template-columns:repeat(2,1fr);}.vsc-criteria-grid{grid-template-columns:1fr;}}
+@media(max-width:800px){.steps-layout{grid-template-columns:1fr;}.step-list{position:static;}.hero{grid-template-columns:1fr;}.trust-score-wrap{display:none;}.badge-showcase{grid-template-columns:1fr;}.field-row{grid-template-columns:1fr;}.pay-platforms-grid{grid-template-columns:repeat(2,1fr);}.vsc-criteria-grid{grid-template-columns:1fr;}.otp-wrap{gap:6px;}.otp-digit{width:40px;height:48px;font-size:1.2rem;}}
 @media(prefers-color-scheme:dark){
   :root{--text:#f1f5f9;--muted:#94a3b8;--border:rgba(255,255,255,.1);--bg:#0f172a;--white:#1e293b;--surface:#162032;}
   body{background:#0f172a !important;color:#f1f5f9 !important;}
   .step-list,.step-panel,.badge-card,.verify-status-card{background:#1e293b !important;border-color:rgba(255,255,255,.08) !important;}
   input,select{background:#162032 !important;color:#f1f5f9 !important;}
+  .otp-digit{background:#162032 !important;color:#f1f5f9 !important;}
   .step-item:hover{background:rgba(255,255,255,.04) !important;}
   .step-item.active{background:rgba(26,86,219,.15) !important;}
   .step-item.completed{background:rgba(22,163,74,.08) !important;}
-  .w9-cert{background:#162032 !important;}
   .pay-plat-card{background:#162032 !important;}
   .pay-plat-card.selected{background:rgba(14,165,233,.15) !important;}
   .plat-handle-row{background:rgba(14,165,233,.08) !important;}
   .plat-handle-input{background:#162032 !important;}
   .vsc-criterion{background:#162032 !important;}
   .vsc-criterion.done{background:rgba(22,163,74,.1) !important;}
+  #stripe-card-element{background:#162032 !important;}
 }
 </style>
 </head>
@@ -282,20 +271,15 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
         <div class="si-info"><div class="si-title">Email Address</div><div class="si-meta" id="emailMeta">Verified</div></div>
         <div class="si-badge sib-done">+10 pts</div>
       </div>
-      <div class="step-item" id="nav-w9" onclick="showStep('w9')">
-        <div class="si-icon-wrap">📋</div>
-        <div class="si-info"><div class="si-title">Tax Info (W-9)</div><div class="si-meta">Required before first trade</div></div>
-        <div class="si-badge sib-required" id="w9Badge">REQUIRED</div>
-      </div>
       <div class="step-item" id="nav-phone" onclick="showStep('phone')">
         <div class="si-icon-wrap">📱</div>
-        <div class="si-info"><div class="si-title">Phone Number</div><div class="si-meta">SMS verification</div></div>
-        <div class="si-badge sib-soon">Coming Soon</div>
+        <div class="si-info"><div class="si-title">Phone Number</div><div class="si-meta">SMS verification · +20 pts</div></div>
+        <div class="si-badge sib-active" id="phoneBadgeNav">VERIFY</div>
       </div>
       <div class="step-item" id="nav-id" onclick="showStep('id')">
         <div class="si-icon-wrap">🪪</div>
         <div class="si-info"><div class="si-title">Government ID</div><div class="si-meta">Stripe Identity · Ship-It required</div></div>
-        <div class="si-badge sib-soon">Coming Soon</div>
+        <div class="si-badge sib-gold" id="idBadgeNav" style="background:#fffbeb;color:#92400e;border:1px solid #fde68a;">$3 · +40 pts</div>
       </div>
       <div class="step-item" id="nav-address" onclick="showStep('address')">
         <div class="si-icon-wrap">🏠</div>
@@ -304,7 +288,7 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
       </div>
       <div class="step-item" id="nav-payment" onclick="showStep('payment')">
         <div class="si-icon-wrap">💸</div>
-        <div class="si-info"><div class="si-title">Payment Methods</div><div class="si-meta" id="paymentNavMeta">Zelle, PayPal, Venmo… set what you accept</div></div>
+        <div class="si-info"><div class="si-title">Payment Methods</div><div class="si-meta" id="paymentNavMeta">Zelle, PayPal, Venmo…</div></div>
         <div class="si-badge sib-shipit" id="paymentBadge">🚚 SHIP-IT</div>
       </div>
       <div class="sl-points">
@@ -321,7 +305,7 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
         <div class="vsc-head">
           <div>
             <div class="vsc-head-title">💙 Verified Trader Status</div>
-            <div class="vsc-head-sub">Blue checkmark appears on your profile and listings when all 5 criteria are met</div>
+            <div class="vsc-head-sub">Blue checkmark appears on your profile and listings when all criteria are met</div>
           </div>
         </div>
         <div class="vsc-body">
@@ -329,7 +313,7 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
             <div class="vsc-check-icon" id="vscIcon">🔒</div>
             <div class="vsc-check-text">
               <div class="vsc-check-title" id="vscTitle">Blue Checkmark Locked</div>
-              <div class="vsc-check-sub" id="vscSub">Complete all 5 verification steps to earn your blue checkmark and unlock Ship-It trading on all listings.</div>
+              <div class="vsc-check-sub" id="vscSub">Complete all verification steps to earn your blue checkmark and unlock Ship-It trading.</div>
             </div>
           </div>
           <div class="vsc-criteria-grid">
@@ -338,20 +322,15 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
               <div class="vsc-crit-info"><div class="vsc-crit-name">Email Verified</div><div class="vsc-crit-status">Confirmed ✓</div></div>
               <span class="vsc-crit-check">✅</span>
             </div>
-            <div class="vsc-criterion pending" id="vsc-w9">
-              <span class="vsc-crit-icon">📋</span>
-              <div class="vsc-crit-info"><div class="vsc-crit-name">W-9 On File</div><div class="vsc-crit-status" id="vsc-w9-status">Pending</div></div>
-              <span class="vsc-crit-check" id="vsc-w9-check">⏳</span>
-            </div>
-            <div class="vsc-criterion soon" id="vsc-phone">
+            <div class="vsc-criterion pending" id="vsc-phone">
               <span class="vsc-crit-icon">📱</span>
-              <div class="vsc-crit-info"><div class="vsc-crit-name">Phone Verified</div><div class="vsc-crit-status">Coming Soon</div></div>
-              <span class="vsc-crit-check">🔒</span>
+              <div class="vsc-crit-info"><div class="vsc-crit-name">Phone Verified</div><div class="vsc-crit-status" id="vsc-phone-status">Pending</div></div>
+              <span class="vsc-crit-check" id="vsc-phone-check">⏳</span>
             </div>
-            <div class="vsc-criterion soon" id="vsc-id">
+            <div class="vsc-criterion pending" id="vsc-id">
               <span class="vsc-crit-icon">🪪</span>
-              <div class="vsc-crit-info"><div class="vsc-crit-name">ID Verified</div><div class="vsc-crit-status">Coming Soon</div></div>
-              <span class="vsc-crit-check">🔒</span>
+              <div class="vsc-crit-info"><div class="vsc-crit-name">ID Verified</div><div class="vsc-crit-status" id="vsc-id-status">Pending</div></div>
+              <span class="vsc-crit-check" id="vsc-id-check">⏳</span>
             </div>
             <div class="vsc-criterion pending" id="vsc-address">
               <span class="vsc-crit-icon">🏠</span>
@@ -381,130 +360,104 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
             <div class="cb-pts">+10</div>
           </div>
           <div class="info-box ib-blue"><span>ℹ️</span><div>Email verification gives you access to trade notifications, dispute updates, and account recovery.</div></div>
-          <button class="verify-btn vbtn-outline" onclick="showStep('w9')">Next: Tax Info (W-9) →</button>
-        </div>
-      </div>
-
-      <!-- W-9 -->
-      <div class="step-panel" id="panel-w9">
-        <div class="sp-head">
-          <div class="sp-head-icon" style="background:#fef2f2;border:1px solid #fecaca">📋</div>
-          <div><div class="sp-head-title">Tax Information (W-9)</div><div class="sp-head-sub" id="w9PanelSub">Required by federal law before your first trade</div></div>
-          <div class="sp-reward" style="margin-left:auto"><div class="sp-reward-pts" style="color:var(--red)">REQUIRED</div><div class="sp-reward-label">Before first trade</div></div>
-        </div>
-        <div class="sp-body">
-          <div id="w9VerifiedState" style="display:none">
-            <div class="completed-banner">
-              <span class="cb-icon">📋</span>
-              <div class="cb-text"><div class="cb-title">Tax Information Submitted</div><div class="cb-sub" id="w9VerifiedSub">Your W-9 information is on file.</div></div>
-              <div class="cb-pts">✓</div>
-            </div>
-            <div class="info-box ib-green"><span>✅</span><div>Your tax information is on file. Tradezy will use this to issue your annual Form 1099-B reporting your barter activity to the IRS. You are cleared to trade.</div></div>
-            <div class="info-box ib-blue"><span>ℹ️</span><div>You may be asked to re-confirm your tax information annually to ensure accuracy.</div></div>
-            <button class="verify-btn vbtn-outline" onclick="showStep('phone')">Next: Phone Verification →</button>
-          </div>
-          <div id="w9FormState">
-            <div class="required-banner">
-              <span class="rb-icon">⚠️</span>
-              <div class="rb-text">
-                <div class="rb-title">Federal Tax Requirement</div>
-                <div class="rb-sub">Tradezy is classified as a barter exchange under IRC §6045. Federal law requires us to collect your tax information before you complete your first trade. Failure to provide this information results in mandatory 24% backup withholding under IRC §3406.</div>
-              </div>
-            </div>
-            <div class="info-box ib-gold"><span>🔒</span><div><strong>Your information is secure.</strong> This data is stored encrypted and used solely for IRS Form 1099-B reporting. Your TIN is never shared with other traders or displayed publicly.</div></div>
-            <div class="field"><label>Legal Name <span style="color:var(--red)">*</span></label><input type="text" id="w9Name" placeholder="Full legal name (as it appears on your tax return)" oninput="checkW9()" autocomplete="name"></div>
-            <div class="field"><label>Entity Type <span style="color:var(--red)">*</span></label>
-              <select id="w9EntityType" onchange="checkW9()">
-                <option value="">Select entity type…</option>
-                <option value="individual">Individual / Sole Proprietor</option>
-                <option value="llc_single">Single-Member LLC</option>
-                <option value="llc_multi">Multi-Member LLC</option>
-                <option value="corporation">C Corporation</option>
-                <option value="s_corporation">S Corporation</option>
-                <option value="partnership">Partnership</option>
-                <option value="trust">Trust / Estate</option>
-                <option value="other">Other</option>
-              </select>
-            </div>
-            <div class="field"><label>TIN Type <span style="color:var(--red)">*</span></label>
-              <select id="w9TinType" onchange="updateTinPlaceholder(); checkW9()">
-                <option value="">Select TIN type…</option>
-                <option value="ssn">Social Security Number (SSN)</option>
-                <option value="ein">Employer Identification Number (EIN)</option>
-              </select>
-            </div>
-            <div class="field" id="w9TinField" style="display:none">
-              <label id="w9TinLabel">SSN / EIN <span style="color:var(--red)">*</span></label>
-              <input type="password" id="w9Tin" placeholder="XXX-XX-XXXX" oninput="formatTin(); checkW9()" autocomplete="off" maxlength="11">
-              <div style="font-size:11px;color:var(--muted);margin-top:4px;">Your TIN is encrypted and never displayed after submission.</div>
-            </div>
-            <div class="field"><label>Address <span style="color:var(--red)">*</span></label><input type="text" id="w9Address" placeholder="Street address" oninput="checkW9()" autocomplete="street-address"></div>
-            <div class="field-row">
-              <div class="field"><label>City <span style="color:var(--red)">*</span></label><input type="text" id="w9City" placeholder="City" oninput="checkW9()" autocomplete="address-level2"></div>
-              <div class="field"><label>State <span style="color:var(--red)">*</span></label>
-                <select id="w9State" onchange="checkW9()">
-                  <option value="">State…</option>
-                  <option value="CT">Connecticut</option><option value="OH">Ohio</option>
-                  <option value="AL">Alabama</option><option value="AK">Alaska</option><option value="AZ">Arizona</option><option value="AR">Arkansas</option><option value="CA">California</option><option value="CO">Colorado</option><option value="DE">Delaware</option><option value="FL">Florida</option><option value="GA">Georgia</option><option value="HI">Hawaii</option><option value="ID">Idaho</option><option value="IL">Illinois</option><option value="IN">Indiana</option><option value="IA">Iowa</option><option value="KS">Kansas</option><option value="KY">Kentucky</option><option value="LA">Louisiana</option><option value="ME">Maine</option><option value="MD">Maryland</option><option value="MA">Massachusetts</option><option value="MI">Michigan</option><option value="MN">Minnesota</option><option value="MS">Mississippi</option><option value="MO">Missouri</option><option value="MT">Montana</option><option value="NE">Nebraska</option><option value="NV">Nevada</option><option value="NH">New Hampshire</option><option value="NJ">New Jersey</option><option value="NM">New Mexico</option><option value="NY">New York</option><option value="NC">North Carolina</option><option value="ND">North Dakota</option><option value="OK">Oklahoma</option><option value="OR">Oregon</option><option value="PA">Pennsylvania</option><option value="RI">Rhode Island</option><option value="SC">South Carolina</option><option value="SD">South Dakota</option><option value="TN">Tennessee</option><option value="TX">Texas</option><option value="UT">Utah</option><option value="VT">Vermont</option><option value="VA">Virginia</option><option value="WA">Washington</option><option value="WV">West Virginia</option><option value="WI">Wisconsin</option><option value="WY">Wyoming</option>
-                </select>
-              </div>
-            </div>
-            <div class="field"><label>ZIP Code <span style="color:var(--red)">*</span></label><input type="text" id="w9Zip" placeholder="ZIP code" maxlength="10" oninput="checkW9()" autocomplete="postal-code"></div>
-            <div class="w9-cert">
-              <div class="w9-cert-title">📜 Certification Under Penalty of Perjury</div>
-              <div class="w9-cert-text">Under penalties of perjury, I certify that: (1) The TIN I provided is my correct taxpayer identification number; (2) I am not subject to backup withholding; (3) I am a U.S. person (including a U.S. resident alien); and (4) The information provided is true, correct, and complete. I understand that Tradezy will issue Form 1099-B reporting my gross barter activity to the IRS annually. I authorize Tradezy to use this information for required tax reporting purposes.</div>
-              <label class="w9-check-row">
-                <input type="checkbox" id="w9Cert" onchange="checkW9()">
-                <span class="w9-check-label">I certify under penalty of perjury that all information provided is true and correct. I understand Tradezy will report my barter activity to the IRS via Form 1099-B and that failure to provide accurate information may result in <strong>24% backup withholding</strong> under IRC §3406.</span>
-              </label>
-            </div>
-            <button class="verify-btn vbtn-blue" id="submitW9Btn" onclick="submitW9()" disabled>📋 Submit Tax Information</button>
-            <div style="font-size:11px;color:var(--light);margin-top:8px;text-align:center;line-height:1.5;">Your TIN is encrypted and stored securely. It is never shown to other traders or used for any purpose other than required IRS reporting.</div>
-          </div>
+          <button class="verify-btn vbtn-outline" onclick="showStep('phone')">Next: Phone Verification →</button>
         </div>
       </div>
 
       <!-- PHONE -->
       <div class="step-panel" id="panel-phone">
         <div class="sp-head">
-          <div class="sp-head-icon" style="background:#f5f3ff;border:1px solid #ddd6fe">📱</div>
-          <div><div class="sp-head-title">Phone Verification</div><div class="sp-head-sub">SMS code verification — coming soon</div></div>
+          <div class="sp-head-icon" style="background:#f0fdf4;border:1px solid #bbf7d0">📱</div>
+          <div><div class="sp-head-title">Phone Verification</div><div class="sp-head-sub" id="phonePanelSub">Verify your phone number via SMS</div></div>
           <div class="sp-reward"><div class="sp-reward-pts">+20 pts</div><div class="sp-reward-label">Reward</div></div>
         </div>
         <div class="sp-body">
-          <div class="coming-soon-banner">
-            <span class="csb-icon">📱</span>
-            <div class="csb-text"><div class="csb-title">Phone Verification — Coming Soon</div><div class="csb-sub">We're setting up SMS verification. This will be available before July 17 launch. Phone verification unlocks trades up to $150 and adds +20 to your trust score.</div></div>
-            <div class="csb-badge">PHASE 1</div>
-          </div>
-          <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px;margin-bottom:14px;">
-            <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.88rem;margin-bottom:8px;">What phone verification unlocks:</div>
-            <div style="font-size:13px;color:var(--muted);display:flex;flex-direction:column;gap:6px;">
-              <div>✅ Trade values up to <strong style="color:var(--blue)">$150</strong></div>
-              <div>✅ +20 trust score points</div>
-              <div>✅ Phone Verified badge on your profile</div>
+          <!-- VERIFIED STATE -->
+          <div id="phoneVerifiedState" style="display:none">
+            <div class="completed-banner">
+              <span class="cb-icon">📱</span>
+              <div class="cb-text"><div class="cb-title">Phone Verified!</div><div class="cb-sub" id="phoneVerifiedSub">Your phone number is confirmed.</div></div>
+              <div class="cb-pts">+20</div>
             </div>
+            <div class="info-box ib-green"><span>✅</span><div>Phone verification unlocks trades up to <strong>$150</strong> and adds the Phone Verified badge to your profile.</div></div>
+            <button class="verify-btn vbtn-outline" onclick="showStep('id')">Next: Government ID →</button>
           </div>
-          <button class="verify-btn vbtn-outline" onclick="showStep('id')">Next: Government ID →</button>
+          <!-- ENTER PHONE STATE -->
+          <div id="phoneFormState">
+            <div class="info-box ib-blue"><span>📱</span><div>We'll send a 6-digit code to your phone. Standard SMS rates may apply.</div></div>
+            <div class="field">
+              <label>Phone Number <span style="color:var(--red)">*</span></label>
+              <input type="tel" id="phoneInput" placeholder="+1 (203) 555-0100" oninput="checkPhoneInput()" autocomplete="tel" maxlength="15">
+            </div>
+            <button class="verify-btn vbtn-blue" id="sendOtpBtn" onclick="sendOtp()" disabled>📱 Send Verification Code</button>
+          </div>
+          <!-- ENTER CODE STATE -->
+          <div id="otpFormState" style="display:none">
+            <div class="info-box ib-green"><span>✉️</span><div id="otpSentMsg">Code sent! Check your messages.</div></div>
+            <div style="text-align:center;margin-bottom:8px;font-size:13px;color:var(--muted);">Enter the 6-digit code</div>
+            <div class="otp-wrap">
+              <input class="otp-digit" id="otp0" maxlength="1" type="text" inputmode="numeric" oninput="otpInput(this,0)" onkeydown="otpKeydown(event,0)">
+              <input class="otp-digit" id="otp1" maxlength="1" type="text" inputmode="numeric" oninput="otpInput(this,1)" onkeydown="otpKeydown(event,1)">
+              <input class="otp-digit" id="otp2" maxlength="1" type="text" inputmode="numeric" oninput="otpInput(this,2)" onkeydown="otpKeydown(event,2)">
+              <input class="otp-digit" id="otp3" maxlength="1" type="text" inputmode="numeric" oninput="otpInput(this,3)" onkeydown="otpKeydown(event,3)">
+              <input class="otp-digit" id="otp4" maxlength="1" type="text" inputmode="numeric" oninput="otpInput(this,4)" onkeydown="otpKeydown(event,4)">
+              <input class="otp-digit" id="otp5" maxlength="1" type="text" inputmode="numeric" oninput="otpInput(this,5)" onkeydown="otpKeydown(event,5)">
+            </div>
+            <button class="verify-btn vbtn-green" id="verifyOtpBtn" onclick="verifyOtp()" disabled>✅ Verify Code</button>
+            <button class="verify-btn vbtn-outline" onclick="resendOtp()" id="resendBtn" style="margin-top:8px">🔄 Resend Code</button>
+            <button class="verify-btn vbtn-outline" onclick="backToPhone()" style="margin-top:4px">← Change Number</button>
+          </div>
         </div>
       </div>
 
-      <!-- ID -->
+      <!-- GOVERNMENT ID -->
       <div class="step-panel" id="panel-id">
         <div class="sp-head">
           <div class="sp-head-icon" style="background:#fffbeb;border:1px solid #fde68a">🪪</div>
-          <div><div class="sp-head-title">Government ID</div><div class="sp-head-sub">Stripe Identity verification — coming soon</div></div>
+          <div><div class="sp-head-title">Government ID</div><div class="sp-head-sub" id="idPanelSub">Stripe Identity · Required for Ship-It trades</div></div>
           <div class="sp-reward"><div class="sp-reward-pts">+40 pts</div><div class="sp-reward-label">Highest Reward</div></div>
         </div>
         <div class="sp-body">
-          <div class="coming-soon-banner">
-            <span class="csb-icon">🪪</span>
-            <div class="csb-text"><div class="csb-title">ID Verification — Coming Soon</div><div class="csb-sub">We're integrating Stripe Identity for secure document verification. ID verification is required for Ship-It state-to-state trades and unlocks trade values up to $500.</div></div>
-            <div class="csb-badge">PHASE 1</div>
+          <!-- VERIFIED STATE -->
+          <div id="idVerifiedState" style="display:none">
+            <div class="completed-banner">
+              <span class="cb-icon">🪪</span>
+              <div class="cb-text"><div class="cb-title">ID Verified!</div><div class="cb-sub">Your government ID has been confirmed by Stripe Identity.</div></div>
+              <div class="cb-pts">+40</div>
+            </div>
+            <div class="info-box ib-green"><span>🚚</span><div><strong>Ship-It unlocked!</strong> You can now participate in state-to-state Ship-It trades and trade values up to <strong>$500</strong>.</div></div>
+            <button class="verify-btn vbtn-outline" onclick="showStep('address')">Next: Address Confirmation →</button>
           </div>
-          <div class="info-box ib-cyan"><span>🚚</span><div><strong>Required for Ship-It trades.</strong> Once ID verification launches, completing it will unlock state-to-state Ship-It trading on all your listings.</div></div>
-          <div class="info-box ib-purple"><span>🔒</span><div><strong>Your ID will be encrypted and never stored long-term.</strong> We use Stripe Identity — the same system used by banks. Only your pass/fail status is retained.</div></div>
-          <button class="verify-btn vbtn-outline" onclick="showStep('address')">Next: Address Confirmation →</button>
+          <!-- ID FORM STATE -->
+          <div id="idFormState">
+            <div class="info-box ib-cyan"><span>🚚</span><div><strong>Required for Ship-It trades.</strong> ID verification unlocks state-to-state trading and trade values up to $500.</div></div>
+            <div class="info-box ib-purple"><span>🔒</span><div><strong>Your ID is encrypted and never stored long-term.</strong> We use Stripe Identity — the same system used by banks. Only your pass/fail status is retained by Tradezy.</div></div>
+            <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px;margin-bottom:16px;">
+              <div style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.95rem;margin-bottom:10px;">What you'll need:</div>
+              <div style="font-size:13px;color:var(--muted);display:flex;flex-direction:column;gap:6px;">
+                <div>📋 Government-issued photo ID (driver's license, passport, or state ID)</div>
+                <div>📸 Your device camera (for selfie match)</div>
+                <div>⏱️ Takes about 2 minutes</div>
+              </div>
+            </div>
+            <div class="info-box ib-gold"><span>💳</span><div><strong>One-time $3.00 verification fee</strong> covers the cost of Stripe's identity check. This fee goes directly to operating costs.</div></div>
+            <!-- Stripe card element -->
+            <div class="field">
+              <label>Card Details</label>
+              <div id="stripe-card-element"></div>
+              <div id="card-errors" style="color:var(--red);font-size:12px;margin-top:6px;"></div>
+            </div>
+            <button class="verify-btn vbtn-gold" id="startIdVerifyBtn" onclick="startIdVerification()" disabled>🪪 Pay $3 &amp; Verify ID</button>
+            <div style="font-size:11px;color:var(--light);margin-top:8px;text-align:center;line-height:1.5;">Secured by Stripe. Your card is charged $3.00. If verification fails, your $3 is automatically refunded.</div>
+          </div>
+          <!-- PROCESSING STATE -->
+          <div id="idProcessingState" style="display:none">
+            <div style="text-align:center;padding:24px;">
+              <div style="font-size:2.5rem;margin-bottom:12px;">⏳</div>
+              <div style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1.1rem;margin-bottom:8px;">Verifying your identity…</div>
+              <div style="font-size:13px;color:var(--muted);">Please complete the Stripe verification flow. This page will update when complete.</div>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -548,7 +501,7 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
       <div class="step-panel" id="panel-payment">
         <div class="sp-head">
           <div class="sp-head-icon" style="background:#e0f2fe;border:1px solid #7dd3fc">💸</div>
-          <div><div class="sp-head-title">Payment Methods</div><div class="sp-head-sub" id="paymentPanelSub">Set which platforms you accept for Ship-It trades</div></div>
+          <div><div class="sp-head-title">Payment Methods</div><div class="sp-head-sub" id="paymentPanelSub">Set which platforms you accept</div></div>
           <div class="sp-reward" style="margin-left:auto"><div class="sp-reward-pts" style="color:#0ea5e9">🚚 SHIP-IT</div><div class="sp-reward-label">Unlocks nationwide</div></div>
         </div>
         <div class="sp-body">
@@ -563,65 +516,23 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
             <button class="verify-btn vbtn-outline" onclick="document.getElementById('paymentVerifiedState').style.display='none';document.getElementById('paymentFormState').style.display='block';restoreFormFromSaved();">✏️ Update Payment Methods</button>
           </div>
           <div id="paymentFormState">
-            <div class="info-box ib-cyan"><span>🚚</span><div><strong>Seller controls what they accept.</strong> Select every platform you use and enter your handle for each. Buyers will only see your accepted methods — never others.</div></div>
+            <div class="info-box ib-cyan"><span>🚚</span><div><strong>Seller controls what they accept.</strong> Select every platform you use and enter your handle for each.</div></div>
             <div class="info-box ib-gold"><span>🔒</span><div>Your handles are <strong>only shared with buyers who have an accepted trade with you</strong> — never publicly displayed.</div></div>
             <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:8px;">Select all platforms you accept *</div>
             <div class="pay-platforms-grid">
-              <div class="pay-plat-card" id="plat-Zelle" onclick="togglePlatform(this,'Zelle')">
-                <span class="pay-plat-check">✓</span>
-                <span class="plat-icon">💙</span><div class="plat-name">Zelle</div>
-              </div>
-              <div class="pay-plat-card" id="plat-PayPal" onclick="togglePlatform(this,'PayPal')">
-                <span class="pay-plat-check">✓</span>
-                <span class="plat-icon">🅿️</span><div class="plat-name">PayPal</div>
-              </div>
-              <div class="pay-plat-card" id="plat-Venmo" onclick="togglePlatform(this,'Venmo')">
-                <span class="pay-plat-check">✓</span>
-                <span class="plat-icon">💜</span><div class="plat-name">Venmo</div>
-              </div>
-              <div class="pay-plat-card" id="plat-Apple Pay" onclick="togglePlatform(this,'Apple Pay')">
-                <span class="pay-plat-check">✓</span>
-                <span class="plat-icon">🍎</span><div class="plat-name">Apple Pay</div>
-              </div>
-              <div class="pay-plat-card" id="plat-Google Pay" onclick="togglePlatform(this,'Google Pay')">
-                <span class="pay-plat-check">✓</span>
-                <span class="plat-icon">🔵</span><div class="plat-name">Google Pay</div>
-              </div>
-              <div class="pay-plat-card" id="plat-Cash App" onclick="togglePlatform(this,'Cash App')">
-                <span class="pay-plat-check">✓</span>
-                <span class="plat-icon">💚</span><div class="plat-name">Cash App</div>
-              </div>
+              <div class="pay-plat-card" id="plat-Zelle" onclick="togglePlatform(this,'Zelle')"><span class="pay-plat-check">✓</span><span class="plat-icon">💙</span><div class="plat-name">Zelle</div></div>
+              <div class="pay-plat-card" id="plat-PayPal" onclick="togglePlatform(this,'PayPal')"><span class="pay-plat-check">✓</span><span class="plat-icon">🅿️</span><div class="plat-name">PayPal</div></div>
+              <div class="pay-plat-card" id="plat-Venmo" onclick="togglePlatform(this,'Venmo')"><span class="pay-plat-check">✓</span><span class="plat-icon">💜</span><div class="plat-name">Venmo</div></div>
+              <div class="pay-plat-card" id="plat-Apple Pay" onclick="togglePlatform(this,'Apple Pay')"><span class="pay-plat-check">✓</span><span class="plat-icon">🍎</span><div class="plat-name">Apple Pay</div></div>
+              <div class="pay-plat-card" id="plat-Google Pay" onclick="togglePlatform(this,'Google Pay')"><span class="pay-plat-check">✓</span><span class="plat-icon">🔵</span><div class="plat-name">Google Pay</div></div>
+              <div class="pay-plat-card" id="plat-Cash App" onclick="togglePlatform(this,'Cash App')"><span class="pay-plat-check">✓</span><span class="plat-icon">💚</span><div class="plat-name">Cash App</div></div>
             </div>
-            <div id="plat-handle-Zelle" class="plat-handle-row">
-              <div class="plat-handle-top"><span class="plat-handle-icon">💙</span><span class="plat-handle-label">Zelle — Your phone or email</span></div>
-              <input class="plat-handle-input" id="handle-Zelle" type="text" placeholder="e.g. (203) 555-0100 or you@email.com" oninput="checkPaymentMethods()">
-              <div class="plat-hint">The phone number or email linked to your Zelle account.</div>
-            </div>
-            <div id="plat-handle-PayPal" class="plat-handle-row">
-              <div class="plat-handle-top"><span class="plat-handle-icon">🅿️</span><span class="plat-handle-label">PayPal — Username or email</span></div>
-              <input class="plat-handle-input" id="handle-PayPal" type="text" placeholder="e.g. @yourname or you@email.com" oninput="checkPaymentMethods()">
-              <div class="plat-hint">Your PayPal username or the email on your PayPal account.</div>
-            </div>
-            <div id="plat-handle-Venmo" class="plat-handle-row">
-              <div class="plat-handle-top"><span class="plat-handle-icon">💜</span><span class="plat-handle-label">Venmo — Your @username</span></div>
-              <input class="plat-handle-input" id="handle-Venmo" type="text" placeholder="e.g. @yourname" oninput="checkPaymentMethods()">
-              <div class="plat-hint">Your Venmo @username (found in the Venmo app).</div>
-            </div>
-            <div id="plat-handle-Apple Pay" class="plat-handle-row">
-              <div class="plat-handle-top"><span class="plat-handle-icon">🍎</span><span class="plat-handle-label">Apple Pay — Phone or email</span></div>
-              <input class="plat-handle-input" id="handle-Apple Pay" type="text" placeholder="e.g. (203) 555-0100 or you@icloud.com" oninput="checkPaymentMethods()">
-              <div class="plat-hint">The phone number or email linked to your Apple Pay / Apple Cash.</div>
-            </div>
-            <div id="plat-handle-Google Pay" class="plat-handle-row">
-              <div class="plat-handle-top"><span class="plat-handle-icon">🔵</span><span class="plat-handle-label">Google Pay — Phone or email</span></div>
-              <input class="plat-handle-input" id="handle-Google Pay" type="text" placeholder="e.g. (203) 555-0100 or you@gmail.com" oninput="checkPaymentMethods()">
-              <div class="plat-hint">The phone number or email linked to your Google Pay account.</div>
-            </div>
-            <div id="plat-handle-Cash App" class="plat-handle-row">
-              <div class="plat-handle-top"><span class="plat-handle-icon">💚</span><span class="plat-handle-label">Cash App — Your $Cashtag</span></div>
-              <input class="plat-handle-input" id="handle-Cash App" type="text" placeholder="e.g. $yourname" oninput="checkPaymentMethods()">
-              <div class="plat-hint">Your Cash App $Cashtag (found in the Cash App).</div>
-            </div>
+            <div id="plat-handle-Zelle" class="plat-handle-row"><div class="plat-handle-top"><span class="plat-handle-icon">💙</span><span class="plat-handle-label">Zelle — Your phone or email</span></div><input class="plat-handle-input" id="handle-Zelle" type="text" placeholder="e.g. (203) 555-0100 or you@email.com" oninput="checkPaymentMethods()"><div class="plat-hint">The phone number or email linked to your Zelle account.</div></div>
+            <div id="plat-handle-PayPal" class="plat-handle-row"><div class="plat-handle-top"><span class="plat-handle-icon">🅿️</span><span class="plat-handle-label">PayPal — Username or email</span></div><input class="plat-handle-input" id="handle-PayPal" type="text" placeholder="e.g. @yourname or you@email.com" oninput="checkPaymentMethods()"><div class="plat-hint">Your PayPal username or the email on your PayPal account.</div></div>
+            <div id="plat-handle-Venmo" class="plat-handle-row"><div class="plat-handle-top"><span class="plat-handle-icon">💜</span><span class="plat-handle-label">Venmo — Your @username</span></div><input class="plat-handle-input" id="handle-Venmo" type="text" placeholder="e.g. @yourname" oninput="checkPaymentMethods()"><div class="plat-hint">Your Venmo @username (found in the Venmo app).</div></div>
+            <div id="plat-handle-Apple Pay" class="plat-handle-row"><div class="plat-handle-top"><span class="plat-handle-icon">🍎</span><span class="plat-handle-label">Apple Pay — Phone or email</span></div><input class="plat-handle-input" id="handle-Apple Pay" type="text" placeholder="e.g. (203) 555-0100 or you@icloud.com" oninput="checkPaymentMethods()"><div class="plat-hint">The phone number or email linked to your Apple Pay / Apple Cash.</div></div>
+            <div id="plat-handle-Google Pay" class="plat-handle-row"><div class="plat-handle-top"><span class="plat-handle-icon">🔵</span><span class="plat-handle-label">Google Pay — Phone or email</span></div><input class="plat-handle-input" id="handle-Google Pay" type="text" placeholder="e.g. (203) 555-0100 or you@gmail.com" oninput="checkPaymentMethods()"><div class="plat-hint">The phone number or email linked to your Google Pay account.</div></div>
+            <div id="plat-handle-Cash App" class="plat-handle-row"><div class="plat-handle-top"><span class="plat-handle-icon">💚</span><span class="plat-handle-label">Cash App — Your $Cashtag</span></div><input class="plat-handle-input" id="handle-Cash App" type="text" placeholder="e.g. $yourname" oninput="checkPaymentMethods()"><div class="plat-hint">Your Cash App $Cashtag (found in the Cash App).</div></div>
             <button class="verify-btn vbtn-cyan" id="savePaymentBtn" onclick="savePaymentMethods()" disabled style="margin-top:4px;">💸 Save Payment Methods</button>
             <div style="font-size:11px;color:var(--light);margin-top:8px;text-align:center;line-height:1.5;">Your handles are only revealed to confirmed trade partners — never shown publicly.</div>
           </div>
@@ -637,9 +548,8 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
         <div style="padding:14px 16px;">
           <div class="badge-showcase">
             <div class="badge-card earned"><div class="bc-icon blue">✉️</div><div class="bc-info"><div class="bc-name">Email Verified</div><div class="bc-desc">Confirmed email address</div><div class="bc-pts">+10 pts · Earned ✓</div></div></div>
-            <div class="badge-card locked" id="w9BadgeCard"><div class="bc-icon red">📋</div><div class="bc-info"><div class="bc-name">Tax Info on File</div><div class="bc-desc">W-9 submitted · IRS compliant</div><div class="bc-pts" id="w9BadgePts">Required · Pending</div></div><span class="bc-lock" id="w9BadgeLock">⚠️</span></div>
-            <div class="badge-card locked" id="phoneBadge"><div class="bc-icon green">📱</div><div class="bc-info"><div class="bc-name">Phone Verified</div><div class="bc-desc">SMS confirmed number</div><div class="bc-pts">+20 pts · Coming Soon</div></div><span class="bc-lock">🔒</span></div>
-            <div class="badge-card locked" id="idBadge"><div class="bc-icon gold">🪪</div><div class="bc-info"><div class="bc-name">ID Verified</div><div class="bc-desc">Government ID · Ship-It ready</div><div class="bc-pts">+40 pts · Coming Soon</div></div><span class="bc-lock">🔒</span></div>
+            <div class="badge-card locked" id="phoneBadgeCard"><div class="bc-icon green">📱</div><div class="bc-info"><div class="bc-name">Phone Verified</div><div class="bc-desc">SMS confirmed number</div><div class="bc-pts" id="phoneBadgePts">+20 pts · Pending</div></div><span class="bc-lock" id="phoneBadgeLock">🔒</span></div>
+            <div class="badge-card locked" id="idBadgeCard"><div class="bc-icon gold">🪪</div><div class="bc-info"><div class="bc-name">ID Verified</div><div class="bc-desc">Government ID · Ship-It ready</div><div class="bc-pts" id="idBadgePts">+40 pts · Pending</div></div><span class="bc-lock" id="idBadgeLock">🔒</span></div>
             <div class="badge-card locked" id="addrBadge"><div class="bc-icon green">📍</div><div class="bc-info"><div class="bc-name">Local Confirmed</div><div class="bc-desc">Address area verified</div><div class="bc-pts" id="addrBadgePts">+10 pts · Pending</div></div><span class="bc-lock" id="addrBadgeLock">🔒</span></div>
             <div class="badge-card locked" id="paymentBadgeCard"><div class="bc-icon cyan">💸</div><div class="bc-info"><div class="bc-name">Ship-It Ready</div><div class="bc-desc">Payment methods on file</div><div class="bc-pts" id="paymentBadgePts">🚚 Pending</div></div><span class="bc-lock" id="paymentBadgeLock">🔒</span></div>
           </div>
@@ -656,10 +566,9 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
           <table class="limits-table">
             <thead><tr><th>Level</th><th>Trust Score</th><th>Max Trade Value</th><th>Status</th></tr></thead>
             <tbody>
-              <tr><td>📋 W-9 Required</td><td>—</td><td style="font-weight:700;color:var(--red);">No trades until complete</td><td><span class="tier-badge tb-required" id="w9TierBadge">REQUIRED</span></td></tr>
               <tr><td>✉️ Email Only</td><td>10 pts</td><td style="font-weight:700;color:var(--muted);">$50</td><td><span class="tier-badge tb-active" id="emailTierBadge">ACTIVE</span></td></tr>
-              <tr><td>📱 Phone Verified</td><td>30 pts</td><td style="font-weight:700;color:var(--blue);">$150</td><td><span class="tier-badge tb-next">COMING SOON</span></td></tr>
-              <tr><td>🪪 ID Verified</td><td>70 pts</td><td style="font-weight:700;color:var(--gold);">$500 + Ship-It</td><td><span class="tier-badge tb-locked">COMING SOON</span></td></tr>
+              <tr><td>📱 Phone Verified</td><td>30 pts</td><td style="font-weight:700;color:var(--blue);">$150</td><td><span class="tier-badge tb-next" id="phoneTierBadge">AVAILABLE</span></td></tr>
+              <tr><td>🪪 ID Verified</td><td>70 pts</td><td style="font-weight:700;color:var(--gold);">$500 + Ship-It</td><td><span class="tier-badge tb-locked" id="idTierBadge">AVAILABLE</span></td></tr>
               <tr><td>⭐ Fully Verified</td><td>100 pts</td><td style="font-weight:700;color:var(--green);">Unlimited + Ship-It</td><td><span class="tier-badge tb-locked" id="fullyVerifiedTierBadge">LOCKED</span></td></tr>
             </tbody>
           </table>
@@ -677,7 +586,14 @@ const sb = window.supabase.createClient(
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVxdXZ3YXNwY29lZXRmc2V4cWtpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgyNzc2MjQsImV4cCI6MjA5Mzg1MzYyNH0.TP6Kk3pzHW1PYMUu5D9Vu2lJrazIEagzu5csYhqkrfI'
 );
 
+const STRIPE_PK = 'pk_live_51TW2NZGxBDyKEkW0gHznu2bH4q5EUKhWMOz4Lns3yFwitMRNLEC9dwFk8yuVg6pRnOJesxuw8yQKyen6Trd0XyO00ikOdXldY';
+const OTP_WORKER = 'https://tradezy-phone-otp.throbbing-lake-08ed.workers.dev';
+const IDENTITY_FN = 'https://equvwaspcoeetfsexqki.supabase.co/functions/v1/create-identity-session';
+
 let currentUser = null, userData = null, trustScore = 10;
+let stripe = null, cardElement = null;
+let verifiedPhone = null;
+
 const PLATFORMS = ['Zelle','PayPal','Venmo','Apple Pay','Google Pay','Cash App'];
 const PLAT_ICONS = { Zelle:'💙', PayPal:'🅿️', Venmo:'💜', 'Apple Pay':'🍎', 'Google Pay':'🔵', 'Cash App':'💚' };
 
@@ -686,13 +602,56 @@ const PLAT_ICONS = { Zelle:'💙', PayPal:'🅿️', Venmo:'💜', 'Apple Pay':'
   const { data: { session } } = await sb.auth.getSession();
   if (!session) { window.location.href = 'alltrades-auth.html'; return; }
   currentUser = session.user;
+
+  // Check if returning from Stripe Identity redirect
+  const params = new URLSearchParams(window.location.search);
+  if (params.get('id_verify') === 'complete') {
+    await handleIdentityReturn();
+  }
+
   await loadUserData();
+  initStripe();
 })();
+
+async function handleIdentityReturn() {
+  try {
+    const { data: { session } } = await sb.auth.getSession();
+    if (!session) return;
+    const res = await fetch(IDENTITY_FN, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${session.access_token}` },
+      body: JSON.stringify({ action: 'mark_verified' })
+    });
+    const data = await res.json();
+    if (data.success) {
+      // Clean URL
+      window.history.replaceState({}, '', 'alltrades-verification.html');
+      showToast('🪪', 'ID verification complete! +40 trust points earned.');
+    }
+  } catch(e) { console.error('Identity return error:', e); }
+}
+
+function initStripe() {
+  stripe = Stripe(STRIPE_PK);
+  const elements = stripe.elements();
+  cardElement = elements.create('card', {
+    style: {
+      base: { fontSize: '14px', color: '#1a1a2e', fontFamily: 'Lato, sans-serif', '::placeholder': { color: '#94a3b8' } },
+      invalid: { color: '#dc2626' }
+    }
+  });
+  cardElement.mount('#stripe-card-element');
+  cardElement.on('change', (e) => {
+    document.getElementById('card-errors').textContent = e.error ? e.error.message : '';
+    document.getElementById('startIdVerifyBtn').disabled = !e.complete;
+    if (e.complete) document.getElementById('stripe-card-element').classList.add('focused');
+  });
+}
 
 async function loadUserData() {
   try {
     const { data, error } = await sb.from('users')
-      .select('display_name, email, trust_score, address_city, address_state, address_zip, address_verified, phone_verified, id_verified, w9_on_file, w9_submitted, w9_submitted_at, w9_name, w9_entity_type, payment_methods')
+      .select('display_name, email, trust_score, address_city, address_state, address_zip, address_verified, phone_verified, id_verified, payment_methods')
       .eq('id', currentUser.id).single();
     if (error) throw error;
     userData = data;
@@ -707,28 +666,14 @@ async function loadUserData() {
     trustScore = data.trust_score || 10;
     updateTrustDisplay(trustScore);
 
-    // ── W-9 ──
-    if (data.w9_on_file) {
-      document.getElementById('w9FormState').style.display = 'none';
-      document.getElementById('w9VerifiedState').style.display = 'block';
-      const submittedDate = data.w9_submitted_at ? new Date(data.w9_submitted_at).toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'}) : 'on file';
-      document.getElementById('w9VerifiedSub').textContent = `Submitted ${submittedDate} · ${data.w9_entity_type||'Individual'}`;
-      document.getElementById('w9PanelSub').textContent = 'Tax information on file ✓';
-      const navW9 = document.getElementById('nav-w9');
-      navW9.classList.add('completed');
-      navW9.querySelector('.si-icon-wrap').textContent = '✅';
-      const w9Badge = document.getElementById('w9Badge');
-      w9Badge.className = 'si-badge sib-done'; w9Badge.textContent = '✓ On File';
-      document.getElementById('w9BadgeCard').classList.remove('locked'); document.getElementById('w9BadgeCard').classList.add('earned');
-      document.getElementById('w9BadgePts').textContent = 'Submitted · IRS Compliant ✓';
-      const w9Lock = document.getElementById('w9BadgeLock'); if (w9Lock) w9Lock.textContent = '✅';
-      document.getElementById('w9TierBadge').textContent = '✓ COMPLETE';
-      document.getElementById('w9TierBadge').className = 'tier-badge tb-active';
-      // Update status card
-      const vscW9 = document.getElementById('vsc-w9');
-      vscW9.className = 'vsc-criterion done';
-      document.getElementById('vsc-w9-status').textContent = 'On file ✓';
-      document.getElementById('vsc-w9-check').textContent = '✅';
+    // ── PHONE ──
+    if (data.phone_verified) {
+      markPhoneVerified();
+    }
+
+    // ── ID ──
+    if (data.id_verified) {
+      markIdVerified();
     }
 
     // ── ADDRESS ──
@@ -743,9 +688,7 @@ async function loadUserData() {
       document.getElementById('addrBadge').classList.remove('locked'); document.getElementById('addrBadge').classList.add('earned');
       document.getElementById('addrBadgePts').textContent = '+10 pts · Earned ✓';
       const lockEl = document.getElementById('addrBadgeLock'); if (lockEl) lockEl.remove();
-      // Update status card
-      const vscAddr = document.getElementById('vsc-address');
-      vscAddr.className = 'vsc-criterion done';
+      document.getElementById('vsc-address').className = 'vsc-criterion done';
       document.getElementById('vsc-address-status').textContent = 'Confirmed ✓';
       document.getElementById('vsc-address-check').textContent = '✅';
     }
@@ -768,14 +711,11 @@ async function loadUserData() {
       document.getElementById('paymentBadgeCard').classList.remove('locked'); document.getElementById('paymentBadgeCard').classList.add('earned');
       document.getElementById('paymentBadgePts').textContent = '🚚 Ship-It Ready ✓';
       const pLock = document.getElementById('paymentBadgeLock'); if (pLock) pLock.textContent = '✅';
-      // Update status card
-      const vscPay = document.getElementById('vsc-payment');
-      vscPay.className = 'vsc-criterion done';
+      document.getElementById('vsc-payment').className = 'vsc-criterion done';
       document.getElementById('vsc-payment-status').textContent = `${count} platform${count>1?'s':''} ✓`;
       document.getElementById('vsc-payment-check').textContent = '✅';
     }
 
-    // ── BLUE CHECKMARK EVALUATION ──
     updateVerifyStatusCard(data);
 
   } catch(e) {
@@ -787,51 +727,72 @@ async function loadUserData() {
   }
 }
 
-/* ── BLUE CHECKMARK STATUS CARD ── */
+function markPhoneVerified() {
+  document.getElementById('phoneFormState').style.display = 'none';
+  document.getElementById('otpFormState').style.display = 'none';
+  document.getElementById('phoneVerifiedState').style.display = 'block';
+  document.getElementById('phonePanelSub').textContent = 'Phone number confirmed ✓';
+  const navPhone = document.getElementById('nav-phone');
+  navPhone.classList.add('completed'); navPhone.querySelector('.si-icon-wrap').textContent = '✅';
+  document.getElementById('phoneBadgeNav').className = 'si-badge sib-done'; document.getElementById('phoneBadgeNav').textContent = '✓ Verified';
+  document.getElementById('phoneBadgeCard').classList.remove('locked'); document.getElementById('phoneBadgeCard').classList.add('earned');
+  document.getElementById('phoneBadgePts').textContent = '+20 pts · Earned ✓';
+  const pLock = document.getElementById('phoneBadgeLock'); if (pLock) pLock.textContent = '✅';
+  document.getElementById('phoneTierBadge').textContent = '✓ UNLOCKED'; document.getElementById('phoneTierBadge').className = 'tier-badge tb-active';
+  document.getElementById('vsc-phone').className = 'vsc-criterion done';
+  document.getElementById('vsc-phone-status').textContent = 'Verified ✓';
+  document.getElementById('vsc-phone-check').textContent = '✅';
+  if (userData) userData.phone_verified = true;
+}
+
+function markIdVerified() {
+  document.getElementById('idFormState').style.display = 'none';
+  document.getElementById('idProcessingState').style.display = 'none';
+  document.getElementById('idVerifiedState').style.display = 'block';
+  document.getElementById('idPanelSub').textContent = 'Government ID confirmed ✓';
+  const navId = document.getElementById('nav-id');
+  navId.classList.add('completed'); navId.querySelector('.si-icon-wrap').textContent = '✅';
+  document.getElementById('idBadgeNav').className = 'si-badge sib-done'; document.getElementById('idBadgeNav').textContent = '✓ Verified';
+  document.getElementById('idBadgeCard').classList.remove('locked'); document.getElementById('idBadgeCard').classList.add('earned');
+  document.getElementById('idBadgePts').textContent = '+40 pts · Earned ✓';
+  const iLock = document.getElementById('idBadgeLock'); if (iLock) iLock.textContent = '✅';
+  document.getElementById('idTierBadge').textContent = '✓ UNLOCKED'; document.getElementById('idTierBadge').className = 'tier-badge tb-active';
+  document.getElementById('vsc-id').className = 'vsc-criterion done';
+  document.getElementById('vsc-id-status').textContent = 'Verified ✓';
+  document.getElementById('vsc-id-check').textContent = '✅';
+  if (userData) userData.id_verified = true;
+}
+
+/* ── BLUE CHECKMARK ── */
 function updateVerifyStatusCard(data) {
-  // Phone and ID are coming soon — treated as pending (not blocking checkmark for now)
-  // Checkmark requires: email (always done), w9_on_file, address_verified, payment_methods set
-  // Phone + ID unlock when they launch — for now we note them as coming soon
-  const w9Done = !!data.w9_on_file;
-  const addrDone = !!data.address_verified;
-  const payDone = !!(data.payment_methods && Object.keys(data.payment_methods).length > 0);
-  // Phone + ID: coming soon — we'll treat as locked (not blocking checkmark pre-launch)
   const phoneDone = !!data.phone_verified;
   const idDone = !!data.id_verified;
-
-  // For now: fully verified = w9 + address + payment + email (phone/ID come later)
-  // Once phone + ID launch they'll be required too
-  const fullyVerifiedNow = w9Done && addrDone && payDone;
-  const fullyVerifiedFuture = w9Done && addrDone && payDone && phoneDone && idDone;
+  const addrDone = !!data.address_verified;
+  const payDone = !!(data.payment_methods && Object.keys(data.payment_methods).length > 0);
+  const fullyVerified = phoneDone && idDone && addrDone && payDone;
 
   const banner = document.getElementById('vscBanner');
   const icon = document.getElementById('vscIcon');
   const title = document.getElementById('vscTitle');
   const sub = document.getElementById('vscSub');
 
-  if (fullyVerifiedFuture) {
+  if (fullyVerified) {
     banner.className = 'vsc-checkmark-banner unlocked';
-    icon.textContent = '💙';
-    title.textContent = 'Blue Checkmark Earned!';
+    icon.textContent = '💙'; title.textContent = 'Blue Checkmark Earned!';
     sub.textContent = 'Your profile and listings display the blue verified checkmark. Ship-It is enabled on all your listings.';
     document.getElementById('fullyVerifiedTierBadge').textContent = '✓ UNLOCKED';
     document.getElementById('fullyVerifiedTierBadge').className = 'tier-badge tb-active';
-  } else if (fullyVerifiedNow) {
-    banner.className = 'vsc-checkmark-banner unlocked';
-    icon.textContent = '💙';
-    title.textContent = 'Blue Checkmark Earned! (Pre-Launch)';
-    sub.textContent = 'You\'ve completed all currently available steps. Your blue checkmark is active. Phone + ID verification will be required when they launch.';
   } else {
     const remaining = [
-      !w9Done && 'W-9 tax info',
+      !phoneDone && 'phone verification',
+      !idDone && 'ID verification',
       !addrDone && 'address confirmation',
       !payDone && 'payment methods'
     ].filter(Boolean);
     banner.className = 'vsc-checkmark-banner locked';
-    icon.textContent = '🔒';
-    title.textContent = 'Blue Checkmark Locked';
+    icon.textContent = '🔒'; title.textContent = 'Blue Checkmark Locked';
     sub.textContent = remaining.length > 0
-      ? `Still needed: ${remaining.join(', ')}. Complete these steps to earn your blue checkmark.`
+      ? `Still needed: ${remaining.join(', ')}.`
       : 'Complete all verification steps to earn your blue checkmark.';
   }
 }
@@ -839,11 +800,7 @@ function updateVerifyStatusCard(data) {
 function renderSavedMethods(methods) {
   const list = document.getElementById('savedMethodsList');
   list.innerHTML = Object.entries(methods).map(([platform, handle]) =>
-    `<div class="saved-method-row">
-      <span class="smr-icon">${PLAT_ICONS[platform]||'💳'}</span>
-      <div class="smr-info"><div class="smr-platform">${platform}</div><div class="smr-handle">${handle}</div></div>
-      <span class="smr-check">✓</span>
-    </div>`
+    `<div class="saved-method-row"><span class="smr-icon">${PLAT_ICONS[platform]||'💳'}</span><div class="smr-info"><div class="smr-platform">${platform}</div><div class="smr-handle">${handle}</div></div><span class="smr-check">✓</span></div>`
   ).join('');
 }
 
@@ -853,15 +810,8 @@ function restoreFormFromSaved() {
     const card = document.getElementById('plat-'+p);
     const handleRow = document.getElementById('plat-handle-'+p);
     const input = document.getElementById('handle-'+p);
-    if (methods[p]) {
-      card.classList.add('selected');
-      handleRow.classList.add('show');
-      input.value = methods[p];
-    } else {
-      card.classList.remove('selected');
-      handleRow.classList.remove('show');
-      input.value = '';
-    }
+    if (methods[p]) { card.classList.add('selected'); handleRow.classList.add('show'); input.value = methods[p]; }
+    else { card.classList.remove('selected'); handleRow.classList.remove('show'); input.value = ''; }
   });
   checkPaymentMethods();
 }
@@ -875,70 +825,174 @@ function showStep(step) {
   if (nav) nav.classList.add('active');
 }
 
-/* ── W-9 ── */
-function updateTinPlaceholder() {
-  const tinType = document.getElementById('w9TinType').value;
-  const tinField = document.getElementById('w9TinField');
-  const tinInput = document.getElementById('w9Tin');
-  const tinLabel = document.getElementById('w9TinLabel');
-  if (tinType === 'ssn') { tinField.style.display='block'; tinInput.placeholder='XXX-XX-XXXX'; tinInput.maxLength=11; tinLabel.innerHTML='Social Security Number (SSN) <span style="color:var(--red)">*</span>'; }
-  else if (tinType === 'ein') { tinField.style.display='block'; tinInput.placeholder='XX-XXXXXXX'; tinInput.maxLength=10; tinLabel.innerHTML='Employer Identification Number (EIN) <span style="color:var(--red)">*</span>'; }
-  else { tinField.style.display='none'; }
+/* ── PHONE OTP ── */
+function checkPhoneInput() {
+  const val = document.getElementById('phoneInput').value.trim();
+  document.getElementById('sendOtpBtn').disabled = val.length < 10;
 }
-function formatTin() {
-  const tinType = document.getElementById('w9TinType').value;
-  let val = document.getElementById('w9Tin').value.replace(/\D/g,'');
-  if (tinType==='ssn') { if (val.length>3&&val.length<=5) val=val.slice(0,3)+'-'+val.slice(3); else if (val.length>5) val=val.slice(0,3)+'-'+val.slice(3,5)+'-'+val.slice(5,9); }
-  else if (tinType==='ein') { if (val.length>2) val=val.slice(0,2)+'-'+val.slice(2,9); }
-  document.getElementById('w9Tin').value = val;
+
+function formatPhone(raw) {
+  const digits = raw.replace(/\D/g,'');
+  return digits.startsWith('1') ? '+'+digits : '+1'+digits;
 }
-function checkW9() {
-  const name=document.getElementById('w9Name').value.trim(), entity=document.getElementById('w9EntityType').value, tinType=document.getElementById('w9TinType').value, tin=document.getElementById('w9Tin').value.trim(), address=document.getElementById('w9Address').value.trim(), city=document.getElementById('w9City').value.trim(), state=document.getElementById('w9State').value, zip=document.getElementById('w9Zip').value.trim(), cert=document.getElementById('w9Cert').checked;
-  const tinValid=tinType==='ssn'?tin.length===11:tinType==='ein'?tin.length===10:false;
-  document.getElementById('submitW9Btn').disabled=!(name&&entity&&tinType&&tinValid&&address&&city&&state&&zip.length>=5&&cert);
-}
-async function submitW9() {
-  const name=document.getElementById('w9Name').value.trim(), entity=document.getElementById('w9EntityType').value, address=document.getElementById('w9Address').value.trim(), city=document.getElementById('w9City').value.trim(), state=document.getElementById('w9State').value, zip=document.getElementById('w9Zip').value.trim();
-  const btn=document.getElementById('submitW9Btn'); btn.textContent='⏳ Submitting…'; btn.disabled=true;
+
+async function sendOtp() {
+  const raw = document.getElementById('phoneInput').value.trim();
+  const phone = formatPhone(raw);
+  const btn = document.getElementById('sendOtpBtn');
+  btn.textContent = '⏳ Sending…'; btn.disabled = true;
   try {
-    const { error } = await sb.from('users').update({
-      w9_on_file: true,
-      w9_submitted: true,
-      w9_submitted_at: new Date().toISOString(),
-      w9_name: name,
-      w9_entity_type: entity,
-      tax_disclosure_acknowledged_at: new Date().toISOString(),
-      address_city: city,
-      address_state: state,
-      address_zip: zip
-    }).eq('id', currentUser.id);
-    if (error) throw error;
-    // Update local userData
-    userData = { ...userData, w9_on_file: true, w9_submitted: true, w9_submitted_at: new Date().toISOString(), w9_entity_type: entity };
-    document.getElementById('w9FormState').style.display='none';
-    document.getElementById('w9VerifiedState').style.display='block';
-    const today=new Date().toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});
-    document.getElementById('w9VerifiedSub').textContent=`Submitted ${today} · ${entity}`;
-    document.getElementById('w9PanelSub').textContent='Tax information on file ✓';
-    const navW9=document.getElementById('nav-w9'); navW9.classList.remove('active'); navW9.classList.add('completed'); navW9.querySelector('.si-icon-wrap').textContent='✅';
-    const w9Badge=document.getElementById('w9Badge'); w9Badge.className='si-badge sib-done'; w9Badge.textContent='✓ On File';
-    document.getElementById('w9BadgeCard').classList.remove('locked'); document.getElementById('w9BadgeCard').classList.add('earned');
-    document.getElementById('w9BadgePts').textContent='Submitted · IRS Compliant ✓';
-    const w9Lock=document.getElementById('w9BadgeLock'); if (w9Lock) w9Lock.textContent='✅';
-    document.getElementById('w9TierBadge').textContent='✓ COMPLETE'; document.getElementById('w9TierBadge').className='tier-badge tb-active';
-    // Update status card
-    const vscW9=document.getElementById('vsc-w9'); vscW9.className='vsc-criterion done';
-    document.getElementById('vsc-w9-status').textContent='On file ✓';
-    document.getElementById('vsc-w9-check').textContent='✅';
-    // Re-evaluate checkmark
-    updateVerifyStatusCard(userData);
-    if (city) document.getElementById('addrCity').value=city;
-    if (state) document.getElementById('addrState').value=state;
-    if (zip) document.getElementById('addrZip').value=zip;
-    checkAddr();
-    showToast('📋','Tax information submitted. You are cleared to trade!');
-    if (typeof gtag!=='undefined') gtag('event','w9_submitted',{event_category:'verification'});
-  } catch(e) { console.error(e); showToast('⚠️','Error submitting tax information. Please try again.',true); btn.textContent='📋 Submit Tax Information'; btn.disabled=false; }
+    const res = await fetch(OTP_WORKER+'/send', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ phone })
+    });
+    const data = await res.json();
+    if (data.success) {
+      verifiedPhone = phone;
+      document.getElementById('phoneFormState').style.display = 'none';
+      document.getElementById('otpFormState').style.display = 'block';
+      document.getElementById('otpSentMsg').textContent = `Code sent to ${raw}. Check your messages.`;
+      document.getElementById('otp0').focus();
+      showToast('📱', 'Verification code sent!');
+    } else {
+      throw new Error(data.error || 'Failed to send code');
+    }
+  } catch(e) {
+    showToast('⚠️', e.message || 'Failed to send code. Try again.', true);
+    btn.textContent = '📱 Send Verification Code'; btn.disabled = false;
+    checkPhoneInput();
+  }
+}
+
+async function resendOtp() {
+  if (!verifiedPhone) { backToPhone(); return; }
+  const btn = document.getElementById('resendBtn');
+  btn.textContent = '⏳ Sending…'; btn.disabled = true;
+  try {
+    const res = await fetch(OTP_WORKER+'/send', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ phone: verifiedPhone })
+    });
+    const data = await res.json();
+    if (data.success) { showToast('📱', 'New code sent!'); }
+    else throw new Error(data.error);
+  } catch(e) { showToast('⚠️', 'Failed to resend. Try again.', true); }
+  finally { btn.textContent = '🔄 Resend Code'; btn.disabled = false; }
+}
+
+function backToPhone() {
+  document.getElementById('otpFormState').style.display = 'none';
+  document.getElementById('phoneFormState').style.display = 'block';
+  clearOtp();
+}
+
+function clearOtp() {
+  for (let i = 0; i < 6; i++) {
+    const el = document.getElementById('otp'+i);
+    el.value = ''; el.classList.remove('filled');
+  }
+  document.getElementById('verifyOtpBtn').disabled = true;
+}
+
+function otpInput(el, idx) {
+  el.value = el.value.replace(/\D/g,'').slice(0,1);
+  el.classList.toggle('filled', !!el.value);
+  if (el.value && idx < 5) document.getElementById('otp'+(idx+1)).focus();
+  checkOtpComplete();
+}
+
+function otpKeydown(e, idx) {
+  if (e.key === 'Backspace' && !document.getElementById('otp'+idx).value && idx > 0) {
+    document.getElementById('otp'+(idx-1)).focus();
+  }
+}
+
+function checkOtpComplete() {
+  let code = '';
+  for (let i = 0; i < 6; i++) code += document.getElementById('otp'+i).value;
+  document.getElementById('verifyOtpBtn').disabled = code.length < 6;
+}
+
+function getOtpCode() {
+  let code = '';
+  for (let i = 0; i < 6; i++) code += document.getElementById('otp'+i).value;
+  return code;
+}
+
+async function verifyOtp() {
+  const code = getOtpCode();
+  if (!verifiedPhone || code.length < 6) return;
+  const btn = document.getElementById('verifyOtpBtn');
+  btn.textContent = '⏳ Verifying…'; btn.disabled = true;
+  try {
+    const res = await fetch(OTP_WORKER+'/verify', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ phone: verifiedPhone, code })
+    });
+    const data = await res.json();
+    if (data.verified) {
+      // Update Supabase
+      const newScore = Math.min(100, trustScore + 20);
+      const { error } = await sb.from('users').update({
+        phone: verifiedPhone,
+        phone_verified: true,
+        trust_score: newScore
+      }).eq('id', currentUser.id);
+      if (error) throw error;
+      trustScore = newScore;
+      updateTrustDisplay(trustScore);
+      userData = { ...userData, phone_verified: true };
+      updateVerifyStatusCard(userData);
+      markPhoneVerified();
+      showToast('📱', 'Phone verified! +20 trust points earned.');
+      if (typeof gtag !== 'undefined') gtag('event','phone_verified',{event_category:'verification'});
+    } else {
+      showToast('⚠️', 'Invalid code. Please try again.', true);
+      btn.textContent = '✅ Verify Code'; btn.disabled = false;
+      clearOtp(); document.getElementById('otp0').focus();
+    }
+  } catch(e) {
+    showToast('⚠️', e.message || 'Verification failed. Try again.', true);
+    btn.textContent = '✅ Verify Code'; btn.disabled = false;
+  }
+}
+
+/* ── STRIPE IDENTITY ── */
+async function startIdVerification() {
+  const btn = document.getElementById('startIdVerifyBtn');
+  btn.textContent = '⏳ Processing…'; btn.disabled = true;
+  document.getElementById('card-errors').textContent = '';
+  try {
+    const { data: { session } } = await sb.auth.getSession();
+    // Call edge function to create $3 PaymentIntent + Identity session
+    const res = await fetch(IDENTITY_FN, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${session.access_token}` },
+      body: JSON.stringify({ action: 'create_session' })
+    });
+    const data = await res.json();
+    if (data.error) throw new Error(data.error);
+
+    // Confirm $3 payment
+    const { error: payError } = await stripe.confirmCardPayment(data.client_secret, {
+      payment_method: { card: cardElement }
+    });
+    if (payError) throw new Error(payError.message);
+
+    // Redirect to Stripe Identity
+    document.getElementById('idFormState').style.display = 'none';
+    document.getElementById('idProcessingState').style.display = 'block';
+    showToast('🪪', 'Payment confirmed! Redirecting to ID verification…');
+    setTimeout(() => { window.location.href = data.verification_url; }, 1500);
+
+  } catch(e) {
+    document.getElementById('card-errors').textContent = e.message;
+    showToast('⚠️', e.message || 'Verification failed. Try again.', true);
+    btn.textContent = '🪪 Pay $3 & Verify ID'; btn.disabled = false;
+  }
 }
 
 /* ── ADDRESS ── */
@@ -961,14 +1015,12 @@ async function confirmAddress() {
     document.getElementById('addrPanelSub').textContent='Address confirmed ✓';
     const navAddr=document.getElementById('nav-address'); navAddr.classList.remove('active'); navAddr.classList.add('completed'); navAddr.querySelector('.si-icon-wrap').textContent='✅';
     const badge=navAddr.querySelector('.si-badge'); badge.className='si-badge sib-done'; badge.textContent='+10 pts';
-    const addrBadge=document.getElementById('addrBadge'); addrBadge.classList.remove('locked'); addrBadge.classList.add('earned');
+    document.getElementById('addrBadge').classList.remove('locked'); document.getElementById('addrBadge').classList.add('earned');
     document.getElementById('addrBadgePts').textContent='+10 pts · Earned ✓';
     const lockEl=document.getElementById('addrBadgeLock'); if (lockEl) lockEl.remove();
-    // Update status card
-    const vscAddr=document.getElementById('vsc-address'); vscAddr.className='vsc-criterion done';
+    document.getElementById('vsc-address').className='vsc-criterion done';
     document.getElementById('vsc-address-status').textContent='Confirmed ✓';
     document.getElementById('vsc-address-check').textContent='✅';
-    // Re-evaluate checkmark
     updateVerifyStatusCard(userData);
     showToast('📍','Address confirmed! +10 trust points earned.');
     if (typeof gtag!=='undefined') gtag('event','address_verified',{event_category:'verification'});
@@ -1013,11 +1065,9 @@ async function savePaymentMethods() {
     document.getElementById('paymentBadgeCard').classList.remove('locked'); document.getElementById('paymentBadgeCard').classList.add('earned');
     document.getElementById('paymentBadgePts').textContent='🚚 Ship-It Ready ✓';
     const pLock=document.getElementById('paymentBadgeLock'); if (pLock) pLock.textContent='✅';
-    // Update status card
-    const vscPay=document.getElementById('vsc-payment'); vscPay.className='vsc-criterion done';
+    document.getElementById('vsc-payment').className='vsc-criterion done';
     document.getElementById('vsc-payment-status').textContent=`${count} platform${count>1?'s':''} ✓`;
     document.getElementById('vsc-payment-check').textContent='✅';
-    // Re-evaluate checkmark
     updateVerifyStatusCard(userData);
     showToast('💸',`${count} payment method${count>1?'s':''} saved! You're Ship-It ready.`);
     if (typeof gtag!=='undefined') gtag('event','payment_methods_saved',{event_category:'verification',event_label:Object.keys(methods).join(',')});
@@ -1124,24 +1174,51 @@ ABOUT TRADEZY:
 - Phase 1 launch: July 17 2026 — Connecticut and Ohio statewide
 - Phase 2: July 31 2026 — Nationwide
 
+HOW TRADING WORKS:
+- Browse listings at tradezyhq.com
+- Make an offer (item-for-item, item+cash, or cash only)
+- Seller accepts → both parties pay the platform fee via Stripe
+- Meet locally to exchange OR ship via Ship-It
+- Both confirm trade complete → ratings unlock
+
 VERIFICATION & TRUST:
-- Email verification required to use platform
-- W-9 tax form required before posting listings or trading
-- Address verification adds +10 trust score points
-- Phone verification coming soon — +20 pts, unlocks $150 trades
-- ID verification coming soon — +40 pts, required for Ship-It trades
-- Payment methods: sellers set which platforms they accept (Zelle, PayPal, Venmo, Apple Pay, Google Pay, Cash App)
-- Blue checkmark: earned when email + W-9 + address + payment methods + phone + ID are all complete
+- Email verification: +10 pts, required to use platform
+- Phone verification: +20 pts, unlocks trades up to $150, SMS OTP via Tradezy
+- ID verification: +40 pts, required for Ship-It, $3 fee via Stripe Identity
+- Address confirmation: +10 pts, confirms local area
+- Payment methods: set which platforms you accept (Zelle, PayPal, Venmo, Apple Pay, Google Pay, Cash App)
+- Blue checkmark: earned when email + phone + ID + address + payment methods all complete
 
 FEES:
 - 5% per party for local trades (Founding Traders 3% lifetime)
 - Ship-It: 10% per party at trade acceptance
+- ID verification: one-time $3 fee (refunded if verification fails)
 - Listing is always free
+
+PROHIBITED ITEMS:
+- Firearms, weapons, ammunition
+- Drugs, alcohol, tobacco
+- Live animals
+- Adult content
+- Cryptocurrency, gift cards
+- Counterfeit or stolen goods
+
+DISPUTE RESOLUTION:
+- File disputes at tradezyhq.com/alltrades-disputes.html
+- Or email disputes@tradezyhq.com
+- Response times: CRITICAL issues 8hrs, HIGH 16hrs, MEDIUM 24hrs, LOW 48hrs
+
+ESCALATION RULES:
+- CRITICAL (8hr SLA): fraud, scam, threats, counterfeit items, safety concerns → escalate to disputes@tradezyhq.com immediately
+- HIGH (16hr SLA): no-show at meetup, item significantly misrepresented, payment dispute → file dispute form
+- MEDIUM (24hr SLA): minor item condition discrepancy, communication issues → file dispute form
+- LOW (48hr SLA): general questions, feedback, feature requests → support@tradezyhq.com
 
 ACCOUNT HELP:
 - Password reset: https://tradezyhq.com/alltrades-auth.html
-- Verification issues: https://tradezyhq.com/alltrades-verification.html
-- Disputes: https://tradezyhq.com/alltrades-disputes.html or disputes@tradezyhq.com
+- Verification: https://tradezyhq.com/alltrades-verification.html
+- Disputes: https://tradezyhq.com/alltrades-disputes.html
+- Support email: support@tradezyhq.com
 
 TONE: Warm, clear, concise. Never give legal or financial advice. Keep responses short and scannable.`;
 
