@@ -617,16 +617,21 @@ async function handleIdentityReturn() {
   try {
     const { data: { session } } = await sb.auth.getSession();
     if (!session) return;
+    // Clean URL immediately
+    window.history.replaceState({}, '', 'alltrades-verification.html');
+    const sessionId = localStorage.getItem('tz_identity_session');
+    if (!sessionId) return;
+    localStorage.removeItem('tz_identity_session');
     const res = await fetch(IDENTITY_FN, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${session.access_token}` },
-      body: JSON.stringify({ action: 'mark_verified' })
+      body: JSON.stringify({ action: 'mark_verified', session_id: sessionId })
     });
     const data = await res.json();
     if (data.success) {
-      // Clean URL
-      window.history.replaceState({}, '', 'alltrades-verification.html');
       showToast('🪪', 'ID verification complete! +40 trust points earned.');
+    } else if (data.status) {
+      showToast('⚠️', `Verification ${data.status}. Please try again to complete ID verification.`, true);
     }
   } catch(e) { console.error('Identity return error:', e); }
 }
@@ -987,6 +992,7 @@ async function startIdVerification() {
     document.getElementById('idFormState').style.display = 'none';
     document.getElementById('idProcessingState').style.display = 'block';
     showToast('🪪', 'Payment confirmed! Redirecting to ID verification…');
+    localStorage.setItem('tz_identity_session', data.session_id);
     setTimeout(() => { window.location.href = data.verification_url; }, 1500);
 
   } catch(e) {
