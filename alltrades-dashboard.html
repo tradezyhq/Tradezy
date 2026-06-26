@@ -1049,8 +1049,14 @@ async function acceptOffer(id, isShipIt) {
     await sb.from('offers').update({status:'accepted'}).eq('id',id);
     await sb.from('listings').update({status:'trading'}).eq('id',offer.listing_id);
     await sb.from('trades').insert({offer_id:offer.id,listing_id:offer.listing_id,trader_a_id:currentUser.id,trader_b_id:offer.offerer_id,status:'accepted'});
-    showToast(isShipIt?'🚚':'🎉',isShipIt?'Ship-It offer accepted! Get ready to ship.':'Offer accepted! Trade created.');
-    loadOffers(); loadTrades(); loadListings();
+    if (isShipIt) {
+  const { data: newTrade } = await sb.from('trades').select('id').eq('offer_id', offer.id).single();
+  showToast('🚚', 'Ship-It accepted! Taking you to create your shipping label…');
+  setTimeout(() => { window.location.href = `alltrades-shipit.html?trade_id=${newTrade.id}`; }, 1500);
+} else {
+  showToast('🎉', 'Offer accepted! Trade created.');
+  loadOffers(); loadTrades(); loadListings();
+}
   } catch(e) { showToast('⚠️','Error accepting offer.'); console.error(e); }
 }
 
