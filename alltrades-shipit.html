@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tradezy — Create Shipping Label</title>
+<script src="supabase.min.js"></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-0NSDNDFP0H"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-0NSDNDFP0H');</script>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0a1628;--navy2:#112240;--blue:#1a56db;--blue-l:#2563eb;
+  --gold:#f59e0b;--gold-l:#fbbf24;--green:#16a34a;--green-l:#22c55e;
+  --red:#dc2626;--orange:#ea580c;--cyan:#0ea5e9;--cyan-l:#0284c7;
+  --text:#1a1a2e;--muted:#475569;--light:#94a3b8;
+  --border:#e2e8f0;--bg:#f0f4f8;--white:#fff;--surface:#f8fafc;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
+.nav{background:var(--navy);padding:0 24px;height:54px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;}
+.logo{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.5rem;letter-spacing:-1px;text-decoration:none;}
+.logo .a{color:#fff;}.logo .t{color:var(--blue);}.logo .d{color:var(--gold);}
+.nav-right{display:flex;align-items:center;gap:8px;}
+.nav-btn{padding:6px 14px;border-radius:6px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.88rem;cursor:pointer;border:1px solid rgba(255,255,255,.1);background:transparent;color:#94a3b8;transition:all .15s;text-decoration:none;display:inline-flex;align-items:center;}
+.nav-btn:hover{color:#fff;}
+.u-av{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--orange));color:var(--navy);font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:.8rem;display:flex;align-items:center;justify-content:center;}
+.user-chip{display:flex;align-items:center;gap:7px;}
+.u-name{font-size:13px;color:#cbd5e1;font-weight:700;}
+.page{max-width:720px;margin:0 auto;padding:28px 20px;}
+.loading-screen{display:flex;align-items:center;justify-content:center;min-height:60vh;font-size:14px;color:var(--muted);}
+
+/* HERO */
+.shipit-hero{background:linear-gradient(135deg,#0c4a6e 0%,#0369a1 55%,#0284c7 100%);border-radius:16px;padding:24px 28px;margin-bottom:24px;position:relative;overflow:hidden;}
+.shipit-hero::before{content:'🚚';position:absolute;right:-10px;top:50%;transform:translateY(-50%);font-size:9rem;opacity:.06;pointer-events:none;}
+.hero-tag{display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);color:#bae6fd;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:4px 12px;border-radius:4px;margin-bottom:10px;width:fit-content;}
+.hero-title{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.8rem;color:#fff;line-height:1.05;margin-bottom:6px;}
+.hero-sub{font-size:13px;color:#7dd3fc;line-height:1.5;}
+.trade-summary{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:10px;padding:12px 16px;margin-top:14px;display:flex;align-items:center;gap:12px;}
+.ts-icon{font-size:1.5rem;flex-shrink:0;}
+.ts-info{flex:1;}
+.ts-title{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.95rem;color:#fff;margin-bottom:2px;}
+.ts-meta{font-size:11px;color:#7dd3fc;}
+
+/* STEPS */
+.steps-bar{display:flex;align-items:center;gap:0;margin-bottom:24px;background:var(--white);border:1px solid var(--border);border-radius:12px;overflow:hidden;}
+.step-tab{flex:1;padding:12px 8px;text-align:center;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.8rem;color:var(--muted);border-right:1px solid var(--border);transition:all .2s;position:relative;}
+.step-tab:last-child{border-right:none;}
+.step-tab.active{background:#e0f2fe;color:#0369a1;}
+.step-tab.done{background:#f0fdf4;color:var(--green);}
+.step-tab .step-num{display:block;font-size:.65rem;margin-bottom:2px;opacity:.7;}
+
+/* PANELS */
+.panel{background:var(--white);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px;display:none;}
+.panel.active{display:block;}
+.panel-head{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px;}
+.ph-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0;}
+.ph-title{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1rem;margin-bottom:2px;}
+.ph-sub{font-size:11px;color:var(--muted);}
+.panel-body{padding:20px;}
+
+/* FIELDS */
+.field{margin-bottom:14px;}
+.field label{display:block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:5px;}
+.field input,.field select{width:100%;border:1.5px solid var(--border);border-radius:8px;padding:10px 13px;font-size:13px;font-family:'Lato',sans-serif;outline:none;transition:all .15s;background:var(--white);color:var(--text);}
+.field input:focus,.field select:focus{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(14,165,233,.08);}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.field-row-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;}
+.field-hint{font-size:11px;color:var(--muted);margin-top:4px;}
+
+/* INFO BOXES */
+.info-box{border-radius:9px;padding:11px 13px;margin-bottom:13px;display:flex;gap:8px;font-size:12px;line-height:1.5;}
+.ib-cyan{background:#e0f2fe;border:1px solid #7dd3fc;color:#0369a1;}
+.ib-gold{background:#fffbeb;border:1px solid #fde68a;color:#92400e;}
+.ib-green{background:#f0fdf4;border:1px solid #bbf7d0;color:#14532d;}
+.ib-red{background:#fef2f2;border:1px solid #fecaca;color:#991b1b;}
+
+/* RATES */
+.rates-list{display:flex;flex-direction:column;gap:8px;margin-bottom:16px;}
+.rate-card{border:2px solid var(--border);border-radius:10px;padding:13px 16px;cursor:pointer;transition:all .15s;display:flex;align-items:center;gap:12px;}
+.rate-card:hover{border-color:var(--cyan);background:#f0f9ff;}
+.rate-card.selected{border-color:var(--cyan);background:#e0f2fe;}
+.rate-radio{width:18px;height:18px;border-radius:50%;border:2px solid var(--border);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .15s;}
+.rate-card.selected .rate-radio{border-color:var(--cyan);background:var(--cyan);}
+.rate-radio-dot{width:8px;height:8px;border-radius:50%;background:#fff;display:none;}
+.rate-card.selected .rate-radio-dot{display:block;}
+.rate-info{flex:1;}
+.rate-service{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.95rem;margin-bottom:2px;}
+.rate-carrier{font-size:11px;color:var(--muted);}
+.rate-days{font-size:11px;color:var(--cyan);font-weight:700;}
+.rate-price{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.2rem;color:var(--green);flex-shrink:0;}
+.rate-markup{font-size:10px;color:var(--muted);text-align:right;margin-top:1px;}
+
+/* INSURANCE */
+.insurance-toggle{display:flex;align-items:center;gap:12px;padding:12px 14px;background:var(--surface);border:1.5px solid var(--border);border-radius:9px;cursor:pointer;margin-bottom:14px;transition:all .15s;}
+.insurance-toggle.active{border-color:var(--green);background:#f0fdf4;}
+.ins-check{width:20px;height:20px;border-radius:5px;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:.8rem;flex-shrink:0;transition:all .15s;}
+.insurance-toggle.active .ins-check{background:var(--green);border-color:var(--green);color:#fff;}
+.ins-info{flex:1;}
+.ins-title{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.9rem;margin-bottom:1px;}
+.ins-desc{font-size:11px;color:var(--muted);}
+.ins-price{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.9rem;color:var(--green);flex-shrink:0;}
+.ins-amount-row{display:none;margin-top:10px;}
+.insurance-toggle.active .ins-amount-row{display:block;}
+
+/* BUTTONS */
+.action-btn{width:100%;padding:13px;border:none;border-radius:8px;font-family:'Barlow Condensed',sans-serif;font-size:1.05rem;font-weight:800;cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center;gap:8px;letter-spacing:.3px;}
+.btn-cyan{background:var(--cyan);color:#fff;}
+.btn-cyan:hover:not(:disabled){background:var(--cyan-l);transform:translateY(-1px);}
+.btn-green{background:var(--green);color:#fff;}
+.btn-green:hover:not(:disabled){background:var(--green-l);transform:translateY(-1px);}
+.btn-outline{background:transparent;border:1.5px solid var(--border);color:var(--muted);margin-top:8px;}
+.btn-outline:hover:not(:disabled){border-color:#999;color:var(--text);}
+.action-btn:disabled{opacity:.4;cursor:not-allowed;transform:none!important;}
+
+/* SUCCESS STATE */
+.success-panel{background:var(--white);border:1px solid var(--border);border-radius:14px;overflow:hidden;display:none;}
+.success-panel.show{display:block;}
+.success-hero{background:linear-gradient(135deg,#14532d,#166534);padding:28px;text-align:center;}
+.success-icon{font-size:4rem;margin-bottom:12px;}
+.success-title{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.8rem;color:#fff;margin-bottom:6px;}
+.success-sub{font-size:13px;color:#86efac;line-height:1.5;}
+.success-body{padding:24px;}
+.tracking-box{background:linear-gradient(135deg,#0c4a6e,#0369a1);border-radius:12px;padding:18px 20px;margin-bottom:16px;text-align:center;}
+.tb-label{font-size:11px;color:#7dd3fc;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;}
+.tb-number{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.6rem;color:#fff;letter-spacing:1px;margin-bottom:4px;}
+.tb-carrier{font-size:12px;color:#7dd3fc;}
+.success-actions{display:flex;flex-direction:column;gap:8px;}
+.sa-btn{padding:12px;border-radius:8px;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.95rem;cursor:pointer;border:none;transition:all .15s;text-align:center;text-decoration:none;display:block;}
+.sa-print{background:var(--cyan);color:#fff;}
+.sa-print:hover{background:var(--cyan-l);}
+.sa-dash{background:var(--navy);color:#fff;}
+.sa-dash:hover{background:var(--navy2);}
+.sa-outline{background:transparent;border:1.5px solid var(--border);color:var(--muted);}
+.sa-outline:hover{border-color:#999;color:var(--text);}
+
+.cost-summary{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin-bottom:16px;}
+.cs-row{display:flex;justify-content:space-between;align-items:center;font-size:13px;padding:4px 0;}
+.cs-row.total{border-top:1px solid var(--border);margin-top:8px;padding-top:12px;font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.05rem;}
+.cs-label{color:var(--muted);}
+.cs-val{font-weight:700;}
+
+.toast{position:fixed;bottom:20px;right:20px;background:var(--navy);color:#e2e8f0;border:1px solid #1e3a5f;border-left:4px solid var(--green);border-radius:8px;padding:10px 16px;font-size:13px;z-index:9999;display:flex;align-items:center;gap:9px;max-width:290px;box-shadow:0 8px 26px rgba(0,0,0,.25);transform:translateX(120%);transition:transform .3s ease;}
+.toast.show{transform:translateX(0);}
+.toast.error{border-left-color:var(--red);}
+
+@media(max-width:600px){.field-row,.field-row-3{grid-template-columns:1fr;}.steps-bar{flex-wrap:wrap;}.step-tab{min-width:48%;border-bottom:1px solid var(--border);}}
+@media(prefers-color-scheme:dark){
+  :root{--text:#f1f5f9;--muted:#94a3b8;--border:rgba(255,255,255,.1);--bg:#0f172a;--white:#1e293b;--surface:#162032;}
+  body{background:#0f172a !important;color:#f1f5f9 !important;}
+  .panel,.success-panel,.steps-bar{background:#1e293b !important;border-color:rgba(255,255,255,.08) !important;}
+  input,select{background:#162032 !important;color:#f1f5f9 !important;}
+  .rate-card{background:#162032 !important;}
+  .rate-card.selected{background:rgba(14,165,233,.12) !important;}
+  .insurance-toggle{background:#162032 !important;}
+  .insurance-toggle.active{background:rgba(22,163,74,.1) !important;}
+  .cost-summary{background:#162032 !important;}
+}
+</style>
+</head>
+<body>
+<div class="nav">
+  <a href="alltrades.html" class="logo"><span class="a">Trade</span><span class="t">zy</span><span class="d">.</span></a>
+  <div class="nav-right">
+    <a href="alltrades-dashboard.html" class="nav-btn">← Dashboard</a>
+    <div class="user-chip"><div class="u-av" id="navAv">?</div><div class="u-name" id="navName">Loading…</div></div>
+  </div>
+</div>
+
+<div class="loading-screen" id="loadingScreen">⏳ Loading trade details…</div>
+
+<div class="page" id="mainPage" style="display:none">
+
+  <!-- HERO -->
+  <div class="shipit-hero">
+    <div class="hero-tag">🚚 Ship-It</div>
+    <div class="hero-title">Create Shipping Label</div>
+    <div class="hero-sub">Enter your package details, pick a USPS rate, and get a print-ready label in seconds.</div>
+    <div class="trade-summary">
+      <div class="ts-icon">📦</div>
+      <div class="ts-info">
+        <div class="ts-title" id="tradeSummaryTitle">Loading trade…</div>
+        <div class="ts-meta" id="tradeSummaryMeta">Trade ID loading…</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEPS BAR -->
+  <div class="steps-bar">
+    <div class="step-tab active" id="tab1"><span class="step-num">STEP 1</span>Package</div>
+    <div class="step-tab" id="tab2"><span class="step-num">STEP 2</span>Rate</div>
+    <div class="step-tab" id="tab3"><span class="step-num">STEP 3</span>Confirm</div>
+  </div>
+
+  <!-- STEP 1: PACKAGE DETAILS -->
+  <div class="panel active" id="panel1">
+    <div class="panel-head">
+      <div class="ph-icon" style="background:#e0f2fe;border:1px solid #7dd3fc">📦</div>
+      <div>
+        <div class="ph-title">Package Details</div>
+        <div class="ph-sub">Enter the weight and dimensions of your package</div>
+      </div>
+    </div>
+    <div class="panel-body">
+      <div class="info-box ib-cyan"><span>📍</span><div>Your shipping address is pulled from your verified profile. The buyer's address is on file from their offer.</div></div>
+
+      <div class="field">
+        <label>Weight <span style="color:var(--red)">*</span></label>
+        <div style="display:flex;gap:8px;align-items:center">
+          <input type="number" id="weightLbs" placeholder="0" min="0" style="width:80px" oninput="checkStep1()"> <span style="font-size:13px;color:var(--muted)">lbs</span>
+          <input type="number" id="weightOz" placeholder="0" min="0" max="15" style="width:80px" oninput="checkStep1()"> <span style="font-size:13px;color:var(--muted)">oz</span>
+        </div>
+        <div class="field-hint">Total package weight including packaging material</div>
+      </div>
+
+      <div class="field">
+        <label>Dimensions (inches) <span style="color:var(--red)">*</span></label>
+        <div class="field-row-3">
+          <div>
+            <input type="number" id="dimLength" placeholder="Length" min="1" oninput="checkStep1()">
+            <div class="field-hint">Length</div>
+          </div>
+          <div>
+            <input type="number" id="dimWidth" placeholder="Width" min="1" oninput="checkStep1()">
+            <div class="field-hint">Width</div>
+          </div>
+          <div>
+            <input type="number" id="dimHeight" placeholder="Height" min="1" oninput="checkStep1()">
+            <div class="field-hint">Height</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="info-box ib-gold"><span>💡</span><div><strong>TCG cards tip:</strong> A standard PWE (plain white envelope) is 9.5 × 4.125 × 0.25 in, about 1 oz. A top loader + bubble mailer is typically 6 × 4 × 0.5 in, about 2 oz. A booster box ships in a 12 × 9 × 3 box.</div></div>
+
+      <button class="action-btn btn-cyan" id="getRatesBtn" onclick="getRates()" disabled>🚚 Get Shipping Rates →</button>
+    </div>
+  </div>
+
+  <!-- STEP 2: SELECT RATE -->
+  <div class="panel" id="panel2">
+    <div class="panel-head">
+      <div class="ph-icon" style="background:#e0f2fe;border:1px solid #7dd3fc">📮</div>
+      <div>
+        <div class="ph-title">Select Shipping Rate</div>
+        <div class="ph-sub" id="ratesPanelSub">Choose your USPS service</div>
+      </div>
+    </div>
+    <div class="panel-body">
+      <div class="rates-list" id="ratesList"></div>
+
+      <!-- INSURANCE -->
+      <div class="insurance-toggle" id="insuranceToggle" onclick="toggleInsurance()">
+        <div class="ins-check" id="insCheck"></div>
+        <div class="ins-info">
+          <div class="ins-title">🛡️ Add Insurance</div>
+          <div class="ins-desc">Protect your shipment against loss or damage · ~$1.00 per $100 value</div>
+          <div class="ins-amount-row">
+            <label style="font-size:11px;font-weight:700;color:var(--muted);display:block;margin-bottom:4px">Insured value ($)</label>
+            <input type="number" id="insureAmount" placeholder="e.g. 150" min="0" step="1" style="width:140px;border:1.5px solid #bbf7d0;border-radius:6px;padding:7px 10px;font-size:13px;font-family:'Lato',sans-serif;outline:none;" onclick="event.stopPropagation()" oninput="updateCostSummary()">
+          </div>
+        </div>
+        <div class="ins-price" id="insPrice">+ ~$1/100</div>
+      </div>
+
+      <!-- COST SUMMARY -->
+      <div class="cost-summary" id="costSummary" style="display:none">
+        <div class="cs-row"><span class="cs-label">Shipping rate</span><span class="cs-val" id="csRate">—</span></div>
+        <div class="cs-row" id="csInsRow" style="display:none"><span class="cs-label">Insurance</span><span class="cs-val" id="csIns">—</span></div>
+        <div class="cs-row total"><span>Total charged to you</span><span id="csTotal" style="color:var(--cyan)">—</span></div>
+        <div style="font-size:11px;color:var(--muted);margin-top:8px">Tradezy charges a small markup on labels to cover platform costs. The buyer covers their own label separately.</div>
+      </div>
+
+      <button class="action-btn btn-cyan" id="confirmRateBtn" onclick="goToStep3()" disabled>Confirm Rate →</button>
+      <button class="action-btn btn-outline" onclick="goToStep1()">← Back</button>
+    </div>
+  </div>
+
+  <!-- STEP 3: CONFIRM & BUY -->
+  <div class="panel" id="panel3">
+    <div class="panel-head">
+      <div class="ph-icon" style="background:#f0fdf4;border:1px solid #bbf7d0">✅</div>
+      <div>
+        <div class="ph-title">Confirm & Buy Label</div>
+        <div class="ph-sub">Review your shipment details before purchasing</div>
+      </div>
+    </div>
+    <div class="panel-body">
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px;margin-bottom:16px;">
+        <div style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.9rem;margin-bottom:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;">Shipment Summary</div>
+        <div id="confirmSummary" style="font-size:13px;display:flex;flex-direction:column;gap:8px;"></div>
+      </div>
+
+      <div class="info-box ib-cyan"><span>🚚</span><div>Once purchased, your label PDF will open in a new tab. Print it and attach it securely to your package. Drop it off at any USPS location.</div></div>
+      <div class="info-box ib-gold"><span>⏰</span><div>Labels are valid for <strong>7 days</strong> from purchase. Ship within that window or you'll need a new label.</div></div>
+
+      <button class="action-btn btn-green" id="buyLabelBtn" onclick="buyLabel()">🖨️ Buy Label & Print</button>
+      <button class="action-btn btn-outline" onclick="goToStep2()">← Change Rate</button>
+    </div>
+  </div>
+
+  <!-- SUCCESS STATE -->
+  <div class="success-panel" id="successPanel">
+    <div class="success-hero">
+      <div class="success-icon">🎉</div>
+      <div class="success-title">Label Created!</div>
+      <div class="success-sub">Your shipping label is ready. Print it and drop your package at any USPS location.</div>
+    </div>
+    <div class="success-body">
+      <div class="tracking-box">
+        <div class="tb-label">Tracking Number</div>
+        <div class="tb-number" id="successTracking">—</div>
+        <div class="tb-carrier" id="successCarrier">USPS</div>
+      </div>
+      <div class="cost-summary" style="margin-bottom:16px">
+        <div class="cs-row"><span class="cs-label">Service</span><span class="cs-val" id="successService">—</span></div>
+        <div class="cs-row"><span class="cs-label">Label cost</span><span class="cs-val" id="successCost">—</span></div>
+      </div>
+      <!-- NO PRINTER OPTION — PRIMARY -->
+      <div style="background:linear-gradient(135deg,#0c4a6e,#0369a1);border-radius:12px;padding:16px 18px;margin-bottom:12px;">
+        <div style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1rem;color:#fff;margin-bottom:4px;">📮 No Printer? No Problem.</div>
+        <div style="font-size:12px;color:#7dd3fc;line-height:1.6;margin-bottom:12px;">Take your tracking number to any USPS Post Office and they'll print your label for free using <strong style="color:#bae6fd">USPS Label Broker</strong>. No printer needed.</div>
+        <div style="background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:8px;padding:12px;text-align:center;margin-bottom:10px;">
+          <div style="font-size:10px;color:#7dd3fc;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;">Show this at the Post Office</div>
+          <div style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.3rem;color:#fff;letter-spacing:2px;" id="posTrackingDisplay">—</div>
+          <div style="font-size:11px;color:#7dd3fc;margin-top:4px;">Tracking / Label Broker ID</div>
+        </div>
+        <div style="display:flex;gap:8px;">
+          <div class="sa-btn sa-outline" id="copyTrackingBtn" onclick="copyTracking()" style="cursor:pointer;flex:1;border-color:rgba(255,255,255,.3);color:#bae6fd;font-size:.82rem;">📋 Copy Number</div>
+          <a class="sa-btn" href="https://tools.usps.com/label-broker.htm" target="_blank" style="flex:1;background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.25);font-size:.82rem;text-align:center;border-radius:8px;padding:12px;font-family:'Barlow Condensed',sans-serif;font-weight:800;text-decoration:none;">🗺️ Find Post Office</a>
+        </div>
+      </div>
+
+      <div class="success-actions">
+        <a class="sa-btn sa-print" id="printLabelBtn" href="#" target="_blank" style="font-size:.88rem;">🖨️ Have a Printer? Print Label PDF</a>
+        <a class="sa-btn sa-dash" href="alltrades-dashboard.html">← Back to Dashboard</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="toast" id="toastEl"><span id="toastIc">✅</span><span id="toastTx">Done!</span></div>
+
+<script>
+const sb = window.supabase.createClient(
+  'https://equvwaspcoeetfsexqki.supabase.co',
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVxdXZ3YXNwY29lZXRmc2V4cWtpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgyNzc2MjQsImV4cCI6MjA5Mzg1MzYyNH0.TP6Kk3pzHW1PYMUu5D9Vu2lJrazIEagzu5csYhqkrfI'
+);
+
+const EASYPOST_WORKER = 'https://tradezy-easypost.throbbing-lake-08ed.workers.dev';
+const MARKUP = 1.15; // 15% markup on label cost
+
+let currentUser = null;
+let tradeData = null, offerData = null, buyerData = null, sellerData = null;
+let shipmentId = null, selectedRate = null;
+let insuranceEnabled = false;
+
+/* ── INIT ── */
+(async () => {
+  const { data: { session } } = await sb.auth.getSession();
+  if (!session) { window.location.href = 'alltrades-auth.html'; return; }
+  currentUser = session.user;
+
+  const params = new URLSearchParams(window.location.search);
+  const tradeId = params.get('trade_id');
+  if (!tradeId) { showToast('⚠️', 'No trade ID found.', true); return; }
+
+  await loadTradeData(tradeId);
+})();
+
+async function loadTradeData(tradeId) {
+  try {
+    const { data: trade, error } = await sb.from('trades')
+      .select('*, offer:offer_id(*)')
+      .eq('id', tradeId).single();
+    if (error || !trade) throw new Error('Trade not found');
+
+    // Confirm current user is seller (trader_a)
+    if (trade.trader_a_id !== currentUser.id) {
+      showToast('⚠️', 'Only the seller can create the shipping label.', true);
+      setTimeout(() => window.location.href = 'alltrades-dashboard.html', 2000);
+      return;
+    }
+
+    tradeData = trade;
+    offerData = trade.offer;
+
+    // Load buyer + seller info
+    const [{ data: seller }, { data: buyer }] = await Promise.all([
+      sb.from('users').select('display_name, address_city, address_state, address_zip').eq('id', trade.trader_a_id).single(),
+      sb.from('users').select('display_name, address_city, address_state, address_zip').eq('id', trade.trader_b_id).single(),
+    ]);
+    sellerData = seller;
+    buyerData = buyer;
+
+    // Load listing title
+    const { data: listing } = await sb.from('listings').select('title').eq('id', trade.listing_id).single();
+
+    // Update nav
+    const name = seller?.display_name || currentUser.email?.split('@')[0] || 'Trader';
+    document.getElementById('navAv').textContent = name.split(' ').map(n=>n[0]).join('').toUpperCase().slice(0,2);
+    document.getElementById('navName').textContent = name;
+
+    // Update hero
+    document.getElementById('tradeSummaryTitle').textContent = listing?.title || 'Ship-It Trade';
+    document.getElementById('tradeSummaryMeta').textContent = `Trade #${tradeId.slice(0,8).toUpperCase()} · ${buyer?.display_name || 'Buyer'} · ${buyer?.address_city || ''}${buyer?.address_state ? ', '+buyer.address_state : ''}`;
+
+  } catch(e) {
+    console.error(e);
+    showToast('⚠️', 'Could not load trade details.', true);
+  } finally {
+    document.getElementById('loadingScreen').style.display = 'none';
+    document.getElementById('mainPage').style.display = 'block';
+  }
+}
+
+/* ── STEP 1 ── */
+function checkStep1() {
+  const lbs = parseFloat(document.getElementById('weightLbs').value) || 0;
+  const oz = parseFloat(document.getElementById('weightOz').value) || 0;
+  const totalOz = (lbs * 16) + oz;
+  const len = parseFloat(document.getElementById('dimLength').value) || 0;
+  const wid = parseFloat(document.getElementById('dimWidth').value) || 0;
+  const hgt = parseFloat(document.getElementById('dimHeight').value) || 0;
+  document.getElementById('getRatesBtn').disabled = !(totalOz > 0 && len > 0 && wid > 0 && hgt > 0);
+}
+
+async function getRates() {
+  const lbs = parseFloat(document.getElementById('weightLbs').value) || 0;
+  const oz = parseFloat(document.getElementById('weightOz').value) || 0;
+  const totalOz = Math.round((lbs * 16) + oz);
+  const len = parseFloat(document.getElementById('dimLength').value);
+  const wid = parseFloat(document.getElementById('dimWidth').value);
+  const hgt = parseFloat(document.getElementById('dimHeight').value);
+
+  if (!sellerData?.address_zip || !buyerData?.address_zip) {
+    showToast('⚠️', 'Missing ZIP codes — make sure both parties have confirmed addresses.', true);
+    return;
+  }
+
+  const btn = document.getElementById('getRatesBtn');
+  btn.textContent = '⏳ Getting rates…'; btn.disabled = true;
+
+  try {
+    const res = await fetch(EASYPOST_WORKER + '/rates', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        from_zip: sellerData.address_zip,
+        to_zip: buyerData.address_zip,
+        weight_oz: totalOz,
+        length: len,
+        width: wid,
+        height: hgt,
+      })
+    });
+    const data = await res.json();
+    if (data.error) throw new Error(data.error);
+
+    shipmentId = data.shipment_id;
+    renderRates(data.rates);
+    goToStep2();
+    document.getElementById('ratesPanelSub').textContent = `${data.rates.length} USPS rates found · ${sellerData.address_zip} → ${buyerData.address_zip}`;
+
+  } catch(e) {
+    showToast('⚠️', e.message || 'Could not fetch rates. Try again.', true);
+  } finally {
+    btn.textContent = '🚚 Get Shipping Rates →';
+    checkStep1();
+  }
+}
+
+function renderRates(rates) {
+  const list = document.getElementById('ratesList');
+  if (!rates.length) {
+    list.innerHTML = `<div style="text-align:center;padding:20px;color:var(--muted);font-size:13px">No rates available for these dimensions. Try adjusting weight or size.</div>`;
+    return;
+  }
+  list.innerHTML = rates.map((r, i) => {
+    const markedUp = (r.rate * MARKUP).toFixed(2);
+    const days = r.delivery_days ? `${r.delivery_days} day${r.delivery_days > 1 ? 's' : ''}` : 'Est. 2-5 days';
+    return `<div class="rate-card${i===0?' selected':''}" id="rate-${r.id}" onclick="selectRate('${r.id}',${r.rate},'${r.service}','${r.carrier}')">
+      <div class="rate-radio"><div class="rate-radio-dot"></div></div>
+      <div class="rate-info">
+        <div class="rate-service">${r.carrier} ${r.service.replace(/_/g,' ')}</div>
+        <div class="rate-days">🕐 ${days}</div>
+      </div>
+      <div style="text-align:right">
+        <div class="rate-price">$${markedUp}</div>
+        <div class="rate-markup">incl. label fee</div>
+      </div>
+    </div>`;
+  }).join('');
+
+  // Auto-select first
+  if (rates.length) {
+    const first = rates[0];
+    selectedRate = { id: first.id, rate: first.rate, service: first.service, carrier: first.carrier, markedUp: (first.rate * MARKUP) };
+    updateCostSummary();
+    document.getElementById('confirmRateBtn').disabled = false;
+  }
+}
+
+function selectRate(rateId, rate, service, carrier) {
+  document.querySelectorAll('.rate-card').forEach(c => c.classList.remove('selected'));
+  document.getElementById('rate-'+rateId).classList.add('selected');
+  selectedRate = { id: rateId, rate, service, carrier, markedUp: rate * MARKUP };
+  updateCostSummary();
+  document.getElementById('confirmRateBtn').disabled = false;
+}
+
+function toggleInsurance() {
+  insuranceEnabled = !insuranceEnabled;
+  document.getElementById('insuranceToggle').classList.toggle('active', insuranceEnabled);
+  document.getElementById('insCheck').textContent = insuranceEnabled ? '✓' : '';
+  updateCostSummary();
+}
+
+function updateCostSummary() {
+  if (!selectedRate) return;
+  const summary = document.getElementById('costSummary');
+  summary.style.display = 'block';
+  const shippingCost = selectedRate.markedUp;
+  let insuranceCost = 0;
+  const insureAmount = parseFloat(document.getElementById('insureAmount')?.value) || 0;
+  if (insuranceEnabled && insureAmount > 0) {
+    insuranceCost = Math.ceil(insureAmount / 100) * 1.00;
+  }
+  const total = shippingCost + insuranceCost;
+  document.getElementById('csRate').textContent = '$' + shippingCost.toFixed(2);
+  const csInsRow = document.getElementById('csInsRow');
+  if (insuranceCost > 0) {
+    csInsRow.style.display = 'flex';
+    document.getElementById('csIns').textContent = '$' + insuranceCost.toFixed(2);
+  } else {
+    csInsRow.style.display = 'none';
+  }
+  document.getElementById('csTotal').textContent = '$' + total.toFixed(2);
+}
+
+/* ── STEP NAV ── */
+function goToStep1() {
+  setStep(1);
+}
+function goToStep2() {
+  setStep(2);
+}
+function goToStep3() {
+  if (!selectedRate) return;
+  // Build confirm summary
+  const lbs = parseFloat(document.getElementById('weightLbs').value) || 0;
+  const oz = parseFloat(document.getElementById('weightOz').value) || 0;
+  const len = document.getElementById('dimLength').value;
+  const wid = document.getElementById('dimWidth').value;
+  const hgt = document.getElementById('dimHeight').value;
+  const insureAmount = insuranceEnabled ? (parseFloat(document.getElementById('insureAmount')?.value) || 0) : 0;
+  const insuranceCost = insureAmount > 0 ? (Math.ceil(insureAmount / 100) * 1.00) : 0;
+  const total = (selectedRate.markedUp + insuranceCost).toFixed(2);
+
+  document.getElementById('confirmSummary').innerHTML = `
+    <div style="display:flex;justify-content:space-between"><span style="color:var(--muted)">Service</span><span style="font-weight:700">${selectedRate.carrier} ${selectedRate.service.replace(/_/g,' ')}</span></div>
+    <div style="display:flex;justify-content:space-between"><span style="color:var(--muted)">From</span><span style="font-weight:700">${sellerData?.address_city||''}, ${sellerData?.address_state||''} ${sellerData?.address_zip||''}</span></div>
+    <div style="display:flex;justify-content:space-between"><span style="color:var(--muted)">To</span><span style="font-weight:700">${buyerData?.address_city||''}, ${buyerData?.address_state||''} ${buyerData?.address_zip||''}</span></div>
+    <div style="display:flex;justify-content:space-between"><span style="color:var(--muted)">Weight</span><span style="font-weight:700">${lbs}lb ${oz}oz</span></div>
+    <div style="display:flex;justify-content:space-between"><span style="color:var(--muted)">Dimensions</span><span style="font-weight:700">${len}" × ${wid}" × ${hgt}"</span></div>
+    ${insureAmount > 0 ? `<div style="display:flex;justify-content:space-between"><span style="color:var(--muted)">Insurance</span><span style="font-weight:700;color:var(--green)">$${insureAmount} value · +$${insuranceCost.toFixed(2)}</span></div>` : ''}
+    <div style="display:flex;justify-content:space-between;border-top:1px solid var(--border);margin-top:8px;padding-top:10px"><span style="font-weight:700">Total</span><span style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.1rem;color:var(--cyan)">$${total}</span></div>`;
+  setStep(3);
+}
+
+function setStep(n) {
+  [1,2,3].forEach(i => {
+    document.getElementById('panel'+i).classList.toggle('active', i===n);
+    const tab = document.getElementById('tab'+i);
+    tab.classList.remove('active','done');
+    if (i < n) tab.classList.add('done');
+    else if (i === n) tab.classList.add('active');
+  });
+}
+
+/* ── BUY LABEL ── */
+async function buyLabel() {
+  if (!shipmentId || !selectedRate) return;
+  const btn = document.getElementById('buyLabelBtn');
+  btn.textContent = '⏳ Purchasing label…'; btn.disabled = true;
+
+  const insureAmount = insuranceEnabled ? (parseFloat(document.getElementById('insureAmount')?.value) || 0) : 0;
+
+  try {
+    const res = await fetch(EASYPOST_WORKER + '/buy', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        shipment_id: shipmentId,
+        rate_id: selectedRate.id,
+        insure_amount: insureAmount > 0 ? insureAmount : null,
+      })
+    });
+    const data = await res.json();
+    if (data.error) throw new Error(data.error);
+
+    // Save tracking to Supabase
+    const isTraderA = tradeData.trader_a_id === currentUser.id;
+    const trackingField = isTraderA ? 'tracking_number_a' : 'tracking_number_b';
+    const labelField = isTraderA ? 'label_url_a' : 'label_url_b';
+    const labelCostField = isTraderA ? 'label_cost_a' : 'label_cost_b';
+
+    await sb.from('trades').update({
+      [trackingField]: data.tracking_number,
+      [labelField]: data.label_pdf || data.label_url,
+      [labelCostField]: selectedRate.markedUp,
+      ship_it_mode: true,
+    }).eq('id', tradeData.id);
+
+    // Show success
+    showSuccess(data);
+    if (typeof gtag !== 'undefined') gtag('event', 'label_purchased', { event_category: 'shipit', value: selectedRate.markedUp });
+
+  } catch(e) {
+    showToast('⚠️', e.message || 'Label purchase failed. Try again.', true);
+    btn.textContent = '🖨️ Buy Label & Print';
+    btn.disabled = false;
+  }
+}
+
+function showSuccess(data) {
+  // Hide all panels
+  [1,2,3].forEach(i => document.getElementById('panel'+i).classList.remove('active'));
+  document.getElementById('successPanel').classList.add('show');
+
+  document.getElementById('successTracking').textContent = data.tracking_number || '—';
+  document.getElementById('successCarrier').textContent = `${data.carrier || 'USPS'} ${(data.service||'').replace(/_/g,' ')}`;
+  document.getElementById('successService').textContent = `${data.carrier || 'USPS'} ${(data.service||'').replace(/_/g,' ')}`;
+  document.getElementById('successCost').textContent = '$' + (selectedRate?.markedUp || 0).toFixed(2);
+
+  const labelUrl = data.label_pdf || data.label_url;
+  if (labelUrl) {
+    document.getElementById('printLabelBtn').href = labelUrl;
+    window.open(labelUrl, '_blank');
+  } else {
+    document.getElementById('printLabelBtn').style.display = 'none';
+  }
+
+  window.currentTrackingNumber = data.tracking_number;
+  const posDisplay = document.getElementById('posTrackingDisplay');
+  if (posDisplay) posDisplay.textContent = data.tracking_number || '—';
+  showToast('🎉', 'Label purchased! Opening PDF…');
+}
+
+function copyTracking() {
+  const tn = window.currentTrackingNumber || document.getElementById('successTracking').textContent;
+  if (navigator.clipboard && tn) {
+    navigator.clipboard.writeText(tn).then(() => showToast('📋', 'Tracking number copied!'));
+  }
+}
+
+/* ── TOAST ── */
+function showToast(icon, msg, isError=false) {
+  document.getElementById('toastIc').textContent = icon;
+  document.getElementById('toastTx').textContent = msg;
+  const t = document.getElementById('toastEl');
+  t.className = 'toast' + (isError ? ' error' : '');
+  t.classList.add('show');
+  clearTimeout(window._tt);
+  window._tt = setTimeout(() => t.classList.remove('show'), 4000);
+}
+</script>
+<!-- TRADEZY HELP WIDGET START -->
+<style>
+#tz-help-bubble{position:fixed;bottom:24px;right:24px;z-index:9999;display:flex;flex-direction:column;align-items:flex-end;gap:10px;font-family:'Lato',system-ui,sans-serif;}
+#tz-bubble-btn{width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#0a1628,#1a56db);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1.4rem;box-shadow:0 4px 20px rgba(26,86,219,.4);transition:all .2s;position:relative;}
+#tz-bubble-btn:hover{transform:scale(1.08);}
+#tz-bubble-btn .tz-notif{position:absolute;top:0;right:0;width:14px;height:14px;background:#dc2626;border-radius:50%;border:2px solid #fff;display:none;}
+#tz-chat-panel{display:none;width:360px;height:520px;background:#fff;border-radius:16px;box-shadow:0 20px 60px rgba(0,0,0,.18);flex-direction:column;overflow:hidden;border:1px solid #e2e8f0;animation:tzSlideUp .2s ease;}
+#tz-chat-panel.open{display:flex;}
+@keyframes tzSlideUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.tz-panel-head{background:linear-gradient(135deg,#0a1628,#112240);padding:14px 16px;display:flex;align-items:center;gap:10px;flex-shrink:0;}
+.tz-head-icon{width:34px;height:34px;background:rgba(245,158,11,.2);border:1px solid rgba(245,158,11,.3);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0;}
+.tz-head-info{flex:1;}.tz-head-title{font-weight:800;font-size:.88rem;color:#fff;font-family:'Barlow Condensed',system-ui,sans-serif;letter-spacing:.3px;}
+.tz-head-status{font-size:10px;color:#22c55e;display:flex;align-items:center;gap:4px;}
+.tz-head-dot{width:6px;height:6px;background:#22c55e;border-radius:50%;animation:tzPulse 2s infinite;}
+@keyframes tzPulse{0%,100%{opacity:1}50%{opacity:.5}}
+.tz-head-close{background:rgba(255,255,255,.1);border:none;color:#94a3b8;width:26px;height:26px;border-radius:50%;cursor:pointer;font-size:.85rem;display:flex;align-items:center;justify-content:center;transition:all .15s;}
+.tz-head-close:hover{background:rgba(255,255,255,.2);color:#fff;}
+.tz-messages{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px;scroll-behavior:smooth;}
+.tz-messages::-webkit-scrollbar{width:4px;}.tz-messages::-webkit-scrollbar-track{background:transparent;}.tz-messages::-webkit-scrollbar-thumb{background:#e2e8f0;border-radius:2px;}
+.tz-msg{max-width:84%;display:flex;flex-direction:column;gap:2px;}
+.tz-msg.bot{align-self:flex-start;}.tz-msg.user{align-self:flex-end;}
+.tz-bubble{padding:9px 12px;border-radius:12px;font-size:13px;line-height:1.5;}
+.tz-msg.bot .tz-bubble{background:#f1f5f9;color:#1a1a2e;border-radius:4px 12px 12px 12px;}
+.tz-msg.user .tz-bubble{background:linear-gradient(135deg,#1a56db,#2563eb);color:#fff;border-radius:12px 4px 12px 12px;}
+.tz-msg-time{font-size:10px;color:#94a3b8;padding:0 4px;}.tz-msg.user .tz-msg-time{text-align:right;}
+.tz-typing{display:flex;align-items:center;gap:4px;padding:9px 12px;background:#f1f5f9;border-radius:4px 12px 12px 12px;width:fit-content;}
+.tz-typing span{width:6px;height:6px;background:#94a3b8;border-radius:50%;animation:tzDot 1.2s infinite;}
+.tz-typing span:nth-child(2){animation-delay:.2s;}.tz-typing span:nth-child(3){animation-delay:.4s;}
+@keyframes tzDot{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-4px)}}
+.tz-quick-btns{display:flex;flex-wrap:wrap;gap:5px;margin-top:4px;}
+.tz-quick-btn{background:#fff;border:1px solid #e2e8f0;color:#1a56db;font-size:11px;font-weight:700;padding:4px 10px;border-radius:99px;cursor:pointer;transition:all .12s;font-family:inherit;}
+.tz-quick-btn:hover{background:#eff6ff;border-color:#1a56db;}
+.tz-action-link{display:inline-flex;align-items:center;gap:5px;background:#eff6ff;border:1px solid #bfdbfe;color:#1a56db;font-size:12px;font-weight:700;padding:6px 12px;border-radius:7px;cursor:pointer;text-decoration:none;margin-top:5px;transition:all .12s;}
+.tz-action-link:hover{background:#dbeafe;}
+.tz-escalate-card{background:#fff7ed;border:1px solid #fed7aa;border-radius:10px;padding:11px 13px;margin-top:6px;font-size:12px;}
+.tz-escalate-title{font-weight:800;color:#92400e;margin-bottom:5px;font-size:12px;}
+.tz-escalate-btn{display:inline-block;background:#ea580c;color:#fff;font-size:11px;font-weight:700;padding:5px 12px;border-radius:6px;text-decoration:none;margin-top:6px;cursor:pointer;border:none;font-family:inherit;}
+.tz-escalate-btn:hover{background:#c2410c;}
+.tz-input-area{padding:10px 12px;border-top:1px solid #f1f5f9;display:flex;gap:7px;flex-shrink:0;background:#fafafa;}
+.tz-input{flex:1;border:1.5px solid #e2e8f0;border-radius:8px;padding:8px 11px;font-size:13px;font-family:inherit;color:#1a1a2e;outline:none;resize:none;height:38px;max-height:90px;overflow-y:auto;transition:border-color .15s;background:#fff;}
+.tz-input:focus{border-color:#1a56db;box-shadow:0 0 0 3px rgba(26,86,219,.07);}
+.tz-send-btn{width:36px;height:36px;background:linear-gradient(135deg,#1a56db,#2563eb);border:none;border-radius:8px;color:#fff;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s;align-self:flex-end;}
+.tz-send-btn:hover{transform:scale(1.05);}.tz-send-btn:disabled{opacity:.5;cursor:not-allowed;transform:none;}
+.tz-powered{text-align:center;font-size:10px;color:#cbd5e1;padding:5px 0 2px;flex-shrink:0;}
+</style>
+<div id="tz-help-bubble">
+  <div id="tz-chat-panel">
+    <div class="tz-panel-head">
+      <div class="tz-head-icon">🤖</div>
+      <div class="tz-head-info"><div class="tz-head-title">Tradezy Support</div><div class="tz-head-status"><span class="tz-head-dot"></span>Online — AI Assistant</div></div>
+      <button class="tz-head-close" onclick="tzToggle()">✕</button>
+    </div>
+    <div class="tz-messages" id="tzMessages"></div>
+    <div class="tz-input-area">
+      <textarea class="tz-input" id="tzInput" placeholder="Ask anything about shipping…" rows="1" onkeydown="tzKeyDown(event)" oninput="tzAutoResize(this)"></textarea>
+      <button class="tz-send-btn" id="tzSendBtn" onclick="tzSend()">➤</button>
+    </div>
+    <div class="tz-powered">Powered by Claude AI · Tradezy Support</div>
+  </div>
+  <button id="tz-bubble-btn" onclick="tzToggle()" title="Get Help">💬<div class="tz-notif" id="tzNotif"></div></button>
+</div>
+<script>
+(function(){
+  const SP=`You are the Tradezy support assistant helping a seller create a Ship-It shipping label.
+
+ABOUT SHIP-IT:
+- Ship-It is Tradezy's state-to-state shipping feature for any item
+- Sellers create a USPS label through EasyPost on this page
+- Label PDF opens automatically after purchase — print and attach to package
+- Drop off at any USPS location
+- Tracking number is automatically saved to the trade and shared with the buyer
+- Labels are valid for 7 days from purchase
+
+PACKAGING TIPS:
+- TCG single cards: PWE (plain white envelope) 9.5×4.125×0.25in, ~1oz. Or top loader + bubble mailer 6×4×0.5in, ~2oz
+- Booster boxes: standard 12×9×3 box, weight varies by product
+- Always use bubble wrap or padding for fragile items
+- Sealed products: use a box, not an envelope
+
+INSURANCE:
+- Optional add-on at ~$1.00 per $100 of declared value
+- Handled by EasyPost — Tradezy never holds insurance funds
+- Recommended for items over $50
+
+SHIPPING RATES:
+- USPS rates only (discounted via EasyPost wallet)
+- Tradezy adds a small markup (~15%) to cover platform label costs
+- Cheaper services = slower delivery. Priority Mail = 1-3 days. First Class = 2-5 days
+
+PROBLEMS:
+- "No rates found" — check that both parties have confirmed their addresses in verification
+- Label won't print — try a different browser or download the PDF directly
+- Wrong address — contact support@tradezyhq.com immediately before shipping
+
+ESCALATION RULES:
+- CRITICAL (8hr SLA): package lost, address error after label printed, safety concern → disputes@tradezyhq.com
+- HIGH (16hr SLA): label purchased but can't print → support@tradezyhq.com
+- MEDIUM (24hr SLA): rate questions, packaging advice → answer directly
+- LOW (48hr SLA): general questions → answer directly
+
+TONE: Helpful, concise, practical. Focus on getting the label created successfully.`;
+
+  let isOpen=false,isLoading=false,exchangeCount=0,hasShownWelcome=false;
+  const history=[];
+  window.tzToggle=function(){
+    isOpen=!isOpen;
+    const panel=document.getElementById('tz-chat-panel'),btn=document.getElementById('tz-bubble-btn');
+    if(isOpen){panel.classList.add('open');btn.innerHTML='✕<div class="tz-notif" id="tzNotif"></div>';
+      if(!hasShownWelcome){hasShownWelcome=true;tzBot("👋 Need help creating your label?",["Packaging tips for cards","How insurance works","Label won't print","Wrong address"]);}
+      setTimeout(()=>document.getElementById('tzInput')?.focus(),200);
+    }else{panel.classList.remove('open');btn.innerHTML='💬<div class="tz-notif" id="tzNotif"></div>';}
+  };
+  window.tzSend=async function(){
+    const input=document.getElementById('tzInput'),text=input.value.trim();
+    if(!text||isLoading)return;
+    input.value='';tzAutoResize(input);tzUser(text);history.push({role:'user',content:text});exchangeCount++;await tzGet();
+  };
+  window.tzKeyDown=function(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();tzSend();}};
+  window.tzAutoResize=function(el){el.style.height='38px';el.style.height=Math.min(el.scrollHeight,90)+'px';};
+  async function tzGet(){
+    isLoading=true;document.getElementById('tzSendBtn').disabled=true;
+    const tid='tz-t-'+Date.now(),msgs=document.getElementById('tzMessages');
+    const tel=document.createElement('div');tel.id=tid;tel.className='tz-msg bot';tel.innerHTML='<div class="tz-typing"><span></span><span></span><span></span></div>';
+    msgs.appendChild(tel);msgs.scrollTop=msgs.scrollHeight;
+    try{
+      const r=await fetch('https://tradezy-ai-proxy.throbbing-lake-08ed.workers.dev',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:1000,system:SP,messages:history})});
+      const d=await r.json();const reply=d.content?.[0]?.text||"I'm having trouble responding. Please email support@tradezyhq.com.";
+      document.getElementById(tid)?.remove();history.push({role:'assistant',content:reply});
+      const ut=history.filter(m=>m.role==='user').map(m=>m.content).join(' ').toLowerCase();
+      const esc=['lost','wrong address','scam','fraud','human','agent'].some(k=>ut.includes(k))||exchangeCount>=4;
+      tzBot(reply,null,esc);
+    }catch(e){document.getElementById(tid)?.remove();tzBot("I'm having trouble connecting. Please email support@tradezyhq.com.",null,true);}
+    isLoading=false;document.getElementById('tzSendBtn').disabled=false;
+  }
+  function tzBot(text,qr=null,esc=false){
+    const msgs=document.getElementById('tzMessages'),w=document.createElement('div');w.className='tz-msg bot';
+    let html=text.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/^[-•] (.+)$/gm,'<li>$1</li>').replace(/(<li>.*<\/li>)/gs,'<ul style="margin:4px 0 0 14px;padding:0;font-size:13px;line-height:1.6">$1</ul>').replace(/\n\n/g,'<br><br>').replace(/\n/g,'<br>');
+    let bh=`<div class="tz-bubble">${html}</div>`;
+    if(esc)bh+=`<div class="tz-escalate-card"><div class="tz-escalate-title">🙋 Need a person?</div><div style="color:#92400e;font-size:12px">Our support team can help.</div><div style="display:flex;gap:7px;flex-wrap:wrap;margin-top:7px;"><a class="tz-escalate-btn" href="mailto:support@tradezyhq.com">📧 Email Support</a><a class="tz-escalate-btn" href="alltrades-disputes.html" style="background:#1a56db">⚖️ File Dispute</a></div></div>`;
+    if(qr&&qr.length)bh+='<div class="tz-quick-btns">'+qr.map(q=>`<button class="tz-quick-btn" onclick="tzQuickReply('${q.replace(/'/g,"\\'")}')">${q}</button>`).join('')+'</div>';
+    w.innerHTML=bh;
+    const t=document.createElement('div');t.className='tz-msg-time';t.textContent=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+    w.appendChild(t);msgs.appendChild(w);msgs.scrollTop=msgs.scrollHeight;
+  }
+  function tzUser(text){
+    const msgs=document.getElementById('tzMessages'),w=document.createElement('div');w.className='tz-msg user';
+    w.innerHTML=`<div class="tz-bubble">${esc(text)}</div><div class="tz-msg-time">${new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}</div>`;
+    msgs.appendChild(w);msgs.scrollTop=msgs.scrollHeight;
+  }
+  window.tzQuickReply=function(t){document.getElementById('tzInput').value=t;tzSend();};
+  function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+})();
+</script>
+<!-- TRADEZY HELP WIDGET END -->
+</body>
+</html>
