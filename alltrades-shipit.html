@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Tradezy — Create Shipping Label</title>
 <script src="supabase.min.js"></script>
+<script src="https://js.stripe.com/v3/"></script>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-0NSDNDFP0H"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-0NSDNDFP0H');</script>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
@@ -135,6 +136,10 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
 .sa-outline:hover{border-color:#999;color:var(--text);}
 
 .cost-summary{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin-bottom:16px;}
+#stripe-card-element{border:1.5px solid var(--border);border-radius:8px;padding:12px 13px;background:var(--white);transition:border-color .15s;margin-bottom:6px;}
+#stripe-card-element.StripeElement--focus{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(14,165,233,.08);}
+#stripe-card-element.StripeElement--invalid{border-color:var(--red);}
+#card-errors{color:var(--red);font-size:12px;min-height:16px;margin-bottom:10px;}
 .cs-row{display:flex;justify-content:space-between;align-items:center;font-size:13px;padding:4px 0;}
 .cs-row.total{border-top:1px solid var(--border);margin-top:8px;padding-top:12px;font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.05rem;}
 .cs-label{color:var(--muted);}
@@ -155,6 +160,7 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
   .insurance-toggle{background:#162032 !important;}
   .insurance-toggle.active{background:rgba(22,163,74,.1) !important;}
   .cost-summary{background:#162032 !important;}
+  #stripe-card-element{background:#162032 !important;border-color:rgba(255,255,255,.12) !important;}
 }
 </style>
 </head>
@@ -294,7 +300,19 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
       <div class="info-box ib-cyan"><span>🚚</span><div>Once purchased, your label PDF will open in a new tab. Print it and attach it securely to your package. Drop it off at any USPS location.</div></div>
       <div class="info-box ib-gold"><span>⏰</span><div>Labels are valid for <strong>7 days</strong> from purchase. Ship within that window or you'll need a new label.</div></div>
 
-      <button class="action-btn btn-green" id="buyLabelBtn" onclick="buyLabel()">🖨️ Buy Label & Print</button>
+      <!-- STRIPE PAYMENT -->
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px;margin-bottom:16px;">
+        <div style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.9rem;margin-bottom:4px;color:var(--text);">💳 Payment for Label</div>
+        <div style="font-size:11px;color:var(--muted);margin-bottom:12px;">Your card is charged the exact label cost shown above. Tradezy never stores your card details.</div>
+        <div class="field" style="margin-bottom:6px">
+          <label>Card Details <span style="color:var(--red)">*</span></label>
+          <div id="stripe-card-element"></div>
+          <div id="card-errors"></div>
+        </div>
+        <div style="font-size:11px;color:var(--muted);display:flex;align-items:center;gap:5px;"><span>🔒</span> Secured by Stripe</div>
+      </div>
+
+      <button class="action-btn btn-green" id="buyLabelBtn" onclick="buyLabel()" disabled>🖨️ Pay &amp; Get Label</button>
       <button class="action-btn btn-outline" onclick="goToStep2()">← Change Rate</button>
     </div>
   </div>
@@ -349,12 +367,14 @@ const sb = window.supabase.createClient(
 );
 
 const EASYPOST_WORKER = 'https://tradezy-easypost.throbbing-lake-08ed.workers.dev';
+const STRIPE_PK = 'pk_live_51TW2NZGxBDyKEkW0gHznu2bH4q5EUKhWMOz4Lns3yFwitMRLNLEC9dwFk8yuVg6pRnOJesxuw8yQKyen6Trd0XyO00ikOdXldY';
 const MARKUP = 1.15; // 15% markup on label cost
 
 let currentUser = null;
 let tradeData = null, offerData = null, buyerData = null, sellerData = null;
 let shipmentId = null, selectedRate = null;
 let insuranceEnabled = false;
+let stripe = null, cardElement = null;
 
 /* ── INIT ── */
 (async () => {
@@ -367,7 +387,31 @@ let insuranceEnabled = false;
   if (!tradeId) { showToast('⚠️', 'No trade ID found.', true); return; }
 
   await loadTradeData(tradeId);
+  initStripe();
 })();
+
+function initStripe() {
+  stripe = Stripe(STRIPE_PK);
+  const elements = stripe.elements();
+  const darkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  cardElement = elements.create('card', {
+    style: {
+      base: {
+        fontSize: '14px',
+        color: darkMode ? '#f1f5f9' : '#1a1a2e',
+        fontFamily: 'Lato, sans-serif',
+        '::placeholder': { color: '#94a3b8' },
+      },
+      invalid: { color: '#dc2626' }
+    }
+  });
+  cardElement.mount('#stripe-card-element');
+  cardElement.on('change', (e) => {
+    document.getElementById('card-errors').textContent = e.error ? e.error.message : '';
+    // Only enable buy button when card is complete AND rate is selected
+    document.getElementById('buyLabelBtn').disabled = !(e.complete && selectedRate);
+  });
+}
 
 async function loadTradeData(tradeId) {
   try {
@@ -581,13 +625,39 @@ function setStep(n) {
 
 /* ── BUY LABEL ── */
 async function buyLabel() {
-  if (!shipmentId || !selectedRate) return;
+  if (!shipmentId || !selectedRate || !stripe || !cardElement) return;
   const btn = document.getElementById('buyLabelBtn');
-  btn.textContent = '⏳ Purchasing label…'; btn.disabled = true;
+  btn.textContent = '⏳ Processing payment…'; btn.disabled = true;
+  document.getElementById('card-errors').textContent = '';
 
   const insureAmount = insuranceEnabled ? (parseFloat(document.getElementById('insureAmount')?.value) || 0) : 0;
+  const insuranceCost = insureAmount > 0 ? Math.ceil(insureAmount / 100) * 1.00 : 0;
+  const totalAmount = Math.round((selectedRate.markedUp + insuranceCost) * 100); // cents
 
   try {
+    // Step 1: Create Stripe PaymentIntent via Supabase Edge Function
+    const { data: { session } } = await sb.auth.getSession();
+    const piRes = await fetch('https://equvwaspcoeetfsexqki.supabase.co/functions/v1/create-label-payment', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${session.access_token}` },
+      body: JSON.stringify({
+        amount: totalAmount,
+        trade_id: tradeData.id,
+        label_cost: selectedRate.markedUp,
+      })
+    });
+    const piData = await piRes.json();
+    if (piData.error) throw new Error(piData.error);
+
+    // Step 2: Confirm card payment with Stripe
+    btn.textContent = '⏳ Confirming card…';
+    const { error: stripeError } = await stripe.confirmCardPayment(piData.client_secret, {
+      payment_method: { card: cardElement }
+    });
+    if (stripeError) throw new Error(stripeError.message);
+
+    // Step 3: Buy label from EasyPost
+    btn.textContent = '⏳ Creating label…';
     const res = await fetch(EASYPOST_WORKER + '/buy', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -600,7 +670,7 @@ async function buyLabel() {
     const data = await res.json();
     if (data.error) throw new Error(data.error);
 
-    // Save tracking to Supabase
+    // Step 4: Save tracking to Supabase
     const isTraderA = tradeData.trader_a_id === currentUser.id;
     const trackingField = isTraderA ? 'tracking_number_a' : 'tracking_number_b';
     const labelField = isTraderA ? 'label_url_a' : 'label_url_b';
@@ -613,13 +683,14 @@ async function buyLabel() {
       ship_it_mode: true,
     }).eq('id', tradeData.id);
 
-    // Show success
+    // Step 5: Show success
     showSuccess(data);
     if (typeof gtag !== 'undefined') gtag('event', 'label_purchased', { event_category: 'shipit', value: selectedRate.markedUp });
 
   } catch(e) {
+    document.getElementById('card-errors').textContent = e.message;
     showToast('⚠️', e.message || 'Label purchase failed. Try again.', true);
-    btn.textContent = '🖨️ Buy Label & Print';
+    btn.textContent = '🖨️ Pay & Get Label';
     btn.disabled = false;
   }
 }
