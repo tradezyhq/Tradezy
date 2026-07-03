@@ -301,12 +301,12 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
       <div class="info-box ib-gold"><span>⏰</span><div>Labels are valid for <strong>7 days</strong> from purchase. Ship within that window or you'll need a new label.</div></div>
 
       <!-- STRIPE PAYMENT -->
-      <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px;margin-bottom:16px;">
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px;margin-bottom:16px;position:relative;z-index:1;">
         <div style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.9rem;margin-bottom:4px;color:var(--text);">💳 Payment for Label</div>
-        <div style="font-size:11px;color:var(--muted);margin-bottom:12px;">Your card is charged the exact label cost shown above. Tradezy never stores your card details.</div>
-        <div class="field" style="margin-bottom:6px">
+        <div style="font-size:11px;color:var(--muted);margin-bottom:12px;">Your card is charged the label cost shown above including the Tradezy label fee. We never store your card details.</div>
+        <div class="field" style="margin-bottom:6px;position:relative;z-index:2;">
           <label>Card Details <span style="color:var(--red)">*</span></label>
-          <div id="stripe-card-element"></div>
+          <div id="stripe-card-element" style="position:relative;z-index:2;"></div>
           <div id="card-errors"></div>
         </div>
         <div style="font-size:11px;color:var(--muted);display:flex;align-items:center;gap:5px;"><span>🔒</span> Secured by Stripe</div>
