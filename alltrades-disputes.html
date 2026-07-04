@@ -317,14 +317,24 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
         <!-- STEP 1: SELECT TRADE -->
         <div class="dstep active" id="dstep1">
           <div style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1rem;margin-bottom:4px">Which trade is the dispute about?</div>
-          <div style="font-size:12px;color:var(--muted);margin-bottom:14px">Only active trades through Tradezy are eligible for protection.</div>
+          <div style="font-size:12px;color:var(--muted);margin-bottom:14px">Select an active trade or choose General Issue if this is not trade-related..</div>
+          <div style="border:1.5px solid var(--blue);border-radius:10px;padding:13px;cursor:pointer;margin-bottom:12px;background:var(--white)" id="generalOpt" onclick="selectGeneralOpt()">
+  <div style="display:flex;align-items:center;gap:10px">
+    <div style="font-size:1.3rem">📄</div>
+    <div>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.9rem;color:var(--blue)">General Issue / No Trade</div>
+      <div style="font-size:11px;color:var(--muted)">Account question, harassment report, platform feedback, or issue not related to a specific trade</div>
+    </div>
+  </div>
+</div>
+<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:8px">OR select a specific trade:</div>
           <div id="tradeSelectList"><div class="loading">Loading your active trades…</div></div>
           <div class="info-box blue" style="margin-top:12px">
             <span>ℹ️</span>
             <div>Filing a dispute will <strong>immediately notify our team</strong> and freeze escrow for this trade until resolution.</div>
           </div>
           <div class="btn-row">
-            <button class="btn btn-red" id="btnStep1Next" onclick="nextDStep(1)" disabled>Select a Trade to Continue →</button>
+            <button class="btn btn-red" id="btnStep1Next" onclick="nextDStep(1)" disabled>Select an Option to Continue →</button>
           </div>
         </div>
 
@@ -339,6 +349,10 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
             <div class="issue-option" onclick="selectIssue(this,'damaged','MEDIUM')"><div class="io-icon">💔</div><div class="io-title">Item Damaged During Swap</div><div class="io-desc">Item was damaged at time of exchange and not disclosed.</div></div>
             <div class="issue-option" onclick="selectIssue(this,'wrong_item','HIGH')"><div class="io-icon">🔄</div><div class="io-title">Wrong Item Exchanged</div><div class="io-desc">You received a completely different item than agreed.</div></div>
             <div class="issue-option" onclick="selectIssue(this,'other','LOW')"><div class="io-icon">📝</div><div class="io-title">Other Issue</div><div class="io-desc">The problem doesn't fit the categories above.</div></div>
+            <div class="issue-option" onclick="selectIssue(this,'shipping','HIGH')"><div class="io-icon">🚚</div><div class="io-title">Shipping Problem</div><div class="io-desc">Package not received, lost in transit, or damaged during Ship-It.</div></div>
+<div class="issue-option" onclick="selectIssue(this,'harassment','CRITICAL')"><div class="io-icon">🛑</div><div class="io-title">Harassment / Threats</div><div class="io-desc">Another user is sending threatening or abusive messages.</div></div>
+<div class="issue-option" onclick="selectIssue(this,'account_issue','MEDIUM')"><div class="io-icon">👤</div><div class="io-title">Account Issue</div><div class="io-desc">Problem with your account, verification, or access.</div></div>
+<div class="issue-option" onclick="selectIssue(this,'platform_question','LOW')"><div class="io-icon">❓</div><div class="io-title">Platform Question</div><div class="io-desc">General question or feedback about how Tradezy works.</div></div>
           </div>
           <div id="slaNoteBox" style="display:none" class="sla-note medium">⏱️ <span id="slaNoteText">Response time: 24 hours</span></div>
           <div class="btn-row">
@@ -493,6 +507,10 @@ const ISSUE_LABELS = {
   fraud:            'Suspected Fraud / Scam',
   damaged:          'Item Damaged During Swap',
   wrong_item:       'Wrong Item Exchanged',
+  shipping: 'Shipping Problem',
+harassment: 'Harassment / Threats',
+account_issue: 'Account Issue',
+platform_question: 'Platform Question',
   other:            'Other Issue',
 };
 
@@ -665,6 +683,17 @@ function selectTradeOpt(idx, optId) {
   const btn = document.getElementById('btnStep1Next');
   btn.disabled = false;
   btn.textContent = `Continue with Trade #${selectedTrade.id.slice(0,8).toUpperCase()} →`;
+}
+
+  let isGeneralIssue = false;
+function selectGeneralOpt() {
+  document.querySelectorAll('#tradeSelectList .issue-option').forEach(o => o.classList.remove('selected'));
+  document.getElementById('generalOpt').style.background = '#eff6ff';
+  selectedTrade = null;
+  isGeneralIssue = true;
+  const btn = document.getElementById('btnStep1Next');
+  btn.disabled = false;
+  btn.textContent = 'Continue with General Issue →';
 }
 
 function selectIssue(el, type, severity) {
