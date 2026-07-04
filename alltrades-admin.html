@@ -62,7 +62,7 @@ body{font-family:'Lato',sans-serif;background:var(--navy);color:var(--text);min-
 .as-btn{padding:4px 10px;border-radius:5px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.75rem;cursor:pointer;border:none;flex-shrink:0;transition:all .15s;}
 .asb-red{background:rgba(220,38,38,.2);border:1px solid rgba(220,38,38,.3);color:#fca5a5;}
 .asb-gold{background:rgba(245,158,11,.15);border:1px solid rgba(245,158,11,.25);color:var(--gold-l);}
-.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px;}
+.stats-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;}
 .stat-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 16px;transition:all .2s;}
 .sc-icon{font-size:1.4rem;margin-bottom:6px;}
 .sc-num{font-family:'Barlow Condensed',sans-serif;font-size:1.7rem;font-weight:900;line-height:1;margin-bottom:2px;}
@@ -118,6 +118,7 @@ body{font-family:'Lato',sans-serif;background:var(--navy);color:var(--text);min-
 .dqa-ok:hover{background:rgba(22,163,74,.25);}
 .dqa-esc{background:rgba(220,38,38,.12);border:1px solid rgba(220,38,38,.25);color:#fca5a5;}
 .two-col{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:18px;}
+.overview-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:18px;align-items:start;}
 
 /* ── LISTING/TRADE DETAIL ── */
 .ldm-photos{display:flex;gap:8px;padding:14px 16px;overflow-x:auto;background:rgba(0,0,0,.2);border-bottom:1px solid var(--border);}
@@ -206,6 +207,40 @@ body{font-family:'Lato',sans-serif;background:var(--navy);color:var(--text);min-
 .prs-pend{background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.25);color:var(--gold-l);}
 .prs-fail{background:rgba(220,38,38,.15);border:1px solid rgba(220,38,38,.3);color:#fca5a5;}
 
+/* ── CLAUDE AI PANEL ── */
+.ai-panel{background:var(--card);border:1px solid var(--border2);border-radius:14px;overflow:hidden;display:flex;flex-direction:column;height:600px;}
+.ai-panel-head{background:linear-gradient(135deg,#0a1628,#1a3a6b);padding:14px 16px;display:flex;align-items:center;gap:10px;flex-shrink:0;border-bottom:1px solid var(--border);}
+.ai-head-icon{width:34px;height:34px;background:rgba(245,158,11,.2);border:1px solid rgba(245,158,11,.3);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0;}
+.ai-head-info{flex:1;}
+.ai-head-title{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.95rem;color:#fff;}
+.ai-head-status{font-size:10px;color:var(--green-l);display:flex;align-items:center;gap:4px;margin-top:2px;}
+.ai-messages{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px;scroll-behavior:smooth;}
+.ai-messages::-webkit-scrollbar{width:4px;}
+.ai-messages::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px;}
+.ai-msg{max-width:88%;display:flex;flex-direction:column;gap:2px;}
+.ai-msg.bot{align-self:flex-start;}
+.ai-msg.user{align-self:flex-end;}
+.ai-bubble{padding:9px 12px;border-radius:10px;font-size:12px;line-height:1.6;}
+.ai-msg.bot .ai-bubble{background:var(--surface2);color:var(--text);border-radius:4px 10px 10px 10px;border:1px solid var(--border);}
+.ai-msg.user .ai-bubble{background:linear-gradient(135deg,var(--blue),var(--blue-l));color:#fff;border-radius:10px 4px 10px 10px;}
+.ai-msg-time{font-size:10px;color:var(--lighter);padding:0 4px;}
+.ai-msg.user .ai-msg-time{text-align:right;}
+.ai-typing{display:flex;align-items:center;gap:4px;padding:9px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:4px 10px 10px 10px;width:fit-content;}
+.ai-typing span{width:6px;height:6px;background:var(--lighter);border-radius:50%;animation:aiDot 1.2s infinite;}
+.ai-typing span:nth-child(2){animation-delay:.2s;}
+.ai-typing span:nth-child(3){animation-delay:.4s;}
+@keyframes aiDot{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-4px)}}
+.ai-quick-btns{display:flex;flex-wrap:wrap;gap:5px;margin-top:5px;}
+.ai-quick-btn{background:var(--surface2);border:1px solid var(--border2);color:var(--blue-l);font-size:10px;font-weight:700;padding:4px 9px;border-radius:99px;cursor:pointer;transition:all .12s;font-family:inherit;}
+.ai-quick-btn:hover{background:rgba(26,86,219,.2);border-color:var(--blue);}
+.ai-input-area{padding:10px 12px;border-top:1px solid var(--border);display:flex;gap:7px;flex-shrink:0;background:rgba(0,0,0,.2);}
+.ai-input{flex:1;background:var(--surface2);border:1.5px solid var(--border2);border-radius:8px;padding:8px 11px;font-size:12px;font-family:inherit;color:var(--text);outline:none;resize:none;height:36px;max-height:80px;overflow-y:auto;transition:border-color .15s;}
+.ai-input:focus{border-color:var(--blue);}
+.ai-send-btn{width:34px;height:34px;background:linear-gradient(135deg,var(--blue),var(--blue-l));border:none;border-radius:7px;color:#fff;font-size:.9rem;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s;align-self:flex-end;}
+.ai-send-btn:hover{transform:scale(1.05);}
+.ai-send-btn:disabled{opacity:.4;cursor:not-allowed;transform:none;}
+.ai-powered{text-align:center;font-size:9px;color:var(--lighter);padding:4px 0 2px;flex-shrink:0;}
+
 .overlay{display:none;position:fixed;inset:0;background:rgba(4,10,22,.88);z-index:500;align-items:center;justify-content:center;padding:20px;}
 .overlay.open{display:flex;}
 .modal{background:#0f2341;border:1px solid var(--border2);border-radius:14px;width:100%;max-width:480px;max-height:90vh;overflow-y:auto;animation:slideUp .25s ease;}
@@ -238,7 +273,19 @@ body{font-family:'Lato',sans-serif;background:var(--navy);color:var(--text);min-
 @keyframes aipulse{0%,100%{opacity:1}50%{opacity:.3}}
 @keyframes spin{to{transform:rotate(360deg)}}
 .spin{display:inline-block;animation:spin .7s linear infinite;}
-@media(max-width:760px){.sidebar{display:none;}.stats-grid{grid-template-columns:1fr 1fr;}.two-col{grid-template-columns:1fr;}.wb-stats{display:none;}.balance-grid{grid-template-columns:1fr;}.balance-hero{flex-direction:column;align-items:flex-start;}}
+.detail-lnk{color:var(--blue-l);cursor:pointer;font-weight:700;}
+.detail-lnk:hover{text-decoration:underline;}
+.ai-action-card{background:rgba(22,163,74,.08);border:1px solid rgba(22,163,74,.2);border-radius:8px;padding:10px 12px;margin-top:6px;}
+.ai-action-title{font-size:11px;font-weight:800;color:#86efac;margin-bottom:7px;text-transform:uppercase;letter-spacing:.4px;}
+.ai-action-btns{display:flex;gap:6px;flex-wrap:wrap;}
+.ai-action-btn{padding:5px 11px;border-radius:5px;font-family:"Barlow Condensed",sans-serif;font-weight:800;font-size:.75rem;cursor:pointer;border:none;transition:all .15s;}
+.ai-act-green{background:rgba(22,163,74,.2);border:1px solid rgba(22,163,74,.35);color:#86efac;}
+.ai-act-green:hover{background:rgba(22,163,74,.35);}
+.ai-act-red{background:rgba(220,38,38,.15);border:1px solid rgba(220,38,38,.3);color:#fca5a5;}
+.ai-act-red:hover{background:rgba(220,38,38,.25);}
+.ai-act-gold{background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.25);color:var(--gold-l);}
+.ai-act-gold:hover{background:rgba(245,158,11,.22);}
+@media(max-width:760px){.sidebar{display:none;}.stats-grid{grid-template-columns:1fr;}.two-col{grid-template-columns:1fr;}.overview-grid{grid-template-columns:1fr;}.wb-stats{display:none;}.balance-grid{grid-template-columns:1fr;}.balance-hero{flex-direction:column;align-items:flex-start;}}
 </style>
 </head>
 <body>
@@ -311,24 +358,50 @@ body{font-family:'Lato',sans-serif;background:var(--navy);color:var(--text);min-
         </div>
       </div>
       <div id="alertsArea"></div>
-      <div class="stats-grid">
-        <div class="stat-card"><div class="sc-icon">👥</div><div class="sc-num" id="statUsers" style="color:var(--blue-l)">—</div><div class="sc-lbl">Total Users</div><div class="sc-chg" id="statUsersSub">Loading…</div></div>
-        <div class="stat-card"><div class="sc-icon">📦</div><div class="sc-num" id="statListings" style="color:var(--gold-l)">—</div><div class="sc-lbl">Active Listings</div><div class="sc-chg" id="statListingsSub">Loading…</div></div>
-        <div class="stat-card"><div class="sc-icon">🔄</div><div class="sc-num" id="statTrades" style="color:var(--green-l)">—</div><div class="sc-lbl">Total Trades</div><div class="sc-chg" id="statTradesSub">Loading…</div></div>
-        <div class="stat-card"><div class="sc-icon">⚖️</div><div class="sc-num" id="statDisputes" style="color:var(--red-l)">—</div><div class="sc-lbl">Open Disputes</div><div class="sc-chg" id="statDisputesSub">Loading…</div></div>
-        <div class="stat-card"><div class="sc-icon">🚫</div><div class="sc-num" id="statBanned" style="color:var(--red-l)">—</div><div class="sc-lbl">Banned Users</div><div class="sc-chg">Lifetime total</div></div>
-        <div class="stat-card"><div class="sc-icon">📨</div><div class="sc-num" id="statOffers" style="color:var(--purple-l)">—</div><div class="sc-lbl">Total Offers</div><div class="sc-chg" id="statOffersSub">Loading…</div></div>
-        <div class="stat-card"><div class="sc-icon">💬</div><div class="sc-num" id="statMessages" style="color:var(--teal)">—</div><div class="sc-lbl">Total Messages</div><div class="sc-chg">Platform total</div></div>
-        <div class="stat-card"><div class="sc-icon">⭐</div><div class="sc-num" id="statRatings" style="color:var(--gold-l)">—</div><div class="sc-lbl">Total Ratings</div><div class="sc-chg">Platform total</div></div>
-      </div>
-      <div class="two-col">
+
+      <!-- OVERVIEW GRID: STATS LEFT, CLAUDE RIGHT -->
+      <div class="overview-grid">
+        <!-- LEFT: 8 stat cards -->
         <div>
-          <div class="sec-hdr"><div class="sec-title">👥 Recent Users</div><div class="sec-lnk" onclick="switchView('users')">All users →</div></div>
-          <div class="panel" id="recentUsersPanel"><div class="loading">Loading…</div></div>
+          <div class="sec-hdr"><div class="sec-title">📊 Platform Stats</div></div>
+          <div class="stats-grid">
+            <div class="stat-card"><div class="sc-icon">👥</div><div class="sc-num" id="statUsers" style="color:var(--blue-l)">—</div><div class="sc-lbl">Total Users</div><div class="sc-chg" id="statUsersSub">Loading…</div></div>
+            <div class="stat-card"><div class="sc-icon">📦</div><div class="sc-num" id="statListings" style="color:var(--gold-l)">—</div><div class="sc-lbl">Active Listings</div><div class="sc-chg" id="statListingsSub">Loading…</div></div>
+            <div class="stat-card"><div class="sc-icon">🔄</div><div class="sc-num" id="statTrades" style="color:var(--green-l)">—</div><div class="sc-lbl">Total Trades</div><div class="sc-chg" id="statTradesSub">Loading…</div></div>
+            <div class="stat-card"><div class="sc-icon">⚖️</div><div class="sc-num" id="statDisputes" style="color:var(--red-l)">—</div><div class="sc-lbl">Open Disputes</div><div class="sc-chg" id="statDisputesSub">Loading…</div></div>
+            <div class="stat-card"><div class="sc-icon">🚫</div><div class="sc-num" id="statBanned" style="color:var(--red-l)">—</div><div class="sc-lbl">Banned Users</div><div class="sc-chg">Lifetime total</div></div>
+            <div class="stat-card"><div class="sc-icon">📨</div><div class="sc-num" id="statOffers" style="color:var(--purple-l)">—</div><div class="sc-lbl">Total Offers</div><div class="sc-chg" id="statOffersSub">Loading…</div></div>
+            <div class="stat-card"><div class="sc-icon">💬</div><div class="sc-num" id="statMessages" style="color:var(--teal)">—</div><div class="sc-lbl">Total Messages</div><div class="sc-chg">Platform total</div></div>
+            <div class="stat-card"><div class="sc-icon">⭐</div><div class="sc-num" id="statRatings" style="color:var(--gold-l)">—</div><div class="sc-lbl">Total Ratings</div><div class="sc-chg">Platform total</div></div>
+          </div>
+          <div style="margin-top:14px">
+            <div class="sec-hdr"><div class="sec-title">👥 Recent Users</div><div class="sec-lnk" onclick="switchView('users')">All users →</div></div>
+            <div class="panel" id="recentUsersPanel"><div class="loading">Loading…</div></div>
+          </div>
+          <div style="margin-top:14px">
+            <div class="sec-hdr"><div class="sec-title">🔄 Recent Trades</div><div class="sec-lnk" onclick="switchView('trades')">All trades →</div></div>
+            <div class="panel" id="recentTradesPanel"><div class="loading">Loading…</div></div>
+          </div>
         </div>
+
+        <!-- RIGHT: CLAUDE AI ASSISTANT -->
         <div>
-          <div class="sec-hdr"><div class="sec-title">🔄 Recent Trades</div><div class="sec-lnk" onclick="switchView('trades')">All trades →</div></div>
-          <div class="panel" id="recentTradesPanel"><div class="loading">Loading…</div></div>
+          <div class="sec-hdr"><div class="sec-title">🤖 Claude — Business Assistant</div></div>
+          <div class="ai-panel">
+            <div class="ai-panel-head">
+              <div class="ai-head-icon">🤖</div>
+              <div class="ai-head-info">
+                <div class="ai-head-title">Tradezy Business Assistant</div>
+                <div class="ai-head-status"><div class="ai-dot"></div>Online · Powered by Claude</div>
+              </div>
+            </div>
+            <div class="ai-messages" id="aiMessages"></div>
+            <div class="ai-input-area">
+              <textarea class="ai-input" id="aiInput" placeholder="Ask about disputes, revenue, tax dates, platform health…" rows="1" onkeydown="aiKeyDown(event)" oninput="aiAutoResize(this)"></textarea>
+              <button class="ai-send-btn" id="aiSendBtn" onclick="aiSend()">➤</button>
+            </div>
+            <div class="ai-powered">Powered by Claude AI · Tradezy Admin</div>
+          </div>
         </div>
       </div>
     </div>
@@ -354,7 +427,7 @@ body{font-family:'Lato',sans-serif;background:var(--navy);color:var(--text);min-
     <!-- DISPUTES -->
     <div id="view-disputes" style="display:none">
       <div class="sec-hdr"><div class="sec-title">⚖️ Open Disputes</div></div>
-      <div class="ib blue"><span>ℹ️</span><div>All open disputes filed by users. Response targets: Critical 4hr, High 24hr, Medium 48hr, Low 72hr.</div></div>
+      <div class="ib blue"><span>ℹ️</span><div>All open disputes filed by users. Response targets: Critical 8hr, High 16hr, Medium 24hr, Low 48hr.</div></div>
       <div id="disputesPanel"><div class="loading">Loading disputes…</div></div>
     </div>
 
@@ -411,7 +484,8 @@ body{font-family:'Lato',sans-serif;background:var(--navy);color:var(--text);min-
           <div class="ph"><div class="ph-title">💸 Current Fee Structure</div></div>
           <div style="padding:14px;font-size:13px;color:var(--light);line-height:1.8">
             <div>Platform fee: <strong style="color:var(--gold-l)">5%</strong> per party</div>
-            <div>Founding Traders: <strong style="color:var(--green-l)">3%</strong> lifetime</div>
+            <div>Ship-It fee: <strong style="color:var(--teal)">10%</strong> per party</div>
+            <div>Founding Traders: <strong style="color:var(--green-l)">3%</strong> lifetime (local + Ship-It)</div>
             <div>Cash limit — Email: <strong style="color:var(--text)">$50</strong></div>
             <div>Cash limit — Phone: <strong style="color:var(--text)">$150</strong></div>
             <div>Cash limit — ID: <strong style="color:var(--text)">$500</strong></div>
@@ -421,10 +495,10 @@ body{font-family:'Lato',sans-serif;background:var(--navy);color:var(--text);min-
         <div class="panel">
           <div class="ph"><div class="ph-title">📋 Dispute SLA Targets</div></div>
           <div style="padding:14px;font-size:13px;color:var(--light);line-height:1.8">
-            <div>🔴 CRITICAL: <strong style="color:var(--red-l)">4 hours</strong></div>
-            <div>🟠 HIGH: <strong style="color:var(--orange)">24 hours</strong></div>
-            <div>🟡 MEDIUM: <strong style="color:var(--gold-l)">48 hours</strong></div>
-            <div>🟢 LOW: <strong style="color:var(--green-l)">72 hours</strong></div>
+            <div>🔴 CRITICAL: <strong style="color:var(--red-l)">8 hours</strong></div>
+            <div>🟠 HIGH: <strong style="color:var(--orange)">16 hours</strong></div>
+            <div>🟡 MEDIUM: <strong style="color:var(--gold-l)">24 hours</strong></div>
+            <div>🟢 LOW: <strong style="color:var(--green-l)">48 hours</strong></div>
             <div style="margin-top:8px;font-size:11px">Dispute email: disputes@tradezyhq.com</div>
           </div>
         </div>
@@ -433,8 +507,10 @@ body{font-family:'Lato',sans-serif;background:var(--navy);color:var(--text);min-
         <div class="ph"><div class="ph-title">🔗 Quick Links</div></div>
         <div style="padding:14px;display:flex;flex-direction:column;gap:8px">
           <a href="https://dashboard.stripe.com" target="_blank" style="color:var(--blue-l);font-size:13px;font-weight:700">→ Stripe Dashboard</a>
+          <a href="https://app.mercury.com" target="_blank" style="color:var(--blue-l);font-size:13px;font-weight:700">→ Mercury Bank</a>
           <a href="https://supabase.com/dashboard" target="_blank" style="color:var(--blue-l);font-size:13px;font-weight:700">→ Supabase Dashboard</a>
           <a href="https://github.com/tradezyhq" target="_blank" style="color:var(--blue-l);font-size:13px;font-weight:700">→ GitHub Repository</a>
+          <a href="https://app.easypost.com" target="_blank" style="color:var(--blue-l);font-size:13px;font-weight:700">→ EasyPost Dashboard</a>
           <a href="alltrades-terms.html" target="_blank" style="color:var(--blue-l);font-size:13px;font-weight:700">→ Terms of Service</a>
           <a href="alltrades-privacy.html" target="_blank" style="color:var(--blue-l);font-size:13px;font-weight:700">→ Privacy Policy</a>
         </div>
@@ -464,7 +540,7 @@ body{font-family:'Lato',sans-serif;background:var(--navy);color:var(--text);min-
           <option value="Other — see notes">Other — see notes</option>
         </select>
       </div>
-      <div class="mfield"><label>Internal Notes</label><textarea id="banNotes" placeholder="Document the reason for the ban and any evidence (e.g. message content, listing ID)…" style="min-height:90px"></textarea></div>
+      <div class="mfield"><label>Internal Notes</label><textarea id="banNotes" placeholder="Document the reason for the ban and any evidence…" style="min-height:90px"></textarea></div>
       <button class="mbtn red" onclick="confirmBan()">🚫 Confirm Permanent Ban</button>
       <button class="mbtn outline" onclick="closeModal('banModal')">Cancel</button>
     </div>
@@ -524,10 +600,7 @@ body{font-family:'Lato',sans-serif;background:var(--navy);color:var(--text);min-
 <!-- CONVERSATION THREAD MODAL -->
 <div class="overlay" id="threadModal">
   <div class="modal thread-modal" style="max-width:580px">
-    <div class="mhd">
-      <div class="mhd-ttl">💬 Conversation</div>
-      <button class="mhd-x" onclick="closeModal('threadModal')">✕</button>
-    </div>
+    <div class="mhd"><div class="mhd-ttl">💬 Conversation</div><button class="mhd-x" onclick="closeModal('threadModal')">✕</button></div>
     <div class="thread-header" id="threadHeader"></div>
     <div class="thread-msgs" id="threadMsgs"></div>
     <div class="thread-actions" id="threadActions"></div>
@@ -581,8 +654,8 @@ const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 let currentUser = null, currentSession = null;
 let banTargetUserId = null, resolveTargetDisputeId = null, removeTargetListing = null;
 let payoutMode = 'all', availableBalance = 0;
+let aiHistory = [], aiLoading = false;
 
-// Keyword tiers
 const RED_WORDS = ['gun','firearm','weapon','ammo','drug','cocaine','meth','heroin','weed','marijuana','alcohol','liquor','crypto','bitcoin','ethereum','gift card','wire transfer','western union','moneygram','kill','threat','bomb'];
 const YELLOW_WORDS = ['venmo','paypal','zelle','cash app','cashapp','meet outside','off platform','text me','call me','my number','snap','instagram','discord','no fee','avoid fee','bypass'];
 
@@ -607,6 +680,7 @@ function userInitials(id) { return (id||'??').slice(0,2).toUpperCase(); }
   const name = user.display_name || currentUser.email?.split('@')[0] || 'Admin';
   document.getElementById('adminAv').textContent = name.split(' ').map(n=>n[0]).join('').toUpperCase().slice(0,2);
   await Promise.all([loadStats(), loadRecentUsers(), loadRecentTrades()]);
+  initAI();
 })();
 
 async function callEdge(url, body) {
@@ -651,31 +725,216 @@ async function loadStats() {
   } catch(e){console.error('Stats error:',e);}
 }
 
+/* ── CLAUDE AI ASSISTANT ── */
+function initAI() {
+  aiBot("👋 Hey Cody! I'm your Tradezy business assistant. I can help with:", [
+    "Platform health check",
+    "Tax deadlines & compliance",
+    "Dispute triage",
+    "Revenue summary",
+    "Launch checklist"
+  ]);
+}
+
+const AI_SYSTEM = `You are the Tradezy business assistant — a smart, direct AI advisor for Cody Lawson, founder and CEO of Tradezy LLC.
+
+ABOUT TRADEZY:
+- Peer-to-peer local trading marketplace for TCG cards (Pokémon, MTG, One Piece, Yu-Gi-Oh, Lorcana, Flesh and Blood), sports cards, and collectibles
+- Founded by Cody Lawson, Navy veteran, Meriden CT, solo founder building nights and weekends while maintaining a state job
+- Entity: Tradezy LLC, CT LLC filed 5/8/2026, Business ID: US-CT.BER:3439604, EIN obtained
+- Domain: tradezyhq.com
+- Launch: Phase 1 July 17 2026 (CT + Ohio local trades), Phase 2 July 31 2026 (nationwide + Ship-It)
+
+FEES:
+- Local trades: 5% platform fee per party via Stripe at acceptance
+- Ship-It (state-to-state): 10% platform fee per party
+- Founding Traders: 3% lifetime flat on ALL trades including Ship-It (20+ signed up)
+- EasyPost labels: 15% markup on label cost
+- Stripe Identity: $3 charge to user, ~$1.50 cost to Tradezy
+
+TECH STACK:
+- HTML/CSS/JS, Supabase (equvwaspcoeetfsexqki), GitHub Pages, Cloudflare Workers, Stripe Connect, Twilio, EasyPost, Google Analytics
+- Phone OTP: Twilio CF Worker live
+- ID Verification: Stripe Identity live ($3 charge)
+- Ship-It labels: EasyPost CF Worker live (needs wallet funded)
+- Stripe webhook: still needed before July 17
+
+COMPLIANCE & LEGAL:
+- Attorney Samuel Hurwitz: $3K flat for IRC §6045 opinion + ToS review (unresponsive, need to follow up)
+- Lauren Franco: CIC micro-loan contact (lfranco@ciclending.com, 203-776-6172 x130) — best path to fund attorney
+- CT sales tax: Stripe Tax calculates, Cody files manually monthly to CT DRS
+- S-Corp election deadline: July 23 2026 (deferred until $10K+/month revenue)
+- Trademark: filed
+- ToS: Sections 18-21 still needed before July 31
+
+KEY DATES:
+- July 17 2026: Phase 1 launch (CT + Ohio)
+- July 23 2026: S-Corp election deadline
+- July 31 2026: Phase 2 nationwide + Ship-It goes live
+- August 2026: Collection Vault, AI Dispute Assistant, Want Ads
+
+DISPUTE SLA TARGETS:
+- CRITICAL: 8 hours → disputes@tradezyhq.com immediate
+- HIGH: 16 hours → disputes@tradezyhq.com
+- MEDIUM: 24 hours → Claude AI can resolve
+- LOW: 48 hours → Claude AI can resolve
+
+ESCALATION RULES:
+- CRITICAL (8hr): fraud, scam, threats, counterfeit, safety concern → escalate to Cody immediately
+- HIGH (16hr): no-show at meetup, item misrepresented, payment dispute → notify Cody
+- MEDIUM (24hr): minor condition dispute, communication issue → Claude resolves
+- LOW (48hr): general questions, how-to → Claude resolves
+
+PRE-LAUNCH CHECKLIST (still needed):
+- Stripe webhook (verify signature + update trade status)
+- Ship-It date gates on alltrades-item.html, alltrades-dashboard.html, alltrades-shipit.html
+- EasyPost wallet funded (next week)
+- Switch EasyPost CF Worker to production key
+- alltrades-disputes.html wired to Supabase + AI triage
+- Founding Trader accounts created (3% lifetime)
+- Seed listings (3 per Founding Trader on launch day)
+- Reddit posts (r/OnePieceTCG, r/PokemonTCG, r/magicTCG)
+- Card shop outreach in CT
+- Samuel Hurwitz follow-up or Lauren Franco micro-loan
+
+VISION:
+- Long-term acquisition floor: $5B
+- Philanthropic goals: housing initiatives, feeding programs, job creation for underserved communities
+- "TRADE LOCAL. LIVE BETTER."
+
+TONE: Direct, concise, no fluff. You know the business inside out. Give Cody actionable answers. Flag urgent items clearly. Never give legal or financial advice as a professional — always note when Samuel or CPA mom should weigh in.`;
+
+async function aiSend() {
+  const input = document.getElementById('aiInput');
+  const text = input.value.trim();
+  if (!text || aiLoading) return;
+  input.value = ''; aiAutoResize(input);
+  aiUserMsg(text);
+  aiHistory.push({ role: 'user', content: text });
+  await aiGet();
+}
+
+function aiKeyDown(e) { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); aiSend(); } }
+function aiAutoResize(el) { el.style.height = '36px'; el.style.height = Math.min(el.scrollHeight, 80) + 'px'; }
+
+async function aiGet() {
+  aiLoading = true;
+  document.getElementById('aiSendBtn').disabled = true;
+  const tid = 'ai-t-' + Date.now();
+  const msgs = document.getElementById('aiMessages');
+  const tel = document.createElement('div');
+  tel.id = tid; tel.className = 'ai-msg bot';
+  tel.innerHTML = '<div class="ai-typing"><span></span><span></span><span></span></div>';
+  msgs.appendChild(tel); msgs.scrollTop = msgs.scrollHeight;
+
+  try {
+    // Inject live platform data into system prompt
+    const liveData = await buildLiveContext();
+    const systemWithData = AI_SYSTEM + liveData;
+
+    const r = await fetch('https://tradezy-ai-proxy.throbbing-lake-08ed.workers.dev', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-6',
+        max_tokens: 1000,
+        system: systemWithData,
+        messages: aiHistory
+      })
+    });
+    const d = await r.json();
+    const reply = d.content?.[0]?.text || "I'm having trouble responding right now.";
+    document.getElementById(tid)?.remove();
+    aiHistory.push({ role: 'assistant', content: reply });
+    // Parse action buttons from reply
+    aiBot(reply, null, parseActionButtons(reply));
+  } catch(e) {
+    document.getElementById(tid)?.remove();
+    aiBot("Connection error. Check your Cloudflare AI proxy.");
+  }
+  aiLoading = false;
+  document.getElementById('aiSendBtn').disabled = false;
+}
+
+function parseActionButtons(reply) {
+  // Look for dispute IDs in the reply and offer resolve buttons
+  const disputeMatch = reply.match(/dispute\s+([0-9A-F]{8})/i);
+  if (!disputeMatch) return null;
+  const disputeId = disputeMatch[1];
+  // Find the full UUID from live disputes
+  return { disputeId, shortId: disputeMatch[1] };
+}
+
+function aiBot(text, quickReplies = null, actionData = null) {
+  const msgs = document.getElementById('aiMessages');
+  const w = document.createElement('div');
+  w.className = 'ai-msg bot';
+  let html = text
+    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+    .replace(/^[-•] (.+)$/gm, '<li>$1</li>')
+    .replace(/(<li>.*<\/li>)/gs, '<ul style="margin:4px 0 0 14px;padding:0;font-size:12px;line-height:1.7">$1</ul>')
+    .replace(/\n\n/g, '<br><br>')
+    .replace(/\n/g, '<br>');
+  let bh = `<div class="ai-bubble">${html}</div>`;
+  if (quickReplies?.length) {
+    bh += '<div class="ai-quick-btns">' + quickReplies.map(q =>
+      `<button class="ai-quick-btn" onclick="aiQuickReply('${q.replace(/'/g,"\\'")}')">${q}</button>`
+    ).join('') + '</div>';
+  }
+  // Action buttons for dispute resolution
+  if (actionData?.disputeId) {
+    bh += `<div class="ai-action-card">
+      <div class="ai-action-title">⚡ Quick Actions — Dispute ${actionData.shortId}</div>
+      <div class="ai-action-btns">
+        <button class="ai-action-btn ai-act-green" onclick="resolveDisputeFromAI('${actionData.disputeId}','resolved_no_action','Resolved via AI — no action needed')">✅ Resolve — No Action</button>
+        <button class="ai-action-btn ai-act-gold" onclick="resolveDisputeFromAI('${actionData.disputeId}','resolved_warning','Warning issued via AI recommendation')">⚠️ Resolve + Warning</button>
+        <button class="ai-action-btn ai-act-red" onclick="switchView('disputes')">🔍 View Full Dispute</button>
+      </div>
+    </div>`;
+  }
+  w.innerHTML = bh;
+  const t = document.createElement('div');
+  t.className = 'ai-msg-time';
+  t.textContent = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  w.appendChild(t);
+  msgs.appendChild(w);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+function aiUserMsg(text) {
+  const msgs = document.getElementById('aiMessages');
+  const w = document.createElement('div');
+  w.className = 'ai-msg user';
+  w.innerHTML = `<div class="ai-bubble">${escHtml(text)}</div><div class="ai-msg-time">${new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}</div>`;
+  msgs.appendChild(w);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+function aiQuickReply(text) {
+  document.getElementById('aiInput').value = text;
+  aiSend();
+}
+
+function escHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
 /* ── MESSAGES ── */
 async function loadMessages(search='') {
   const panel = document.getElementById('allMessagesPanel');
   panel.innerHTML = '<div class="loading">Loading conversations…</div>';
   try {
-    let query = sb.from('messages')
-      .select('id, content, created_at, sender_id, receiver_id')
-      .order('created_at', { ascending: false })
-      .limit(200);
+    let query = sb.from('messages').select('id, content, created_at, sender_id, receiver_id').order('created_at', { ascending: false }).limit(200);
     if (search) query = query.ilike('content', `%${search}%`);
     const { data: messages, error } = await query;
     if (error) throw error;
     if (!messages?.length) { panel.innerHTML = '<div class="empty">No messages found.</div>'; return; }
-
-    // Group by conversation pair (sorted IDs so A↔B === B↔A)
     const convMap = new Map();
     messages.forEach(m => {
       const key = [m.sender_id, m.receiver_id].sort().join('|');
-      if (!convMap.has(key)) {
-        convMap.set(key, { key, messages: [], ids: [m.sender_id, m.receiver_id].sort() });
-      }
+      if (!convMap.has(key)) convMap.set(key, { key, messages: [], ids: [m.sender_id, m.receiver_id].sort() });
       convMap.get(key).messages.push(m);
     });
-
-    // Sort conversations: flagged red first, then yellow, then clean, then by time
     const convs = Array.from(convMap.values()).map(c => {
       const worstFlag = c.messages.reduce((worst, m) => {
         const f = flagLevel(m.content);
@@ -690,9 +949,7 @@ async function loadMessages(search='') {
       if (order[a.worstFlag] !== order[b.worstFlag]) return order[a.worstFlag]-order[b.worstFlag];
       return new Date(b.latest.created_at)-new Date(a.latest.created_at);
     });
-
     const indicator = (flag) => flag==='red' ? '🔴' : flag==='yellow' ? '🟡' : '✅';
-
     panel.innerHTML = convs.map(c => {
       const [idA, idB] = c.ids;
       const preview = (c.latest.content || '').slice(0,60) + (c.latest.content?.length>60?'…':'');
@@ -711,71 +968,45 @@ async function loadMessages(search='') {
           </div>
           <div class="conv-preview">${preview || '—'}</div>
         </div>
-        <div class="conv-rt">
-          <div class="conv-indicator">${ind}</div>
-          <div class="conv-time">${timeAgo(c.latest.created_at)}</div>
-          ${countBadge}
-        </div>
+        <div class="conv-rt"><div class="conv-indicator">${ind}</div><div class="conv-time">${timeAgo(c.latest.created_at)}</div>${countBadge}</div>
       </div>`;
     }).join('');
-
-    // Store conversations for thread lookup
     window._convData = convMap;
-  } catch(e) {
-    panel.innerHTML = `<div class="empty">Error: ${e.message}</div>`;
-    console.error(e);
-  }
+  } catch(e) { panel.innerHTML = `<div class="empty">Error: ${e.message}</div>`; }
 }
 
 function openThread(key) {
   const conv = window._convData?.get(key);
   if (!conv) return;
   const [idA, idB] = conv.ids;
-  const msgs = [...conv.messages].reverse(); // chronological
-
-  // Header with user chips
+  const msgs = [...conv.messages].reverse();
   document.getElementById('threadHeader').innerHTML = `
     <div class="thread-user-chip" onclick="openBanModal('${idA}','User ${idA.slice(0,8)}…')">
       <div class="tuc-av" style="background:${userColor(idA)}">${userInitials(idA)}</div>
-      <div class="tuc-name">User ${idA.slice(0,8)}…</div>
-      <div class="tuc-ban">🚫 Ban</div>
+      <div class="tuc-name">User ${idA.slice(0,8)}…</div><div class="tuc-ban">🚫 Ban</div>
     </div>
     <span style="color:var(--lighter);font-size:11px;font-weight:700">↔</span>
     <div class="thread-user-chip" onclick="openBanModal('${idB}','User ${idB.slice(0,8)}…')">
       <div class="tuc-av" style="background:${userColor(idB)}">${userInitials(idB)}</div>
-      <div class="tuc-name">User ${idB.slice(0,8)}…</div>
-      <div class="tuc-ban">🚫 Ban</div>
+      <div class="tuc-name">User ${idB.slice(0,8)}…</div><div class="tuc-ban">🚫 Ban</div>
     </div>
     <span style="margin-left:auto;font-size:11px;color:var(--lighter)">${msgs.length} message${msgs.length!==1?'s':''}</span>`;
-
-  // Messages
   document.getElementById('threadMsgs').innerHTML = msgs.map(m => {
     const flag = flagLevel(m.content);
-    const flagEl = flag==='red'
-      ? '<span class="tm-flag tmf-red">🔴 FLAGGED</span>'
-      : flag==='yellow'
-      ? '<span class="tm-flag tmf-yellow">🟡 REVIEW</span>'
-      : '';
+    const flagEl = flag==='red' ? '<span class="tm-flag tmf-red">🔴 FLAGGED</span>' : flag==='yellow' ? '<span class="tm-flag tmf-yellow">🟡 REVIEW</span>' : '';
     const rowClass = flag==='red' ? 'flagged-red' : flag==='yellow' ? 'flagged-yellow' : '';
     return `<div class="thread-msg ${rowClass}">
       <div class="tm-av" style="background:${userColor(m.sender_id)}">${userInitials(m.sender_id)}</div>
       <div class="tm-content">
         <div class="tm-bubble">${m.content || '—'}</div>
-        <div class="tm-meta">
-          <span>User ${m.sender_id.slice(0,8)}… → User ${m.receiver_id.slice(0,8)}…</span>
-          <span>${timeAgo(m.created_at)}</span>
-          ${flagEl}
-        </div>
+        <div class="tm-meta"><span>User ${m.sender_id.slice(0,8)}… → User ${m.receiver_id.slice(0,8)}…</span><span>${timeAgo(m.created_at)}</span>${flagEl}</div>
       </div>
     </div>`;
   }).join('');
-
-  // Actions
   document.getElementById('threadActions').innerHTML = `
     <button class="mbtn red" style="margin:0;flex:1" onclick="closeModal('threadModal');openBanModal('${idA}','User ${idA.slice(0,8)}…')">🚫 Ban User A</button>
     <button class="mbtn red" style="margin:0;flex:1" onclick="closeModal('threadModal');openBanModal('${idB}','User ${idB.slice(0,8)}…')">🚫 Ban User B</button>
     <button class="mbtn outline" style="margin:0;flex:1" onclick="closeModal('threadModal')">Close</button>`;
-
   openModal('threadModal');
 }
 
@@ -784,9 +1015,7 @@ async function loadAllListings() {
   const panel = document.getElementById('allListingsPanel');
   panel.innerHTML = '<div class="loading">Loading listings…</div>';
   try {
-    const { data: listings } = await sb.from('listings')
-      .select('id, title, category, condition, estimated_value, status, created_at, user_id, seller:user_id(display_name)')
-      .order('created_at', { ascending: false }).limit(100);
+    const { data: listings } = await sb.from('listings').select('id, title, category, condition, estimated_value, status, created_at, user_id, seller:user_id(display_name)').order('created_at', { ascending: false }).limit(100);
     if (!listings?.length) { panel.innerHTML = '<div class="empty">No listings yet.</div>'; return; }
     panel.innerHTML = listings.map(l => {
       const sellerName = l.seller?.display_name || 'Unknown';
@@ -794,15 +1023,9 @@ async function loadAllListings() {
       const canRemove = l.status !== 'removed';
       return `<div class="trow" style="cursor:pointer" onclick="openListingDetail('${l.id}')">
         <div class="trow-av" style="background:var(--gold);color:var(--navy)">📦</div>
-        <div class="trow-info">
-          <div class="trow-name">${l.title}</div>
-          <div class="trow-meta">${l.category} · ${l.condition} · by <span style="cursor:pointer;color:var(--blue-l)" onclick="event.stopPropagation();openBanModal('${l.user_id}','${sellerName}')">${sellerName}</span> · ${timeAgo(l.created_at)}</div>
-        </div>
+        <div class="trow-info"><div class="trow-name">${l.title}</div><div class="trow-meta">${l.category} · ${l.condition} · by <span style="cursor:pointer;color:var(--blue-l)" onclick="event.stopPropagation();openBanModal('${l.user_id}','${sellerName}')">${sellerName}</span> · ${timeAgo(l.created_at)}</div></div>
         <div class="trow-rt" style="display:flex;align-items:center;gap:8px">
-          <div>
-            <div class="trow-val" style="color:var(--gold-l)">${l.estimated_value?'$'+Number(l.estimated_value).toFixed(0):'—'}</div>
-            <div class="trow-st ${statusClass}">${(l.status||'active').toUpperCase()}</div>
-          </div>
+          <div><div class="trow-val" style="color:var(--gold-l)">${l.estimated_value?'$'+Number(l.estimated_value).toFixed(0):'—'}</div><div class="trow-st ${statusClass}">${(l.status||'active').toUpperCase()}</div></div>
           ${canRemove?`<button class="urb2 urb2-remove" onclick="openRemoveListingModal('${l.id}','${l.title.replace(/'/g,"\\'")}','${sellerName}','${l.user_id}')">🗑️ Remove</button>`:'<span style="font-size:10px;color:var(--lighter)">Removed</span>'}
         </div>
       </div>`;
@@ -859,7 +1082,7 @@ async function loadPayouts() {
     document.getElementById('balAvail2').textContent='$'+avail.toFixed(2);
     document.getElementById('balPending').textContent='$'+pend.toFixed(2);
     document.getElementById('balTotal').textContent='$'+(avail+pend).toFixed(2);
-    document.getElementById('balSub').textContent=avail>0?'Ready to transfer to Mercury':'No available balance — pending funds clear in 2-7 days';
+    document.getElementById('balSub').textContent=avail>0?'Ready to transfer to Mercury':'No available balance';
     const btn=document.getElementById('payoutAllBtn');
     btn.disabled=avail<=0;
     btn.textContent=avail>0?`💸 Pay Out $${avail.toFixed(2)} to Mercury`:'💸 No Available Balance';
@@ -943,13 +1166,13 @@ function renderUserRow(u) {
 
 async function loadRecentTrades() {
   try {
-    const {data:trades}=await sb.from('trades').select('id,status,total_value,created_at').order('created_at',{ascending:false}).limit(6);
+    const {data:trades}=await sb.from('trades').select('id,status,total_value,fee_a,fee_b,created_at').order('created_at',{ascending:false}).limit(6);
     const panel=document.getElementById('recentTradesPanel');
     if(!trades?.length){panel.innerHTML='<div class="empty">No trades yet.</div>';return;}
     panel.innerHTML=trades.map(t=>{
       const sc=t.status==='completed'?'ts-ok':t.status==='disputed'?'ts-disp':'ts-pend';
-      const feeEarned = (Number(t.fee_a)||0) + (Number(t.fee_b)||0);
-      const fee = feeEarned > 0 ? '$'+feeEarned.toFixed(2)+' earned' : '—';
+      const feeEarned=(Number(t.fee_a)||0)+(Number(t.fee_b)||0);
+      const fee=feeEarned>0?'$'+feeEarned.toFixed(2)+' earned':'—';
       return `<div class="trow" style="cursor:pointer" onclick="openTradeDetail('${t.id}')"><div class="trow-av" style="background:var(--blue)">${t.id.slice(0,2).toUpperCase()}</div><div class="trow-info"><div class="trow-name">Trade #${t.id.slice(0,8).toUpperCase()}</div><div class="trow-meta">${timeAgo(t.created_at)}</div></div><div class="trow-rt"><div class="trow-val" style="color:var(--green-l)">${fee}</div><div class="trow-st ${sc}">${(t.status||'pending').toUpperCase()}</div></div></div>`;
     }).join('');
   }catch(e){document.getElementById('recentTradesPanel').innerHTML='<div class="empty">Could not load trades.</div>';}
@@ -962,8 +1185,8 @@ async function loadAllTrades() {
     if(!trades?.length){panel.innerHTML='<div class="empty">No trades yet.</div>';return;}
     panel.innerHTML=trades.map(t=>{
       const sc=t.status==='completed'?'ts-ok':t.status==='disputed'?'ts-disp':'ts-pend';
-      const feeEarned = (Number(t.fee_a)||0) + (Number(t.fee_b)||0);
-      const fee = feeEarned > 0 ? '$'+feeEarned.toFixed(2)+' earned' : '—';
+      const feeEarned=(Number(t.fee_a)||0)+(Number(t.fee_b)||0);
+      const fee=feeEarned>0?'$'+feeEarned.toFixed(2)+' earned':'—';
       return `<div class="trow" style="cursor:pointer" onclick="openTradeDetail('${t.id}')"><div class="trow-av" style="background:var(--blue)">${t.id.slice(0,2).toUpperCase()}</div><div class="trow-info"><div class="trow-name">Trade #${t.id.slice(0,8).toUpperCase()}</div><div class="trow-meta">${t.trade_type||'item'} · ${timeAgo(t.created_at)}</div></div><div class="trow-rt"><div class="trow-val" style="color:var(--green-l)">${fee}</div><div class="trow-st ${sc}">${(t.status||'pending').toUpperCase()}</div></div></div>`;
     }).join('');
   }catch(e){document.getElementById('allTradesPanel').innerHTML='<div class="empty">Could not load trades.</div>';}
@@ -1002,11 +1225,7 @@ async function warnUser(userId, name) {
   }catch(e){showToast('⚠️','Error sending warning.');}
 }
 
-function openBanModal(userId, name) {
-  banTargetUserId=userId;
-  document.getElementById('banModalTitle').textContent=`🚫 Ban ${name}`;
-  openModal('banModal');
-}
+function openBanModal(userId, name) { banTargetUserId=userId; document.getElementById('banModalTitle').textContent=`🚫 Ban ${name}`; openModal('banModal'); }
 
 async function confirmBan() {
   if(!banTargetUserId) return;
@@ -1014,10 +1233,8 @@ async function confirmBan() {
   try {
     await sb.from('users').update({is_banned:true,ban_reason:reason}).eq('id',banTargetUserId);
     await sb.from('listings').update({status:'paused'}).eq('user_id',banTargetUserId);
-    closeModal('banModal');
-    showToast('🚫','User banned. All listings paused.');
-    banTargetUserId=null;
-    loadStats(); loadAllUsers(); loadRecentUsers();
+    closeModal('banModal'); showToast('🚫','User banned. All listings paused.');
+    banTargetUserId=null; loadStats(); loadAllUsers(); loadRecentUsers();
   }catch(e){showToast('⚠️','Error banning user.');}
 }
 
@@ -1038,41 +1255,23 @@ async function confirmResolve() {
   const notes=document.getElementById('resolveNotes').value;
   try {
     await sb.from('disputes').update({status:'resolved',resolution:decision,resolution_notes:notes}).eq('id',resolveTargetDisputeId);
-    closeModal('resolveModal');showToast('✅','Dispute resolved and logged.');
+    closeModal('resolveModal'); showToast('✅','Dispute resolved and logged.');
     resolveTargetDisputeId=null; loadStats(); loadDisputes();
   }catch(e){showToast('⚠️','Error resolving dispute.');}
 }
 
-function searchUsers() { const q=document.getElementById('searchInput').value.trim(); switchView('users'); loadAllUsers(q); }
-async function doSignOut() { await sb.auth.signOut(); window.location.href='alltrades-auth.html'; }
-
-function addAlert(type,icon,text,btnLabel,btnAction) {
-  const area=document.getElementById('alertsArea');if(!area)return;
-  const div=document.createElement('div');div.className=`alert-strip ${type}`;
-  div.innerHTML=`<span>${icon}</span><div class="as-txt">${text}</div>${btnLabel?`<button class="as-btn asb-${type}" onclick="${btnAction}">${btnLabel}</button>`:''}`;
-  area.appendChild(div);
-}
-
-/* ── LISTING DETAIL ── */
 async function openListingDetail(listingId) {
   document.getElementById('ldmTitle').textContent = '📦 Loading…';
   document.getElementById('ldmBody').innerHTML = '<div class="loading">Loading listing…</div>';
   openModal('listingDetailModal');
   try {
-    const { data: l, error } = await sb.from('listings')
-      .select('*, seller:user_id(display_name, email)')
-      .eq('id', listingId).single();
+    const { data: l, error } = await sb.from('listings').select('*, seller:user_id(display_name, email)').eq('id', listingId).single();
     if (error) throw error;
-
     const sellerName = l.seller?.display_name || 'Unknown';
     const sellerEmail = l.seller?.email || '—';
     const statusColor = l.status==='active'?'var(--green-l)':l.status==='removed'?'var(--red-l)':'var(--gold-l)';
     const photos = l.photos || [];
-
-    const photosHtml = photos.length
-      ? photos.map(p => `<img class="ldm-photo" src="${p}" alt="listing photo" onclick="window.open('${p}','_blank')">`).join('')
-      : `<div class="ldm-no-photo">📦</div>`;
-
+    const photosHtml = photos.length ? photos.map(p => `<img class="ldm-photo" src="${p}" alt="listing photo" onclick="window.open('${p}','_blank')">`).join('') : `<div class="ldm-no-photo">📦</div>`;
     document.getElementById('ldmTitle').textContent = `📦 ${l.title}`;
     document.getElementById('ldmBody').innerHTML = `
       <div class="ldm-photos">${photosHtml}</div>
@@ -1081,21 +1280,17 @@ async function openListingDetail(listingId) {
         <div class="ldm-row"><div class="ldm-label">Category</div><div class="ldm-val">${l.category||'—'}</div></div>
         <div class="ldm-row"><div class="ldm-label">Condition</div><div class="ldm-val">${l.condition||'—'}</div></div>
         <div class="ldm-row"><div class="ldm-label">Est. Value</div><div class="ldm-val">${l.estimated_value?'$'+Number(l.estimated_value).toFixed(2):'—'}</div></div>
-        <div class="ldm-row"><div class="ldm-label">Trade Type</div><div class="ldm-val">${l.trade_type||'—'}</div></div>
-        <div class="ldm-row"><div class="ldm-label">Quantity</div><div class="ldm-val">${l.quantity||1}</div></div>
         <div class="ldm-row"><div class="ldm-label">Views</div><div class="ldm-val">${l.view_count||0}</div></div>
         <div class="ldm-row"><div class="ldm-label">Posted</div><div class="ldm-val">${l.created_at?new Date(l.created_at).toLocaleString():'—'}</div></div>
       </div>
       <div class="ldm-section">
         <div class="ldm-row"><div class="ldm-label">Description</div><div class="ldm-val" style="white-space:pre-wrap">${l.description||'No description.'}</div></div>
         ${l.wants?`<div class="ldm-row"><div class="ldm-label">Wants</div><div class="ldm-val">${l.wants}</div></div>`:''}
-        ${l.tags?.length?`<div class="ldm-row"><div class="ldm-label">Tags</div><div class="ldm-val">${l.tags.join(', ')}</div></div>`:''}
       </div>
       <div class="ldm-section">
-        <div class="ldm-row"><div class="ldm-label">Seller</div><div class="ldm-val"><span class="detail-lnk" onclick="closeModal('listingDetailModal');openBanModal('${l.user_id}','${sellerName}')">${sellerName}</span></div></div>
+        <div class="ldm-row"><div class="ldm-label">Seller</div><div class="ldm-val"><span style="cursor:pointer;color:var(--blue-l)" onclick="closeModal('listingDetailModal');openBanModal('${l.user_id}','${sellerName}')">${sellerName}</span></div></div>
         <div class="ldm-row"><div class="ldm-label">Email</div><div class="ldm-val">${sellerEmail}</div></div>
         <div class="ldm-row"><div class="ldm-label">Location</div><div class="ldm-val">${[l.location_city,l.location_state,l.location_zip].filter(Boolean).join(', ')||'—'}</div></div>
-        <div class="ldm-row"><div class="ldm-label">Radius</div><div class="ldm-val">${l.radius_miles?l.radius_miles+' miles':'—'}</div></div>
       </div>
       <div class="ldm-section" style="display:flex;gap:8px;flex-wrap:wrap">
         <button class="mbtn gold" style="margin:0;flex:1" onclick="warnUser('${l.user_id}','${sellerName}')">⚠️ Warn Seller</button>
@@ -1103,12 +1298,9 @@ async function openListingDetail(listingId) {
         ${l.status!=='removed'?`<button class="mbtn red" style="margin:0;flex:1;background:#7f1d1d" onclick="closeModal('listingDetailModal');openRemoveListingModal('${l.id}','${(l.title||'').replace(/'/g,"\\'")}','${sellerName}','${l.user_id}')">🗑️ Remove Listing</button>`:'<div style="color:var(--red-l);font-size:12px;font-weight:700;padding:8px 0">⚠️ Already removed</div>'}
         <button class="mbtn outline" style="margin:0;flex:1" onclick="closeModal('listingDetailModal')">Close</button>
       </div>`;
-  } catch(e) {
-    document.getElementById('ldmBody').innerHTML = `<div class="empty">Error loading listing: ${e.message}</div>`;
-  }
+  } catch(e) { document.getElementById('ldmBody').innerHTML = `<div class="empty">Error: ${e.message}</div>`; }
 }
 
-/* ── TRADE DETAIL ── */
 async function openTradeDetail(tradeId) {
   document.getElementById('tdmTitle').textContent = '🔄 Loading…';
   document.getElementById('tdmBody').innerHTML = '<div class="loading">Loading trade…</div>';
@@ -1121,34 +1313,32 @@ async function openTradeDetail(tradeId) {
     const rows = [
       ['Status', `<span style="color:${statusColor};font-weight:800">${(t.status||'pending').toUpperCase()}</span>`],
       ['Trade ID', t.id],
-      ['Trade Type', t.trade_type||'—'],
       ['Total Value', t.total_value?'$'+Number(t.total_value).toFixed(2):'—'],
-      ['Cash Amount', t.cash_amount?'$'+Number(t.cash_amount).toFixed(2):'—'],
-      ['Fee (Trader A)', t.fee_a?'$'+Number(t.fee_a).toFixed(2):'—'],
-      ['Fee (Trader B)', t.fee_b?'$'+Number(t.fee_b).toFixed(2):'—'],
-      ['Escrow Status', t.escrow_status||'—'],
-      ['Trader A', `<span class="detail-lnk" onclick="closeModal('tradeDetailModal');openBanModal('${t.trader_a_id}','Trader A')">${t.trader_a_id?.slice(0,16)||'—'}…</span>`],
-      ['Trader B', `<span class="detail-lnk" onclick="closeModal('tradeDetailModal');openBanModal('${t.trader_b_id}','Trader B')">${t.trader_b_id?.slice(0,16)||'—'}…</span>`],
-      ['Offer ID', t.offer_id?.slice(0,16)+'…'||'—'],
-      ['Listing ID', t.listing_id?.slice(0,16)+'…'||'—'],
-      ['Meetup Location', t.meetup_location||'—'],
-      ['Meetup Date', t.meetup_date?new Date(t.meetup_date).toLocaleString():'—'],
-      ['Meetup Confirmed A', t.meetup_confirmed_a?'✅ Yes':'❌ No'],
-      ['Meetup Confirmed B', t.meetup_confirmed_b?'✅ Yes':'❌ No'],
-      ['Trade Confirmed A', t.trade_confirmed_a?'✅ Yes':'❌ No'],
-      ['Trade Confirmed B', t.trade_confirmed_b?'✅ Yes':'❌ No'],
-      ['Payment Intent A', t.stripe_payment_intent_a||'—'],
-      ['Payment Intent B', t.stripe_payment_intent_b||'—'],
+      ['Fee (A)', t.fee_a?'$'+Number(t.fee_a).toFixed(2):'—'],
+      ['Fee (B)', t.fee_b?'$'+Number(t.fee_b).toFixed(2):'—'],
+      ['Ship-It', t.ship_it_mode?'✅ Yes':'❌ No'],
+      ['Tracking A', t.tracking_number_a||'—'],
+      ['Tracking B', t.tracking_number_b||'—'],
+      ['Trader A', `<span style="cursor:pointer;color:var(--blue-l)" onclick="closeModal('tradeDetailModal');openBanModal('${t.trader_a_id}','Trader A')">${t.trader_a_id?.slice(0,16)||'—'}…</span>`],
+      ['Trader B', `<span style="cursor:pointer;color:var(--blue-l)" onclick="closeModal('tradeDetailModal');openBanModal('${t.trader_b_id}','Trader B')">${t.trader_b_id?.slice(0,16)||'—'}…</span>`],
+      ['Confirmed A', t.trade_confirmed_a?'✅ Yes':'❌ No'],
+      ['Confirmed B', t.trade_confirmed_b?'✅ Yes':'❌ No'],
       ['Created', t.created_at?new Date(t.created_at).toLocaleString():'—'],
     ];
     document.getElementById('tdmBody').innerHTML = `
       <div>${rows.map(([k,v])=>`<div class="td-row"><div class="td-key">${k}</div><div class="td-val">${v}</div></div>`).join('')}</div>
-      <div style="display:flex;gap:8px;margin-top:14px">
-        <button class="mbtn outline" style="margin:0" onclick="closeModal('tradeDetailModal')">Close</button>
-      </div>`;
-  } catch(e) {
-    document.getElementById('tdmBody').innerHTML = `<div class="empty">Error: ${e.message}</div>`;
-  }
+      <div style="display:flex;gap:8px;margin-top:14px"><button class="mbtn outline" style="margin:0" onclick="closeModal('tradeDetailModal')">Close</button></div>`;
+  } catch(e) { document.getElementById('tdmBody').innerHTML = `<div class="empty">Error: ${e.message}</div>`; }
+}
+
+function searchUsers() { const q=document.getElementById('searchInput').value.trim(); switchView('users'); loadAllUsers(q); }
+async function doSignOut() { await sb.auth.signOut(); window.location.href='alltrades-auth.html'; }
+
+function addAlert(type,icon,text,btnLabel,btnAction) {
+  const area=document.getElementById('alertsArea');if(!area)return;
+  const div=document.createElement('div');div.className=`alert-strip ${type}`;
+  div.innerHTML=`<span>${icon}</span><div class="as-txt">${text}</div>${btnLabel?`<button class="as-btn asb-${type}" onclick="${btnAction}">${btnLabel}</button>`:''}`;
+  area.appendChild(div);
 }
 
 function switchView(v) {
@@ -1183,6 +1373,65 @@ function showToast(icon,msg) {
   const t=document.getElementById('toastEl');t.classList.add('show');
   clearTimeout(window._tt);window._tt=setTimeout(()=>t.classList.remove('show'),4000);
 }
+
+/* ── AI LIVE DATA INJECTION ── */
+async function buildLiveContext() {
+  try {
+    const [
+      {count:userCount},{count:listingCount},{count:tradeCount},
+      {count:disputeCount},{count:bannedCount},
+      {data:disputes},{data:flaggedMsgs}
+    ] = await Promise.all([
+      sb.from('users').select('*',{count:'exact',head:true}),
+      sb.from('listings').select('*',{count:'exact',head:true}).eq('status','active'),
+      sb.from('trades').select('*',{count:'exact',head:true}),
+      sb.from('disputes').select('*',{count:'exact',head:true}).eq('status','open'),
+      sb.from('users').select('*',{count:'exact',head:true}).eq('is_banned',true),
+      sb.from('disputes').select('id,description,reason,created_at,status').eq('status','open').order('created_at',{ascending:false}).limit(5),
+      sb.from('messages').select('content,created_at').order('created_at',{ascending:false}).limit(100)
+    ]);
+    const redFlagged = (flaggedMsgs||[]).filter(m=>flagLevel(m.content)==='red').length;
+    const disputeList = (disputes||[]).map(d=>`- Dispute ${d.id.slice(0,8).toUpperCase()}: "${d.description||d.reason||'No description'}" (filed ${timeAgo(d.created_at)})`).join('\n');
+    return `\n\n=== LIVE PLATFORM DATA (as of ${new Date().toLocaleTimeString()}) ===\nTotal Users: ${userCount||0}\nActive Listings: ${listingCount||0}\nTotal Trades: ${tradeCount||0}\nOpen Disputes: ${disputeCount||0}\nBanned Users: ${bannedCount||0}\nRed-Flagged Messages (last 100): ${redFlagged}\n\nOpen Disputes:\n${disputeList||'None'}\n=== END LIVE DATA ===`;
+  } catch(e) { return '\n\n[Could not fetch live data]'; }
+}
+
+/* ── AI ACTION BUTTONS ── */
+window.resolveDisputeFromAI = async function(disputeId, decision, notes) {
+  try {
+    await sb.from('disputes').update({
+      status:'resolved', resolution:decision, resolution_notes:notes
+    }).eq('id',disputeId);
+    showToast('✅',`Dispute ${disputeId.slice(0,8).toUpperCase()} resolved.`);
+    loadStats(); loadDisputes();
+    // Inject confirmation back into AI chat
+    aiHistory.push({role:'user',content:`Confirmed: Dispute ${disputeId.slice(0,8).toUpperCase()} marked as resolved (${decision}).`});
+    aiBot('✅ Done — dispute marked as resolved in Supabase. The record has been updated.');
+  } catch(e) { showToast('⚠️','Error resolving dispute: '+e.message); }
+};
+
+window.warnUserFromAI = async function(userId, name) {
+  try {
+    const {data:user}=await sb.from('users').select('warning_count').eq('id',userId).single();
+    const newCount=(user?.warning_count||0)+1;
+    await sb.from('users').update({warning_count:newCount}).eq('id',userId);
+    showToast('⚠️',`Warning issued to ${name}.`);
+    loadStats(); loadAllUsers(); loadRecentUsers();
+    aiHistory.push({role:'user',content:`Confirmed: Warning issued to user ${name}.`});
+    aiBot(`⚠️ Done — warning #${newCount} issued to ${name} and saved to their account.`);
+  } catch(e) { showToast('⚠️','Error: '+e.message); }
+};
+
+window.banUserFromAI = async function(userId, name, reason) {
+  try {
+    await sb.from('users').update({is_banned:true,ban_reason:reason}).eq('id',userId);
+    await sb.from('listings').update({status:'paused'}).eq('user_id',userId);
+    showToast('🚫',`${name} has been banned.`);
+    loadStats(); loadAllUsers(); loadRecentUsers();
+    aiHistory.push({role:'user',content:`Confirmed: User ${name} banned for: ${reason}.`});
+    aiBot(`🚫 Done — ${name} has been banned and all their listings paused.`);
+  } catch(e) { showToast('⚠️','Error: '+e.message); }
+};
 </script>
 </body>
 </html>
