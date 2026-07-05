@@ -383,7 +383,7 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
         <!-- STEP 4: REVIEW & SUBMIT -->
         <div class="dstep" id="dstep4">
           <div style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1rem;margin-bottom:14px">Review Your Dispute</div>
-          <div class="freeze-banner">
+          <div class="freeze-banner" id="step4FreezeBanner">
             <span class="fb-icon">🔒</span>
             <div class="fb-text">
               <div class="fb-title">Escrow Will Be Frozen on Submit</div>
@@ -413,7 +413,7 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
           </div>
           <div class="btn-row">
             <button class="btn btn-outline" onclick="prevDStep(4)">← Back</button>
-            <button class="btn btn-red" id="btnSubmitDispute" onclick="submitDispute()">🔒 Submit Dispute & Freeze Escrow</button>
+            <button class="btn btn-red" id="btnSubmitDispute" onclick="submitDispute()">Submit Dispute</button>
           </div>
         </div>
       </div>
@@ -672,6 +672,7 @@ function selectTradeOpt(idx, optId) {
   const btn = document.getElementById('btnStep1Next');
   btn.disabled = false;
   btn.textContent = `Continue with Trade #${selectedTrade.id.slice(0,8).toUpperCase()} →`;
+  document.getElementById('step4FreezeBanner').style.display = 'flex';
 }
 
   let isGeneralIssue = false;
@@ -683,6 +684,7 @@ function selectGeneralOpt() {
   const btn = document.getElementById('btnStep1Next');
   btn.disabled = false;
   btn.textContent = 'Continue with General Issue →';
+  document.getElementById('step4FreezeBanner').style.display = 'none';
 }
 
 function selectIssue(el, type, severity) {
