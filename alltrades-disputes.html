@@ -369,18 +369,7 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
             <label>Describe the problem in detail *</label>
             <textarea id="issueDesc" rows="5" placeholder="Tell us exactly what happened. Include dates, what was agreed, what actually occurred, and any relevant context…"></textarea>
           </div>
-          <div class="field">
-            <label>What outcome are you looking for?</label>
-            <div class="resolution-grid">
-              <div class="res-option" onclick="selectResolution(this,'refund')"><div class="ro-icon">💸</div><div class="ro-title">Full Refund</div><div class="ro-desc">Return of platform fee</div></div>
-              <div class="res-option" onclick="selectResolution(this,'partial')"><div class="ro-icon">⚖️</div><div class="ro-title">Partial Resolution</div><div class="ro-desc">Negotiated settlement</div></div>
-              <div class="res-option" onclick="selectResolution(this,'ban')"><div class="ro-icon">🚫</div><div class="ro-title">Remove User</div><div class="ro-desc">Ban from Tradezy</div></div>
-            </div>
-          </div>
-          <div class="field">
-            <label>Additional notes for investigator (optional)</label>
-            <textarea id="evidenceNotes" rows="3" placeholder="Any other context our team should know?"></textarea>
-          </div>
+          
           <div class="info-box green">
             <span>✅</span>
             <div>Your Tradezy messages are <strong>automatically included</strong> as evidence — we always have a full conversation log on file.</div>
@@ -710,24 +699,17 @@ function selectIssue(el, type, severity) {
   document.getElementById('btnStep2Next').disabled = false;
 }
 
-function selectResolution(el, type) {
-  document.querySelectorAll('.res-option').forEach(o => o.classList.remove('selected'));
-  el.classList.add('selected');
-  selectedResolution = type;
-}
+
 
 function nextDStep(from) {
   if (from === 3) {
     const desc = document.getElementById('issueDesc')?.value.trim();
     if (!desc) { showToast('⚠️','Please describe the issue before continuing.'); return; }
-    if (!selectedResolution) { showToast('⚠️','Please select your desired outcome.'); return; }
     const sla = SLA_MAP[selectedSeverity] || SLA_MAP.MEDIUM;
     document.getElementById('sumTrade').textContent      = '#' + (selectedTrade?.id.slice(0,8).toUpperCase() || '—');
     document.getElementById('sumIssue').textContent      = ISSUE_LABELS[selectedIssue] || '—';
     document.getElementById('sumSeverity').textContent   = sla.label;
     document.getElementById('sumSLA').textContent        = sla.time;
-    document.getElementById('sumResolution').textContent = RESOLUTION_LABELS[selectedResolution] || '—';
-    document.getElementById('responseTimeLine').textContent = `Within ${sla.time}`;
   }
   hideDStep(from); dStep = from + 1; showDStep(dStep); updateDStepUI(dStep);
 }
@@ -770,10 +752,10 @@ async function submitDispute() {
       reported_user_id: againstId || null,
       trade_id:        selectedTrade?.id || null,
       reason:          ISSUE_LABELS[selectedIssue] || selectedIssue,
-      description:     description + (notes ? '\n\nAdditional notes: ' + notes : ''),
+      description:    description,
       issue_type:      selectedIssue,
       severity:        selectedSeverity,
-      desired_outcome: selectedResolution,
+      desired_outcome: selectedIssue,
       status:          'open',
     }).select().single();
 
