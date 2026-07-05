@@ -623,10 +623,10 @@ async function loadActiveDisputes() {
           <div class="info-box ${sla.css === 'critical' ? 'red' : sla.css === 'high' ? 'yellow' : 'blue'}" style="margin-bottom:10px">
             <span>⏱️</span><div><strong>Response SLA: ${sla.time}</strong> — ${sla.label} severity</div>
           </div>
-          <div class="freeze-banner" style="margin-bottom:0">
+          ${d.trade_id ? `<div class="freeze-banner" style="margin-bottom:0">
             <span class="fb-icon">🔒</span>
             <div class="fb-text"><div class="fb-title">Escrow Frozen</div><div class="fb-desc">Funds held until dispute is resolved.</div></div>
-          </div>
+          </div>` : ''}
         </div>
       </div>`;
     }).join('');
