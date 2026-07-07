@@ -640,10 +640,10 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
       <div class="prev-img" id="prevImg">
         <img class="prev-img-real" id="prevImgReal">
         <span id="prevPlaceholder">📦</span>
-        <div class="prev-badges" id="prevBadges"><span class="pbadge local">LOCAL</span><span class="pbadge shipit">🚚 SHIP-IT</span></div>
+        <div class="prev-badges" id="prevBadges"><span class="pbadge local">LOCAL</span></div>
         <div class="prev-dist" id="prevDist">
           <span class="prev-dist-pill">📍 Near You</span>
-          <span class="prev-dist-pill" id="prevShipPill">🚚 Ships Nationwide</span>
+          <span class="prev-dist-pill" id="prevShipPill" style="display:none">🚚 Ships Nationwide</span>
         </div>
       </div>
       <div class="prev-body">
@@ -669,7 +669,7 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
         <div class="tip"><span class="tip-ic">✍️</span><span><strong>Specific titles</strong> rank higher in search.</span></div>
         <div class="tip"><span class="tip-ic">💰</span><span><strong>Fair pricing</strong> builds trust.</span></div>
         <div class="tip"><span class="tip-ic">🤝</span><span><strong>Enable all offer types</strong> for max responses.</span></div>
-        <div class="tip"><span class="tip-ic">🚚</span><span>Enable Ship-It to reach <strong>nationwide traders!</strong></span></div>
+        <div class="tip" id="tipShipIt"><span class="tip-ic">🚚</span><span>Enable Ship-It to reach <strong>nationwide traders!</strong></span></div>
         <div class="tip"><span class="tip-ic">🃏</span><span>TCG listings trending — <strong>card traders are active!</strong></span></div>
       </div>
     </div>
@@ -687,7 +687,12 @@ const sb = window.supabase.createClient(
 
 let currentUser = null;
 let fullyVerified = false;
-let shipIt = true;
+let shipIt = false;
+
+/* ═══ SHIP-IT DATE GATE START — delete this whole block after July 31, 2026 ═══ */
+const SHIP_IT_LIVE_DATE = new Date('2026-07-31T00:00:00');
+function shipItIsLive() { return new Date() >= SHIP_IT_LIVE_DATE; }
+/* ═══ SHIP-IT DATE GATE END ═══ */
 
 (async () => {
   const { data: { session } } = await sb.auth.getSession();
@@ -700,7 +705,8 @@ let shipIt = true;
 
   // Ship-It requires ID verification
   fullyVerified = !!(profile?.id_verified);
-  shipIt = fullyVerified;
+  /* SHIP-IT DATE GATE — remove "&& shipItIsLive()" after July 31, 2026 */
+  shipIt = fullyVerified && shipItIsLive();
 
   const name = profile?.display_name || currentUser.email?.split('@')[0] || 'You';
   const initials = name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0,2);
@@ -708,6 +714,12 @@ let shipIt = true;
   document.getElementById('prevName').textContent = name;
 
   renderShipItToggle();
+  /* SHIP-IT DATE GATE START — delete this if-block after July 31, 2026 */
+  if (!shipItIsLive()) {
+    const tip = document.getElementById('tipShipIt');
+    if (tip) tip.style.display = 'none';
+  }
+  /* SHIP-IT DATE GATE END */
   renderGrid();
   updateProg(1);
   livePreview();
@@ -734,6 +746,20 @@ function renderShipItToggle() {
   const title = document.getElementById('shipItTitle');
   const desc = document.getElementById('shipItDesc');
   const lockNote = document.getElementById('shipItLockNote');
+
+  /* ═══ SHIP-IT DATE GATE START — delete this if-block after July 31, 2026 ═══ */
+  if (!shipItIsLive()) {
+    row.className = 'shipit-row off locked';
+    row.onclick = null;
+    tgl.className = 'toggle disabled';
+    title.textContent = 'Ship-It Launches July 31 — Coming Soon';
+    desc.textContent = 'Nationwide Ship-It trading unlocks July 31, 2026. Local trades are open now.';
+    lockNote.style.display = 'none';
+    shipIt = false;
+    livePreview();
+    return;
+  }
+  /* ═══ SHIP-IT DATE GATE END ═══ */
 
   if (!fullyVerified) {
     row.className = 'shipit-row off locked';
@@ -762,6 +788,8 @@ function renderShipItToggle() {
 }
 
 function toggleShipIt() {
+  /* SHIP-IT DATE GATE — delete this line after July 31, 2026 */
+  if (!shipItIsLive()) return;
   if (!fullyVerified) return;
   shipIt = !shipIt;
   renderShipItToggle();
@@ -1164,6 +1192,9 @@ async function publish(btn) {
       fullDesc += `\n\n[Sports Card] Sport: ${scSubcat}${player?' | Player: '+player:''}${year?' | Year/Set: '+year:''} | Condition: ${scCond}${gradeInfo}`;
     }
     const condValue = isTCG ? tcgCond : isSC ? scCond : cond;
+    /* SHIP-IT DATE GATE START — delete this line, use `ship_it: shipIt` directly, after July 31, 2026 */
+    const finalShipIt = shipIt && shipItIsLive();
+    /* SHIP-IT DATE GATE END */
     const { data, error } = await sb.from('listings').insert({
       user_id:         currentUser.id,
       title,
@@ -1181,7 +1212,7 @@ async function publish(btn) {
       min_cash_offer:  minCash || null,
       photos:          photos.length > 0 ? photos : null,
       status:          'active',
-      ship_it:         shipIt
+      ship_it:         finalShipIt
     }).select().single();
     if (error) throw error;
     document.getElementById('pFill').style.width = '100%';
@@ -1191,15 +1222,15 @@ async function publish(btn) {
     document.getElementById('reviewBtns').style.display = 'none';
     document.getElementById('head4Icon').textContent = '🎉';
     document.getElementById('head4Title').textContent = 'Listing Live!';
-    document.getElementById('head4Sub').textContent = shipIt
+    document.getElementById('head4Sub').textContent = finalShipIt
       ? 'Visible to local + nationwide Ship-It traders right now.'
       : 'Visible to local traders right now.';
-    document.getElementById('sucDesc').textContent = shipIt
+    document.getElementById('sucDesc').textContent = finalShipIt
       ? 'Your listing is now visible to local traders and Ship-It traders nationwide. You\'ll be notified when someone makes an offer.'
       : 'Your listing is now visible to local traders. You\'ll be notified when someone makes an offer.';
     document.getElementById('successWrap').classList.add('show');
     document.getElementById('sucTitle').textContent = title;
-    document.getElementById('sucMeta').textContent = `Just listed in ${categoryValue} · 0 offers${shipIt?' · 🚚 Ship-It':''}`;
+    document.getElementById('sucMeta').textContent = `Just listed in ${categoryValue} · 0 offers${finalShipIt?' · 🚚 Ship-It':''}`;
     if (photos[0]) document.getElementById('sucImg').innerHTML = `<img src="${photos[0]}" style="width:56px;height:56px;object-fit:cover;border-radius:8px">`;
     toast('🚀', `"${title}" is now live!`);
     if (typeof gtag !== 'undefined') gtag('event', 'listing_published', { event_category: 'listings', event_label: categoryValue });
@@ -1216,7 +1247,8 @@ function resetAll() {
   tcgCond = 'Mint'; tcgPref = 'Trade Only'; tcgSubcat = 'Pokémon';
   scSubcat = 'Baseball'; scCond = 'Mint'; tcgGraded = false; scGraded = false; foilOn = false;
   prefs = {trade:true, tc:true, cash:false, bundle:false};
-  shipIt = fullyVerified;
+  /* SHIP-IT DATE GATE — remove "&& shipItIsLive()" after July 31, 2026 */
+  shipIt = fullyVerified && shipItIsLive();
   document.getElementById('successWrap').classList.remove('show');
   document.getElementById('card4').style.display = 'none';
   document.getElementById('reviewRows').style.display = '';
