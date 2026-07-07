@@ -323,7 +323,7 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);}
           <div class="otab active" id="tab-trade" onclick="setOfferType('trade')"><div class="otab-icon">🔄</div><div class="otab-label">Trade Only</div></div>
           <div class="otab" id="tab-tc" onclick="setOfferType('tc')"><div class="otab-icon">🔄💵</div><div class="otab-label">Trade+Cash</div></div>
           <div class="otab" id="tab-cash" onclick="setOfferType('cash')"><div class="otab-icon">💵</div><div class="otab-label">Cash Only</div></div>
-          <div class="otab" id="tab-shipit" onclick="setOfferType('shipit')"><div class="otab-icon">🚚</div><div class="otab-label">Ship-It</div></div>
+          <div class="otab" id="tab-shipit" onclick="trySetShipIt()"><div class="otab-icon">🚚</div><div class="otab-label">Ship-It</div></div>
         </div>
         <div class="shipit-offer-banner" id="shipItBanner" style="display:none">
           <span class="sob-icon">🚚</span>
@@ -479,12 +479,32 @@ function selectPayMethod(el, context, method) {
   selectedPayMethod[context] = method;
 }
 const CAT_EMOJI={'Food & Water':'🥫','Garden':'🌱','Electronics':'⚡','Tools':'🔧','Sports':'🚲','Music':'🎵','Gaming':'🎮','Clothing':'👗','Books':'📚','Trading Cards':'🃏','Other':'📦'};
+
+/* ═══ SHIP-IT DATE GATE START — delete this whole block after July 31, 2026 ═══ */
+const SHIP_IT_LIVE_DATE = new Date('2026-07-31T00:00:00');
+function shipItIsLive() { return new Date() >= SHIP_IT_LIVE_DATE; }
+function trySetShipIt() {
+  if (!shipItIsLive()) { showToast('🚚', 'Ship-It launches July 31, 2026.'); return; }
+  setOfferType('shipit');
+}
+function applyShipItTabGate() {
+  if (shipItIsLive()) return;
+  const tab = document.getElementById('tab-shipit');
+  if (tab) {
+    tab.style.opacity = '0.5';
+    const label = tab.querySelector('.otab-label');
+    if (label) label.textContent = 'Ship-It (7/31)';
+  }
+}
+/* ═══ SHIP-IT DATE GATE END ═══ */
+
 (async()=>{
   const{data:{session}}=await sb.auth.getSession();
   if(!session){window.location.href='alltrades-auth.html';return;}
   currentUser=session.user;
   const{data:ud}=await sb.from('users').select('id_verified').eq('id',currentUser.id).single();
   currentUserData=ud;
+  applyShipItTabGate(); /* SHIP-IT DATE GATE — delete this line after July 31, 2026 */
   loadListing();
 })();
 function getListingId(){return new URLSearchParams(window.location.search).get('id');}
@@ -595,7 +615,8 @@ function renderListing(l){
     isEss?'<span class="ibadge ess">ESSENTIAL</span>':'',
     isTCG?'<span class="ibadge tcg">🃏 TCG</span>':'',
     hasCash?'<span class="ibadge cash">💵 CASH OK</span>':'',
-    '<span class="ibadge shipit">🚚 SHIP-IT</span>'
+    /* SHIP-IT DATE GATE — delete this ternary, restore to unconditional badge, after July 31, 2026 */
+    shipItIsLive()?'<span class="ibadge shipit">🚚 SHIP-IT</span>':''
   ].join('');
   const wrap=document.getElementById('mainImgWrap');
   if(l.photos?.length>0){
@@ -610,7 +631,9 @@ function renderListing(l){
   document.getElementById('metaCondition').innerHTML=`<span>✨</span> ${l.condition||'Condition not specified'}`;
   document.getElementById('metaTime').innerHTML=`<span>⏰</span> ${timeAgo(l.created_at)}`;
   const vc=document.getElementById('metaViews');vc.innerHTML=`<span>👁</span> ${(l.view_count||0)+1} views`;vc.style.display='flex';
-  document.getElementById('metaShipIt').style.display='flex';
+  /* SHIP-IT DATE GATE START — restore to unconditional display='flex' after July 31, 2026 */
+  if (shipItIsLive()) document.getElementById('metaShipIt').style.display='flex';
+  /* SHIP-IT DATE GATE END */
   if(l.quantity>1){document.getElementById('metaQty').innerHTML=`<span>📦</span> Qty: ${l.quantity}`;document.getElementById('metaQty').style.display='flex';}
   document.getElementById('itemValue').textContent=l.estimated_value?`$${Number(l.estimated_value).toFixed(0)}`:'—';
   document.getElementById('itemDesc').textContent=l.description||'No description provided.';
@@ -753,6 +776,9 @@ function messageSeller(){if(!listing)return;window.location.href=`alltrades-mess
 async function submitOffer(){
   if(!listing)return;
   const isShipIt=offerType==='shipit';
+  /* SHIP-IT DATE GATE START — delete this if-block after July 31, 2026 */
+  if (isShipIt && !shipItIsLive()) { showToast('🚚','Ship-It launches July 31, 2026.'); return; }
+  /* SHIP-IT DATE GATE END */
   const{data:userCheck}=await sb.from('users').select('w9_on_file,id_verified').eq('id',currentUser.id).single();
   if(isShipIt&&!userCheck?.id_verified){showToast('🪪','ID verification required for Ship-It trades.');return;}
   const itemTitle=document.getElementById('offerItem')?.value.trim();
