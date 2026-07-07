@@ -149,6 +149,16 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
 .toast.show{transform:translateX(0);}
 .toast.error{border-left-color:var(--red);}
 
+/* ═══ SHIP-IT DATE GATE START — delete this whole block after July 31, 2026 ═══ */
+.blocked-screen{display:none;min-height:70vh;align-items:center;justify-content:center;padding:20px;}
+.blocked-card{max-width:480px;background:linear-gradient(135deg,#0c4a6e 0%,#0369a1 55%,#0284c7 100%);border-radius:16px;padding:36px 32px;text-align:center;color:#fff;}
+.blocked-icon{font-size:3rem;margin-bottom:14px;}
+.blocked-title{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.6rem;margin-bottom:10px;}
+.blocked-sub{font-size:13px;color:#bae6fd;line-height:1.6;margin-bottom:20px;}
+.blocked-btn{display:inline-block;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);color:#fff;padding:10px 20px;border-radius:8px;font-family:'Barlow Condensed',sans-serif;font-weight:800;text-decoration:none;font-size:.9rem;}
+.blocked-btn:hover{background:rgba(255,255,255,.25);}
+/* ═══ SHIP-IT DATE GATE END ═══ */
+
 @media(max-width:600px){.field-row,.field-row-3{grid-template-columns:1fr;}.steps-bar{flex-wrap:wrap;}.step-tab{min-width:48%;border-bottom:1px solid var(--border);}}
 @media(prefers-color-scheme:dark){
   :root{--text:#f1f5f9;--muted:#94a3b8;--border:rgba(255,255,255,.1);--bg:#0f172a;--white:#1e293b;--surface:#162032;}
@@ -174,6 +184,17 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
 </div>
 
 <div class="loading-screen" id="loadingScreen">⏳ Loading trade details…</div>
+
+<!-- ═══ SHIP-IT DATE GATE START — delete this whole div after July 31, 2026 ═══ -->
+<div class="blocked-screen" id="shipItBlocked">
+  <div class="blocked-card">
+    <div class="blocked-icon">🚚</div>
+    <div class="blocked-title">Ship-It Launches July 31</div>
+    <div class="blocked-sub">Nationwide state-to-state shipping isn't live yet. Local CT + Ohio trades are open now — Ship-It unlocks July 31, 2026. Stay tuned!</div>
+    <a class="blocked-btn" href="alltrades-dashboard.html">← Back to Dashboard</a>
+  </div>
+</div>
+<!-- ═══ SHIP-IT DATE GATE END ═══ -->
 
 <div class="page" id="mainPage" style="display:none">
 
@@ -376,11 +397,24 @@ let shipmentId = null, selectedRate = null;
 let insuranceEnabled = false;
 let stripe = null, cardElement = null;
 
+/* ═══ SHIP-IT DATE GATE START — delete this whole block after July 31, 2026 ═══ */
+const SHIP_IT_LIVE_DATE = new Date('2026-07-31T00:00:00');
+function shipItIsLive() { return new Date() >= SHIP_IT_LIVE_DATE; }
+/* ═══ SHIP-IT DATE GATE END ═══ */
+
 /* ── INIT ── */
 (async () => {
   const { data: { session } } = await sb.auth.getSession();
   if (!session) { window.location.href = 'alltrades-auth.html'; return; }
   currentUser = session.user;
+
+  /* ═══ SHIP-IT DATE GATE START — delete this if-block after July 31, 2026 ═══ */
+  if (!shipItIsLive()) {
+    document.getElementById('loadingScreen').style.display = 'none';
+    document.getElementById('shipItBlocked').style.display = 'flex';
+    return;
+  }
+  /* ═══ SHIP-IT DATE GATE END ═══ */
 
   const params = new URLSearchParams(window.location.search);
   const tradeId = params.get('trade_id');
@@ -471,6 +505,9 @@ function checkStep1() {
 }
 
 async function getRates() {
+  /* SHIP-IT DATE GATE START — delete this line after July 31, 2026 */
+  if (!shipItIsLive()) { showToast('⚠️', 'Ship-It launches July 31, 2026.', true); return; }
+  /* SHIP-IT DATE GATE END */
   const lbs = parseFloat(document.getElementById('weightLbs').value) || 0;
   const oz = parseFloat(document.getElementById('weightOz').value) || 0;
   const totalOz = Math.round((lbs * 16) + oz);
@@ -625,6 +662,9 @@ function setStep(n) {
 
 /* ── BUY LABEL ── */
 async function buyLabel() {
+  /* SHIP-IT DATE GATE START — delete this line after July 31, 2026 */
+  if (!shipItIsLive()) { showToast('⚠️', 'Ship-It launches July 31, 2026.', true); return; }
+  /* SHIP-IT DATE GATE END */
   if (!shipmentId || !selectedRate || !stripe || !cardElement) return;
   const btn = document.getElementById('buyLabelBtn');
   btn.textContent = '⏳ Processing payment…'; btn.disabled = true;
