@@ -593,6 +593,11 @@ let lbPhotos = [], lbIndex = 0;
 const CAT_EMOJI = {'Food & Water':'🥫','Garden':'🌱','Electronics':'⚡','Tools':'🔧','Sports':'🚲','Music':'🎵','Gaming':'🎮','Clothing':'👗','Books':'📚','Trading Cards':'🃏','Sports Card':'⚾','TCG':'🃏','Sealed':'📦','Other':'📦'};
 const AV_COLORS = ['var(--blue)','var(--green)','var(--orange)','var(--gold)','#64748b'];
 
+/* ═══ SHIP-IT DATE GATE START — delete this whole block after July 31, 2026 ═══ */
+const SHIP_IT_LIVE_DATE = new Date('2026-07-31T00:00:00');
+function shipItIsLive() { return new Date() >= SHIP_IT_LIVE_DATE; }
+/* ═══ SHIP-IT DATE GATE END ═══ */
+
 (async () => {
   const { data: { session } } = await sb.auth.getSession();
   if (!session) { window.location.href = 'alltrades-auth.html'; return; }
@@ -872,6 +877,9 @@ async function openOfferModal(offerId) {
     const cat = o.listing?.category || '';
     const thumbHtml = firstPhoto ? `<img src="${firstPhoto}" alt="${listingTitle}">` : `<span style="font-size:1.5rem">${CAT_EMOJI[cat]||'📦'}</span>`;
     const shipItNotice = isShipIt ? `<div class="shipit-offer-notice"><span class="son-icon">🚚</span><div><div class="son-title">Ship-It Trade — State to State</div><div class="son-desc">This buyer wants a Ship-It trade. 10% fee at acceptance. ID verification required for both parties.</div></div></div>` : '';
+    /* SHIP-IT DATE GATE START — delete this block after July 31, 2026 */
+    const shipItDateGateNotice = isShipIt && !shipItIsLive() ? `<div class="shipit-id-gate-modal"><div style="font-family:'Barlow Condensed',sans-serif;font-weight:800;color:#92400e;margin-bottom:5px">🚚 Ship-It Launches July 31</div><div style="font-size:12px;color:#a16207">This offer can't be accepted until Ship-It goes live nationwide on July 31, 2026.</div></div>` : '';
+    /* SHIP-IT DATE GATE END */
     const sellerIdGate = isShipIt && !currentUserData?.id_verified ? `<div class="shipit-id-gate-modal"><div style="font-family:'Barlow Condensed',sans-serif;font-weight:800;color:#92400e;margin-bottom:5px">🪪 ID Verification Required</div><div style="font-size:12px;color:#a16207;margin-bottom:10px">You need ID verification before accepting Ship-It trades.</div><button class="mbtn outline" onclick="window.location.href='alltrades-verification.html'" style="margin-bottom:0;font-size:.82rem;padding:8px">🪪 Get ID Verified →</button></div>` : '';
     let offerContent = '';
     if (o.offer_type==='cash') {
@@ -882,14 +890,16 @@ async function openOfferModal(offerId) {
     const photos = o.offered_photos || [];
     const photosHtml = photos.length ? `<div class="od-section"><div class="od-section-lbl">Photos of offered item</div><div class="od-item-photos">${photos.map((p,i)=>`<img class="od-item-photo" src="${p}" alt="offered item" onclick="openLightbox(this)" data-photos='${JSON.stringify(photos)}' data-index="${i}">`).join('')}</div></div>` : '';
     const messageHtml = o.message ? `<div class="od-section"><div class="od-section-lbl">Message from ${offererName}</div><div class="od-message">"${o.message}"</div></div>` : '';
-    const canAccept = !isShipIt || currentUserData?.id_verified;
+    /* SHIP-IT DATE GATE START — remove "&& shipItIsLive()" after July 31, 2026 */
+    const canAccept = !isShipIt || (currentUserData?.id_verified && shipItIsLive());
+    /* SHIP-IT DATE GATE END */
     const acceptBtn = isShipIt
       ? `<button class="mbtn cyan" style="margin-bottom:0" ${canAccept?'':'disabled'} onclick="closeModal('offerModal');acceptOffer('${o.id}',true)">🚚 Accept Ship-It</button>`
       : `<button class="mbtn green" style="margin-bottom:0" onclick="closeModal('offerModal');acceptOffer('${o.id}',false)">✓ Accept Offer</button>`;
     const { data: offererCol } = await sb.from('collections').select('id').eq('user_id', o.offerer_id).eq('public_profile', true).limit(1);
     const viewColBtn = offererCol?.length ? `<button class="mbtn outline" style="margin-top:6px;margin-bottom:0;font-size:.82rem" onclick="closeModal('offerModal');openCollectionViewModal('${o.offerer_id}','${offererName}')">🃏 View Their Collection</button>` : '';
     document.getElementById('offerModalBody').innerHTML = `
-      ${shipItNotice}${sellerIdGate}
+      ${shipItNotice}${shipItDateGateNotice}${sellerIdGate}
       <div class="od-listing"><div class="od-listing-img">${thumbHtml}</div><div class="od-listing-info"><div class="od-listing-ttl">${listingTitle}</div><div class="od-listing-meta">${cat}${o.listing?.estimated_value?' · ~$'+Number(o.listing.estimated_value).toFixed(0):''}</div></div></div>
       <div class="od-from"><div class="od-from-av">${offererInitials}</div><div><strong>${offererName}</strong> wants to trade · <span style="color:var(--muted)">${timeAgo(o.created_at)}</span></div></div>
       ${offerContent}${photosHtml}${messageHtml}
@@ -1042,6 +1052,9 @@ async function loadRatings() {
 }
 
 async function acceptOffer(id, isShipIt) {
+  /* SHIP-IT DATE GATE START — delete this if-block after July 31, 2026 */
+  if (isShipIt && !shipItIsLive()) { showToast('🚚','Ship-It launches July 31, 2026 — this offer can\'t be accepted yet.'); return; }
+  /* SHIP-IT DATE GATE END */
   if (isShipIt && !currentUserData?.id_verified) { showToast('🪪','ID verification required to accept Ship-It trades.'); setTimeout(()=>window.location.href='alltrades-verification.html',1800); return; }
   try {
     const { data: offer } = await sb.from('offers').select('*').eq('id',id).single();
