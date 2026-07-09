@@ -324,6 +324,11 @@ let currentUser  = null;
 let userState    = null;
 let userCity     = null;   // NEW — for "Near You" city comparison
 
+/* ═══ SHIP-IT DATE GATE START — delete this whole block after July 31, 2026 ═══ */
+const SHIP_IT_LIVE_DATE = new Date('2026-07-31T00:00:00');
+function shipItIsLive() { return new Date() >= SHIP_IT_LIVE_DATE; }
+/* ═══ SHIP-IT DATE GATE END ═══ */
+
 (async function init() {
   const launch = new Date('2026-07-17T00:00:00-04:00');
   if (new Date() >= launch) {
@@ -501,8 +506,10 @@ function buildLocationPill(l) {
   const lState = (l.location_state || '').trim();
 
   if (!lCity && !lState) {
-    // No location data — show Ship-It since all listings support it
-    return `<div class="lc-location lc-loc-shipit">🚚 Ships Nationwide</div>`;
+    /* SHIP-IT DATE GATE — swap message, remove ternary after July 31, 2026 */
+    return shipItIsLive()
+      ? `<div class="lc-location lc-loc-shipit">🚚 Ships Nationwide</div>`
+      : `<div class="lc-location lc-loc-shipit">🚚 Shipping Coming July 31</div>`;
   }
 
   if (currentUser && userCity && userState) {
@@ -517,7 +524,10 @@ function buildLocationPill(l) {
       return `<div class="lc-location lc-loc-state">📍 ${lState}</div>`;
     }
     // Different state — show State-to-State
-    return `<div class="lc-location lc-loc-shipit">🚚 ${lState || 'Nationwide'}</div>`;
+    /* SHIP-IT DATE GATE — swap message, remove ternary after July 31, 2026 */
+    return shipItIsLive()
+      ? `<div class="lc-location lc-loc-shipit">🚚 ${lState || 'Nationwide'}</div>`
+      : `<div class="lc-location lc-loc-shipit">🚚 Shipping Coming July 31</div>`;
   }
 
   // Logged out — show city/state if available
@@ -527,7 +537,10 @@ function buildLocationPill(l) {
   if (lState) {
     return `<div class="lc-location lc-loc-city">📍 ${lState}</div>`;
   }
-  return `<div class="lc-location lc-loc-shipit">🚚 Ships Nationwide</div>`;
+  /* SHIP-IT DATE GATE — swap message, remove ternary after July 31, 2026 */
+  return shipItIsLive()
+    ? `<div class="lc-location lc-loc-shipit">🚚 Ships Nationwide</div>`
+    : `<div class="lc-location lc-loc-shipit">🚚 Shipping Coming July 31</div>`;
 }
 
 function buildCardHTML(l) {
