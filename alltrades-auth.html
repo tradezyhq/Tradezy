@@ -1301,7 +1301,7 @@ function showSuccess() {
 }
 
 function goToDashboard() {
-  window.location.href = 'alltrades-dashboard.html';
+  window.location.href = 'alltrades.html';
 }
 
 function goToPost() {
@@ -1312,6 +1312,15 @@ function showForgot() {
   alert('Password reset coming soon. Email hello@tradezyhq.com for help.');
 }
 
+async function redirectAfterAuth(userId) {
+  try {
+    const { data: profile } = await supabase.from('users').select('is_admin').eq('id', userId).single();
+    window.location.href = profile?.is_admin ? 'alltrades-admin.html' : 'alltrades.html';
+  } catch(e) {
+    window.location.href = 'alltrades.html';
+  }
+}
+
 (async () => {
   const createClient = window.supabase.createClient;
   window.supabase = createClient(
@@ -1319,7 +1328,7 @@ function showForgot() {
     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVxdXZ3YXNwY29lZXRmc2V4cWtpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgyNzc2MjQsImV4cCI6MjA5Mzg1MzYyNH0.TP6Kk3pzHW1PYMUu5D9Vu2lJrazIEagzu5csYhqkrfI'
   );
   const { data: { session } } = await supabase.auth.getSession();
-  if (session) window.location.href = 'alltrades-dashboard.html';
+  if (session) await redirectAfterAuth(session.user.id);
 })();
 
 async function doCreateAccount() {
@@ -1364,9 +1373,9 @@ async function doSignIn() {
   const password = document.getElementById('signinPw').value;
   if (!email || !password) { alert('Please enter email and password.'); return; }
   try {
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
     if (error) { alert('Sign in error: ' + error.message); return; }
-    window.location.href = 'alltrades-dashboard.html';
+    await redirectAfterAuth(data.user.id);
   } catch(e) { alert('Error: ' + e.message); }
 }
 </script>
