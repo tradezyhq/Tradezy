@@ -585,7 +585,7 @@ const sb = window.supabase.createClient(
 
 let currentUser = null, currentUserData = null;
 let currentTradeId = null, currentTradeIsShipIt = false;
-let currentTradeCashAmount = 0, currentTradePayMethod = null;
+let currentTradeCashAmount = 0, currentTradePayMethod = null, currentTradeIsCashRecipient = false;
 let cashConfirmed = false;
 let currentTradeItemData = null;
 let lbPhotos = [], lbIndex = 0;
@@ -941,12 +941,21 @@ async function loadTrades() {
       const isMeetup = t.status === 'meetup_scheduled';
       const myConfirmed = t.trader_a_id===currentUser.id ? t.trade_confirmed_a : t.trade_confirmed_b;
       const fee = t.trader_a_id===currentUser.id ? t.fee_a : t.fee_b;
+      /* ═══ FEE PAYMENT INDICATOR START — Trader B isn't present when acceptOffer()
+         creates the trade, so they have no other way to know a fee is owed until
+         they load the dashboard. Also covers Trader A if they navigated away
+         before finishing payment on the redirect. Ship-It trades pay through
+         their own dedicated label-payment flow, so this is local-trades only. ═══ */
+      const myPaymentIntent = t.trader_a_id===currentUser.id ? t.stripe_payment_intent_a : t.stripe_payment_intent_b;
+      const needsPayment = !isShipIt && !myPaymentIntent;
+      /* ═══ FEE PAYMENT INDICATOR END ═══ */
       const stageLabel = isShipIt?'🚚 SHIP-IT':isMeetup?'📍 MEETUP':'✅ ACCEPTED';
       const stageClass = isShipIt?'stg-shipit':isMeetup?'stg-meet':'stg-agree';
       const fillClass = isShipIt?'fill-cyan':isMeetup?'fill-gold':'fill-blue';
       return `<div class="trade-card${isShipIt?' shipit-trade':''}">
         <div class="tc-hdr"><div class="tc-id">Trade #${t.id.slice(0,8).toUpperCase()}</div><div class="tc-stage ${stageClass}">${stageLabel}</div></div>
         <div class="tc-items"><div class="tc-itm"><div class="tc-itm-nm">${isShipIt?'Ship-It Trade':'Trade in progress'}</div><div class="tc-itm-vl">${t.total_value?'~$'+Number(t.total_value).toFixed(0):'Value TBD'}</div></div></div>
+        ${needsPayment ? `<div style="background:#fffbeb;border:1px solid #fde68a;border-radius:7px;padding:8px 10px;margin-bottom:8px;font-size:11px;color:#92400e;display:flex;align-items:center;justify-content:space-between;gap:8px"><span>💳 Platform fee not paid yet</span><button class="tc-btn" style="background:var(--gold);color:var(--navy);flex:none;padding:5px 12px" onclick="window.location.href='alltrades-payment.html?trade_id=${t.id}'">Pay Now</button></div>` : ''}
         <div class="tc-prog">
           <div class="tc-prog-lbl"><span>Progress</span><span style="color:var(--${isShipIt?'cyan':isMeetup?'gold':'blue'});font-weight:700">Step ${isMeetup?'2':'1'} of 3</span></div>
           <div class="tc-prog-bar"><div class="tc-prog-fill ${fillClass}" style="width:${isMeetup?'66':'33'}%"></div></div>
@@ -1061,15 +1070,44 @@ async function acceptOffer(id, isShipIt) {
     if (!offer) throw new Error('Offer not found');
     await sb.from('offers').update({status:'accepted'}).eq('id',id);
     await sb.from('listings').update({status:'trading'}).eq('id',offer.listing_id);
-    await sb.from('trades').insert({offer_id:offer.id,listing_id:offer.listing_id,trader_a_id:currentUser.id,trader_b_id:offer.offerer_id,status:'accepted'});
+
+    /* ═══ FEE CALCULATION FIX START — trades were being created with fee_a/fee_b/
+       total_value/cash_amount all null, so alltrades-payment.html had nothing to
+       charge. Now computed per-party (Founding Traders use their own fee_rate;
+       everyone else gets 5% local / 10% Ship-It) and stored on the trade row. ═══ */
+    const { data: listing } = await sb.from('listings').select('estimated_value').eq('id', offer.listing_id).single();
+    const { data: sellerRow } = await sb.from('users').select('fee_rate').eq('id', currentUser.id).single();
+    const { data: buyerRow } = await sb.from('users').select('fee_rate').eq('id', offer.offerer_id).single();
+
+    const defaultRate = isShipIt ? 0.10 : 0.05;
+    const sellerRate = sellerRow?.fee_rate != null ? Number(sellerRow.fee_rate) : defaultRate;
+    const buyerRate = buyerRow?.fee_rate != null ? Number(buyerRow.fee_rate) : defaultRate;
+
+    // Total trade value: pure cash offers use the cash amount directly; item-based
+    // offers (with or without a cash top-up) use the listing's value plus any cash add-on.
+    const cashAmount = Number(offer.cash_amount) || 0;
+    const totalValue = offer.offer_type === 'cash'
+      ? cashAmount
+      : (Number(listing?.estimated_value) || 0) + cashAmount;
+
+    const feeA = +(totalValue * sellerRate).toFixed(2);
+    const feeB = +(totalValue * buyerRate).toFixed(2);
+
+    const { data: newTrade } = await sb.from('trades').insert({
+      offer_id:offer.id, listing_id:offer.listing_id, trader_a_id:currentUser.id, trader_b_id:offer.offerer_id,
+      status:'accepted', fee_a:feeA, fee_b:feeB, total_value:totalValue, cash_amount:cashAmount,
+    }).select().single();
+    /* ═══ FEE CALCULATION FIX END ═══ */
+
     if (isShipIt) {
-  const { data: newTrade } = await sb.from('trades').select('id').eq('offer_id', offer.id).single();
-  showToast('🚚', 'Ship-It accepted! Taking you to create your shipping label…');
-  setTimeout(() => { window.location.href = `alltrades-shipit.html?trade_id=${newTrade.id}`; }, 1500);
-} else {
-  showToast('🎉', 'Offer accepted! Trade created.');
-  loadOffers(); loadTrades(); loadListings();
-}
+      showToast('🚚', 'Ship-It accepted! Taking you to create your shipping label…');
+      setTimeout(() => { window.location.href = `alltrades-shipit.html?trade_id=${newTrade.id}`; }, 1500);
+    } else {
+      // Local trades now route the accepting user (seller/trader_a) straight to
+      // the payment page to pay their platform fee — matches the Ship-It pattern.
+      showToast('🎉', 'Offer accepted! Taking you to pay your platform fee…');
+      setTimeout(() => { window.location.href = `alltrades-payment.html?trade_id=${newTrade.id}`; }, 1200);
+    }
   } catch(e) { showToast('⚠️','Error accepting offer.'); console.error(e); }
 }
 
@@ -1089,10 +1127,12 @@ async function openConfirmModal(tradeId, fee, isShipIt) {
   currentTradeIsShipIt = isShipIt;
   cashConfirmed = false;
 
-  // Fetch linked offer to check for cash
-  let cashAmount = 0, payMethod = null;
+  // Fetch linked offer to check for cash, and trader_a_id to determine who actually
+  // receives the cash (trader_a = listing owner/seller = cash recipient).
+  let cashAmount = 0, payMethod = null, isCashRecipient = false;
   try {
-    const { data: trade } = await sb.from('trades').select('offer_id').eq('id', tradeId).single();
+    const { data: trade } = await sb.from('trades').select('offer_id,trader_a_id').eq('id', tradeId).single();
+    isCashRecipient = trade?.trader_a_id === currentUser.id;
     if (trade?.offer_id) {
       const { data: offer } = await sb.from('offers').select('cash_amount,payment_method').eq('id', trade.offer_id).single();
       cashAmount = Number(offer?.cash_amount) || 0;
@@ -1102,6 +1142,7 @@ async function openConfirmModal(tradeId, fee, isShipIt) {
 
   currentTradeCashAmount = cashAmount;
   currentTradePayMethod  = payMethod;
+  currentTradeIsCashRecipient = isCashRecipient;
 
   const feeLabel = isShipIt ? '10% Ship-It platform fee' : '5% platform fee';
   const feeAmt   = fee ? `: $${(Number(fee)*(isShipIt?2:1)).toFixed(2)}` : '';
@@ -1111,9 +1152,9 @@ async function openConfirmModal(tradeId, fee, isShipIt) {
     : 'background:#fffbeb;border:1px solid #fde68a;border-radius:8px;padding:11px;margin-bottom:13px;font-size:12px;color:#92400e';
   feeNote.textContent = `Your ${feeLabel}${feeAmt} will be recorded when you confirm.`;
 
-  // Cash confirmation step — only shown when cash_amount > 0
+  // Cash confirmation step — only shown to the party actually RECEIVING the cash
   const cashStep = document.getElementById('cashConfirmStep');
-  if (cashAmount > 0) {
+  if (cashAmount > 0 && isCashRecipient) {
     const methodLine = payMethod && payMethod !== 'Cash in Person'
       ? `via <strong>${payMethod}</strong>`
       : 'in person';
@@ -1180,7 +1221,9 @@ function setCashConfirmed(confirmed) {
 
 async function doConfirmTrade() {
   if (!currentTradeId) return;
-  if (currentTradeCashAmount > 0 && !cashConfirmed) {
+  // Only the cash RECIPIENT needs to confirm receipt before closing — the sender
+  // (trader_b) has nothing to confirm here and should never be blocked by this.
+  if (currentTradeCashAmount > 0 && currentTradeIsCashRecipient && !cashConfirmed) {
     showToast('💵', 'Please confirm you received the cash before closing this trade.');
     return;
   }
@@ -1192,11 +1235,14 @@ async function doConfirmTrade() {
     const update    = { [field]: true };
     if (otherDone) {
       update.status = 'completed';
-      if (t.listing_id) await sb.from('listings').update({status:'active'}).eq('id',t.listing_id);
+      /* FIX: this previously set the listing back to 'active', which put an
+         already-traded item right back into public browse results. It should
+         stay hidden as 'completed' since the item is no longer available. */
+      if (t.listing_id) await sb.from('listings').update({status:'completed'}).eq('id',t.listing_id);
     }
     await sb.from('trades').update(update).eq('id', currentTradeId);
     closeModal('confirmModal');
-    cashConfirmed = false; currentTradeCashAmount = 0; currentTradePayMethod = null;
+    cashConfirmed = false; currentTradeCashAmount = 0; currentTradePayMethod = null; currentTradeIsCashRecipient = false;
     showToast(otherDone?'🎉':'✅', otherDone?'Trade complete! Ratings now unlocked.':'Confirmed! Waiting for the other trader.');
     loadTrades(); loadTradeValue(); loadListings();
   } catch(e) { showToast('⚠️','Error confirming trade.'); }
