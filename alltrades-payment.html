@@ -33,12 +33,10 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
 
 .page{max-width:960px;margin:0 auto;padding:28px 20px;display:grid;grid-template-columns:1fr 360px;gap:24px;align-items:start;}
 
-/* Loading state */
 .page-loader{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:60vh;gap:16px;}
 .page-loader .spin{width:40px;height:40px;border:3px solid var(--border);border-top-color:var(--blue);border-radius:50%;animation:spin .7s linear infinite;}
 .page-loader p{color:var(--muted);font-size:14px;}
 
-/* Error state */
 .page-error{max-width:480px;margin:60px auto;text-align:center;padding:32px 24px;background:var(--white);border:1px solid var(--border);border-radius:16px;}
 .page-error .err-icon{font-size:3rem;margin-bottom:12px;}
 .page-error h2{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.4rem;margin-bottom:8px;color:var(--text);}
@@ -68,7 +66,6 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
 .ps-line{flex:1;height:2px;background:var(--border);margin:0 8px;transition:background .3s;}
 .ps-line.done{background:var(--green);}
 
-/* Stripe Element container */
 .stripe-element-wrap{border:1.5px solid var(--border);border-radius:8px;padding:12px 14px;background:var(--white);transition:border-color .15s;margin-bottom:14px;}
 .stripe-element-wrap.focused{border-color:var(--blue);box-shadow:0 0 0 3px rgba(26,86,219,.08);}
 .stripe-element-wrap.error{border-color:var(--red);}
@@ -90,13 +87,11 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
 .back-btn{width:100%;padding:11px;background:transparent;border:1.5px solid var(--border);border-radius:8px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.95rem;cursor:pointer;color:var(--muted);transition:all .15s;margin-top:7px;}
 .back-btn:hover{border-color:#999;color:var(--text);}
 
-/* Already paid banner */
 .already-paid{background:#f0fdf4;border:1.5px solid #bbf7d0;border-radius:10px;padding:16px;text-align:center;margin-bottom:16px;}
 .already-paid .ap-icon{font-size:2rem;margin-bottom:6px;}
 .already-paid .ap-title{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.1rem;color:var(--green);}
 .already-paid .ap-sub{font-size:12px;color:#166534;margin-top:3px;}
 
-/* Summary */
 .summary-card{background:var(--white);border:1px solid var(--border);border-radius:16px;overflow:hidden;position:sticky;top:24px;}
 .sum-head{background:linear-gradient(135deg,var(--navy),#1a3a6b);padding:16px 18px;}
 .sum-title{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1rem;color:#fff;margin-bottom:1px;}
@@ -134,7 +129,6 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
 .stripe-note{text-align:center;font-size:11px;color:var(--muted);display:flex;align-items:center;justify-content:center;gap:5px;}
 .stripe-badge{background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:2px 7px;font-size:10px;font-weight:700;color:var(--muted);}
 
-/* Success */
 .success-screen{display:none;padding:32px 22px;text-align:center;}
 .success-screen.show{display:block;animation:popIn .4s ease;}
 @keyframes popIn{0%{opacity:0;transform:scale(.95)}100%{opacity:1;transform:scale(1)}}
@@ -151,6 +145,12 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
 .ss-btn.gold:hover{background:var(--gold-l);}
 .ss-btn.outline{background:transparent;border:1.5px solid var(--border);color:var(--muted);}
 .ss-btn.outline:hover{border-color:#999;color:var(--text);}
+
+.cash-send-box{background:#fffbeb;border:1.5px solid #fde68a;border-radius:10px;padding:16px;margin-bottom:18px;text-align:left;}
+.csb-title{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1rem;color:#92400e;margin-bottom:6px;}
+.csb-desc{font-size:13px;color:#78350f;line-height:1.6;margin-bottom:10px;}
+.csb-amount{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.6rem;color:var(--green);margin-bottom:12px;}
+.redirect-note{font-size:11px;color:var(--muted);text-align:center;margin-top:10px;}
 
 .toast{position:fixed;bottom:20px;right:20px;background:var(--navy);color:#e2e8f0;border:1px solid #1e3a5f;border-left:4px solid var(--green);border-radius:8px;padding:10px 16px;font-size:13px;z-index:999;display:flex;align-items:center;gap:9px;max-width:300px;box-shadow:0 8px 28px rgba(0,0,0,.25);transform:translateX(120%);transition:transform .3s ease;}
 .toast.show{transform:translateX(0);}
@@ -177,13 +177,11 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
   <div class="nav-secure"><span class="lock">🔒</span> Secure Checkout — SSL Encrypted</div>
 </div>
 
-<!-- Loading state -->
 <div class="page-loader" id="pageLoader">
   <div class="spin"></div>
   <p>Loading your trade details…</p>
 </div>
 
-<!-- Error state -->
 <div class="page-error" id="pageError" style="display:none">
   <div class="err-icon">⚠️</div>
   <h2 id="errTitle">Something went wrong</h2>
@@ -191,7 +189,6 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
   <a href="alltrades-dashboard.html">← Back to Dashboard</a>
 </div>
 
-<!-- Main page (hidden until loaded) -->
 <div class="page" id="mainPage" style="display:none">
 
   <div class="pay-card" id="payCard">
@@ -209,7 +206,6 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
 
     <div class="pay-body" id="payBody">
 
-      <!-- Steps -->
       <div class="pay-steps">
         <div class="ps-item">
           <div class="ps-dot done">✓</div>
@@ -227,14 +223,12 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
         </div>
       </div>
 
-      <!-- Already paid banner (hidden by default) -->
       <div class="already-paid" id="alreadyPaidBanner" style="display:none">
         <div class="ap-icon">✅</div>
         <div class="ap-title">Fee Already Paid</div>
         <div class="ap-sub">Your platform fee for this trade has been received and is held in escrow.</div>
       </div>
 
-      <!-- Stripe Card Element -->
       <div id="stripeSection">
         <div class="stripe-element-label">Card Details</div>
         <div class="stripe-element-wrap" id="cardElementWrap">
@@ -262,11 +256,18 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
 
     </div>
 
-    <!-- Success -->
     <div class="success-screen" id="successScreen">
       <div class="ss-emoji">🎉</div>
       <div class="ss-title">Payment Authorized!</div>
       <div class="ss-desc" id="ssDesc">Your fee is held securely in escrow. The other trader has been notified. Once both of you confirm the meetup is complete, funds will be processed.</div>
+
+      <div class="cash-send-box" id="cashSendBox" style="display:none">
+        <div class="csb-title">💵 Send Your Cash Payment</div>
+        <div class="csb-desc" id="csbHandleLine">Loading payment details…</div>
+        <div class="csb-amount" id="csbAmount">$0.00</div>
+        <button class="ss-btn gold" id="cashSentBtn" style="margin-bottom:0" onclick="confirmCashSent()">✅ I Sent the Payment</button>
+      </div>
+
       <div class="receipt">
         <div class="receipt-title">📋 Payment Receipt</div>
         <div class="receipt-row"><span>Trade ID</span><span style="color:var(--blue);font-weight:700" id="rcTradeId">—</span></div>
@@ -275,14 +276,14 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
         <div class="receipt-row"><span>Status</span><span style="color:var(--green)">✓ Held in Escrow</span></div>
         <div class="receipt-row"><span>Total charged</span><span style="color:var(--gold)" id="rcTotal">—</span></div>
       </div>
-      <div class="ss-actions">
+      <div class="ss-actions" id="ssActions">
         <a class="ss-btn gold" href="alltrades-dashboard.html">📋 View My Active Trades</a>
         <a class="ss-btn outline" id="ssMessageBtn" href="alltrades-messages.html">💬 Message Your Trader</a>
       </div>
+      <div class="redirect-note" id="redirectNote" style="display:none">Taking you to Messages…</div>
     </div>
   </div>
 
-  <!-- Summary -->
   <div class="summary-card">
     <div class="sum-head">
       <div class="sum-title">📋 Order Summary</div>
@@ -339,10 +340,12 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
 <div class="toast" id="toastEl"><span id="toastIc">✅</span><span id="toastTx">Done!</span></div>
 
 <script>
-// ── CONFIG ──
 const SUPABASE_URL = 'https://equvwaspcoeetfsexqki.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVxdXZ3YXNwY29lZXRmc2V4cWtpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgyNzc2MjQsImV4cCI6MjA5Mzg1MzYyNH0.TP6Kk3pzHW1PYMUu5D9Vu2lJrazIEagzu5csYhqkrfI';
-const STRIPE_PK = 'pk_live_51TW2NZGxBDyKEkW0gHznu2bH4q5EUKhWMOz4Lns3yFwitMRLNLEC9dwFk8yuVg6pRnOJesxuw8yQKyen6Trd0XyO00ikOdXldY51TW2NZGxBDyKEkW03F5jEB7ICi58gxD2xUnHQGHGZ2o0psFQcdRc76FL3f2efe0y5dymRFOxXtFc2ielqyWSILKa00nA3xgIwa';
+/* ═══ STRIPE KEY FIX — this was previously corrupted with ~99 extra characters
+   accidentally appended to the end, which would have broken Stripe.js entirely.
+   Restored to the confirmed-correct key on file. ═══ */
+const STRIPE_PK = 'pk_live_51TW2NZGxBDyKEkW0gHznu2bH4q5EUKhWMOz4Lns3yFwitMRLNLEC9dwFk8yuVg6pRnOJesxuw8yQKyen6Trd0XyO00ikOdXldY';
 const EDGE_URL = SUPABASE_URL + '/functions/v1/create-payment-intent';
 
 const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
@@ -354,9 +357,7 @@ let isTraderA = false;
 let cardElement = null;
 let clientSecret = null;
 
-// ── INIT ──
 window.addEventListener('DOMContentLoaded', async () => {
-  // Auth check
   const { data: { session } } = await sb.auth.getSession();
   if (!session) {
     window.location.href = 'alltrades-auth.html?redirect=alltrades-payment.html' + window.location.search;
@@ -364,7 +365,6 @@ window.addEventListener('DOMContentLoaded', async () => {
   }
   currentUser = session.user;
 
-  // Get trade_id from URL
   const params = new URLSearchParams(window.location.search);
   const tradeId = params.get('trade_id');
   if (!tradeId) {
@@ -377,13 +377,12 @@ window.addEventListener('DOMContentLoaded', async () => {
 
 async function loadTrade(tradeId, session) {
   try {
-    // Load trade with offer and listing data
     const { data: trade, error } = await sb
       .from('trades')
       .select(`
         *,
         offer:offer_id (
-          id, offer_type, offered_item_title, offered_item_value, cash_amount, offerer_id
+          id, offer_type, offered_item_title, offered_item_value, cash_amount, offerer_id, payment_method
         ),
         listing:listing_id (
           id, title, estimated_value, user_id
@@ -397,7 +396,6 @@ async function loadTrade(tradeId, session) {
       return;
     }
 
-    // Verify user is part of this trade
     isTraderA = trade.trader_a_id === currentUser.id;
     const isTraderB = trade.trader_b_id === currentUser.id;
 
@@ -408,7 +406,6 @@ async function loadTrade(tradeId, session) {
 
     tradeData = trade;
 
-    // Check if already paid
     const alreadyPaid = isTraderA ? trade.stripe_payment_intent_a : trade.stripe_payment_intent_b;
     if (alreadyPaid) {
       renderSummary(trade);
@@ -417,7 +414,6 @@ async function loadTrade(tradeId, session) {
       return;
     }
 
-    // Load other trader's display name
     const otherTraderId = isTraderA ? trade.trader_b_id : trade.trader_a_id;
     const { data: otherUser } = await sb
       .from('users')
@@ -442,12 +438,10 @@ function renderSummary(trade, otherName) {
   const theirFee = isTraderA ? trade.fee_b : trade.fee_a;
   const theirPaid = isTraderA ? trade.stripe_payment_intent_b : trade.stripe_payment_intent_a;
 
-  // Trade ID
   const shortId = '#AT-' + trade.id.slice(0, 6).toUpperCase();
   document.getElementById('sumTradeId').textContent = 'Trade ' + shortId;
   document.getElementById('rcTradeId').textContent = shortId;
 
-  // Items
   const myTitle = trade.listing?.title || 'Your Item';
   const theirTitle = trade.offer?.offered_item_title || 'Their Item';
   const myVal = trade.listing?.estimated_value || 0;
@@ -460,7 +454,6 @@ function renderSummary(trade, otherName) {
   document.getElementById('sumTheirVal').textContent = theirVal ? '$' + parseFloat(theirVal).toFixed(2) : '—';
   document.getElementById('sumTheirWho').textContent = otherName || 'Other Trader';
 
-  // Fees
   const feeAmt = myFee ? '$' + parseFloat(myFee).toFixed(2) : '—';
   document.getElementById('sumFee').textContent = feeAmt;
   document.getElementById('sumTotal').textContent = feeAmt;
@@ -468,27 +461,22 @@ function renderSummary(trade, otherName) {
   document.getElementById('rcFee').textContent = feeAmt;
   document.getElementById('rcTotal').textContent = feeAmt;
 
-  // Cash addon
   if (cashAddon && parseFloat(cashAddon) > 0) {
     document.getElementById('sumCashRow').style.display = 'flex';
     document.getElementById('sumCash').textContent = '$' + parseFloat(cashAddon).toFixed(2);
   }
 
-  // Other party
   document.getElementById('opbTitle').textContent = (otherName || 'Other Trader') + ' Also Pays';
   document.getElementById('opbFee').textContent = theirFee ? '$' + parseFloat(theirFee).toFixed(2) : '—';
   document.getElementById('opbStatus').textContent = theirPaid ? '✓ Paid' : 'Awaiting Payment';
   document.getElementById('opbStatus').style.color = theirPaid ? 'var(--green)' : 'var(--gold)';
 
-  // Sub heading
   document.getElementById('phSub').textContent = isTraderA ? 'Trader A fee · Escrow held until meetup confirmed' : 'Trader B fee · Escrow held until meetup confirmed';
 
-  // Success screen
   document.getElementById('ssDesc').textContent = 'Your ' + feeAmt + ' is held securely in escrow. ' + (otherName || 'The other trader') + ' has been notified. Once both of you confirm the meetup is complete, funds will be processed.';
 }
 
 async function initStripe(trade, session) {
-  // Create PaymentIntent via Edge Function
   try {
     const res = await fetch(EDGE_URL, {
       method: 'POST',
@@ -508,7 +496,6 @@ async function initStripe(trade, session) {
     return;
   }
 
-  // Mount Stripe Card Element
   const elements = stripe.elements();
   cardElement = elements.create('card', {
     style: {
@@ -544,7 +531,6 @@ async function initStripe(trade, session) {
   });
 }
 
-// ── SUBMIT PAYMENT ──
 async function submitPayment() {
   if (!clientSecret || !cardElement) {
     showToast('⚠️', 'Payment not ready yet. Please wait.', true);
@@ -555,7 +541,6 @@ async function submitPayment() {
   btn.classList.add('loading');
   btn.disabled = true;
 
-  // Advance step UI
   document.getElementById('step2dot').textContent = '✓';
   document.getElementById('step2dot').className = 'ps-dot done';
   document.getElementById('step2lbl').className = 'ps-label done';
@@ -573,7 +558,6 @@ async function submitPayment() {
       document.getElementById('cardElementWrap').classList.add('error');
       btn.classList.remove('loading');
       btn.disabled = false;
-      // Reset step UI
       document.getElementById('step2dot').textContent = '2';
       document.getElementById('step2dot').className = 'ps-dot active';
       document.getElementById('step2lbl').className = 'ps-label active';
@@ -584,7 +568,6 @@ async function submitPayment() {
       return;
     }
 
-    // Write PaymentIntent ID via Edge Function (uses service role to bypass RLS)
     const { data: { session } } = await sb.auth.getSession();
     const writeRes = await fetch(EDGE_URL, {
       method: 'POST',
@@ -610,12 +593,79 @@ function showSuccess() {
   document.getElementById('payBody').style.display = 'none';
   document.getElementById('successScreen').classList.add('show');
   showToast('🎉', 'Payment authorized! Trade is in escrow.');
+  handlePostPaymentRouting();
 }
+
+/* ═══ POST-PAYMENT ROUTING START ═══
+   Trader A (seller/listing owner): pays fee → straight to Messages.
+   Trader B (buyer/offerer), no cash component: pays fee → straight to Messages.
+   Trader B, WITH cash component: pays fee → sees seller's payment handle for the
+   chosen method → confirms "I sent it" → THEN goes to Messages. */
+async function handlePostPaymentRouting() {
+  const cashAmount = parseFloat(tradeData.cash_amount || tradeData.offer?.cash_amount || 0);
+  const isTraderBWithCash = !isTraderA && cashAmount > 0;
+
+  if (isTraderBWithCash) {
+    await showCashSendStep(cashAmount);
+  } else {
+    redirectToMessages();
+  }
+}
+
+async function showCashSendStep(cashAmount) {
+  const method = tradeData.offer?.payment_method || 'Cash in Person';
+  const handleLineEl = document.getElementById('csbHandleLine');
+  let handleLine;
+
+  if (method === 'Cash in Person') {
+    handleLine = 'Hand the cash directly to the seller at your meetup.';
+  } else {
+    try {
+      const { data: seller } = await sb.from('users').select('payment_methods').eq('id', tradeData.trader_a_id).single();
+      const handle = seller?.payment_methods?.[method];
+      handleLine = handle
+        ? `Send to <strong>${escapeHtml(handle)}</strong> via ${escapeHtml(method)}`
+        : `Send via <strong>${escapeHtml(method)}</strong> — ask the seller for their handle in Messages if you don't see it here.`;
+    } catch(e) {
+      console.error('Could not load seller payment handle', e);
+      handleLine = `Send via <strong>${escapeHtml(method)}</strong> — ask the seller for their handle in Messages.`;
+    }
+  }
+
+  handleLineEl.innerHTML = handleLine;
+  document.getElementById('csbAmount').textContent = '$' + cashAmount.toFixed(2);
+  document.getElementById('cashSendBox').style.display = 'block';
+  document.getElementById('ssActions').style.display = 'none';
+}
+
+async function confirmCashSent() {
+  const btn = document.getElementById('cashSentBtn');
+  btn.disabled = true;
+  btn.textContent = '⏳ Saving…';
+  try {
+    await sb.from('trades').update({ cash_sent_by_b: true }).eq('id', tradeData.id);
+  } catch(e) {
+    console.error('Could not save cash-sent flag', e);
+  }
+  document.getElementById('cashSendBox').style.display = 'none';
+  redirectToMessages();
+}
+
+function redirectToMessages() {
+  document.getElementById('redirectNote').style.display = 'block';
+  document.getElementById('ssActions').style.display = 'flex';
+  showToast('💬', 'Taking you to Messages…');
+  setTimeout(() => { window.location.href = 'alltrades-messages.html'; }, 1800);
+}
+
+function escapeHtml(str) {
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+/* ═══ POST-PAYMENT ROUTING END ═══ */
 
 function showAlreadyPaid(trade, intentId) {
   document.getElementById('alreadyPaidBanner').style.display = 'block';
   document.getElementById('stripeSection').style.display = 'none';
-  // Still show receipt info
   const shortId = '#AT-' + trade.id.slice(0, 6).toUpperCase();
   document.getElementById('rcTradeId').textContent = shortId;
   const myFee = isTraderA ? trade.fee_a : trade.fee_b;
@@ -625,7 +675,6 @@ function showAlreadyPaid(trade, intentId) {
   }
 }
 
-// ── UI HELPERS ──
 function showMainPage() {
   document.getElementById('pageLoader').style.display = 'none';
   document.getElementById('pageError').style.display = 'none';
@@ -649,12 +698,11 @@ function showToast(icon, msg, isError) {
   window._tt = setTimeout(() => t.classList.remove('show'), 4000);
 }
 </script>
-<!-- TRADEZY HELP WIDGET START — paste before </body> on every page -->
+<!-- TRADEZY HELP WIDGET START -->
 <style>
-/* ── TRADEZY HELP WIDGET STYLES ── */
 #tz-help-bubble{position:fixed;bottom:24px;right:24px;z-index:9999;display:flex;flex-direction:column;align-items:flex-end;gap:10px;font-family:'Lato',system-ui,sans-serif;}
 #tz-bubble-btn{width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#0a1628,#1a56db);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1.4rem;box-shadow:0 4px 20px rgba(26,86,219,.4);transition:all .2s;position:relative;}
-#tz-bubble-btn:hover{transform:scale(1.08);box-shadow:0 6px 28px rgba(26,86,219,.5);}
+#tz-bubble-btn:hover{transform:scale(1.08);}
 #tz-bubble-btn .tz-notif{position:absolute;top:0;right:0;width:14px;height:14px;background:#dc2626;border-radius:50%;border:2px solid #fff;display:none;}
 #tz-chat-panel{display:none;width:360px;height:520px;background:#fff;border-radius:16px;box-shadow:0 20px 60px rgba(0,0,0,.18);flex-direction:column;overflow:hidden;border:1px solid #e2e8f0;animation:tzSlideUp .2s ease;}
 #tz-chat-panel.open{display:flex;}
@@ -702,15 +750,11 @@ function showToast(icon, msg, isError) {
 .tz-send-btn:disabled{opacity:.5;cursor:not-allowed;transform:none;}
 .tz-powered{text-align:center;font-size:10px;color:#cbd5e1;padding:5px 0 2px;flex-shrink:0;}
 </style>
- 
 <div id="tz-help-bubble">
   <div id="tz-chat-panel">
     <div class="tz-panel-head">
       <div class="tz-head-icon">🤖</div>
-      <div class="tz-head-info">
-        <div class="tz-head-title">Tradezy Support</div>
-        <div class="tz-head-status"><span class="tz-head-dot"></span>Online — AI Assistant</div>
-      </div>
+      <div class="tz-head-info"><div class="tz-head-title">Tradezy Support</div><div class="tz-head-status"><span class="tz-head-dot"></span>Online — AI Assistant</div></div>
       <button class="tz-head-close" onclick="tzToggle()">✕</button>
     </div>
     <div class="tz-messages" id="tzMessages"></div>
@@ -720,267 +764,60 @@ function showToast(icon, msg, isError) {
     </div>
     <div class="tz-powered">Powered by Claude AI · Tradezy Support</div>
   </div>
-  <button id="tz-bubble-btn" onclick="tzToggle()" title="Get Help">
-    💬
-    <div class="tz-notif" id="tzNotif"></div>
-  </button>
+  <button id="tz-bubble-btn" onclick="tzToggle()" title="Get Help">💬<div class="tz-notif" id="tzNotif"></div></button>
 </div>
- 
 <script>
-(function() {
-  // ── CONFIG ──
-  const SUPABASE_URL = 'https://equvwaspcoeetfsexqki.supabase.co';
-  const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVxdXZ3YXNwY29lZXRmc2V4cWtpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgyNzc2MjQsImV4cCI6MjA5Mzg1MzYyNH0.TP6Kk3pzHW1PYMUu5D9Vu2lJrazIEagzu5csYhqkrfI';
- 
-  const SYSTEM_PROMPT = `You are the Tradezy support assistant — a helpful, friendly AI for Tradezy, a peer-to-peer local trading marketplace.
- 
-ABOUT TRADEZY:
-- Free local trading platform where users list items and trade with verified neighbors
-- Platform fee: 5% per party on completed trades (Founding Traders pay 3% lifetime)
-- Ship-It trades (state-to-state): 10% fee, fully verified users only, launching July 31 2026
-- Phase 1 launch: July 17 2026 — Connecticut and Ohio statewide
-- Phase 2: July 31 2026 — Nationwide
- 
-HOW TRADING WORKS:
-1. Post a listing with photos, condition, what you want in return
-2. Browse listings, make offers (item-for-item, item + cash top-up, or cash)
-3. Accept an offer, agree on a meetup spot
-4. Both parties confirm the exchange in-app — this unlocks ratings
-5. Leave ratings after confirmed meetup
- 
-VERIFICATION & TRUST:
-- Email verification required to use platform
-- Address verification adds trust score
-- ID verification required for Ship-It trades
-- W-9 tax form required before posting listings
-- Trust score shown on profiles
- 
-PROHIBITED ITEMS (permanent ban): Firearms, weapons, alcohol, tobacco, drugs, live animals, adult content, stolen goods, cash, gift cards, cryptocurrency
- 
-FEES EXPLAINED:
-- 5% of total trade value per party — example: $100 item trade = $5 fee each party
-- $90 item + $40 cash top-up = $130 total = $6.50 fee each party
-- Founding Traders: 3% lifetime (signed up before July 17 launch)
-- Listing is always free
- 
-SHIP-IT TRADES (July 31+):
-- State-to-state trading for fully ID-verified users only
-- 10% fee per party at trade acceptance
-- Payment via Zelle, PayPal, Venmo, Apple Pay, Google Pay, or Cash App (peer-to-peer, Tradezy never holds funds)
-- Buyer uploads payment screenshot as proof
-- Seller enters tracking number
-- Both confirm delivery to close trade
- 
-TCG CATEGORIES: Pokémon, One Piece, MTG, Yu-Gi-Oh, Lorcana, Flesh & Blood
-SPORTS CARDS: Baseball, Football, Basketball, Hockey, Soccer
-Card grading supported: PSA, BGS, SGC, TAG
- 
-ACCOUNT HELP:
-- Password reset: direct users to https://tradezyhq.com/alltrades-auth.html
-- Account locked/banned: direct to support@tradezyhq.com
-- Verification issues: direct to https://tradezyhq.com/alltrades-verification.html
- 
-DISPUTE RESOLUTION:
-- File a dispute at https://tradezyhq.com/alltrades-disputes.html
-- Email disputes@tradezyhq.com
-- SLA: CRITICAL 8hrs, HIGH 16hrs, MEDIUM 24hrs, LOW 48hrs
- 
-ESCALATION RULES — escalate to human immediately if:
-- User reports fraud, scam, or didn't receive item
-- User mentions safety concern, threat, or harassment
-- User is clearly distressed or frustrated after multiple exchanges
-- User explicitly requests a human agent
-- Issue involves account ban or suspension
- 
-ESCALATION: When escalating, provide support@tradezyhq.com for general issues or disputes@tradezyhq.com for trade disputes. Summarize the issue briefly.
- 
-TONE: Warm, clear, concise. Never give legal or financial advice. Never make up information — if unsure, direct to support@tradezyhq.com. Keep responses short and scannable — use bullet points for multi-step answers.`;
- 
-  // ── STATE ──
-  let isOpen = false;
-  let isLoading = false;
-  let exchangeCount = 0;
-  let hasShownWelcome = false;
-  const history = [];
- 
-  // ── TOGGLE ──
-  window.tzToggle = function() {
-    isOpen = !isOpen;
-    const panel = document.getElementById('tz-chat-panel');
-    const btn = document.getElementById('tz-bubble-btn');
-    if (isOpen) {
-      panel.classList.add('open');
-      btn.innerHTML = '✕<div class="tz-notif" id="tzNotif"></div>';
-      if (!hasShownWelcome) {
-        hasShownWelcome = true;
-        tzBotMessage("👋 Hey! I'm the Tradezy support assistant. I can help with:", [
-          "How trading works",
-          "Fees & verification",
-          "Account issues",
-          "Reporting a problem"
-        ]);
-      }
-      setTimeout(() => document.getElementById('tzInput')?.focus(), 200);
-    } else {
-      panel.classList.remove('open');
-      btn.innerHTML = '💬<div class="tz-notif" id="tzNotif"></div>';
-    }
+(function(){
+  const SP=`You are the Tradezy support assistant. Free local trading marketplace. Fee 5% per party (Founding Traders 3% lifetime). Ship-It 10% fee, ID-verified only, launches July 31 2026. Launch is now nationwide as of July 17 2026. ESCALATE fraud/scam/threat/harassment/distress/human-request/ban issues to support@tradezyhq.com or disputes@tradezyhq.com. TONE: warm, concise, no legal/financial advice.`;
+  let isOpen=false,isLoading=false,exchangeCount=0,hasShownWelcome=false;
+  const history=[];
+  window.tzToggle=function(){
+    isOpen=!isOpen;
+    const panel=document.getElementById('tz-chat-panel'),btn=document.getElementById('tz-bubble-btn');
+    if(isOpen){panel.classList.add('open');btn.innerHTML='✕<div class="tz-notif" id="tzNotif"></div>';
+      if(!hasShownWelcome){hasShownWelcome=true;tzBotMsg("👋 Hey! I'm the Tradezy support assistant. I can help with:",["How trading works","Fees & verification","Account issues","Reporting a problem"]);}
+      setTimeout(()=>document.getElementById('tzInput')?.focus(),200);
+    }else{panel.classList.remove('open');btn.innerHTML='💬<div class="tz-notif" id="tzNotif"></div>';}
   };
- 
-  // ── SEND ──
-  window.tzSend = async function() {
-    const input = document.getElementById('tzInput');
-    const text = input.value.trim();
-    if (!text || isLoading) return;
-    input.value = '';
-    tzAutoResize(input);
-    tzUserMessage(text);
-    history.push({ role: 'user', content: text });
-    exchangeCount++;
-    await tzGetResponse();
+  window.tzSend=async function(){
+    const input=document.getElementById('tzInput'),text=input.value.trim();
+    if(!text||isLoading)return;
+    input.value='';tzAutoResize(input);tzUserMsg(text);history.push({role:'user',content:text});exchangeCount++;await tzGetResp();
   };
- 
-  window.tzKeyDown = function(e) {
-    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); tzSend(); }
-  };
- 
-  window.tzAutoResize = function(el) {
-    el.style.height = '38px';
-    el.style.height = Math.min(el.scrollHeight, 90) + 'px';
-  };
- 
-  // ── GET AI RESPONSE ──
-  async function tzGetResponse() {
-    isLoading = true;
-    document.getElementById('tzSendBtn').disabled = true;
- 
-    // Show typing indicator
-    const typingId = 'tz-typing-' + Date.now();
-    const msgs = document.getElementById('tzMessages');
-    const typingEl = document.createElement('div');
-    typingEl.id = typingId;
-    typingEl.className = 'tz-msg bot';
-    typingEl.innerHTML = '<div class="tz-typing"><span></span><span></span><span></span></div>';
-    msgs.appendChild(typingEl);
-    msgs.scrollTop = msgs.scrollHeight;
- 
-    try {
-      const response = await fetch('https://tradezy-ai-proxy.throbbing-lake-08ed.workers.dev', {
-        method: 'POST',
-       headers: { 'Content-Type': 'application/json',  },
-        body: JSON.stringify({
-          model: 'claude-sonnet-4-6',
-          max_tokens: 1000,
-          system: SYSTEM_PROMPT,
-          messages: history
-        })
-      });
- 
-      const data = await response.json();
-      const reply = data.content?.[0]?.text || "I'm having trouble responding right now. Please email support@tradezyhq.com.";
- 
-      // Remove typing indicator
-      document.getElementById(typingId)?.remove();
- 
-      // Add to history
-      history.push({ role: 'assistant', content: reply });
- 
-      // Check for escalation triggers
-      const userText = history.filter(m => m.role === 'user').map(m => m.content).join(' ').toLowerCase();
-      const escalateKeywords = ['scam', 'fraud', 'didn\'t receive', 'never received', 'threat', 'harass', 'human', 'agent', 'real person', 'banned', 'suspended', 'unsafe'];
-      const shouldEscalate = escalateKeywords.some(k => userText.includes(k)) || exchangeCount >= 4;
- 
-      // Render response
-      tzBotMessage(reply, null, shouldEscalate);
- 
-    } catch(e) {
-      document.getElementById(typingId)?.remove();
-      tzBotMessage("I'm having trouble connecting right now. For immediate help, please email support@tradezyhq.com or file a dispute at the link below.", null, true);
-    }
- 
-    isLoading = false;
-    document.getElementById('tzSendBtn').disabled = false;
+  window.tzKeyDown=function(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();tzSend();}};
+  window.tzAutoResize=function(el){el.style.height='38px';el.style.height=Math.min(el.scrollHeight,90)+'px';};
+  async function tzGetResp(){
+    isLoading=true;document.getElementById('tzSendBtn').disabled=true;
+    const tid='tz-t-'+Date.now(),msgs=document.getElementById('tzMessages');
+    const tel=document.createElement('div');tel.id=tid;tel.className='tz-msg bot';tel.innerHTML='<div class="tz-typing"><span></span><span></span><span></span></div>';
+    msgs.appendChild(tel);msgs.scrollTop=msgs.scrollHeight;
+    try{
+      const r=await fetch('https://tradezy-ai-proxy.throbbing-lake-08ed.workers.dev',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:1000,system:SP,messages:history})});
+      const d=await r.json();const reply=d.content?.[0]?.text||"I'm having trouble responding. Please email support@tradezyhq.com.";
+      document.getElementById(tid)?.remove();history.push({role:'assistant',content:reply});
+      const ut=history.filter(m=>m.role==='user').map(m=>m.content).join(' ').toLowerCase();
+      const esc=['scam','fraud','threat','harass','human','agent','banned','suspended'].some(k=>ut.includes(k))||exchangeCount>=4;
+      tzBotMsg(reply,null,esc);
+    }catch(e){document.getElementById(tid)?.remove();tzBotMsg("I'm having trouble connecting. Please email support@tradezyhq.com.",null,true);}
+    isLoading=false;document.getElementById('tzSendBtn').disabled=false;
   }
- 
-  // ── RENDER BOT MESSAGE ──
-  function tzBotMessage(text, quickReplies = null, showEscalate = false) {
-    const msgs = document.getElementById('tzMessages');
-    const wrapper = document.createElement('div');
-    wrapper.className = 'tz-msg bot';
- 
-    // Parse markdown-lite: bold, bullets
-    let html = text
-      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-      .replace(/^[-•] (.+)$/gm, '<li>$1</li>')
-      .replace(/(<li>.*<\/li>)/gs, '<ul style="margin:4px 0 0 14px;padding:0;font-size:13px;line-height:1.6">$1</ul>')
-      .replace(/\n\n/g, '<br><br>')
-      .replace(/\n/g, '<br>');
- 
-    // Detect and linkify account action hints
-    let extraHTML = '';
- 
-    if (text.toLowerCase().includes('password reset') || text.toLowerCase().includes('reset your password')) {
-      extraHTML += `<a class="tz-action-link" href="https://tradezyhq.com/alltrades-auth.html" target="_blank">🔑 Reset Password →</a>`;
-    }
-    if (text.toLowerCase().includes('verification') || text.toLowerCase().includes('verify your')) {
-      extraHTML += `<a class="tz-action-link" href="https://tradezyhq.com/alltrades-verification.html" target="_blank">✅ Go to Verification →</a>`;
-    }
-    if (text.toLowerCase().includes('dispute') || text.toLowerCase().includes('file a dispute')) {
-      extraHTML += `<a class="tz-action-link" href="https://tradezyhq.com/alltrades-disputes.html" target="_blank">⚖️ File a Dispute →</a>`;
-    }
- 
-    let bubbleHTML = `<div class="tz-bubble">${html}</div>`;
-    if (extraHTML) bubbleHTML += extraHTML;
- 
-    if (showEscalate) {
-      bubbleHTML += `
-        <div class="tz-escalate-card">
-          <div class="tz-escalate-title">🙋 Want to talk to a person?</div>
-          <div style="color:#92400e;font-size:12px;line-height:1.5">Our support team is standing by to help.</div>
-          <div style="display:flex;gap:7px;flex-wrap:wrap;margin-top:7px;">
-            <a class="tz-escalate-btn" href="mailto:support@tradezyhq.com?subject=Support Request from Tradezy Widget">📧 Email Support</a>
-            <a class="tz-escalate-btn" href="https://tradezyhq.com/alltrades-disputes.html" target="_blank" style="background:#1a56db">⚖️ File Dispute</a>
-          </div>
-        </div>`;
-    }
- 
-    if (quickReplies && quickReplies.length) {
-      bubbleHTML += '<div class="tz-quick-btns">' +
-        quickReplies.map(q => `<button class="tz-quick-btn" onclick="tzQuickReply('${q.replace(/'/g, "\\'")}')">${q}</button>`).join('') +
-        '</div>';
-    }
- 
-    wrapper.innerHTML = bubbleHTML;
-    const time = document.createElement('div');
-    time.className = 'tz-msg-time';
-    time.textContent = new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
-    wrapper.appendChild(time);
-    msgs.appendChild(wrapper);
-    msgs.scrollTop = msgs.scrollHeight;
+  function tzBotMsg(text,qr,esc){
+    const msgs=document.getElementById('tzMessages'),w=document.createElement('div');w.className='tz-msg bot';
+    let html=text.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/\n\n/g,'<br><br>').replace(/\n/g,'<br>');
+    let bh='<div class="tz-bubble">'+html+'</div>';
+    if(esc)bh+='<div class="tz-escalate-card"><div class="tz-escalate-title">🙋 Want to talk to a person?</div><div style="color:#92400e;font-size:12px">Our support team is standing by.</div><div style="display:flex;gap:7px;flex-wrap:wrap;margin-top:7px;"><a class="tz-escalate-btn" href="mailto:support@tradezyhq.com">📧 Email Support</a></div></div>';
+    if(qr&&qr.length)bh+='<div class="tz-quick-btns">'+qr.map(q=>'<button class="tz-quick-btn" onclick="tzQuickReply(\''+q.replace(/'/g,"\\'")+'\')">'+q+'</button>').join('')+'</div>';
+    w.innerHTML=bh;
+    const t=document.createElement('div');t.className='tz-msg-time';t.textContent=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+    w.appendChild(t);msgs.appendChild(w);msgs.scrollTop=msgs.scrollHeight;
   }
- 
-  // ── RENDER USER MESSAGE ──
-  function tzUserMessage(text) {
-    const msgs = document.getElementById('tzMessages');
-    const wrapper = document.createElement('div');
-    wrapper.className = 'tz-msg user';
-    wrapper.innerHTML = `
-      <div class="tz-bubble">${escHtml(text)}</div>
-      <div class="tz-msg-time">${new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})}</div>`;
-    msgs.appendChild(wrapper);
-    msgs.scrollTop = msgs.scrollHeight;
+  function tzUserMsg(text){
+    const msgs=document.getElementById('tzMessages'),w=document.createElement('div');w.className='tz-msg user';
+    w.innerHTML='<div class="tz-bubble">'+escHtml(text)+'</div><div class="tz-msg-time">'+new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})+'</div>';
+    msgs.appendChild(w);msgs.scrollTop=msgs.scrollHeight;
   }
- 
-  // ── QUICK REPLY ──
-  window.tzQuickReply = function(text) {
-    document.getElementById('tzInput').value = text;
-    tzSend();
-  };
- 
-  function escHtml(str) {
-    return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-  }
- 
+  window.tzQuickReply=function(t){document.getElementById('tzInput').value=t;tzSend();};
+  function escHtml(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 })();
 </script>
 <!-- TRADEZY HELP WIDGET END -->
