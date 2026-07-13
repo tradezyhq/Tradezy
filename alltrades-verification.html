@@ -117,12 +117,10 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
 .field input:focus,.field select:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(26,86,219,.07);}
 .field input.valid{border-color:var(--green);}
 .field-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
-/* OTP input */
 .otp-wrap{display:flex;gap:8px;justify-content:center;margin:16px 0;}
 .otp-digit{width:48px;height:56px;border:2px solid var(--border);border-radius:10px;font-size:1.4rem;font-weight:700;text-align:center;font-family:'Barlow Condensed',sans-serif;outline:none;transition:all .15s;background:var(--white);color:var(--text);}
 .otp-digit:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(26,86,219,.1);}
 .otp-digit.filled{border-color:var(--blue);}
-/* BLUE CHECKMARK STATUS CARD */
 .verify-status-card{background:var(--white);border:1px solid var(--border);border-radius:14px;overflow:hidden;}
 .vsc-head{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;}
 .vsc-head-title{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1rem;}
@@ -148,7 +146,6 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
 .vsc-criterion.soon .vsc-crit-name{color:var(--purple);}
 .vsc-crit-status{font-size:10px;color:var(--muted);margin-top:1px;}
 .vsc-crit-check{font-size:.85rem;flex-shrink:0;}
-/* MULTI-PLATFORM PAYMENT SETUP */
 .pay-platforms-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px;}
 .pay-plat-card{border:1.5px solid var(--border);border-radius:10px;padding:11px 8px;text-align:center;cursor:pointer;transition:all .15s;background:var(--white);position:relative;}
 .pay-plat-card:hover{border-color:#0ea5e9;background:#f0f9ff;}
@@ -173,7 +170,6 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
 .smr-platform{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.9rem;color:var(--text);}
 .smr-handle{font-size:12px;color:var(--muted);}
 .smr-check{color:var(--green);font-size:.9rem;flex-shrink:0;}
-/* Stripe card element */
 #stripe-card-element{border:1.5px solid var(--border);border-radius:8px;padding:12px 13px;background:var(--white);transition:border-color .15s;}
 #stripe-card-element.focused{border-color:var(--blue);box-shadow:0 0 0 3px rgba(26,86,219,.07);}
 .badge-showcase{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;}
@@ -254,7 +250,7 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
           <circle class="tr-fill" id="trustCircle" cx="60" cy="60" r="54"/>
         </svg>
         <div class="trust-inner">
-          <div class="trust-num" id="trustNum">10</div>
+          <div class="trust-num" id="trustNum">20</div>
           <div class="trust-label">Trust Score</div>
         </div>
       </div>
@@ -269,7 +265,7 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
       <div class="step-item completed" onclick="showStep('email')">
         <div class="si-icon-wrap">✅</div>
         <div class="si-info"><div class="si-title">Email Address</div><div class="si-meta" id="emailMeta">Verified</div></div>
-        <div class="si-badge sib-done">+10 pts</div>
+        <div class="si-badge sib-done">+20 pts</div>
       </div>
       <div class="step-item" id="nav-phone" onclick="showStep('phone')">
         <div class="si-icon-wrap">📱</div>
@@ -284,7 +280,7 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
       <div class="step-item" id="nav-address" onclick="showStep('address')">
         <div class="si-icon-wrap">🏠</div>
         <div class="si-info"><div class="si-title">Address Confirmation</div><div class="si-meta">Confirm your local area</div></div>
-        <div class="si-badge sib-pending" id="addressBadge">+10 pts</div>
+        <div class="si-badge sib-pending" id="addressBadge">+20 pts</div>
       </div>
       <div class="step-item" id="nav-payment" onclick="showStep('payment')">
         <div class="si-icon-wrap">💸</div>
@@ -293,8 +289,8 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
       </div>
       <div class="sl-points">
         <div class="slp-label">Your Trust Score Progress</div>
-        <div class="slp-bar-track"><div class="slp-bar-fill" id="progressBar" style="width:10%"></div></div>
-        <div class="slp-text"><span id="ptsEarned">10 / 100 pts</span><span id="ptsLabel" style="color:var(--blue);font-weight:700">BASIC</span></div>
+        <div class="slp-bar-track"><div class="slp-bar-fill" id="progressBar" style="width:20%"></div></div>
+        <div class="slp-text"><span id="ptsEarned">20 / 100 pts</span><span id="ptsLabel" style="color:var(--blue);font-weight:700">BASIC</span></div>
       </div>
     </div>
 
@@ -351,13 +347,13 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
         <div class="sp-head">
           <div class="sp-head-icon" style="background:#f0fdf4;border:1px solid #bbf7d0">✅</div>
           <div><div class="sp-head-title">Email Verified</div><div class="sp-head-sub" id="emailPanelSub">Verified</div></div>
-          <div class="sp-reward" style="margin-left:auto"><div class="sp-reward-pts">+10 pts</div><div class="sp-reward-label">Earned</div></div>
+          <div class="sp-reward" style="margin-left:auto"><div class="sp-reward-pts">+20 pts</div><div class="sp-reward-label">Earned</div></div>
         </div>
         <div class="sp-body">
           <div class="completed-banner">
             <span class="cb-icon">✉️</span>
             <div class="cb-text"><div class="cb-title">Email Successfully Verified</div><div class="cb-sub">Your email address is confirmed and active on your account.</div></div>
-            <div class="cb-pts">+10</div>
+            <div class="cb-pts">+20</div>
           </div>
           <div class="info-box ib-blue"><span>ℹ️</span><div>Email verification gives you access to trade notifications, dispute updates, and account recovery.</div></div>
           <button class="verify-btn vbtn-outline" onclick="showStep('phone')">Next: Phone Verification →</button>
@@ -441,7 +437,6 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
               </div>
             </div>
             <div class="info-box ib-gold"><span>💳</span><div><strong>One-time $3.00 verification fee</strong> covers the cost of Stripe's identity check. This fee goes directly to operating costs.</div></div>
-            <!-- Stripe card element -->
             <div class="field">
               <label>Card Details</label>
               <div id="stripe-card-element"></div>
@@ -466,14 +461,14 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
         <div class="sp-head">
           <div class="sp-head-icon" style="background:#f0fdf4;border:1px solid #bbf7d0">🏠</div>
           <div><div class="sp-head-title">Address Confirmation</div><div class="sp-head-sub" id="addrPanelSub">Confirms you trade in your listed area</div></div>
-          <div class="sp-reward"><div class="sp-reward-pts">+10 pts</div><div class="sp-reward-label">Reward</div></div>
+          <div class="sp-reward"><div class="sp-reward-pts">+20 pts</div><div class="sp-reward-label">Reward</div></div>
         </div>
         <div class="sp-body">
           <div id="addrVerifiedState" style="display:none">
             <div class="completed-banner">
               <span class="cb-icon">📍</span>
               <div class="cb-text"><div class="cb-title">Address Confirmed!</div><div class="cb-sub" id="addrVerifiedSub">Your local area is verified.</div></div>
-              <div class="cb-pts">+10</div>
+              <div class="cb-pts">+20</div>
             </div>
             <div class="info-box ib-green"><span>✅</span><div>Your address area is confirmed. This badge displays on your profile and listings to show local traders you're nearby.</div></div>
             <button class="verify-btn vbtn-outline" onclick="showStep('payment')">Next: Payment Methods →</button>
@@ -547,10 +542,10 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
         </div>
         <div style="padding:14px 16px;">
           <div class="badge-showcase">
-            <div class="badge-card earned"><div class="bc-icon blue">✉️</div><div class="bc-info"><div class="bc-name">Email Verified</div><div class="bc-desc">Confirmed email address</div><div class="bc-pts">+10 pts · Earned ✓</div></div></div>
+            <div class="badge-card earned"><div class="bc-icon blue">✉️</div><div class="bc-info"><div class="bc-name">Email Verified</div><div class="bc-desc">Confirmed email address</div><div class="bc-pts">+20 pts · Earned ✓</div></div></div>
             <div class="badge-card locked" id="phoneBadgeCard"><div class="bc-icon green">📱</div><div class="bc-info"><div class="bc-name">Phone Verified</div><div class="bc-desc">SMS confirmed number</div><div class="bc-pts" id="phoneBadgePts">+20 pts · Pending</div></div><span class="bc-lock" id="phoneBadgeLock">🔒</span></div>
             <div class="badge-card locked" id="idBadgeCard"><div class="bc-icon gold">🪪</div><div class="bc-info"><div class="bc-name">ID Verified</div><div class="bc-desc">Government ID · Ship-It ready</div><div class="bc-pts" id="idBadgePts">+40 pts · Pending</div></div><span class="bc-lock" id="idBadgeLock">🔒</span></div>
-            <div class="badge-card locked" id="addrBadge"><div class="bc-icon green">📍</div><div class="bc-info"><div class="bc-name">Local Confirmed</div><div class="bc-desc">Address area verified</div><div class="bc-pts" id="addrBadgePts">+10 pts · Pending</div></div><span class="bc-lock" id="addrBadgeLock">🔒</span></div>
+            <div class="badge-card locked" id="addrBadge"><div class="bc-icon green">📍</div><div class="bc-info"><div class="bc-name">Local Confirmed</div><div class="bc-desc">Address area verified</div><div class="bc-pts" id="addrBadgePts">+20 pts · Pending</div></div><span class="bc-lock" id="addrBadgeLock">🔒</span></div>
             <div class="badge-card locked" id="paymentBadgeCard"><div class="bc-icon cyan">💸</div><div class="bc-info"><div class="bc-name">Ship-It Ready</div><div class="bc-desc">Payment methods on file</div><div class="bc-pts" id="paymentBadgePts">🚚 Pending</div></div><span class="bc-lock" id="paymentBadgeLock">🔒</span></div>
           </div>
         </div>
@@ -566,9 +561,9 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
           <table class="limits-table">
             <thead><tr><th>Level</th><th>Trust Score</th><th>Max Trade Value</th><th>Status</th></tr></thead>
             <tbody>
-              <tr><td>✉️ Email Only</td><td>10 pts</td><td style="font-weight:700;color:var(--muted);">$50</td><td><span class="tier-badge tb-active" id="emailTierBadge">ACTIVE</span></td></tr>
-              <tr><td>📱 Phone Verified</td><td>30 pts</td><td style="font-weight:700;color:var(--blue);">$150</td><td><span class="tier-badge tb-next" id="phoneTierBadge">AVAILABLE</span></td></tr>
-              <tr><td>🪪 ID Verified</td><td>70 pts</td><td style="font-weight:700;color:var(--gold);">$500 + Ship-It</td><td><span class="tier-badge tb-locked" id="idTierBadge">AVAILABLE</span></td></tr>
+              <tr><td>✉️ Email Only</td><td>20 pts</td><td style="font-weight:700;color:var(--muted);">$50</td><td><span class="tier-badge tb-active" id="emailTierBadge">ACTIVE</span></td></tr>
+              <tr><td>📱 Phone Verified</td><td>40 pts</td><td style="font-weight:700;color:var(--blue);">$150</td><td><span class="tier-badge tb-next" id="phoneTierBadge">AVAILABLE</span></td></tr>
+              <tr><td>🪪 ID Verified</td><td>80 pts</td><td style="font-weight:700;color:var(--gold);">$500 + Ship-It</td><td><span class="tier-badge tb-locked" id="idTierBadge">AVAILABLE</span></td></tr>
               <tr><td>⭐ Fully Verified</td><td>100 pts</td><td style="font-weight:700;color:var(--green);">Unlimited + Ship-It</td><td><span class="tier-badge tb-locked" id="fullyVerifiedTierBadge">LOCKED</span></td></tr>
             </tbody>
           </table>
@@ -590,7 +585,7 @@ const STRIPE_PK = 'pk_live_51TW2NZGxBDyKEkW0gHznu2bH4q5EUKhWMOz4Lns3yFwitMRLNLEC
 const OTP_WORKER = 'https://tradezy-phone-otp.throbbing-lake-08ed.workers.dev';
 const IDENTITY_FN = 'https://equvwaspcoeetfsexqki.supabase.co/functions/v1/create-identity-session';
 
-let currentUser = null, userData = null, trustScore = 10;
+let currentUser = null, userData = null, trustScore = 20;
 let stripe = null, cardElement = null;
 let verifiedPhone = null;
 
@@ -669,7 +664,7 @@ async function loadUserData() {
     document.getElementById('emailMeta').textContent = currentUser.email;
     document.getElementById('emailPanelSub').textContent = currentUser.email + ' · Verified';
 
-    trustScore = data.trust_score || 10;
+    trustScore = data.trust_score || 20;
     updateTrustDisplay(trustScore);
 
     // ── PHONE ──
@@ -690,9 +685,9 @@ async function loadUserData() {
       document.getElementById('addrPanelSub').textContent = 'Address confirmed ✓';
       const navAddr = document.getElementById('nav-address');
       navAddr.classList.add('completed'); navAddr.querySelector('.si-icon-wrap').textContent = '✅';
-      navAddr.querySelector('.si-badge').className = 'si-badge sib-done'; navAddr.querySelector('.si-badge').textContent = '+10 pts';
+      navAddr.querySelector('.si-badge').className = 'si-badge sib-done'; navAddr.querySelector('.si-badge').textContent = '+20 pts';
       document.getElementById('addrBadge').classList.remove('locked'); document.getElementById('addrBadge').classList.add('earned');
-      document.getElementById('addrBadgePts').textContent = '+10 pts · Earned ✓';
+      document.getElementById('addrBadgePts').textContent = '+20 pts · Earned ✓';
       const lockEl = document.getElementById('addrBadgeLock'); if (lockEl) lockEl.remove();
       document.getElementById('vsc-address').className = 'vsc-criterion done';
       document.getElementById('vsc-address-status').textContent = 'Confirmed ✓';
@@ -1012,7 +1007,7 @@ async function confirmAddress() {
   if (!city||!state||!zip) return;
   const btn=document.getElementById('confirmAddrBtn'); btn.textContent='⏳ Confirming…'; btn.disabled=true;
   try {
-    const newScore=Math.min(100,trustScore+10);
+    const newScore=Math.min(100,trustScore+20);
     const { error } = await sb.from('users').update({ address_city:city, address_state:state, address_zip:zip, address_verified:true, trust_score:newScore }).eq('id',currentUser.id);
     if (error) throw error;
     trustScore=newScore; updateTrustDisplay(trustScore);
@@ -1021,15 +1016,15 @@ async function confirmAddress() {
     document.getElementById('addrVerifiedSub').textContent=`${city}, ${state} ${zip}`;
     document.getElementById('addrPanelSub').textContent='Address confirmed ✓';
     const navAddr=document.getElementById('nav-address'); navAddr.classList.remove('active'); navAddr.classList.add('completed'); navAddr.querySelector('.si-icon-wrap').textContent='✅';
-    const badge=navAddr.querySelector('.si-badge'); badge.className='si-badge sib-done'; badge.textContent='+10 pts';
+    const badge=navAddr.querySelector('.si-badge'); badge.className='si-badge sib-done'; badge.textContent='+20 pts';
     document.getElementById('addrBadge').classList.remove('locked'); document.getElementById('addrBadge').classList.add('earned');
-    document.getElementById('addrBadgePts').textContent='+10 pts · Earned ✓';
+    document.getElementById('addrBadgePts').textContent='+20 pts · Earned ✓';
     const lockEl=document.getElementById('addrBadgeLock'); if (lockEl) lockEl.remove();
     document.getElementById('vsc-address').className='vsc-criterion done';
     document.getElementById('vsc-address-status').textContent='Confirmed ✓';
     document.getElementById('vsc-address-check').textContent='✅';
     updateVerifyStatusCard(userData);
-    showToast('📍','Address confirmed! +10 trust points earned.');
+    showToast('📍','Address confirmed! +20 trust points earned.');
     if (typeof gtag!=='undefined') gtag('event','address_verified',{event_category:'verification'});
   } catch(e) { console.error(e); showToast('⚠️','Error confirming address. Please try again.',true); btn.textContent='📍 Confirm My Address'; btn.disabled=false; checkAddr(); }
 }
@@ -1112,7 +1107,7 @@ function showToast(icon,msg,isError=false) {
 <style>
 #tz-help-bubble{position:fixed;bottom:24px;right:24px;z-index:9999;display:flex;flex-direction:column;align-items:flex-end;gap:10px;font-family:'Lato',system-ui,sans-serif;}
 #tz-bubble-btn{width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#0a1628,#1a56db);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1.4rem;box-shadow:0 4px 20px rgba(26,86,219,.4);transition:all .2s;position:relative;}
-#tz-bubble-btn:hover{transform:scale(1.08);box-shadow:0 6px 28px rgba(26,86,219,.5);}
+#tz-bubble-btn:hover{transform:scale(1.08);}
 #tz-bubble-btn .tz-notif{position:absolute;top:0;right:0;width:14px;height:14px;background:#dc2626;border-radius:50%;border:2px solid #fff;display:none;}
 #tz-chat-panel{display:none;width:360px;height:520px;background:#fff;border-radius:16px;box-shadow:0 20px 60px rgba(0,0,0,.18);flex-direction:column;overflow:hidden;border:1px solid #e2e8f0;animation:tzSlideUp .2s ease;}
 #tz-chat-panel.open{display:flex;}
@@ -1141,7 +1136,6 @@ function showToast(icon,msg,isError=false) {
 .tz-quick-btn{background:#fff;border:1px solid #e2e8f0;color:#1a56db;font-size:11px;font-weight:700;padding:4px 10px;border-radius:99px;cursor:pointer;transition:all .12s;font-family:inherit;}
 .tz-quick-btn:hover{background:#eff6ff;border-color:#1a56db;}
 .tz-action-link{display:inline-flex;align-items:center;gap:5px;background:#eff6ff;border:1px solid #bfdbfe;color:#1a56db;font-size:12px;font-weight:700;padding:6px 12px;border-radius:7px;cursor:pointer;text-decoration:none;margin-top:5px;transition:all .12s;}
-.tz-action-link:hover{background:#dbeafe;}
 .tz-escalate-card{background:#fff7ed;border:1px solid #fed7aa;border-radius:10px;padding:11px 13px;margin-top:6px;font-size:12px;}
 .tz-escalate-title{font-weight:800;color:#92400e;margin-bottom:5px;font-size:12px;}
 .tz-escalate-btn{display:inline-block;background:#ea580c;color:#fff;font-size:11px;font-weight:700;padding:5px 12px;border-radius:6px;text-decoration:none;margin-top:6px;cursor:pointer;border:none;font-family:inherit;}
@@ -1171,82 +1165,25 @@ function showToast(icon,msg,isError=false) {
 </div>
 <script>
 (function(){
-  const SP=`You are the Tradezy support assistant — a helpful, friendly AI for Tradezy, a peer-to-peer local trading marketplace.
-
-ABOUT TRADEZY:
-- Free local trading platform where users list items and trade with verified neighbors
-- Platform fee: 5% per party on completed trades (Founding Traders pay 3% lifetime)
-- Ship-It trades (state-to-state): 10% fee, fully verified users only, launching July 31 2026
-- Every listing supports both local meetup AND Ship-It trading
-- Phase 1 launch: July 17 2026 — Connecticut and Ohio statewide
-- Phase 2: July 31 2026 — Nationwide
-
-HOW TRADING WORKS:
-- Browse listings at tradezyhq.com
-- Make an offer (item-for-item, item+cash, or cash only)
-- Seller accepts → both parties pay the platform fee via Stripe
-- Meet locally to exchange OR ship via Ship-It
-- Both confirm trade complete → ratings unlock
-
-VERIFICATION & TRUST:
-- Email verification: +10 pts, required to use platform
-- Phone verification: +20 pts, unlocks trades up to $150, SMS OTP via Tradezy
-- ID verification: +40 pts, required for Ship-It, $3 fee via Stripe Identity
-- Address confirmation: +10 pts, confirms local area
-- Payment methods: set which platforms you accept (Zelle, PayPal, Venmo, Apple Pay, Google Pay, Cash App)
-- Blue checkmark: earned when email + phone + ID + address + payment methods all complete
-
-FEES:
-- 5% per party for local trades (Founding Traders 3% lifetime)
-- Ship-It: 10% per party at trade acceptance
-- ID verification: one-time $3 fee (refunded if verification fails)
-- Listing is always free
-
-PROHIBITED ITEMS:
-- Firearms, weapons, ammunition
-- Drugs, alcohol, tobacco
-- Live animals
-- Adult content
-- Cryptocurrency, gift cards
-- Counterfeit or stolen goods
-
-DISPUTE RESOLUTION:
-- File disputes at tradezyhq.com/alltrades-disputes.html
-- Or email disputes@tradezyhq.com
-- Response times: CRITICAL issues 8hrs, HIGH 16hrs, MEDIUM 24hrs, LOW 48hrs
-
-ESCALATION RULES:
-- CRITICAL (8hr SLA): fraud, scam, threats, counterfeit items, safety concerns → escalate to disputes@tradezyhq.com immediately
-- HIGH (16hr SLA): no-show at meetup, item significantly misrepresented, payment dispute → file dispute form
-- MEDIUM (24hr SLA): minor item condition discrepancy, communication issues → file dispute form
-- LOW (48hr SLA): general questions, feedback, feature requests → support@tradezyhq.com
-
-ACCOUNT HELP:
-- Password reset: https://tradezyhq.com/alltrades-auth.html
-- Verification: https://tradezyhq.com/alltrades-verification.html
-- Disputes: https://tradezyhq.com/alltrades-disputes.html
-- Support email: support@tradezyhq.com
-
-TONE: Warm, clear, concise. Never give legal or financial advice. Keep responses short and scannable.`;
-
+  const SP=`You are the Tradezy support assistant. Free local trading marketplace. Fee 5% per party (Founding Traders 3% lifetime). Ship-It 10% fee, ID-verified only, launches July 31 2026. Launch is nationwide as of July 17 2026. Trust score: Email +20, Phone +20, ID +40, Address +20 (100 max). Payment methods unlock Ship-It (no points). ESCALATE fraud/scam/threat/harassment/distress/human-request/ban issues to support@tradezyhq.com or disputes@tradezyhq.com. TONE: warm, concise, no legal/financial advice.`;
   let isOpen=false,isLoading=false,exchangeCount=0,hasShownWelcome=false;
   const history=[];
   window.tzToggle=function(){
     isOpen=!isOpen;
     const panel=document.getElementById('tz-chat-panel'),btn=document.getElementById('tz-bubble-btn');
     if(isOpen){panel.classList.add('open');btn.innerHTML='✕<div class="tz-notif" id="tzNotif"></div>';
-      if(!hasShownWelcome){hasShownWelcome=true;tzBot("👋 Hey! I'm the Tradezy support assistant. I can help with:",["How verification works","Setting payment methods","Ship-It requirements","Account issues"]);}
+      if(!hasShownWelcome){hasShownWelcome=true;tzBotMsg("👋 Hey! I'm the Tradezy support assistant. I can help with:",["How verification works","Setting payment methods","Ship-It requirements","Account issues"]);}
       setTimeout(()=>document.getElementById('tzInput')?.focus(),200);
     }else{panel.classList.remove('open');btn.innerHTML='💬<div class="tz-notif" id="tzNotif"></div>';}
   };
   window.tzSend=async function(){
     const input=document.getElementById('tzInput'),text=input.value.trim();
     if(!text||isLoading)return;
-    input.value='';tzAutoResize(input);tzUser(text);history.push({role:'user',content:text});exchangeCount++;await tzGet();
+    input.value='';tzAutoResize(input);tzUserMsg(text);history.push({role:'user',content:text});exchangeCount++;await tzGetResp();
   };
   window.tzKeyDown=function(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();tzSend();}};
   window.tzAutoResize=function(el){el.style.height='38px';el.style.height=Math.min(el.scrollHeight,90)+'px';};
-  async function tzGet(){
+  async function tzGetResp(){
     isLoading=true;document.getElementById('tzSendBtn').disabled=true;
     const tid='tz-t-'+Date.now(),msgs=document.getElementById('tzMessages');
     const tel=document.createElement('div');tel.id=tid;tel.className='tz-msg bot';tel.innerHTML='<div class="tz-typing"><span></span><span></span><span></span></div>';
@@ -1256,31 +1193,28 @@ TONE: Warm, clear, concise. Never give legal or financial advice. Keep responses
       const d=await r.json();const reply=d.content?.[0]?.text||"I'm having trouble responding. Please email support@tradezyhq.com.";
       document.getElementById(tid)?.remove();history.push({role:'assistant',content:reply});
       const ut=history.filter(m=>m.role==='user').map(m=>m.content).join(' ').toLowerCase();
-      const esc=['scam','fraud','didn\'t receive','threat','harass','human','agent','banned','suspended','unsafe'].some(k=>ut.includes(k))||exchangeCount>=4;
-      tzBot(reply,null,esc);
-    }catch(e){document.getElementById(tid)?.remove();tzBot("I'm having trouble connecting. Please email support@tradezyhq.com.",null,true);}
+      const esc=['scam','fraud','threat','harass','human','agent','banned','suspended'].some(k=>ut.includes(k))||exchangeCount>=4;
+      tzBotMsg(reply,null,esc);
+    }catch(e){document.getElementById(tid)?.remove();tzBotMsg("I'm having trouble connecting. Please email support@tradezyhq.com.",null,true);}
     isLoading=false;document.getElementById('tzSendBtn').disabled=false;
   }
-  function tzBot(text,qr=null,esc=false){
+  function tzBotMsg(text,qr,esc){
     const msgs=document.getElementById('tzMessages'),w=document.createElement('div');w.className='tz-msg bot';
-    let html=text.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/^[-•] (.+)$/gm,'<li>$1</li>').replace(/(<li>.*<\/li>)/gs,'<ul style="margin:4px 0 0 14px;padding:0;font-size:13px;line-height:1.6">$1</ul>').replace(/\n\n/g,'<br><br>').replace(/\n/g,'<br>');
-    let ex='';
-    if(text.toLowerCase().includes('verification'))ex+=`<a class="tz-action-link" href="https://tradezyhq.com/alltrades-verification.html" target="_blank">✅ Go to Verification →</a>`;
-    if(text.toLowerCase().includes('dispute'))ex+=`<a class="tz-action-link" href="https://tradezyhq.com/alltrades-disputes.html" target="_blank">⚖️ File a Dispute →</a>`;
-    let bh=`<div class="tz-bubble">${html}</div>`;if(ex)bh+=ex;
-    if(esc)bh+=`<div class="tz-escalate-card"><div class="tz-escalate-title">🙋 Want to talk to a person?</div><div style="color:#92400e;font-size:12px">Our support team is standing by.</div><div style="display:flex;gap:7px;flex-wrap:wrap;margin-top:7px;"><a class="tz-escalate-btn" href="mailto:support@tradezyhq.com">📧 Email Support</a><a class="tz-escalate-btn" href="https://tradezyhq.com/alltrades-disputes.html" target="_blank" style="background:#1a56db">⚖️ File Dispute</a></div></div>`;
-    if(qr&&qr.length)bh+='<div class="tz-quick-btns">'+qr.map(q=>`<button class="tz-quick-btn" onclick="tzQuickReply('${q.replace(/'/g,"\\'")}')">${q}</button>`).join('')+'</div>';
+    let html=text.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/\n\n/g,'<br><br>').replace(/\n/g,'<br>');
+    let bh='<div class="tz-bubble">'+html+'</div>';
+    if(esc)bh+='<div class="tz-escalate-card"><div class="tz-escalate-title">🙋 Want to talk to a person?</div><div style="color:#92400e;font-size:12px">Our support team is standing by.</div><div style="display:flex;gap:7px;flex-wrap:wrap;margin-top:7px;"><a class="tz-escalate-btn" href="mailto:support@tradezyhq.com">📧 Email Support</a></div></div>';
+    if(qr&&qr.length)bh+='<div class="tz-quick-btns">'+qr.map(q=>'<button class="tz-quick-btn" onclick="tzQuickReply(\''+q.replace(/'/g,"\\'")+'\')">'+q+'</button>').join('')+'</div>';
     w.innerHTML=bh;
     const t=document.createElement('div');t.className='tz-msg-time';t.textContent=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
     w.appendChild(t);msgs.appendChild(w);msgs.scrollTop=msgs.scrollHeight;
   }
-  function tzUser(text){
+  function tzUserMsg(text){
     const msgs=document.getElementById('tzMessages'),w=document.createElement('div');w.className='tz-msg user';
-    w.innerHTML=`<div class="tz-bubble">${esc(text)}</div><div class="tz-msg-time">${new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}</div>`;
+    w.innerHTML='<div class="tz-bubble">'+escHtml(text)+'</div><div class="tz-msg-time">'+new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})+'</div>';
     msgs.appendChild(w);msgs.scrollTop=msgs.scrollHeight;
   }
   window.tzQuickReply=function(t){document.getElementById('tzInput').value=t;tzSend();};
-  function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+  function escHtml(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 })();
 </script>
 <!-- TRADEZY HELP WIDGET END -->
