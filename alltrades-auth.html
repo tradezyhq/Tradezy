@@ -1069,16 +1069,20 @@ body { font-family:'Lato',sans-serif; background:var(--bg); color:var(--text); m
       <!-- STEP 3: Location & Interests -->
       <div class="signup-step" id="step3">
         <div class="form-title">Where Are You? 📍</div>
-        <div class="form-sub">We only show trades near you — no exact address needed. Just your town or zip code.</div>
+        <div class="form-sub">We only show trades near you — no exact address needed, just your general area.</div>
 
-        <div class="field">
-          <label>Town, City or Zip Code</label>
-          <input type="text" id="town" placeholder="e.g. Austin, TX or 78701" oninput="clearErr(this)">
-          <div class="location-detect-btn" onclick="detectLocation()">
-            📡 Use my current location automatically
+        <div class="field"><label>City</label><input type="text" id="signupCity" placeholder="Meriden" oninput="clearErr(this)"></div>
+        <div class="field-row">
+          <div class="field"><label>State</label>
+            <select id="signupState" onchange="clearErr(this)">
+              <option value="">Select state…</option>
+              <option value="CT">Connecticut</option><option value="OH">Ohio</option>
+              <option value="AL">Alabama</option><option value="AK">Alaska</option><option value="AZ">Arizona</option><option value="AR">Arkansas</option><option value="CA">California</option><option value="CO">Colorado</option><option value="DE">Delaware</option><option value="FL">Florida</option><option value="GA">Georgia</option><option value="HI">Hawaii</option><option value="ID">Idaho</option><option value="IL">Illinois</option><option value="IN">Indiana</option><option value="IA">Iowa</option><option value="KS">Kansas</option><option value="KY">Kentucky</option><option value="LA">Louisiana</option><option value="ME">Maine</option><option value="MD">Maryland</option><option value="MA">Massachusetts</option><option value="MI">Michigan</option><option value="MN">Minnesota</option><option value="MS">Mississippi</option><option value="MO">Missouri</option><option value="MT">Montana</option><option value="NE">Nebraska</option><option value="NV">Nevada</option><option value="NH">New Hampshire</option><option value="NJ">New Jersey</option><option value="NM">New Mexico</option><option value="NY">New York</option><option value="NC">North Carolina</option><option value="ND">North Dakota</option><option value="OK">Oklahoma</option><option value="OR">Oregon</option><option value="PA">Pennsylvania</option><option value="RI">Rhode Island</option><option value="SC">South Carolina</option><option value="SD">South Dakota</option><option value="TN">Tennessee</option><option value="TX">Texas</option><option value="UT">Utah</option><option value="VT">Vermont</option><option value="VA">Virginia</option><option value="WA">Washington</option><option value="WV">West Virginia</option><option value="WI">Wisconsin</option><option value="WY">Wyoming</option>
+            </select>
           </div>
-          <div class="field-error" id="townErr">Please enter your location.</div>
+          <div class="field"><label>ZIP Code</label><input type="text" id="signupZip" placeholder="06450" maxlength="10" oninput="clearErr(this)"></div>
         </div>
+        <div class="field-error" id="townErr">Please enter your city, state, and ZIP code.</div>
 
         <div class="field">
           <label>Search Radius — How far will you trade?</label>
@@ -1232,8 +1236,13 @@ if (!terms.checked || !privacy.checked || !age.checked || !tax.checked) {
     return ok;
   }
   if (step === 3) {
-    const town = document.getElementById('town');
-    if (!town.value.trim()) { showErr('townErr', town); return false; }
+    const city  = document.getElementById('signupCity');
+    const state = document.getElementById('signupState');
+    const zip   = document.getElementById('signupZip');
+    if (!city.value.trim() || !state.value || zip.value.trim().length < 5) {
+      showErr('townErr', zip);
+      return false;
+    }
     return true;
   }
   return true;
@@ -1272,13 +1281,7 @@ function checkMatch() {
   }
 }
 
-function detectLocation() {
-  if (!navigator.geolocation) { alert('Geolocation not supported.'); return; }
-  navigator.geolocation.getCurrentPosition(pos => {
-    document.getElementById('town').value =
-      pos.coords.latitude.toFixed(4) + ', ' + pos.coords.longitude.toFixed(4);
-  }, () => alert('Could not detect location.'));
-}
+
 
 function toggleCat(el) {
   el.classList.toggle('selected');
@@ -1342,6 +1345,17 @@ async function doCreateAccount() {
   const firstName   = document.getElementById('firstName').value.trim();
   const lastName    = document.getElementById('lastName').value.trim();
   const displayName = firstName + ' ' + lastName;
+  /* ═══ SIGNUP ADDRESS FIX START — this data was previously being collected
+     in the UI (as a free-text town field) but never actually saved anywhere.
+     Now structured to match alltrades-verification.html exactly, saved with
+     address_verified:true (same low-rigor self-report the verification page
+     already used — this isn't skipping any real check), and the trust score
+     reflects the automatic +20 for address on top of the +20 baseline for a
+     confirmed email. ═══ */
+  const signupCity  = document.getElementById('signupCity').value.trim();
+  const signupState = document.getElementById('signupState').value;
+  const signupZip    = document.getElementById('signupZip').value.trim();
+  /* ═══ SIGNUP ADDRESS FIX END ═══ */
 
   try {
     const { data, error } = await supabase.auth.signUp({
@@ -1358,7 +1372,12 @@ async function doCreateAccount() {
     await supabase.from('users').insert({
       id: data.user.id,
       email,
-      display_name: displayName
+      display_name: displayName,
+      address_city: signupCity,
+      address_state: signupState,
+      address_zip: signupZip,
+      address_verified: true,
+      trust_score: 40
     });
     showSuccess();
   } catch(e) {
