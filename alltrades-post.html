@@ -1204,7 +1204,7 @@ async function publish(btn) {
   if (valCheck > tradeValueCap) {
     checkValueCap();
     toast('🪪', `Listings over ${capLabel(tradeValueCap)} require a higher verification level.`);
-    setTimeout(() => alert(`⚠️ Verification Level Too Low\n\nYour account is currently capped at ${capLabel(tradeValueCap)} per listing based on your verification level.\n\nTo list items worth more, verify your phone, ID, and address on the Verification page.`), 500);
+    setTimeout(() => { if (confirm(`⚠️ Verification Level Too Low\n\nYour account is currently capped at ${capLabel(tradeValueCap)} per listing based on your verification level.\n\nTo list items worth more, verify your phone, ID, and address.\n\nClick OK to go to the Verification page now.`)) window.location.href = 'alltrades-verification.html'; }, 500);
     return;
   }
   btn.textContent = '⏳ Publishing…';
