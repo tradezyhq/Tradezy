@@ -265,7 +265,8 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
         <div class="csb-title">💵 Send Your Cash Payment</div>
         <div class="csb-desc" id="csbHandleLine">Loading payment details…</div>
         <div class="csb-amount" id="csbAmount">$0.00</div>
-        <button class="ss-btn gold" id="cashSentBtn" style="margin-bottom:0" onclick="confirmCashSent()">✅ I Sent the Payment</button>
+        <button class="ss-btn gold" id="cashSentBtn" style="margin-bottom:8px" onclick="confirmCashSent()">✅ I Sent the Payment</button>
+        <a class="ss-btn outline" id="csbMessageBtn" style="margin-bottom:0" href="alltrades-messages.html">💬 Message Seller for Handle</a>
       </div>
 
       <div class="receipt">
@@ -356,6 +357,7 @@ let currentUser = null;
 let isTraderA = false;
 let cardElement = null;
 let clientSecret = null;
+let otherTraderId = null;
 
 window.addEventListener('DOMContentLoaded', async () => {
   const { data: { session } } = await sb.auth.getSession();
@@ -407,14 +409,32 @@ async function loadTrade(tradeId, session) {
     tradeData = trade;
 
     const alreadyPaid = isTraderA ? trade.stripe_payment_intent_a : trade.stripe_payment_intent_b;
+    otherTraderId = isTraderA ? trade.trader_b_id : trade.trader_a_id;
     if (alreadyPaid) {
       renderSummary(trade);
-      showAlreadyPaid(trade, alreadyPaid);
+      /* ═══ RETURN-TO-CASH-STEP FIX START — previously, once the fee was paid,
+         reloading this page (e.g. after leaving to message the seller for a
+         handle) permanently hid the cash-send box and "I Sent the Payment"
+         button behind a plain "already paid" banner, with no way back to
+         confirm the cash was sent. Now it re-shows the cash step if the
+         buyer hasn't confirmed sending yet. ═══ */
+      const cashAmount = Number(trade.cash_amount || trade.offer?.cash_amount || 0);
+      const needsCashStep = isTraderB && cashAmount > 0 && !trade.cash_sent_by_b;
+      if (needsCashStep) {
+        document.getElementById('payBody').style.display = 'none';
+        document.getElementById('successScreen').classList.add('show');
+        document.getElementById('ssDesc').textContent = 'Your platform fee is already paid and held in escrow. Finish sending your cash payment below to complete this step.';
+        const shortId = '#AT-' + trade.id.slice(0, 6).toUpperCase();
+        document.getElementById('rcTradeId').textContent = shortId;
+        await showCashSendStep(cashAmount);
+      } else {
+        showAlreadyPaid(trade, alreadyPaid);
+      }
+      /* ═══ RETURN-TO-CASH-STEP FIX END ═══ */
       showMainPage();
       return;
     }
 
-    const otherTraderId = isTraderA ? trade.trader_b_id : trade.trader_a_id;
     const { data: otherUser } = await sb
       .from('users')
       .select('display_name')
@@ -634,6 +654,10 @@ async function showCashSendStep(cashAmount) {
 
   handleLineEl.innerHTML = handleLine;
   document.getElementById('csbAmount').textContent = '$' + cashAmount.toFixed(2);
+  /* Escape hatch: if the handle isn't on file, let the buyer jump straight to
+     messaging the seller to ask for it, rather than being stuck. */
+  document.getElementById('csbMessageBtn').href =
+    `alltrades-messages.html?user=${otherTraderId}&listing=${tradeData.listing_id}`;
   document.getElementById('cashSendBox').style.display = 'block';
   document.getElementById('ssActions').style.display = 'none';
 }
@@ -655,7 +679,12 @@ function redirectToMessages() {
   document.getElementById('redirectNote').style.display = 'block';
   document.getElementById('ssActions').style.display = 'flex';
   showToast('💬', 'Taking you to Messages…');
-  setTimeout(() => { window.location.href = 'alltrades-messages.html'; }, 1800);
+  // Pass user+listing so this opens the actual conversation thread with the
+  // other trader, not just the generic messages homepage.
+  const dest = otherTraderId
+    ? `alltrades-messages.html?user=${otherTraderId}&listing=${tradeData.listing_id}`
+    : 'alltrades-messages.html';
+  setTimeout(() => { window.location.href = dest; }, 1800);
 }
 
 function escapeHtml(str) {
