@@ -480,6 +480,19 @@ function selectPayMethod(el, context, method) {
 }
 const CAT_EMOJI={'Food & Water':'🥫','Garden':'🌱','Electronics':'⚡','Tools':'🔧','Sports':'🚲','Music':'🎵','Gaming':'🎮','Clothing':'👗','Books':'📚','Trading Cards':'🃏','Other':'📦'};
 
+/* ═══ TRUST-TIER TRADE VALUE CAP START — matches alltrades-post.html and
+   alltrades-verification.html tiers. Gates the OFFER side: without this, a
+   low-verification user could still get into a high-value trade by being
+   the one making the offer rather than the one listing. ═══ */
+function getTradeCap(score) {
+  if (score >= 100) return Infinity;
+  if (score >= 80)  return 500;
+  if (score >= 40)  return 150;
+  return 50;
+}
+function capLabel(cap) { return cap === Infinity ? 'Unlimited' : '$' + cap; }
+/* ═══ TRUST-TIER TRADE VALUE CAP END ═══ */
+
 /* ═══ SHIP-IT DATE GATE START — delete this whole block after July 31, 2026 ═══ */
 const SHIP_IT_LIVE_DATE = new Date('2026-07-31T00:00:00');
 function shipItIsLive() { return new Date() >= SHIP_IT_LIVE_DATE; }
@@ -502,7 +515,7 @@ function applyShipItTabGate() {
   const{data:{session}}=await sb.auth.getSession();
   if(!session){window.location.href='alltrades-auth.html';return;}
   currentUser=session.user;
-  const{data:ud}=await sb.from('users').select('id_verified').eq('id',currentUser.id).single();
+  const{data:ud}=await sb.from('users').select('id_verified,trust_score').eq('id',currentUser.id).single();
   currentUserData=ud;
   applyShipItTabGate(); /* SHIP-IT DATE GATE — delete this line after July 31, 2026 */
   loadListing();
@@ -779,13 +792,14 @@ async function submitOffer(){
   /* SHIP-IT DATE GATE START — delete this if-block after July 31, 2026 */
   if (isShipIt && !shipItIsLive()) { showToast('🚚','Ship-It launches July 31, 2026.'); return; }
   /* SHIP-IT DATE GATE END */
-  const{data:userCheck}=await sb.from('users').select('w9_on_file,id_verified').eq('id',currentUser.id).single();
+  const{data:userCheck}=await sb.from('users').select('w9_on_file,id_verified,trust_score').eq('id',currentUser.id).single();
   if(isShipIt&&!userCheck?.id_verified){showToast('🪪','ID verification required for Ship-It trades.');return;}
   const itemTitle=document.getElementById('offerItem')?.value.trim();
   const itemCond=document.getElementById('offerCondition')?.value;
   const itemVal=parseFloat(document.getElementById('offerVal')?.value)||0;
   const cashAdd=parseFloat(document.getElementById('cashAmt')?.value)||0;
   const cashOnly=parseFloat(document.getElementById('cashOnlyAmt')?.value)||0;
+  const shipitCash=isShipIt?(parseFloat(document.getElementById('shipitCashAmt')?.value)||0):0;
   const msg=document.getElementById('offerMsg')?.value.trim();
   if(offerType!=='cash'){
     if(!itemTitle){showToast('⚠️','Please describe what you are offering.');return;}
@@ -794,9 +808,18 @@ async function submitOffer(){
     if(selectedPhotos.length===0){showToast('📸','Please add at least 1 photo of your item.');return;}
   }
   if(offerType==='cash'&&!cashOnly){showToast('⚠️','Please enter your cash offer amount.');return;}
+  /* ═══ TRUST-TIER TRADE VALUE CAP — gate on the BUYER's own verification
+     level, since they're the one whose money/item is entering this trade. ═══ */
+  const offerTotalValue = offerType==='cash' ? cashOnly : (isShipIt ? itemVal+shipitCash : offerType==='tc' ? itemVal+cashAdd : itemVal);
+  const myCap = getTradeCap(userCheck?.trust_score || 20);
+  if (offerTotalValue > myCap) {
+    showToast('🪪', `Offers over ${capLabel(myCap)} require a higher verification level.`);
+    setTimeout(() => alert(`⚠️ Verification Level Too Low\n\nYour account is currently capped at ${capLabel(myCap)} per trade based on your verification level.\n\nTo make higher-value offers, verify your phone, ID, and address on the Verification page.`), 400);
+    return;
+  }
   const needsPayMethod = offerType === 'tc' || offerType === 'cash';
   const payMethodContext = offerType === 'tc' ? 'tc' : offerType === 'cash' ? 'cashonly' : 'shipit';
-  const hasCashTopUp = isShipIt && (parseFloat(document.getElementById('shipitCashAmt')?.value)||0) > 0;
+  const hasCashTopUp = isShipIt && shipitCash > 0;
   if (needsPayMethod && !selectedPayMethod[payMethodContext]) {
     showToast('💸','Please select how you\'ll send the payment.');return;
   }
@@ -811,7 +834,6 @@ async function submitOffer(){
     let photoUrls=[];
     if(offerType!=='cash'&&selectedPhotos.length>0){btn.textContent='⏳ Uploading photos…';photoUrls=await uploadPhotos();}
     btn.textContent='⏳ Sending offer…';
-    const shipitCash = isShipIt ? (parseFloat(document.getElementById('shipitCashAmt')?.value)||0) : 0;
     const{error}=await sb.from('offers').insert({
       listing_id:listing.id,offerer_id:currentUser.id,status:'pending',
       offer_type:isShipIt?'trade':offerType,is_ship_it:isShipIt,
