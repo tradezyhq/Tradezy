@@ -225,6 +225,13 @@ body.report-mode .msg-wrap:hover .bubble{opacity:.85;}
   .input-toolbar .tool-btn{display:none;}
   .safety-remind{padding:6px 9px;font-size:10px;}
   .input-area{padding:8px 10px;}
+  /* The "← Dashboard" button was cramped into a 54px-tall bar alongside the
+     logo and full user chip, making it small and hard to tap accurately.
+     Give the bar more height and the button a bigger, easier tap target;
+     drop the username text so there's room for the button to breathe. */
+  .nav{height:62px;padding:0 14px;}
+  .nav-btn.ghost{padding:10px 16px;font-size:.95rem;}
+  .u-name{display:none;}
 }
 @media(max-width:480px){
   .chat-head{padding:10px 12px;gap:8px;}
