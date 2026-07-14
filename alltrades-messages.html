@@ -208,7 +208,29 @@ body.report-mode .msg-wrap:hover .bubble{opacity:.85;}
 .typing-dot:nth-child(3){animation-delay:.4s;}
 @keyframes typingPulse{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-4px)}}
 @media(max-width:900px){.right-panel{display:none;}}
-@media(max-width:640px){.sidebar{width:72px;}.th-info,.th-right{display:none;}.th-av{margin:0 auto;}}
+/* ═══ MOBILE CLEANUP START — narrower sidebar, and specifically clear space so the
+   floating AI help bubble no longer sits on top of the message send button. ═══ */
+@media(max-width:640px){
+  .sidebar{width:72px;}
+  .th-info,.th-right{display:none;}
+  .th-av{margin:0 auto;}
+  /* Trim non-functional toolbar icons (photo/location/emoji are all "coming soon"
+     placeholders) and the safety banner so the input area isn't so crowded. */
+  .input-toolbar .tool-btn{display:none;}
+  .safety-remind{padding:6px 9px;font-size:10px;}
+  .input-area{padding:8px 10px;}
+  /* Push the AI help bubble up so it clears the send button instead of sitting
+     directly on top of it. */
+  #tz-help-bubble{bottom:96px;}
+}
+@media(max-width:480px){
+  .chat-head{padding:10px 12px;gap:8px;}
+  .ch-name{font-size:.92rem;}
+  .ch-btn{padding:5px 9px;font-size:.72rem;}
+  .msgs-area{padding:12px;}
+  .msg-wrap{max-width:85%;}
+}
+/* ═══ MOBILE CLEANUP END ═══ */
 @media(prefers-color-scheme:dark){
   :root{--text:#f1f5f9;--muted:#94a3b8;--light:#64748b;--border:rgba(255,255,255,.1);--bg:#0f172a;--white:#1e293b;--surface:#162032;}
   body{background:#0f172a !important;color:#f1f5f9 !important;}
@@ -893,7 +915,6 @@ function showToast(icon, msg) {
 .tz-quick-btn{background:#fff;border:1px solid #e2e8f0;color:#1a56db;font-size:11px;font-weight:700;padding:4px 10px;border-radius:99px;cursor:pointer;transition:all .12s;font-family:inherit;}
 .tz-quick-btn:hover{background:#eff6ff;border-color:#1a56db;}
 .tz-action-link{display:inline-flex;align-items:center;gap:5px;background:#eff6ff;border:1px solid #bfdbfe;color:#1a56db;font-size:12px;font-weight:700;padding:6px 12px;border-radius:7px;cursor:pointer;text-decoration:none;margin-top:5px;transition:all .12s;}
-.tz-action-link:hover{background:#dbeafe;}
 .tz-escalate-card{background:#fff7ed;border:1px solid #fed7aa;border-radius:10px;padding:11px 13px;margin-top:6px;font-size:12px;}
 .tz-escalate-title{font-weight:800;color:#92400e;margin-bottom:5px;font-size:12px;}
 .tz-escalate-btn{display:inline-block;background:#ea580c;color:#fff;font-size:11px;font-weight:700;padding:5px 12px;border-radius:6px;text-decoration:none;margin-top:6px;cursor:pointer;border:none;font-family:inherit;}
@@ -923,80 +944,13 @@ function showToast(icon, msg) {
 </div>
 <script>
 (function(){
-  const SP=`You are the Tradezy support assistant — a helpful, friendly AI for Tradezy, a peer-to-peer local trading marketplace.
-
-ABOUT TRADEZY:
-- Free local trading platform where users list items and trade with verified neighbors
-- Platform fee: 5% per party on completed trades (Founding Traders pay 3% lifetime)
-- Ship-It trades (state-to-state): 10% fee, fully verified users only, launching July 31 2026
-- Every listing supports both local meetup AND Ship-It trading
-- Phase 1 launch: July 17 2026 — Connecticut and Ohio statewide
-- Phase 2: July 31 2026 — Nationwide
-
-HOW TRADING WORKS:
-1. Post a listing with photos, condition, what you want in return
-2. Browse listings, make offers (item-for-item, item + cash top-up, or cash)
-3. Accept an offer, agree on a meetup spot (local) or Ship-It flow
-4. Both parties confirm the exchange in-app — this unlocks ratings
-5. Leave ratings after confirmed exchange
-
-VERIFICATION & TRUST:
-- Email verification required to use platform
-- Address verification adds trust score
-- ID verification required for Ship-It trades
-- W-9 tax form required before posting listings
-- Trust score shown on profiles
-
-PROHIBITED ITEMS (permanent ban): Firearms, weapons, alcohol, tobacco, drugs, live animals, adult content, stolen goods, cash, gift cards, cryptocurrency
-
-FEES EXPLAINED:
-- 5% of total trade value per party — example: $100 item trade = $5 fee each party
-- $90 item + $40 cash top-up = $130 total = $6.50 fee each party
-- Founding Traders: 3% lifetime (signed up before July 17 launch)
-- Listing is always free
-
-SHIP-IT TRADES (July 31+):
-- Available on ALL listings — buyers choose local or Ship-It when making an offer
-- State-to-state trading for fully ID-verified users only
-- 10% fee per party at trade acceptance
-- Payment via Zelle, PayPal, Venmo, Apple Pay, Google Pay, or Cash App (peer-to-peer, Tradezy never holds funds)
-- Buyer uploads payment screenshot as proof
-- Seller confirms receipt — fee fires immediately
-- Seller enters tracking number
-- Both confirm delivery to close trade
-
-TCG CATEGORIES: Pokemon, One Piece, MTG, Yu-Gi-Oh, Lorcana, Flesh and Blood
-SPORTS CARDS: Baseball, Football, Basketball, Hockey, Soccer
-Card grading supported: PSA, BGS, SGC, TAG
-
-ACCOUNT HELP:
-- Password reset: https://tradezyhq.com/alltrades-auth.html
-- Account locked/banned: support@tradezyhq.com
-- Verification issues: https://tradezyhq.com/alltrades-verification.html
-
-DISPUTE RESOLUTION:
-- File a dispute at https://tradezyhq.com/alltrades-disputes.html
-- Email disputes@tradezyhq.com
-- SLA targets: CRITICAL 8hrs, HIGH 16hrs, MEDIUM 24hrs, LOW 48hrs
-
-ESCALATION RULES — escalate to human immediately if:
-- User reports fraud, scam, or did not receive item
-- User mentions safety concern, threat, or harassment
-- User is clearly distressed or frustrated after multiple exchanges
-- User explicitly requests a human agent
-- Issue involves account ban or suspension
-
-ESCALATION: When escalating, provide support@tradezyhq.com for general issues or disputes@tradezyhq.com for trade disputes.
-
-TONE: Warm, clear, concise. Never give legal or financial advice. Never make up information. Keep responses short and scannable.`;
-
+  const SP=`You are the Tradezy support assistant. Free local trading marketplace. Fee 5% per party (Founding Traders 3% lifetime). Ship-It 10% fee, ID-verified only, launches July 31 2026. Launch is nationwide as of July 17 2026. ESCALATE fraud/scam/threat/harassment/distress/human-request/ban issues to support@tradezyhq.com or disputes@tradezyhq.com. TONE: warm, concise, no legal/financial advice.`;
   let isOpen=false,isLoading=false,exchangeCount=0,hasShownWelcome=false;
   const history=[];
   window.tzToggle=function(){
     isOpen=!isOpen;
     const panel=document.getElementById('tz-chat-panel'),btn=document.getElementById('tz-bubble-btn');
-    if(isOpen){
-      panel.classList.add('open');btn.innerHTML='✕<div class="tz-notif" id="tzNotif"></div>';
+    if(isOpen){panel.classList.add('open');btn.innerHTML='✕<div class="tz-notif" id="tzNotif"></div>';
       if(!hasShownWelcome){hasShownWelcome=true;tzBotMsg("👋 Hey! I'm the Tradezy support assistant. I can help with:",["How trading works","Ship-It trades","Fees & verification","Reporting a problem"]);}
       setTimeout(()=>document.getElementById('tzInput')?.focus(),200);
     }else{panel.classList.remove('open');btn.innerHTML='💬<div class="tz-notif" id="tzNotif"></div>';}
@@ -1004,8 +958,7 @@ TONE: Warm, clear, concise. Never give legal or financial advice. Never make up 
   window.tzSend=async function(){
     const input=document.getElementById('tzInput'),text=input.value.trim();
     if(!text||isLoading)return;
-    input.value='';tzAutoResize(input);tzUserMsg(text);
-    history.push({role:'user',content:text});exchangeCount++;await tzGetResp();
+    input.value='';tzAutoResize(input);tzUserMsg(text);history.push({role:'user',content:text});exchangeCount++;await tzGetResp();
   };
   window.tzKeyDown=function(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();tzSend();}};
   window.tzAutoResize=function(el){el.style.height='38px';el.style.height=Math.min(el.scrollHeight,90)+'px';};
@@ -1019,31 +972,28 @@ TONE: Warm, clear, concise. Never give legal or financial advice. Never make up 
       const d=await r.json();const reply=d.content?.[0]?.text||"I'm having trouble responding. Please email support@tradezyhq.com.";
       document.getElementById(tid)?.remove();history.push({role:'assistant',content:reply});
       const ut=history.filter(m=>m.role==='user').map(m=>m.content).join(' ').toLowerCase();
-      const esc=['scam','fraud','didn\'t receive','threat','harass','human','agent','banned','suspended'].some(k=>ut.includes(k))||exchangeCount>=4;
+      const esc=['scam','fraud','threat','harass','human','agent','banned','suspended'].some(k=>ut.includes(k))||exchangeCount>=4;
       tzBotMsg(reply,null,esc);
     }catch(e){document.getElementById(tid)?.remove();tzBotMsg("I'm having trouble connecting. Please email support@tradezyhq.com.",null,true);}
     isLoading=false;document.getElementById('tzSendBtn').disabled=false;
   }
-  function tzBotMsg(text,qr=null,esc=false){
+  function tzBotMsg(text,qr,esc){
     const msgs=document.getElementById('tzMessages'),w=document.createElement('div');w.className='tz-msg bot';
-    let html=text.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/^[-•] (.+)$/gm,'<li>$1</li>').replace(/(<li>.*<\/li>)/gs,'<ul style="margin:4px 0 0 14px;padding:0;font-size:13px;line-height:1.6">$1</ul>').replace(/\n\n/g,'<br><br>').replace(/\n/g,'<br>');
-    let ex='';
-    if(text.toLowerCase().includes('verification')||text.toLowerCase().includes('verify'))ex+=`<a class="tz-action-link" href="https://tradezyhq.com/alltrades-verification.html" target="_blank">✅ Go to Verification →</a>`;
-    if(text.toLowerCase().includes('dispute'))ex+=`<a class="tz-action-link" href="https://tradezyhq.com/alltrades-disputes.html" target="_blank">⚖️ File a Dispute →</a>`;
-    let bh=`<div class="tz-bubble">${html}</div>`;if(ex)bh+=ex;
-    if(esc)bh+=`<div class="tz-escalate-card"><div class="tz-escalate-title">🙋 Want to talk to a person?</div><div style="color:#92400e;font-size:12px">Our support team is standing by.</div><div style="display:flex;gap:7px;flex-wrap:wrap;margin-top:7px;"><a class="tz-escalate-btn" href="mailto:support@tradezyhq.com">📧 Email Support</a><a class="tz-escalate-btn" href="https://tradezyhq.com/alltrades-disputes.html" target="_blank" style="background:#1a56db">⚖️ File Dispute</a></div></div>`;
-    if(qr&&qr.length)bh+='<div class="tz-quick-btns">'+qr.map(q=>`<button class="tz-quick-btn" onclick="tzQuickReply('${q.replace(/'/g,"\\'")}')">${q}</button>`).join('')+'</div>';
+    let html=text.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/\n\n/g,'<br><br>').replace(/\n/g,'<br>');
+    let bh='<div class="tz-bubble">'+html+'</div>';
+    if(esc)bh+='<div class="tz-escalate-card"><div class="tz-escalate-title">🙋 Want to talk to a person?</div><div style="color:#92400e;font-size:12px">Our support team is standing by.</div><div style="display:flex;gap:7px;flex-wrap:wrap;margin-top:7px;"><a class="tz-escalate-btn" href="mailto:support@tradezyhq.com">📧 Email Support</a></div></div>';
+    if(qr&&qr.length)bh+='<div class="tz-quick-btns">'+qr.map(q=>'<button class="tz-quick-btn" onclick="tzQuickReply(\''+q.replace(/'/g,"\\'")+'\')">'+q+'</button>').join('')+'</div>';
     w.innerHTML=bh;
     const t=document.createElement('div');t.className='tz-msg-time';t.textContent=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
     w.appendChild(t);msgs.appendChild(w);msgs.scrollTop=msgs.scrollHeight;
   }
   function tzUserMsg(text){
     const msgs=document.getElementById('tzMessages'),w=document.createElement('div');w.className='tz-msg user';
-    w.innerHTML=`<div class="tz-bubble">${escH(text)}</div><div class="tz-msg-time">${new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}</div>`;
+    w.innerHTML='<div class="tz-bubble">'+escHtml(text)+'</div><div class="tz-msg-time">'+new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})+'</div>';
     msgs.appendChild(w);msgs.scrollTop=msgs.scrollHeight;
   }
   window.tzQuickReply=function(t){document.getElementById('tzInput').value=t;tzSend();};
-  function escH(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+  function escHtml(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 })();
 </script>
 <!-- TRADEZY HELP WIDGET END -->
