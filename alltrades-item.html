@@ -814,7 +814,7 @@ async function submitOffer(){
   const myCap = getTradeCap(userCheck?.trust_score || 20);
   if (offerTotalValue > myCap) {
     showToast('🪪', `Offers over ${capLabel(myCap)} require a higher verification level.`);
-    setTimeout(() => alert(`⚠️ Verification Level Too Low\n\nYour account is currently capped at ${capLabel(myCap)} per trade based on your verification level.\n\nTo make higher-value offers, verify your phone, ID, and address on the Verification page.`), 400);
+    setTimeout(() => { if (confirm(`⚠️ Verification Level Too Low\n\nYour account is currently capped at ${capLabel(myCap)} per trade based on your verification level.\n\nTo make higher-value offers, verify your phone, ID, and address.\n\nClick OK to go to the Verification page now.`)) window.location.href = 'alltrades-verification.html'; }, 400);
     return;
   }
   const needsPayMethod = offerType === 'tc' || offerType === 'cash';
