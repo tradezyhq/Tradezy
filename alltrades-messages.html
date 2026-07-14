@@ -219,9 +219,10 @@ body.report-mode .msg-wrap:hover .bubble{opacity:.85;}
   .input-toolbar .tool-btn{display:none;}
   .safety-remind{padding:6px 9px;font-size:10px;}
   .input-area{padding:8px 10px;}
-  /* Push the AI help bubble up so it clears the send button instead of sitting
-     directly on top of it. */
-  #tz-help-bubble{bottom:96px;}
+  /* Push the AI help bubble to the bottom-LEFT on mobile so it can never
+     overlap the send button, regardless of exact input-area height. */
+  #tz-help-bubble{left:16px;right:auto;bottom:16px;align-items:flex-start;}
+  #tz-chat-panel{align-self:flex-start;}
 }
 @media(max-width:480px){
   .chat-head{padding:10px 12px;gap:8px;}
