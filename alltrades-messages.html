@@ -208,10 +208,10 @@ body.report-mode .msg-wrap:hover .bubble{opacity:.85;}
 .typing-dot:nth-child(3){animation-delay:.4s;}
 @keyframes typingPulse{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-4px)}}
 @media(max-width:900px){.right-panel{display:none;}}
-/* ═══ MOBILE CLEANUP START — narrower icon-only sidebar, trimmed input area,
-   and the floating AI help bubble suppressed on this page specifically since
-   it's redundant with the in-context "Report a Problem" button and was
-   causing layout collisions with the send button no matter where it sat. ═══ */
+/* ═══ MOBILE CLEANUP START — narrower icon-only sidebar and trimmed input
+   area. The AI help widget has been removed from this page entirely (see
+   below) rather than repositioned, since it's redundant with the in-context
+   "Report a Problem" button and repeatedly collided with the send button. ═══ */
 @media(max-width:640px){
   .sidebar{width:72px;}
   .th-info,.th-right{display:none;}
@@ -225,10 +225,6 @@ body.report-mode .msg-wrap:hover .bubble{opacity:.85;}
   .input-toolbar .tool-btn{display:none;}
   .safety-remind{padding:6px 9px;font-size:10px;}
   .input-area{padding:8px 10px;}
-  /* Suppress the floating AI bubble on this page on mobile — no position
-     avoids overlapping the input area cleanly, and it's redundant with the
-     Report a Problem button already in the chat header. */
-  #tz-help-bubble{display:none;}
 }
 @media(max-width:480px){
   .chat-head{padding:10px 12px;gap:8px;}
@@ -889,120 +885,5 @@ function showToast(icon, msg) {
   window._tt = setTimeout(() => t.classList.remove('show'), 3800);
 }
 </script>
-<!-- TRADEZY HELP WIDGET START -->
-<style>
-#tz-help-bubble{position:fixed;bottom:24px;right:24px;z-index:9999;display:flex;flex-direction:column;align-items:flex-end;gap:10px;font-family:'Lato',system-ui,sans-serif;}
-#tz-bubble-btn{width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#0a1628,#1a56db);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1.4rem;box-shadow:0 4px 20px rgba(26,86,219,.4);transition:all .2s;position:relative;}
-#tz-bubble-btn:hover{transform:scale(1.08);}
-#tz-bubble-btn .tz-notif{position:absolute;top:0;right:0;width:14px;height:14px;background:#dc2626;border-radius:50%;border:2px solid #fff;display:none;}
-#tz-chat-panel{display:none;width:360px;height:520px;background:#fff;border-radius:16px;box-shadow:0 20px 60px rgba(0,0,0,.18);flex-direction:column;overflow:hidden;border:1px solid #e2e8f0;animation:tzSlideUp .2s ease;}
-#tz-chat-panel.open{display:flex;}
-@keyframes tzSlideUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
-.tz-panel-head{background:linear-gradient(135deg,#0a1628,#112240);padding:14px 16px;display:flex;align-items:center;gap:10px;flex-shrink:0;}
-.tz-head-icon{width:34px;height:34px;background:rgba(245,158,11,.2);border:1px solid rgba(245,158,11,.3);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0;}
-.tz-head-info{flex:1;}.tz-head-title{font-weight:800;font-size:.88rem;color:#fff;font-family:'Barlow Condensed',system-ui,sans-serif;letter-spacing:.3px;}
-.tz-head-status{font-size:10px;color:#22c55e;display:flex;align-items:center;gap:4px;}
-.tz-head-dot{width:6px;height:6px;background:#22c55e;border-radius:50%;animation:tzPulse 2s infinite;}
-@keyframes tzPulse{0%,100%{opacity:1}50%{opacity:.5}}
-.tz-head-close{background:rgba(255,255,255,.1);border:none;color:#94a3b8;width:26px;height:26px;border-radius:50%;cursor:pointer;font-size:.85rem;display:flex;align-items:center;justify-content:center;transition:all .15s;}
-.tz-head-close:hover{background:rgba(255,255,255,.2);color:#fff;}
-.tz-messages{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px;scroll-behavior:smooth;}
-.tz-messages::-webkit-scrollbar{width:4px;}.tz-messages::-webkit-scrollbar-track{background:transparent;}.tz-messages::-webkit-scrollbar-thumb{background:#e2e8f0;border-radius:2px;}
-.tz-msg{max-width:84%;display:flex;flex-direction:column;gap:2px;}
-.tz-msg.bot{align-self:flex-start;}.tz-msg.user{align-self:flex-end;}
-.tz-bubble{padding:9px 12px;border-radius:12px;font-size:13px;line-height:1.5;}
-.tz-msg.bot .tz-bubble{background:#f1f5f9;color:#1a1a2e;border-radius:4px 12px 12px 12px;}
-.tz-msg.user .tz-bubble{background:linear-gradient(135deg,#1a56db,#2563eb);color:#fff;border-radius:12px 4px 12px 12px;}
-.tz-msg-time{font-size:10px;color:#94a3b8;padding:0 4px;}.tz-msg.user .tz-msg-time{text-align:right;}
-.tz-typing{display:flex;align-items:center;gap:4px;padding:9px 12px;background:#f1f5f9;border-radius:4px 12px 12px 12px;width:fit-content;}
-.tz-typing span{width:6px;height:6px;background:#94a3b8;border-radius:50%;animation:tzDot 1.2s infinite;}
-.tz-typing span:nth-child(2){animation-delay:.2s;}.tz-typing span:nth-child(3){animation-delay:.4s;}
-@keyframes tzDot{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-4px)}}
-.tz-quick-btns{display:flex;flex-wrap:wrap;gap:5px;margin-top:4px;}
-.tz-quick-btn{background:#fff;border:1px solid #e2e8f0;color:#1a56db;font-size:11px;font-weight:700;padding:4px 10px;border-radius:99px;cursor:pointer;transition:all .12s;font-family:inherit;}
-.tz-quick-btn:hover{background:#eff6ff;border-color:#1a56db;}
-.tz-action-link{display:inline-flex;align-items:center;gap:5px;background:#eff6ff;border:1px solid #bfdbfe;color:#1a56db;font-size:12px;font-weight:700;padding:6px 12px;border-radius:7px;cursor:pointer;text-decoration:none;margin-top:5px;transition:all .12s;}
-.tz-escalate-card{background:#fff7ed;border:1px solid #fed7aa;border-radius:10px;padding:11px 13px;margin-top:6px;font-size:12px;}
-.tz-escalate-title{font-weight:800;color:#92400e;margin-bottom:5px;font-size:12px;}
-.tz-escalate-btn{display:inline-block;background:#ea580c;color:#fff;font-size:11px;font-weight:700;padding:5px 12px;border-radius:6px;text-decoration:none;margin-top:6px;cursor:pointer;border:none;font-family:inherit;}
-.tz-escalate-btn:hover{background:#c2410c;}
-.tz-input-area{padding:10px 12px;border-top:1px solid #f1f5f9;display:flex;gap:7px;flex-shrink:0;background:#fafafa;}
-.tz-input{flex:1;border:1.5px solid #e2e8f0;border-radius:8px;padding:8px 11px;font-size:13px;font-family:inherit;color:#1a1a2e;outline:none;resize:none;height:38px;max-height:90px;overflow-y:auto;transition:border-color .15s;background:#fff;}
-.tz-input:focus{border-color:#1a56db;box-shadow:0 0 0 3px rgba(26,86,219,.07);}
-.tz-send-btn{width:36px;height:36px;background:linear-gradient(135deg,#1a56db,#2563eb);border:none;border-radius:8px;color:#fff;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s;align-self:flex-end;}
-.tz-send-btn:hover{transform:scale(1.05);}.tz-send-btn:disabled{opacity:.5;cursor:not-allowed;transform:none;}
-.tz-powered{text-align:center;font-size:10px;color:#cbd5e1;padding:5px 0 2px;flex-shrink:0;}
-</style>
-<div id="tz-help-bubble">
-  <div id="tz-chat-panel">
-    <div class="tz-panel-head">
-      <div class="tz-head-icon">🤖</div>
-      <div class="tz-head-info"><div class="tz-head-title">Tradezy Support</div><div class="tz-head-status"><span class="tz-head-dot"></span>Online — AI Assistant</div></div>
-      <button class="tz-head-close" onclick="tzToggle()">✕</button>
-    </div>
-    <div class="tz-messages" id="tzMessages"></div>
-    <div class="tz-input-area">
-      <textarea class="tz-input" id="tzInput" placeholder="Ask anything about Tradezy…" rows="1" onkeydown="tzKeyDown(event)" oninput="tzAutoResize(this)"></textarea>
-      <button class="tz-send-btn" id="tzSendBtn" onclick="tzSend()">➤</button>
-    </div>
-    <div class="tz-powered">Powered by Claude AI · Tradezy Support</div>
-  </div>
-  <button id="tz-bubble-btn" onclick="tzToggle()" title="Get Help">💬<div class="tz-notif" id="tzNotif"></div></button>
-</div>
-<script>
-(function(){
-  const SP=`You are the Tradezy support assistant. Free local trading marketplace. Fee 5% per party (Founding Traders 3% lifetime). Ship-It 10% fee, ID-verified only, launches July 31 2026. Launch is nationwide as of July 17 2026. ESCALATE fraud/scam/threat/harassment/distress/human-request/ban issues to support@tradezyhq.com or disputes@tradezyhq.com. TONE: warm, concise, no legal/financial advice.`;
-  let isOpen=false,isLoading=false,exchangeCount=0,hasShownWelcome=false;
-  const history=[];
-  window.tzToggle=function(){
-    isOpen=!isOpen;
-    const panel=document.getElementById('tz-chat-panel'),btn=document.getElementById('tz-bubble-btn');
-    if(isOpen){panel.classList.add('open');btn.innerHTML='✕<div class="tz-notif" id="tzNotif"></div>';
-      if(!hasShownWelcome){hasShownWelcome=true;tzBotMsg("👋 Hey! I'm the Tradezy support assistant. I can help with:",["How trading works","Ship-It trades","Fees & verification","Reporting a problem"]);}
-      setTimeout(()=>document.getElementById('tzInput')?.focus(),200);
-    }else{panel.classList.remove('open');btn.innerHTML='💬<div class="tz-notif" id="tzNotif"></div>';}
-  };
-  window.tzSend=async function(){
-    const input=document.getElementById('tzInput'),text=input.value.trim();
-    if(!text||isLoading)return;
-    input.value='';tzAutoResize(input);tzUserMsg(text);history.push({role:'user',content:text});exchangeCount++;await tzGetResp();
-  };
-  window.tzKeyDown=function(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();tzSend();}};
-  window.tzAutoResize=function(el){el.style.height='38px';el.style.height=Math.min(el.scrollHeight,90)+'px';};
-  async function tzGetResp(){
-    isLoading=true;document.getElementById('tzSendBtn').disabled=true;
-    const tid='tz-t-'+Date.now(),msgs=document.getElementById('tzMessages');
-    const tel=document.createElement('div');tel.id=tid;tel.className='tz-msg bot';tel.innerHTML='<div class="tz-typing"><span></span><span></span><span></span></div>';
-    msgs.appendChild(tel);msgs.scrollTop=msgs.scrollHeight;
-    try{
-      const r=await fetch('https://tradezy-ai-proxy.throbbing-lake-08ed.workers.dev',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:1000,system:SP,messages:history})});
-      const d=await r.json();const reply=d.content?.[0]?.text||"I'm having trouble responding. Please email support@tradezyhq.com.";
-      document.getElementById(tid)?.remove();history.push({role:'assistant',content:reply});
-      const ut=history.filter(m=>m.role==='user').map(m=>m.content).join(' ').toLowerCase();
-      const esc=['scam','fraud','threat','harass','human','agent','banned','suspended'].some(k=>ut.includes(k))||exchangeCount>=4;
-      tzBotMsg(reply,null,esc);
-    }catch(e){document.getElementById(tid)?.remove();tzBotMsg("I'm having trouble connecting. Please email support@tradezyhq.com.",null,true);}
-    isLoading=false;document.getElementById('tzSendBtn').disabled=false;
-  }
-  function tzBotMsg(text,qr,esc){
-    const msgs=document.getElementById('tzMessages'),w=document.createElement('div');w.className='tz-msg bot';
-    let html=text.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/\n\n/g,'<br><br>').replace(/\n/g,'<br>');
-    let bh='<div class="tz-bubble">'+html+'</div>';
-    if(esc)bh+='<div class="tz-escalate-card"><div class="tz-escalate-title">🙋 Want to talk to a person?</div><div style="color:#92400e;font-size:12px">Our support team is standing by.</div><div style="display:flex;gap:7px;flex-wrap:wrap;margin-top:7px;"><a class="tz-escalate-btn" href="mailto:support@tradezyhq.com">📧 Email Support</a></div></div>';
-    if(qr&&qr.length)bh+='<div class="tz-quick-btns">'+qr.map(q=>'<button class="tz-quick-btn" onclick="tzQuickReply(\''+q.replace(/'/g,"\\'")+'\')">'+q+'</button>').join('')+'</div>';
-    w.innerHTML=bh;
-    const t=document.createElement('div');t.className='tz-msg-time';t.textContent=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
-    w.appendChild(t);msgs.appendChild(w);msgs.scrollTop=msgs.scrollHeight;
-  }
-  function tzUserMsg(text){
-    const msgs=document.getElementById('tzMessages'),w=document.createElement('div');w.className='tz-msg user';
-    w.innerHTML='<div class="tz-bubble">'+escHtml(text)+'</div><div class="tz-msg-time">'+new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})+'</div>';
-    msgs.appendChild(w);msgs.scrollTop=msgs.scrollHeight;
-  }
-  window.tzQuickReply=function(t){document.getElementById('tzInput').value=t;tzSend();};
-  function escHtml(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
-})();
-</script>
-<!-- TRADEZY HELP WIDGET END -->
 </body>
 </html>
