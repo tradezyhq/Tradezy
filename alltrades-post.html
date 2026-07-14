@@ -465,8 +465,9 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
         <div class="field-row-2">
           <div class="field">
             <div class="field-top"><label>Est. Value ($)</label></div>
-            <input type="number" id="fVal" placeholder="0.00" min="0" step="0.01" oninput="livePreview()">
-            <div class="field-hint">Be honest — overpriced = ignored</div>
+            <input type="number" id="fVal" placeholder="0.00" min="0" step="0.01" oninput="livePreview();checkValueCap()">
+            <div class="field-hint" id="valCapHint">Be honest — overpriced = ignored</div>
+            <div class="field-error" id="valCapError">Over your verification limit</div>
           </div>
           <div class="field">
             <div class="field-top"><label>Quantity</label></div>
@@ -688,6 +689,20 @@ const sb = window.supabase.createClient(
 let currentUser = null;
 let fullyVerified = false;
 let shipIt = false;
+let trustScore = 20;
+let tradeValueCap = 50;
+
+/* ═══ TRUST-TIER TRADE VALUE CAP START — matches the tiers shown on
+   alltrades-verification.html: Email-only (20pts)=$50, Phone (40pts)=$150,
+   ID (80pts)=$500, Fully Verified (100pts)=Unlimited. ═══ */
+function getTradeCap(score) {
+  if (score >= 100) return Infinity;
+  if (score >= 80)  return 500;
+  if (score >= 40)  return 150;
+  return 50;
+}
+function capLabel(cap) { return cap === Infinity ? 'Unlimited' : '$' + cap; }
+/* ═══ TRUST-TIER TRADE VALUE CAP END ═══ */
 
 /* ═══ SHIP-IT DATE GATE START — delete this whole block after July 31, 2026 ═══ */
 const SHIP_IT_LIVE_DATE = new Date('2026-07-31T00:00:00');
@@ -700,13 +715,18 @@ function shipItIsLive() { return new Date() >= SHIP_IT_LIVE_DATE; }
   currentUser = session.user;
 
   const { data: profile } = await sb.from('users')
-    .select('display_name, phone_verified, id_verified, address_verified')
+    .select('display_name, phone_verified, id_verified, address_verified, trust_score')
     .eq('id', currentUser.id).single();
 
   // Ship-It requires ID verification
   fullyVerified = !!(profile?.id_verified);
   /* SHIP-IT DATE GATE — remove "&& shipItIsLive()" after July 31, 2026 */
   shipIt = fullyVerified && shipItIsLive();
+
+  trustScore = profile?.trust_score || 20;
+  tradeValueCap = getTradeCap(trustScore);
+  const valHint = document.getElementById('valCapHint');
+  if (valHint) valHint.textContent = `Be honest — overpriced = ignored · Your verification level allows listings up to ${capLabel(tradeValueCap)}`;
 
   const name = profile?.display_name || currentUser.email?.split('@')[0] || 'You';
   const initials = name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0,2);
@@ -941,6 +961,22 @@ function renderTags() {
 }
 function delTag(i) { tags.splice(i, 1); renderTags(); }
 
+/* ═══ TRUST-TIER TRADE VALUE CAP — live field feedback ═══ */
+function checkValueCap() {
+  const input = document.getElementById('fVal');
+  const errEl = document.getElementById('valCapError');
+  const val = parseFloat(input.value) || 0;
+  if (val > tradeValueCap) {
+    errEl.textContent = `⚠️ Over your ${capLabel(tradeValueCap)} limit — verify your account for a higher limit.`;
+    errEl.style.display = 'block';
+    input.style.borderColor = 'var(--red)';
+    return false;
+  }
+  errEl.style.display = 'none';
+  input.style.borderColor = '';
+  return true;
+}
+
 function livePreview() {
   const t = document.getElementById('fTitle')?.value || '';
   const v = document.getElementById('fVal')?.value || '';
@@ -1160,6 +1196,15 @@ async function publish(btn) {
   if (screen.blocked) {
     toast('🚫', `Listing blocked: ${screen.category.toLowerCase()} items are not allowed.`);
     setTimeout(() => alert(`⚠️ Listing Not Allowed\n\nFlagged for: ${screen.category}\n\nIf you believe this is an error, contact support@tradezyhq.com`), 500);
+    return;
+  }
+  /* ═══ TRUST-TIER TRADE VALUE CAP — hard gate at publish, not just the
+     live field hint, since that's the real enforcement point. ═══ */
+  const valCheck = parseFloat(document.getElementById('fVal').value) || 0;
+  if (valCheck > tradeValueCap) {
+    checkValueCap();
+    toast('🪪', `Listings over ${capLabel(tradeValueCap)} require a higher verification level.`);
+    setTimeout(() => alert(`⚠️ Verification Level Too Low\n\nYour account is currently capped at ${capLabel(tradeValueCap)} per listing based on your verification level.\n\nTo list items worth more, verify your phone, ID, and address on the Verification page.`), 500);
     return;
   }
   btn.textContent = '⏳ Publishing…';
