@@ -1075,7 +1075,7 @@ async function acceptOffer(id, isShipIt) {
        total_value/cash_amount all null, so alltrades-payment.html had nothing to
        charge. Now computed per-party (Founding Traders use their own fee_rate;
        everyone else gets 5% local / 10% Ship-It) and stored on the trade row. ═══ */
-    const { data: listing } = await sb.from('listings').select('estimated_value').eq('id', offer.listing_id).single();
+    const { data: listing } = await sb.from('listings').select('estimated_value,title').eq('id', offer.listing_id).single();
     const { data: sellerRow } = await sb.from('users').select('fee_rate').eq('id', currentUser.id).single();
     const { data: buyerRow } = await sb.from('users').select('fee_rate').eq('id', offer.offerer_id).single();
 
@@ -1098,6 +1098,22 @@ async function acceptOffer(id, isShipIt) {
       status:'accepted', fee_a:feeA, fee_b:feeB, total_value:totalValue, cash_amount:cashAmount,
     }).select().single();
     /* ═══ FEE CALCULATION FIX END ═══ */
+
+    /* ═══ SYSTEM MESSAGE FIX START — previously, accepting an offer created a
+       trade but never inserted anything into the messages table, so both
+       parties landed on an empty "No messages yet" inbox with no way to find
+       each other's conversation thread. This kicks off a real thread. ═══ */
+    try {
+      const kickoffMsg = isShipIt
+        ? `🚚 Ship-It trade accepted for "${listing?.title||'this listing'}"! Once both parties pay the platform fee, coordinate shipping details here.`
+        : `🤝 Trade accepted for "${listing?.title||'this listing'}"! Once the platform fee is paid, coordinate your meetup here.`;
+      await sb.from('messages').insert({
+        sender_id: currentUser.id,
+        receiver_id: offer.offerer_id,
+        content: kickoffMsg,
+      });
+    } catch(msgErr) { console.error('Could not create kickoff message:', msgErr); }
+    /* ═══ SYSTEM MESSAGE FIX END ═══ */
 
     if (isShipIt) {
       showToast('🚚', 'Ship-It accepted! Taking you to create your shipping label…');
