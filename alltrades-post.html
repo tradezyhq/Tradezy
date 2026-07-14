@@ -230,9 +230,37 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
   .shipit-row.on{background:rgba(14,165,233,.1) !important;}
   .shipit-row.off{background:#162032 !important;}
 }
+/* ═══ VERIFY-CAP MODAL START — replaces unreliable mobile confirm() dialogs
+   for the trust-tier trade value cap block ═══ */
+.vcm-overlay{display:none;position:fixed;inset:0;background:rgba(10,22,40,.8);z-index:900;align-items:center;justify-content:center;padding:20px;}
+.vcm-overlay.open{display:flex;}
+.vcm-modal{background:var(--white);border-radius:14px;width:100%;max-width:400px;overflow:hidden;animation:vcmSlideUp .25s ease;}
+@keyframes vcmSlideUp{from{transform:translateY(14px);opacity:0}to{transform:translateY(0);opacity:1}}
+.vcm-head{background:linear-gradient(135deg,#92400e,#b45309);padding:18px 20px;}
+.vcm-head-title{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.1rem;color:#fff;}
+.vcm-body{padding:20px;}
+.vcm-body p{font-size:13px;color:var(--text-light);line-height:1.6;margin-bottom:16px;}
+.vcm-body strong{color:var(--text);}
+.vcm-btn{width:100%;padding:11px;border:none;border-radius:8px;font-family:'Barlow Condensed',sans-serif;font-size:.95rem;font-weight:800;cursor:pointer;transition:all .15s;margin-bottom:8px;text-align:center;text-decoration:none;display:block;}
+.vcm-btn.gold{background:var(--gold);color:var(--navy);}
+.vcm-btn.gold:hover{background:var(--gold-light);}
+.vcm-btn.outline{background:transparent;border:1.5px solid var(--border);color:var(--text-light);margin-bottom:0;}
+.vcm-btn.outline:hover{border-color:#999;color:var(--text);}
+/* ═══ VERIFY-CAP MODAL END ═══ */
 </style>
 </head>
 <body>
+<!-- VERIFY-CAP MODAL -->
+<div class="vcm-overlay" id="vcmOverlay">
+  <div class="vcm-modal">
+    <div class="vcm-head"><div class="vcm-head-title">🪪 Verification Level Too Low</div></div>
+    <div class="vcm-body">
+      <p id="vcmMessage">Your account is currently capped based on your verification level.</p>
+      <a class="vcm-btn gold" href="alltrades-verification.html">🪪 Go to Verification →</a>
+      <button class="vcm-btn outline" onclick="document.getElementById('vcmOverlay').classList.remove('open')">Not Now</button>
+    </div>
+  </div>
+</div>
 
 <div class="topbar">
   <div class="logo" onclick="window.location.href='alltrades.html'"><span class="all">Trade</span><span class="trades">zy</span><span class="dot">.</span></div>
@@ -1204,7 +1232,8 @@ async function publish(btn) {
   if (valCheck > tradeValueCap) {
     checkValueCap();
     toast('🪪', `Listings over ${capLabel(tradeValueCap)} require a higher verification level.`);
-    setTimeout(() => { if (confirm(`⚠️ Verification Level Too Low\n\nYour account is currently capped at ${capLabel(tradeValueCap)} per listing based on your verification level.\n\nTo list items worth more, verify your phone, ID, and address.\n\nClick OK to go to the Verification page now.`)) window.location.href = 'alltrades-verification.html'; }, 500);
+    document.getElementById('vcmMessage').innerHTML = `Your account is currently capped at <strong>${capLabel(tradeValueCap)}</strong> per listing based on your verification level.<br><br>Verify your phone, ID, and address to list higher-value items.`;
+    document.getElementById('vcmOverlay').classList.add('open');
     return;
   }
   btn.textContent = '⏳ Publishing…';
