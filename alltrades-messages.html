@@ -208,21 +208,27 @@ body.report-mode .msg-wrap:hover .bubble{opacity:.85;}
 .typing-dot:nth-child(3){animation-delay:.4s;}
 @keyframes typingPulse{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-4px)}}
 @media(max-width:900px){.right-panel{display:none;}}
-/* ═══ MOBILE CLEANUP START — narrower sidebar, and specifically clear space so the
-   floating AI help bubble no longer sits on top of the message send button. ═══ */
+/* ═══ MOBILE CLEANUP START — narrower icon-only sidebar, trimmed input area,
+   and the floating AI help bubble suppressed on this page specifically since
+   it's redundant with the in-context "Report a Problem" button and was
+   causing layout collisions with the send button no matter where it sat. ═══ */
 @media(max-width:640px){
   .sidebar{width:72px;}
   .th-info,.th-right{display:none;}
   .th-av{margin:0 auto;}
+  /* The +New button and search bar don't fit — and aren't usable — in a
+     72px icon-only rail, so hide them rather than render them broken. */
+  .sb-new-btn,.sb-search{display:none;}
+  .sb-title-row{justify-content:center;}
   /* Trim non-functional toolbar icons (photo/location/emoji are all "coming soon"
      placeholders) and the safety banner so the input area isn't so crowded. */
   .input-toolbar .tool-btn{display:none;}
   .safety-remind{padding:6px 9px;font-size:10px;}
   .input-area{padding:8px 10px;}
-  /* Push the AI help bubble to the bottom-LEFT on mobile so it can never
-     overlap the send button, regardless of exact input-area height. */
-  #tz-help-bubble{left:16px;right:auto;bottom:16px;align-items:flex-start;}
-  #tz-chat-panel{align-self:flex-start;}
+  /* Suppress the floating AI bubble on this page on mobile — no position
+     avoids overlapping the input area cleanly, and it's redundant with the
+     Report a Problem button already in the chat header. */
+  #tz-help-bubble{display:none;}
 }
 @media(max-width:480px){
   .chat-head{padding:10px 12px;gap:8px;}
