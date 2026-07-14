@@ -456,6 +456,17 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);}
     </div>
   </div>
 </div>
+<!-- VERIFY-CAP MODAL — replaces unreliable mobile confirm() dialog -->
+<div class="modal-overlay" id="verifyCapModal">
+  <div class="modal">
+    <div class="modal-head"><div class="modal-head-title">🪪 Verification Level Too Low</div><button class="modal-close" onclick="closeModal('verifyCapModal')">✕</button></div>
+    <div class="modal-body" style="text-align:center;padding:28px 24px">
+      <div style="font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:20px" id="verifyCapMessage">Your account is currently capped based on your verification level.</div>
+      <button class="modal-btn gold" onclick="window.location.href='alltrades-verification.html'">🪪 Go to Verification →</button>
+      <button class="modal-btn outline" onclick="closeModal('verifyCapModal')">Not Now</button>
+    </div>
+  </div>
+</div>
 <div class="lightbox" id="lightbox" onclick="closeLightbox()">
   <button class="lightbox-close" onclick="closeLightbox()">✕</button>
   <button class="lightbox-nav lightbox-prev" onclick="event.stopPropagation();lightboxNav(-1)">‹</button>
@@ -814,7 +825,8 @@ async function submitOffer(){
   const myCap = getTradeCap(userCheck?.trust_score || 20);
   if (offerTotalValue > myCap) {
     showToast('🪪', `Offers over ${capLabel(myCap)} require a higher verification level.`);
-    setTimeout(() => { if (confirm(`⚠️ Verification Level Too Low\n\nYour account is currently capped at ${capLabel(myCap)} per trade based on your verification level.\n\nTo make higher-value offers, verify your phone, ID, and address.\n\nClick OK to go to the Verification page now.`)) window.location.href = 'alltrades-verification.html'; }, 400);
+    document.getElementById('verifyCapMessage').innerHTML = `Your account is currently capped at <strong>${capLabel(myCap)}</strong> per trade based on your verification level.<br><br>Verify your phone, ID, and address to make higher-value offers.`;
+    openModal('verifyCapModal');
     return;
   }
   const needsPayMethod = offerType === 'tc' || offerType === 'cash';
