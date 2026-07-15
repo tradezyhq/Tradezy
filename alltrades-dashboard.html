@@ -1108,6 +1108,20 @@ async function acceptOffer(id, isShipIt) {
   try {
     const { data: offer } = await sb.from('offers').select('*').eq('id',id).single();
     if (!offer) throw new Error('Offer not found');
+
+    const { data: listing } = await sb.from('listings').select('estimated_value,title,location_state').eq('id', offer.listing_id).single();
+    const { data: buyerRow } = await sb.from('users').select('fee_rate,address_state').eq('id', offer.offerer_id).single();
+
+    /* ═══ LOCAL-TRADE AREA GATE — a local (non-Ship-It) trade requires an
+       in-person meetup, which is impossible across state lines. Block
+       accepting a local offer from a buyer in a different state than the
+       listing — only Ship-It (already ID-verified) is meant to handle
+       cross-state trades. Only enforced when both states are known. ═══ */
+    if (!isShipIt && listing?.location_state && buyerRow?.address_state && listing.location_state !== buyerRow.address_state) {
+      showToast('📍', `This buyer is in ${buyerRow.address_state}, outside your local trading area — this offer can only be accepted as a Ship-It trade.`);
+      return;
+    }
+
     await sb.from('offers').update({status:'accepted'}).eq('id',id);
     await sb.from('listings').update({status:'trading'}).eq('id',offer.listing_id);
 
@@ -1115,9 +1129,7 @@ async function acceptOffer(id, isShipIt) {
        total_value/cash_amount all null, so alltrades-payment.html had nothing to
        charge. Now computed per-party (Founding Traders use their own fee_rate;
        everyone else gets 5% local / 10% Ship-It) and stored on the trade row. ═══ */
-    const { data: listing } = await sb.from('listings').select('estimated_value,title').eq('id', offer.listing_id).single();
     const { data: sellerRow } = await sb.from('users').select('fee_rate').eq('id', currentUser.id).single();
-    const { data: buyerRow } = await sb.from('users').select('fee_rate').eq('id', offer.offerer_id).single();
 
     const defaultRate = isShipIt ? 0.10 : 0.05;
     const sellerRate = sellerRow?.fee_rate != null ? Number(sellerRow.fee_rate) : defaultRate;
