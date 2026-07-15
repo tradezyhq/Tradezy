@@ -338,13 +338,17 @@ function shipItIsLive() { return new Date() >= SHIP_IT_LIVE_DATE; }
   const { data: { session } } = await sb.auth.getSession();
   if (session) {
     currentUser = session.user;
+    /* FIX: the nav button swap was previously nested inside the profile-fetch
+       success block below, so if that secondary query ever failed or
+       returned null, the nav kept showing "Sign In" even with a fully valid
+       session. Swapping it here ties it directly to session existing. */
+    document.getElementById('navAuthArea').innerHTML =
+      `<button class="btn-nav-dash" onclick="window.location.href='alltrades-dashboard.html'">My Dashboard</button>`;
     // UPDATED: also fetch address_city for Near You comparison
     const { data: profile } = await sb.from('users').select('address_state,address_city,display_name').eq('id', currentUser.id).single();
     if (profile) {
       userState = profile.address_state || null;
       userCity  = profile.address_city  || null;
-      document.getElementById('navAuthArea').innerHTML =
-        `<button class="btn-nav-dash" onclick="window.location.href='alltrades-dashboard.html'">My Dashboard</button>`;
     }
   }
   const params = new URLSearchParams(window.location.search);
