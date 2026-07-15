@@ -648,6 +648,14 @@ body { font-family:'Lato',sans-serif; background:var(--bg); color:var(--text); m
 .cat-option.essential.selected { border-color:var(--green); background:#f0fdf4; color:var(--green); }
 .cat-option.essential:hover { border-color:var(--green); color:var(--green); background:#f0fdf4; }
 
+/* ═══ VISUAL PROMINENCE — draws the eye to the flagship category without
+   auto-selecting it or making it any harder/easier to pick than the rest.
+   Same honest nudging principle as an app store's "Editor's Choice" badge. ═══ */
+.cat-option.hot { position:relative; border-color:var(--gold); border-width:2px; }
+.cat-option.hot:hover { border-color:var(--gold); color:#92400e; background:#fffbeb; }
+.cat-option.hot.selected { border-color:var(--gold); background:#fffbeb; color:#92400e; }
+.cat-option.hot .cat-badge { position:absolute; top:-9px; left:50%; transform:translateX(-50%); background:var(--gold); color:#fff; font-size:8px; font-weight:800; padding:2px 6px; border-radius:99px; white-space:nowrap; letter-spacing:.3px; }
+
 /* Success screen */
 .success-screen {
   text-align:center;
@@ -1093,8 +1101,8 @@ body { font-family:'Lato',sans-serif; background:var(--bg); color:var(--text); m
             What do you want to trade? <span style="font-weight:400;color:#94a3b8">(pick all that apply)</span>
           </label>
           <div class="cat-grid">
-            <div class="cat-option essential selected" onclick="toggleCat(this)"><span class="cat-emoji">🥫</span>Food &amp; Water</div>
-            <div class="cat-option essential" onclick="toggleCat(this)"><span class="cat-emoji">🌱</span>Garden</div>
+            <div class="cat-option hot" onclick="toggleCat(this)"><span class="cat-badge">🔥 Most Popular</span><span class="cat-emoji">🃏</span>Trading Cards</div>
+            <div class="cat-option" onclick="toggleCat(this)"><span class="cat-emoji">🥫</span>Food &amp; Water</div>
             <div class="cat-option" onclick="toggleCat(this)"><span class="cat-emoji">⚡</span>Electronics</div>
             <div class="cat-option" onclick="toggleCat(this)"><span class="cat-emoji">🔧</span>Tools</div>
             <div class="cat-option" onclick="toggleCat(this)"><span class="cat-emoji">🚲</span>Sports</div>
