@@ -1354,7 +1354,14 @@ async function doCreateAccount() {
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
-      options: { data: { display_name: displayName } }
+      options: { data: {
+        display_name: displayName,
+        address_city: signupCity,
+        address_state: signupState,
+        address_zip: signupZip,
+        address_verified: true,
+        trust_score: 40
+      } }
     });
     if (error) {
       alert('Sign up error: ' + error.message);
@@ -1362,17 +1369,15 @@ async function doCreateAccount() {
       btn.disabled = false;
       return;
     }
-    await supabase.from('users').insert({
-      id: data.user.id,
-      email,
-      display_name: displayName,
-      address_city: signupCity,
-      address_state: signupState,
-      address_zip: signupZip,
-      address_verified: true,
-      trust_score: 40
-    });
+    /* ═══ GHOST ACCOUNT FIX START — this used to insert into public.users
+       directly from the client right after signUp(). When email confirmation
+       is required, there's no active session yet at that exact moment, so
+       the RLS check silently rejected the insert and the signup still
+       showed "success" with no profile row ever created. Profile creation
+       now happens via a database trigger (handle_new_user) reading the
+       metadata passed above, server-side, immune to that timing issue. ═══ */
     showSuccess();
+    /* ═══ GHOST ACCOUNT FIX END ═══ */
   } catch(e) {
     alert('Error: ' + e.message);
     btn.textContent = 'Create My Account 🚀';
