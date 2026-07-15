@@ -451,6 +451,25 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
   </div>
 </div>
 
+<!-- CANCEL TRADE MODAL -->
+<div class="modal-overlay" id="cancelTradeModal">
+  <div class="modal">
+    <div class="mhd" style="background:linear-gradient(135deg,#7f1d1d,#991b1b)"><div class="mhd-ttl">⚠️ Cancel This Trade?</div><button class="mhd-close" onclick="closeModal('cancelTradeModal')">✕</button></div>
+    <div class="mbody">
+      <div style="text-align:center;margin-bottom:16px">
+        <div style="font-size:3rem;margin-bottom:9px">⚠️</div>
+        <div style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.15rem;margin-bottom:5px">This can't be undone</div>
+        <div style="font-size:13px;color:var(--muted);line-height:1.5">Cancelling will close this trade for both parties and reopen your listing to other buyers.</div>
+      </div>
+      <div style="background:#fffbeb;border:1px solid #fde68a;border-radius:8px;padding:12px;margin-bottom:16px;font-size:12px;color:#92400e;line-height:1.6">
+        <strong>Refund details:</strong> You'll be refunded your platform fee minus a small cancellation fee ($0.50 or Stripe's processing cost, whichever is greater). The other trader will be refunded their fee in full, since they didn't cause the cancellation.
+      </div>
+      <button class="mbtn red" id="confirmCancelBtn" onclick="confirmCancelTrade()">⚠️ Yes, Cancel This Trade</button>
+      <button class="mbtn outline" onclick="closeModal('cancelTradeModal')">← Never Mind</button>
+    </div>
+  </div>
+</div>
+
 <!-- MESSAGES MODAL -->
 <div class="modal-overlay" id="msgModal">
   <div class="modal" style="max-width:520px">
@@ -582,6 +601,7 @@ const sb = window.supabase.createClient(
   'https://equvwaspcoeetfsexqki.supabase.co',
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVxdXZ3YXNwY29lZXRmc2V4cWtpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgyNzc2MjQsImV4cCI6MjA5Mzg1MzYyNH0.TP6Kk3pzHW1PYMUu5D9Vu2lJrazIEagzu5csYhqkrfI'
 );
+const CANCEL_TRADE_EDGE_URL = 'https://equvwaspcoeetfsexqki.supabase.co/functions/v1/cancel-trade-refund';
 
 let currentUser = null, currentUserData = null;
 let currentTradeId = null, currentTradeIsShipIt = false;
@@ -958,6 +978,7 @@ async function loadTrades() {
       const isShipIt = t.offer?.is_ship_it === true;
       const isMeetup = t.status === 'meetup_scheduled';
       const myConfirmed = t.trader_a_id===currentUser.id ? t.trade_confirmed_a : t.trade_confirmed_b;
+      const isTraderA = t.trader_a_id === currentUser.id;
       const fee = t.trader_a_id===currentUser.id ? t.fee_a : t.fee_b;
       /* ═══ FEE PAYMENT INDICATOR START — Trader B isn't present when acceptOffer()
          creates the trade, so they have no other way to know a fee is owed until
@@ -985,6 +1006,7 @@ async function loadTrades() {
             ? `<div class="tc-btn tcb-confirm" onclick="openConfirmModal('${t.id}',${fee||0},${isShipIt})">✓ Done</div>`
             : `<div class="tc-btn" style="background:#f0fdf4;border:1px solid #bbf7d0;color:#14532d;font-size:.65rem">✅ Confirmed</div>`}
         </div>
+        <div style="text-align:center;margin-top:6px"><span style="font-size:10px;color:var(--muted);cursor:pointer;text-decoration:underline" onclick="openCancelTradeModal('${t.id}')">Cancel this trade</span></div>
       </div>`;
     }).join('');
   } catch(e) { document.getElementById('tradesPanel').innerHTML=`<div class="empty-state"><div class="empty-txt">Could not load trades.</div></div>`; }
@@ -1297,6 +1319,43 @@ function setCashConfirmed(confirmed) {
     confirmBtn.style.opacity = '0.5';
   }
 }
+
+/* ═══ CANCEL TRADE START — new feature: the ToS has always described a
+   cancellation flow (cancelling party pays a small fee, other party refunded
+   in full, listing reopens) but nothing in the app actually implemented it
+   until now. Refund math happens server-side in the cancel-trade-refund
+   Edge Function since it needs the Stripe secret key. ═══ */
+let cancelTargetTradeId = null;
+
+function openCancelTradeModal(tradeId) {
+  cancelTargetTradeId = tradeId;
+  openModal('cancelTradeModal');
+}
+
+async function confirmCancelTrade() {
+  if (!cancelTargetTradeId) return;
+  const btn = document.getElementById('confirmCancelBtn');
+  btn.textContent = '⏳ Cancelling…'; btn.disabled = true;
+  try {
+    const { data: { session } } = await sb.auth.getSession();
+    const res = await fetch(CANCEL_TRADE_EDGE_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + session.access_token },
+      body: JSON.stringify({ trade_id: cancelTargetTradeId }),
+    });
+    const data = await res.json();
+    if (data.error) throw new Error(data.error);
+    closeModal('cancelTradeModal');
+    cancelTargetTradeId = null;
+    showToast('⚠️', `Trade cancelled. You were refunded $${(data.cancelling_party_refund||0).toFixed(2)} (a $${(data.cancellation_fee_charged||0).toFixed(2)} cancellation fee applied). Your listing is active again.`);
+    loadTrades(); loadListings(); loadTradeValue();
+  } catch(e) {
+    showToast('⚠️', 'Could not cancel trade: ' + e.message);
+  } finally {
+    btn.textContent = '⚠️ Yes, Cancel This Trade'; btn.disabled = false;
+  }
+}
+/* ═══ CANCEL TRADE END ═══ */
 
 async function doConfirmTrade() {
   if (!currentTradeId) return;
