@@ -244,21 +244,25 @@ footer{background:var(--navy);color:#64748b;padding:36px 20px 20px;margin-top:20
       <span class="pg-info" id="pgInfo">Page 1</span>
       <button class="pg-btn" id="pgNext" onclick="changePage(1)" disabled title="Next">›</button>
     </div>
+    <div class="row-section" id="nearYouSection">
+      <div class="row-header"><div class="row-title"><span class="row-title-icon">📍</span> Near You</div></div>
+      <div id="nearYouContent"></div>
+    </div>
     <div class="row-section" id="recentlyViewedSection" style="display:none;">
       <div class="row-header"><div class="row-title"><span class="row-title-icon">👁️</span> Recently Viewed</div></div>
       <div class="row-scroll" id="recentlyViewedRow"></div>
     </div>
+    <!-- ═══ PREVIEW SECTION — nationwide listings aren't tradeable as local
+         trades (in-person meetup impossible across states); this is a
+         preview of what Ship-It unlocks July 31, kept clearly separate and
+         below the actionable local feed. ═══ -->
     <div class="row-section" id="popularSection">
-      <div class="row-header"><div class="row-title"><span class="row-title-icon">🔥</span> <span id="popularTitle">Popular Right Now</span></div></div>
+      <div class="row-header"><div class="row-title"><span class="row-title-icon">🔥</span> <span id="popularTitle">Popular Right Now</span> <span style="background:#e0f2fe;color:#0369a1;border:1px solid #7dd3fc;border-radius:4px;font-size:10px;font-weight:800;padding:2px 8px;margin-left:8px;vertical-align:middle">🚚 Ship-It Coming July 31</span></div></div>
       <div class="row-scroll" id="popularRow">
         <div class="skel-card" style="min-width:160px"><div class="skel-photo skeleton"></div><div class="skel-body"><div class="skel-line w80 skeleton"></div><div class="skel-line w50 skeleton"></div></div></div>
         <div class="skel-card" style="min-width:160px"><div class="skel-photo skeleton"></div><div class="skel-body"><div class="skel-line w80 skeleton"></div><div class="skel-line w50 skeleton"></div></div></div>
         <div class="skel-card" style="min-width:160px"><div class="skel-photo skeleton"></div><div class="skel-body"><div class="skel-line w80 skeleton"></div><div class="skel-line w50 skeleton"></div></div></div>
       </div>
-    </div>
-    <div class="row-section" id="nearYouSection">
-      <div class="row-header"><div class="row-title"><span class="row-title-icon">📍</span> Near You</div></div>
-      <div id="nearYouContent"></div>
     </div>
   </main>
 </div>
@@ -497,6 +501,16 @@ function buildQuery(forCount=false) {
     forCount ? {count:'exact',head:true} : {}
   );
   q = q.eq('status','active');
+  /* ═══ LOCAL-ONLY MAIN FEED START — local (non-Ship-It) trades require an
+     in-person meetup, impossible across state lines. The main "All Listings"
+     feed is the primary, actionable browse section, so it's now restricted
+     to listings in the viewer's own state. Out-of-state listings still
+     appear in "Popular Right Now" below as a preview of what Ship-It will
+     unlock July 31 — they just aren't mixed into the actionable feed.
+     Only applied when the viewer's own state is known; if they haven't
+     confirmed an address yet, don't filter rather than show nothing. ═══ */
+  if (userState) q = q.eq('location_state', userState);
+  /* ═══ LOCAL-ONLY MAIN FEED END ═══ */
   if (currentCat) {
     if (currentCat === 'Trading Cards') q = q.or('category.eq.Trading Cards,category.like.TCG - %');
     else if (currentCat === 'Sports Cards') q = q.or('category.eq.Sports Cards,category.like.Sports Cards - %');
