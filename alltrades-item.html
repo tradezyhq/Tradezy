@@ -526,7 +526,7 @@ function applyShipItTabGate() {
   const{data:{session}}=await sb.auth.getSession();
   if(!session){window.location.href='alltrades-auth.html';return;}
   currentUser=session.user;
-  const{data:ud}=await sb.from('users').select('id_verified,trust_score').eq('id',currentUser.id).single();
+  const{data:ud}=await sb.from('users').select('id_verified,trust_score,address_state').eq('id',currentUser.id).single();
   currentUserData=ud;
   applyShipItTabGate(); /* SHIP-IT DATE GATE — delete this line after July 31, 2026 */
   loadListing();
@@ -542,8 +542,52 @@ async function loadListing(){
     sb.from('listings').update({view_count:(data.view_count||0)+1}).eq('id',id).then(()=>{});
     await Promise.all([loadSeller(data.user_id),loadOffers(id)]);
     renderListing(data);
+    applyLocalTradeGate(data);
   }catch(e){showNotFound();}
 }
+
+/* ═══ LOCAL-TRADE AREA GATE START — local trades (Trade Only, Trade+Cash,
+   Cash Only) require an in-person meetup, which is impossible across state
+   lines. Only Ship-It (already ID-verified and date-gated) is meant to
+   handle cross-state trading. Previously nothing stopped a same-state-only
+   offer from being made on an out-of-state listing. Only enforced when BOTH
+   states are actually known — an old listing or unconfirmed address means
+   we can't tell, so we don't block on missing data. ═══ */
+let crossStateBlocked = false;
+function applyLocalTradeGate(listingData) {
+  const myState = currentUserData?.address_state;
+  const theirState = listingData?.location_state;
+  if (!myState || !theirState || myState === theirState) { crossStateBlocked = false; return; }
+  crossStateBlocked = true;
+
+  ['tab-trade','tab-tc','tab-cash'].forEach(tabId => {
+    const tab = document.getElementById(tabId);
+    if (!tab) return;
+    tab.style.opacity = '0.4';
+    tab.style.pointerEvents = 'none';
+    tab.onclick = null;
+    const label = tab.querySelector('.otab-label');
+    if (label) label.textContent = 'Out of Area';
+  });
+
+  const container = document.getElementById('tab-trade')?.parentElement;
+  if (container && !document.getElementById('crossStateNotice')) {
+    const notice = document.createElement('div');
+    notice.id = 'crossStateNotice';
+    notice.className = 'info-box ib-blue';
+    notice.style.marginTop = '8px';
+    notice.innerHTML = shipItIsLive()
+      ? `<span>🚚</span><div>This seller is in <strong>${theirState}</strong> — outside your area for local trades, which require an in-person meetup. Use <strong>Ship-It</strong> below to trade with them instead.</div>`
+      : `<span>🚚</span><div>This seller is in <strong>${theirState}</strong> — outside your area for local trades, which require an in-person meetup. Ship-It (state-to-state trading) launches July 31, 2026.</div>`;
+    container.insertAdjacentElement('afterend', notice);
+  }
+  // If it's a cash-only listing (no ship-it possible), the trade is simply not
+  // available to this buyer — surface that clearly rather than a dead-end form.
+  if (listingData.trade_type === 'cash' && document.getElementById('tab-shipit')?.style.display === 'none') {
+    showToast('📍', 'This seller is outside your local trading area.');
+  }
+}
+/* ═══ LOCAL-TRADE AREA GATE END ═══ */
 async function loadSeller(userId){
   try{
     const[{data:user},{count:tradeCount},{count:listingCount},{data:ratings}]=await Promise.all([
@@ -803,6 +847,12 @@ async function submitOffer(){
   /* SHIP-IT DATE GATE START — delete this if-block after July 31, 2026 */
   if (isShipIt && !shipItIsLive()) { showToast('🚚','Ship-It launches July 31, 2026.'); return; }
   /* SHIP-IT DATE GATE END */
+  /* ═══ LOCAL-TRADE AREA GATE — hard block, in case tabs were disabled but
+     bypassed via the console or a stale page state. ═══ */
+  if (!isShipIt && crossStateBlocked) {
+    showToast('📍','Local trades require you and the seller to be in the same area. Use Ship-It for out-of-state trades.');
+    return;
+  }
   const{data:userCheck}=await sb.from('users').select('w9_on_file,id_verified,trust_score').eq('id',currentUser.id).single();
   if(isShipIt&&!userCheck?.id_verified){showToast('🪪','ID verification required for Ship-It trades.');return;}
   const itemTitle=document.getElementById('offerItem')?.value.trim();
