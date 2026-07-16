@@ -719,6 +719,8 @@ let fullyVerified = false;
 let shipIt = false;
 let trustScore = 20;
 let tradeValueCap = 50;
+let sellerCity = null;
+let sellerState = null;
 
 /* ═══ TRUST-TIER TRADE VALUE CAP START — matches the tiers shown on
    alltrades-verification.html: Email-only (20pts)=$50, Phone (40pts)=$150,
@@ -743,13 +745,21 @@ function shipItIsLive() { return new Date() >= SHIP_IT_LIVE_DATE; }
   currentUser = session.user;
 
   const { data: profile } = await sb.from('users')
-    .select('display_name, phone_verified, id_verified, address_verified, trust_score')
+    .select('display_name, phone_verified, id_verified, address_verified, trust_score, address_city, address_state')
     .eq('id', currentUser.id).single();
 
   // Ship-It requires ID verification
   fullyVerified = !!(profile?.id_verified);
   /* SHIP-IT DATE GATE — remove "&& shipItIsLive()" after July 31, 2026 */
   shipIt = fullyVerified && shipItIsLive();
+
+  /* ═══ NEAR YOU FIX — listings were never getting a location_state/city
+     saved on them at all, so the homepage's "Near You" match had nothing
+     to compare against for ANY listing, regardless of the viewer's own
+     address. Pull the seller's confirmed address here to save onto the
+     listing at publish time. ═══ */
+  sellerCity  = profile?.address_city  || null;
+  sellerState = profile?.address_state || null;
 
   trustScore = profile?.trust_score || 20;
   tradeValueCap = getTradeCap(trustScore);
@@ -1286,7 +1296,9 @@ async function publish(btn) {
       min_cash_offer:  minCash || null,
       photos:          photos.length > 0 ? photos : null,
       status:          'active',
-      ship_it:         finalShipIt
+      ship_it:         finalShipIt,
+      location_city:   sellerCity,
+      location_state:  sellerState
     }).select().single();
     if (error) throw error;
     document.getElementById('pFill').style.width = '100%';
