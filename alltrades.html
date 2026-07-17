@@ -349,11 +349,32 @@ function shipItIsLive() { return new Date() >= SHIP_IT_LIVE_DATE; }
     document.getElementById('navAuthArea').innerHTML =
       `<button class="btn-nav-dash" onclick="window.location.href='alltrades-dashboard.html'">My Dashboard</button>`;
     // UPDATED: also fetch address_city for Near You comparison
-    const { data: profile } = await sb.from('users').select('address_state,address_city,display_name').eq('id', currentUser.id).single();
+    const { data: profile } = await sb.from('users').select('address_state,address_city,address_zip,display_name').eq('id', currentUser.id).single();
     if (profile) {
       userState = profile.address_state || null;
       userCity  = profile.address_city  || null;
     }
+    /* ═══ SELF-HEAL PROFILE START — works around an unresolved signup-trigger
+       bug where address_city/state/zip sometimes never make it from signup
+       metadata into the profile row, even though the metadata itself is
+       correct. Runs silently on every logged-in page load: if the profile is
+       missing address data that the user's own session metadata actually
+       has, patch it directly via a normal client-side update (the same
+       mechanism already proven to work reliably). Self-corrects any
+       affected account the next time they're logged in, past or future. ═══ */
+    if (profile && !profile.address_state && session.user.user_metadata?.address_state) {
+      const meta = session.user.user_metadata;
+      const { error: healErr } = await sb.from('users').update({
+        address_city: meta.address_city || null,
+        address_state: meta.address_state || null,
+        address_zip: meta.address_zip || null,
+      }).eq('id', currentUser.id);
+      if (!healErr) {
+        userState = meta.address_state || null;
+        userCity  = meta.address_city  || null;
+      }
+    }
+    /* ═══ SELF-HEAL PROFILE END ═══ */
   }
   const params = new URLSearchParams(window.location.search);
   const urlCat  = params.get('cat') || '';
