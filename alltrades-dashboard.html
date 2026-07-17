@@ -624,6 +624,20 @@ function shipItIsLive() { return new Date() >= SHIP_IT_LIVE_DATE; }
   currentUser = session.user;
   const { data: ud } = await sb.from('users').select('display_name,location_city,location_state,id_verified').eq('id', currentUser.id).single();
   currentUserData = ud;
+  /* ═══ SELF-HEAL PROFILE START — see alltrades.html for full explanation.
+     Works around an unresolved signup-trigger bug where address_city/state/
+     zip sometimes never make it into the profile row despite correct signup
+     metadata. Runs silently on every dashboard load. ═══ */
+  const { data: addrCheck } = await sb.from('users').select('address_city,address_state,address_zip').eq('id', currentUser.id).single();
+  if (addrCheck && !addrCheck.address_state && session.user.user_metadata?.address_state) {
+    const meta = session.user.user_metadata;
+    await sb.from('users').update({
+      address_city: meta.address_city || null,
+      address_state: meta.address_state || null,
+      address_zip: meta.address_zip || null,
+    }).eq('id', currentUser.id);
+  }
+  /* ═══ SELF-HEAL PROFILE END ═══ */
   initDashboard();
 })();
 
