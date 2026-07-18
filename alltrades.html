@@ -738,7 +738,7 @@ async function loadNearYou() {
     const row=document.createElement('div');row.className='row-scroll';
     row.innerHTML=data.map(l=>buildCardHTML(l)).join('');
     content.innerHTML='';content.appendChild(row);
-  } catch(e){content.innerHTML=`<div style="color:var(--muted);font-size:13px;padding:12px 0">Couldn't load nearby listings.</div>`;}
+  } catch(e){console.error('loadNearYou failed:', e);content.innerHTML=`<div style="color:var(--muted);font-size:13px;padding:12px 0">Couldn't load nearby listings.</div>`;}
 }
 function goListing(id) {
   try{let v=JSON.parse(localStorage.getItem('tz_viewed')||'[]');v=[id,...v.filter(x=>x!==id)].slice(0,20);localStorage.setItem('tz_viewed',JSON.stringify(v));}catch(e){}
