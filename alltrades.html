@@ -52,6 +52,9 @@ header{background:var(--white);border-bottom:2px solid var(--border);position:st
 .btn-nav-dash:hover{background:#0f2547;}
 .page-body{max-width:1400px;margin:0 auto;padding:20px 20px;display:grid;grid-template-columns:var(--sidebar-w) 1fr;gap:20px;align-items:start;width:100%;box-sizing:border-box;}
 .sidebar{background:var(--white);border:1px solid var(--border);border-radius:12px;overflow:hidden;position:sticky;top:68px;}
+.hamburger-btn{display:none;background:none;border:none;font-size:1.3rem;cursor:pointer;padding:4px 8px;flex-shrink:0;color:var(--text);}
+.mobile-menu-backdrop{display:none;position:fixed;inset:0;background:rgba(10,22,40,.5);z-index:199;}
+.mobile-menu-backdrop.open{display:block;}
 .sidebar-header{padding:14px 16px;border-bottom:1px solid var(--border);font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.95rem;color:var(--navy);letter-spacing:.3px;display:flex;align-items:center;gap:6px;}
 .cat-item{display:flex;align-items:center;justify-content:space-between;padding:9px 16px;cursor:pointer;transition:background .12s;border-bottom:1px solid #f1f5f9;user-select:none;}
 .cat-item:hover{background:#f8fafc;}
@@ -149,8 +152,8 @@ footer{background:var(--navy);color:#64748b;padding:36px 20px 20px;margin-top:20
 .footer-bottom-links{display:flex;gap:16px;}
 .footer-bottom-links a{color:#475569;}
 .footer-bottom-links a:hover{color:#94a3b8;}
-@media(max-width:900px){.page-body{grid-template-columns:1fr;}.sidebar{position:static;display:none;}.sidebar.mobile-open{display:block;}.footer-top{grid-template-columns:1fr 1fr;}.near-you-prompt{flex-direction:column;text-align:center;}.nyp-actions{justify-content:center;}}
-@media(max-width:600px){.footer-top{grid-template-columns:1fr;}.listings-grid{display:flex;grid-template-columns:none;gap:12px;overflow-x:auto;overflow-y:hidden;padding-bottom:6px;scrollbar-width:none;flex-wrap:nowrap;}.listings-grid::-webkit-scrollbar{display:none;}.listings-grid .listing-card{min-width:130px;max-width:160px;flex-shrink:0;}.nav-search{min-width:0;max-width:none;}.nav-main{padding:9px 12px;gap:8px;}.btn-nav-post{padding:8px 10px;font-size:.78rem;}.btn-nav-login,.btn-nav-dash{padding:8px 10px;font-size:.78rem;}#foundingBanner{flex-wrap:wrap;padding:8px 40px 8px 12px;font-size:11px;}#foundingBanner span:not(.fb-badge){display:none;}.fb-cta{padding:3px 9px;font-size:10px;}}
+@media(max-width:900px){.page-body{grid-template-columns:1fr;}.hamburger-btn{display:block;}.sidebar{position:static;display:none;}.sidebar.mobile-open{display:block;position:fixed;top:64px;left:12px;right:12px;max-height:75vh;overflow-y:auto;z-index:200;box-shadow:0 12px 32px rgba(0,0,0,.25);}.footer-top{grid-template-columns:1fr 1fr;}.near-you-prompt{flex-direction:column;text-align:center;}.nyp-actions{justify-content:center;}}
+@media(max-width:600px){.footer-top{grid-template-columns:1fr;}.listings-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;}.listings-grid .listing-card{min-width:0;max-width:none;}.row-scroll{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;overflow-x:visible;flex-wrap:unset;padding-bottom:0;}.row-scroll .listing-card{min-width:0;max-width:none;flex-shrink:unset;}.lc-body{padding:6px 6px 8px;gap:2px;}.lc-title{font-size:10.5px;}.lc-location{font-size:7.5px;padding:1px 4px;}.lc-value{font-size:.78rem;}.lc-condition{font-size:8px;padding:1px 5px;}.nav-main{flex-wrap:wrap;padding:8px 10px;gap:6px;}.nav-search{order:3;flex-basis:100%;max-width:none;min-width:0;margin-top:2px;}.nav-right{order:4;flex-basis:100%;margin-top:2px;margin-left:0;}#navAuthArea{flex:1;display:flex;}.btn-nav-post{flex:1;text-align:center;padding:9px 10px;font-size:.8rem;}.btn-nav-login,.btn-nav-dash{flex:1;width:100%;text-align:center;padding:9px 10px;font-size:.8rem;}#foundingBanner{flex-wrap:wrap;padding:8px 40px 8px 12px;font-size:11px;}#foundingBanner span:not(.fb-badge){display:none;}.fb-cta{padding:3px 9px;font-size:10px;}}
 </style>
 </head>
 <body>
@@ -162,6 +165,7 @@ footer{background:var(--navy);color:#64748b;padding:36px 20px 20px;margin-top:20
 </div>
 <header>
   <div class="nav-main">
+    <button class="hamburger-btn" onclick="toggleMobileMenu()" aria-label="Categories">☰</button>
     <div class="logo" onclick="resetFeed()"><span class="a">Trade</span><span class="t">zy</span><span class="d">.</span></div>
     <div class="nav-search">
       <span class="nav-search-icon">🔍</span>
@@ -175,6 +179,7 @@ footer{background:var(--navy);color:#64748b;padding:36px 20px 20px;margin-top:20
     </div>
   </div>
 </header>
+<div class="mobile-menu-backdrop" id="mobileMenuBackdrop" onclick="toggleMobileMenu()"></div>
 <div class="page-body">
   <aside class="sidebar" id="sidebar">
     <div class="sidebar-header">🗂️ Browse Categories</div>
@@ -392,6 +397,10 @@ function clearActiveSidebar() {
   document.querySelectorAll('.cat-item').forEach(el => el.classList.remove('active'));
   document.querySelectorAll('.sub-item').forEach(el => el.classList.remove('active'));
 }
+function toggleMobileMenu() {
+  document.getElementById('sidebar').classList.toggle('mobile-open');
+  document.getElementById('mobileMenuBackdrop').classList.toggle('open');
+}
 function selectCat(el, cat, label) {
   clearActiveSidebar(); el.classList.add('active');
   if (cat !== 'Trading Cards') closeExpand('tcg');
@@ -399,12 +408,18 @@ function selectCat(el, cat, label) {
   currentCat=cat; currentLabel=label; currentPage=1;
   document.getElementById('feedTitle').textContent=label;
   updateUrl(); updateSeoMeta(); loadFeed(); loadPopular();
+  closeMobileMenuIfOpen();
 }
 function selectSubCat(el, cat, label) {
   clearActiveSidebar(); el.classList.add('active');
   currentCat=cat; currentLabel=label; currentPage=1;
   document.getElementById('feedTitle').textContent=label;
   updateUrl(); updateSeoMeta(); loadFeed(); loadPopular();
+  closeMobileMenuIfOpen();
+}
+function closeMobileMenuIfOpen() {
+  document.getElementById('sidebar').classList.remove('mobile-open');
+  document.getElementById('mobileMenuBackdrop').classList.remove('open');
 }
 function toggleExpand(event, el, cat, label) {
   event.stopPropagation();
@@ -541,7 +556,6 @@ function buildQuery(forCount=false) {
     const matchedCats = findMatchingCategories(searchQuery);
     const orParts = [
       `title.ilike.%${searchQuery}%`,
-      `wants.ilike.%${searchQuery}%`,
       `category.ilike.%${searchQuery}%`,
     ];
     matchedCats.forEach(cat => orParts.push(`category.eq.${cat}`));
