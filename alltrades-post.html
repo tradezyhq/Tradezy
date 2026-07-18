@@ -867,12 +867,44 @@ function renderGrid() {
 let targetSlot = 0;
 function slotClick(i) { targetSlot = i; document.getElementById('fileInput').click(); }
 
+/* ═══ PHOTO STORAGE FIX START — photos were being converted to base64 and
+   stored directly as text inside the listings row, meaning every single
+   query that loaded listings (All Listings, Near You, Popular) had to
+   transfer multi-megabyte blobs over the wire for every card, every time.
+   This is very likely the real cause of the site feeling slow to populate.
+   Photos are now compressed client-side and uploaded to a real Supabase
+   Storage bucket ('listing-photos') — only a short public URL gets stored
+   in the database row instead of the raw image data. ═══ */
+function compressImage(file, maxDim = 1400, quality = 0.8) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    const reader = new FileReader();
+    reader.onload = e => { img.src = e.target.result; };
+    reader.onerror = reject;
+    img.onload = () => {
+      let { width, height } = img;
+      if (width > maxDim || height > maxDim) {
+        if (width > height) { height = Math.round(height * (maxDim / width)); width = maxDim; }
+        else { width = Math.round(width * (maxDim / height)); height = maxDim; }
+      }
+      const canvas = document.createElement('canvas');
+      canvas.width = width; canvas.height = height;
+      canvas.getContext('2d').drawImage(img, 0, 0, width, height);
+      canvas.toBlob(blob => blob ? resolve(blob) : reject(new Error('Compression failed')), 'image/jpeg', quality);
+    };
+    img.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
 function handleFiles(inp) {
-  Array.from(inp.files).forEach((f, idx) => {
+  Array.from(inp.files).forEach(async (f, idx) => {
     const si = targetSlot + idx;
     if (si >= 8) return;
-    const r = new FileReader();
-    r.onload = e => {
+
+    // Instant local preview while the real upload happens in the background
+    const previewReader = new FileReader();
+    previewReader.onload = e => {
       photos[si] = e.target.result;
       renderGrid();
       if (si === 0) {
@@ -881,9 +913,24 @@ function handleFiles(inp) {
         im.style.display = 'block';
         document.getElementById('prevPlaceholder').style.display = 'none';
       }
-      toast('📷', `Photo ${si+1} added!`);
     };
-    r.readAsDataURL(f);
+    previewReader.readAsDataURL(f);
+
+    try {
+      const compressed = await compressImage(f);
+      const path = `${currentUser.id}/${Date.now()}_${si}.jpg`;
+      const { error: upErr } = await sb.storage.from('listing-photos').upload(path, compressed, { contentType: 'image/jpeg', upsert: true });
+      if (upErr) throw upErr;
+      const { data: pub } = sb.storage.from('listing-photos').getPublicUrl(path);
+      photos[si] = pub.publicUrl;
+      renderGrid();
+      if (si === 0) document.getElementById('prevImgReal').src = pub.publicUrl;
+      toast('📷', `Photo ${si+1} added!`);
+    } catch (e) {
+      toast('⚠️', `Photo ${si+1} failed to upload — try again.`);
+      photos[si] = null;
+      renderGrid();
+    }
   });
   inp.value = '';
 }
@@ -1234,6 +1281,13 @@ async function publish(btn) {
   if (screen.blocked) {
     toast('🚫', `Listing blocked: ${screen.category.toLowerCase()} items are not allowed.`);
     setTimeout(() => alert(`⚠️ Listing Not Allowed\n\nFlagged for: ${screen.category}\n\nIf you believe this is an error, contact support@tradezyhq.com`), 500);
+    return;
+  }
+  /* ═══ PHOTO STORAGE FIX — block publishing if any photo is still a local
+     base64 preview (upload still in progress in the background), so a giant
+     blob can never accidentally get saved to the database. ═══ */
+  if (photos.some(p => p && p.startsWith('data:'))) {
+    toast('⏳', 'Still uploading your photos — give it a few seconds and try again.');
     return;
   }
   /* ═══ TRUST-TIER TRADE VALUE CAP — hard gate at publish, not just the
