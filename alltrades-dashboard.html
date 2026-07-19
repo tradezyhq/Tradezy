@@ -51,6 +51,7 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
 .welcome-bar::before{content:'';position:absolute;top:-60px;right:-40px;width:260px;height:260px;background:radial-gradient(circle,rgba(245,158,11,.12) 0%,transparent 65%);pointer-events:none;}
 .wb-greet{font-size:11px;color:#64748b;margin-bottom:3px;text-transform:uppercase;letter-spacing:.5px;font-weight:700;}
 .wb-name{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.6rem;color:#fff;letter-spacing:-.3px;margin-bottom:3px;}
+.founding-badge{display:inline-flex;align-items:center;gap:3px;background:linear-gradient(135deg,var(--gold),var(--gold-l));color:var(--navy);font-size:11px;font-weight:800;padding:2px 8px;border-radius:4px;letter-spacing:.3px;margin-left:8px;vertical-align:middle;}
 .wb-sub{font-size:13px;color:#64748b;}
 .wb-stats{display:flex;gap:10px;flex-shrink:0;}
 .wb-stat{text-align:center;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:10px 16px;}
@@ -622,7 +623,7 @@ function shipItIsLive() { return new Date() >= SHIP_IT_LIVE_DATE; }
   const { data: { session } } = await sb.auth.getSession();
   if (!session) { window.location.href = 'alltrades-auth.html'; return; }
   currentUser = session.user;
-  const { data: ud } = await sb.from('users').select('display_name,location_city,location_state,id_verified').eq('id', currentUser.id).single();
+  const { data: ud } = await sb.from('users').select('display_name,location_city,location_state,id_verified,is_founding_trader').eq('id', currentUser.id).single();
   currentUserData = ud;
   /* ═══ SELF-HEAL PROFILE START — see alltrades.html for full explanation.
      Works around an unresolved signup-trigger bug where address_city/state/
@@ -676,7 +677,8 @@ async function loadUserProfile() {
     const loc = currentUserData?.location_city ? `📍 ${currentUserData.location_city}${currentUserData.location_state?', '+currentUserData.location_state:''}` : '📍 Location not set';
     document.getElementById('userName').textContent = name;
     document.getElementById('userAv').textContent = initials;
-    document.getElementById('wbName').textContent = name;
+    const foundingBadge = currentUserData?.is_founding_trader ? '<span class="founding-badge">🏅 Founding Trader</span>' : '';
+    document.getElementById('wbName').innerHTML = `${name}${foundingBadge}`;
     document.getElementById('wbSub').innerHTML = `${loc} · <a href="alltrades-verification.html" style="color:var(--gold-l);font-weight:700;text-decoration:none">Verify your account →</a>`;
   } catch(e) { document.getElementById('wbName').textContent = 'Trader'; }
 }
