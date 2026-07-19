@@ -927,6 +927,7 @@ function handleFiles(inp) {
       if (si === 0) document.getElementById('prevImgReal').src = pub.publicUrl;
       toast('📷', `Photo ${si+1} added!`);
     } catch (e) {
+      console.error('Photo upload failed:', e);
       toast('⚠️', `Photo ${si+1} failed to upload — try again.`);
       photos[si] = null;
       renderGrid();
