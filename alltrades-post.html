@@ -637,7 +637,7 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
           <span>🛡️</span><div><strong>Safety reminder:</strong> Always meet in public — parking lots, libraries, or police stations. Never share your home address.</div>
         </div>
         <div id="reviewBtns" class="btn-row" style="flex-direction:column">
-          <button class="btn btn-gold" style="font-size:1.05rem;padding:14px" onclick="publish(this)">🚀 Publish — Go Live Now!</button>
+          <button id="publishBtn" class="btn btn-gold" style="font-size:1.05rem;padding:14px" onclick="publish(this)">🚀 Publish — Go Live Now!</button>
           <button class="btn btn-outline" onclick="goPrev(4)">← Edit Listing</button>
         </div>
         <div class="success-wrap" id="successWrap">
@@ -1399,6 +1399,13 @@ function resetAll() {
   prefs = {trade:true, tc:true, cash:false, bundle:false};
   /* SHIP-IT DATE GATE — remove "&& shipItIsLive()" after July 31, 2026 */
   shipIt = fullyVerified && shipItIsLive();
+  /* PUBLISH BUTTON STUCK FIX — publish() disables this button and changes
+     its label while publishing, and only resets it on the error path (the
+     success path replaces the view instead). "Post Another Item" reuses the
+     same DOM/button, so without this it stayed disabled/stuck saying
+     "Publishing…" on the next listing. */
+  const pubBtn = document.getElementById('publishBtn');
+  if (pubBtn) { pubBtn.disabled = false; pubBtn.textContent = '🚀 Publish — Go Live Now!'; }
   document.getElementById('successWrap').classList.remove('show');
   document.getElementById('card4').style.display = 'none';
   document.getElementById('reviewRows').style.display = '';
