@@ -873,7 +873,7 @@ function slotClick(i) { targetSlot = i; document.getElementById('fileInput').cli
    transfer multi-megabyte blobs over the wire for every card, every time.
    This is very likely the real cause of the site feeling slow to populate.
    Photos are now compressed client-side and uploaded to a real Supabase
-   Storage bucket ('listing-photos') — only a short public URL gets stored
+   Storage bucket ('listing-photos-v2') — only a short public URL gets stored
    in the database row instead of the raw image data. ═══ */
 function compressImage(file, maxDim = 1400, quality = 0.8) {
   return new Promise((resolve, reject) => {
@@ -919,9 +919,14 @@ function handleFiles(inp) {
     try {
       const compressed = await compressImage(f);
       const path = `${currentUser.id}/${Date.now()}_${si}.jpg`;
-      const { error: upErr } = await sb.storage.from('listing-photos').upload(path, compressed, { contentType: 'image/jpeg', upsert: true });
+      /* NOTE: bucket renamed from 'listing-photos' to 'listing-photos-v2' — the
+         original bucket name was inexplicably rejecting all uploads with RLS
+         errors even with a fully open policy; a bucket with a different name
+         but identical config/policies worked immediately. See July 19 2026
+         debugging session for the full diagnostic trail. */
+      const { error: upErr } = await sb.storage.from('listing-photos-v2').upload(path, compressed, { contentType: 'image/jpeg', upsert: true });
       if (upErr) throw upErr;
-      const { data: pub } = sb.storage.from('listing-photos').getPublicUrl(path);
+      const { data: pub } = sb.storage.from('listing-photos-v2').getPublicUrl(path);
       photos[si] = pub.publicUrl;
       renderGrid();
       if (si === 0) document.getElementById('prevImgReal').src = pub.publicUrl;
