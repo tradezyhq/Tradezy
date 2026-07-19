@@ -881,7 +881,11 @@ function compressImage(file, maxDim = 1400, quality = 0.8) {
     const reader = new FileReader();
     reader.onload = e => { img.src = e.target.result; };
     reader.onerror = reject;
-    img.onload = () => {
+    img.onload = async () => {
+      // iOS Safari fix: onload can fire before the image is fully decoded,
+      // producing a black canvas on the first photo processed in a session.
+      // decode() waits for the actual pixel data to be ready before we draw it.
+      try { await img.decode(); } catch (e) { /* fall through and try drawing anyway */ }
       let { width, height } = img;
       if (width > maxDim || height > maxDim) {
         if (width > height) { height = Math.round(height * (maxDim / width)); width = maxDim; }
