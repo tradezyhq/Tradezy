@@ -1007,10 +1007,25 @@ async function loadTrades() {
       const stageLabel = isShipIt?'🚚 SHIP-IT':isMeetup?'📍 MEETUP':'✅ ACCEPTED';
       const stageClass = isShipIt?'stg-shipit':isMeetup?'stg-meet':'stg-agree';
       const fillClass = isShipIt?'fill-cyan':isMeetup?'fill-gold':'fill-blue';
+      /* ═══ PERSISTENT TRACKING DISPLAY ═══
+         The tracking message posted to alltrades-messages.html is easy to
+         lose in scroll history — this gives both parties a permanent place
+         to find it, right on the trade card itself, for as long as the
+         trade exists. Shows either side's tracking number whenever it's
+         been created, works the same for both Trader A and Trader B. ═══ */
+      const myTracking = isTraderA ? t.tracking_number_a : t.tracking_number_b;
+      const theirTracking = isTraderA ? t.tracking_number_b : t.tracking_number_a;
+      const trackRow = (label, num) => num
+        ? `<div style="display:flex;align-items:center;justify-content:space-between;font-size:11px;padding:5px 0;border-bottom:1px solid #f1f5f9"><span style="color:var(--muted)">${label}</span><a href="https://tools.usps.com/go/TrackConfirmAction?tLabels=${num}" target="_blank" style="color:var(--blue);font-weight:700;text-decoration:none">${num} ↗</a></div>`
+        : '';
+      const trackingBlock = isShipIt && (myTracking || theirTracking)
+        ? `<div style="background:#f0f9ff;border:1px solid #bae6fd;border-radius:7px;padding:8px 10px;margin-bottom:8px">${trackRow('📦 Your tracking', myTracking)}${trackRow('📦 Their tracking', theirTracking)}</div>`
+        : '';
       return `<div class="trade-card${isShipIt?' shipit-trade':''}">
         <div class="tc-hdr"><div class="tc-id">Trade #${t.id.slice(0,8).toUpperCase()}</div><div class="tc-stage ${stageClass}">${stageLabel}</div></div>
         <div class="tc-items"><div class="tc-itm"><div class="tc-itm-nm">${isShipIt?'Ship-It Trade':'Trade in progress'}</div><div class="tc-itm-vl">${t.total_value?'~$'+Number(t.total_value).toFixed(0):'Value TBD'}</div></div></div>
         ${needsPayment ? `<div style="background:#fffbeb;border:1px solid #fde68a;border-radius:7px;padding:8px 10px;margin-bottom:8px;font-size:11px;color:#92400e;display:flex;align-items:center;justify-content:space-between;gap:8px"><span>💳 Platform fee not paid yet</span><button class="tc-btn" style="background:var(--gold);color:var(--navy);flex:none;padding:5px 12px" onclick="window.location.href='alltrades-payment.html?trade_id=${t.id}'">Pay Now</button></div>` : ''}
+        ${trackingBlock}
         <div class="tc-prog">
           <div class="tc-prog-lbl"><span>Progress</span><span style="color:var(--${isShipIt?'cyan':isMeetup?'gold':'blue'});font-weight:700">Step ${isMeetup?'2':'1'} of 3</span></div>
           <div class="tc-prog-bar"><div class="tc-prog-fill ${fillClass}" style="width:${isMeetup?'66':'33'}%"></div></div>
