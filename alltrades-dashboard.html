@@ -1126,7 +1126,17 @@ async function acceptOffer(id, isShipIt) {
     if (!offer) throw new Error('Offer not found');
 
     const { data: listing } = await sb.from('listings').select('estimated_value,title,location_state').eq('id', offer.listing_id).single();
-    const { data: buyerRow } = await sb.from('users').select('fee_rate,address_state').eq('id', offer.offerer_id).single();
+    const { data: buyerRow } = await sb.from('users').select('fee_rate,address_state,id_verified').eq('id', offer.offerer_id).single();
+
+    /* ═══ BUYER RE-VERIFICATION AT ACCEPT — the buyer's id_verified was already
+       checked once at offer-submission time (alltrades-item.html), but time can
+       pass between an offer being made and the seller accepting it. Re-confirm
+       here too, mirroring the seller's own check just above, so a Ship-It trade
+       can't lock in with either party's verification having lapsed in between. ═══ */
+    if (isShipIt && !buyerRow?.id_verified) {
+      showToast('🪪', "This buyer's ID verification is no longer valid — this offer can't be accepted as Ship-It right now.");
+      return;
+    }
 
     /* ═══ LOCAL-TRADE AREA GATE — a local (non-Ship-It) trade requires an
        in-person meetup, which is impossible across state lines. Block
@@ -1182,6 +1192,22 @@ async function acceptOffer(id, isShipIt) {
       });
     } catch(msgErr) { console.error('Could not create kickoff message:', msgErr); }
     /* ═══ SYSTEM MESSAGE FIX END ═══ */
+
+    /* ═══ AUTO-MESSAGE: BUYER'S PAYMENT METHOD ═══
+       The buyer's chosen payment method (Zelle/Venmo/PayPal/etc.) was already
+       saved on the offer at submission time — surface it in the thread right
+       away so the seller knows what to expect without having to ask. Sent
+       from the buyer's account since it's genuinely their stated choice. ═══ */
+    if (isShipIt && offer.payment_method) {
+      try {
+        await sb.from('messages').insert({
+          sender_id: offer.offerer_id,
+          receiver_id: currentUser.id,
+          content: `💳 I'll be paying via ${offer.payment_method} for this Ship-It trade.`,
+        });
+      } catch(payMsgErr) { console.error('Could not post payment method message:', payMsgErr); }
+    }
+    /* ═══ AUTO-MESSAGE END ═══ */
 
     if (isShipIt) {
       showToast('🚚', 'Ship-It accepted! Taking you to create your shipping label…');
