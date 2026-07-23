@@ -454,11 +454,29 @@ async function loadTradeData(tradeId) {
       .eq('id', tradeId).single();
     if (error || !trade) throw new Error('Trade not found');
 
-    // Confirm current user is seller (trader_a)
-    if (trade.trader_a_id !== currentUser.id) {
-      showToast('⚠️', 'Only the seller can create the shipping label.', true);
+    /* ═══ BOTH TRADERS CAN CREATE A LABEL ═══
+       Previously this page hard-blocked anyone who wasn't trader_a (the
+       seller). But a Ship-It offer can be item-for-item (e.g. a One Piece
+       card traded for a Pokémon card) — in that case BOTH traders are
+       shipping something and both need their own label. Trader A (listing
+       owner) always ships the listed item. Trader B (offerer) only ships
+       something if their offer actually included an item — a pure
+       cash-plus-Ship-It offer with no item from the buyer means Trader B
+       has nothing to ship and doesn't need this page. ═══ */
+    const isTraderA = trade.trader_a_id === currentUser.id;
+    const isTraderB = trade.trader_b_id === currentUser.id;
+    if (!isTraderA && !isTraderB) {
+      showToast('⚠️', "You're not a participant in this trade.", true);
       setTimeout(() => window.location.href = 'alltrades-dashboard.html', 2000);
       return;
+    }
+    if (isTraderB) {
+      const { data: offerCheck } = await sb.from('offers').select('offered_item_value').eq('id', trade.offer_id).single();
+      if (!offerCheck?.offered_item_value || offerCheck.offered_item_value <= 0) {
+        showToast('ℹ️', "You're not shipping an item on this trade — no label needed on your end.");
+        setTimeout(() => window.location.href = 'alltrades-dashboard.html', 2000);
+        return;
+      }
     }
 
     tradeData = trade;
@@ -475,8 +493,9 @@ async function loadTradeData(tradeId) {
     // Load listing title
     const { data: listing } = await sb.from('listings').select('title').eq('id', trade.listing_id).single();
 
-    // Update nav
-    const name = seller?.display_name || currentUser.email?.split('@')[0] || 'Trader';
+    // Update nav — show whoever is actually logged in, not always the seller
+    const myData = isTraderA ? seller : buyer;
+    const name = myData?.display_name || currentUser.email?.split('@')[0] || 'Trader';
     document.getElementById('navAv').textContent = name.split(' ').map(n=>n[0]).join('').toUpperCase().slice(0,2);
     document.getElementById('navName').textContent = name;
 
@@ -722,6 +741,24 @@ async function buyLabel() {
       [labelCostField]: selectedRate.markedUp,
       ship_it_mode: true,
     }).eq('id', tradeData.id);
+
+    /* ═══ AUTO-MESSAGE: TRACKING NUMBER ═══
+       Fires for whichever trader creates a label — works for both Trader A
+       and Trader B now that this page is no longer seller-only. Posts a
+       normal message (not a special type) so it renders in the existing
+       thread with zero changes needed to alltrades-messages.html. ═══ */
+    const otherTraderId = isTraderA ? tradeData.trader_b_id : tradeData.trader_a_id;
+    const carrierLabel = `${data.carrier || 'USPS'} ${(data.service||'').replace(/_/g,' ')}`.trim();
+    try {
+      await sb.from('messages').insert({
+        sender_id: currentUser.id,
+        receiver_id: otherTraderId,
+        content: `📦 Shipping label created! Tracking: ${data.tracking_number} (${carrierLabel}) — track it here: https://tools.usps.com/go/TrackConfirmAction?tLabels=${data.tracking_number}`
+      });
+    } catch (msgErr) {
+      // Non-fatal: label was still purchased successfully even if the message failed to post
+      console.error('Failed to post tracking message:', msgErr);
+    }
 
     // Step 5: Show success
     showSuccess(data);
