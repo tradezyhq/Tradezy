@@ -471,6 +471,24 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
   </div>
 </div>
 
+<!-- DELETE LISTING MODAL — replaces native confirm(), which is known-unreliable
+     on mobile Safari and was implicated in listings getting deleted out of
+     sync with what the user actually tapped. -->
+<div class="modal-overlay" id="deleteListingModal">
+  <div class="modal">
+    <div class="mhd" style="background:linear-gradient(135deg,#7f1d1d,#991b1b)"><div class="mhd-ttl">🗑️ Delete This Listing?</div><button class="mhd-close" onclick="closeModal('deleteListingModal')">✕</button></div>
+    <div class="mbody">
+      <div style="text-align:center;margin-bottom:16px">
+        <div style="font-size:3rem;margin-bottom:9px">⚠️</div>
+        <div style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.15rem;margin-bottom:5px">This can't be undone</div>
+        <div style="font-size:13px;color:var(--muted);line-height:1.5">This listing will be permanently removed and no longer visible to anyone.</div>
+      </div>
+      <button class="mbtn red" id="confirmDeleteListingBtn" onclick="confirmDeleteListing()">🗑️ Yes, Delete It</button>
+      <button class="mbtn outline" onclick="closeModal('deleteListingModal')">← Never Mind</button>
+    </div>
+  </div>
+</div>
+
 <!-- MESSAGES MODAL -->
 <div class="modal-overlay" id="msgModal">
   <div class="modal" style="max-width:520px">
@@ -1068,7 +1086,7 @@ async function loadListings() {
           <div class="lr-acts">
             <a class="lr-btn lrb-view" href="alltrades-item.html?id=${l.id}" onclick="event.stopPropagation()">👁 View</a>
             <a class="lr-btn lrb-edit" href="alltrades-post.html?id=${l.id}" onclick="event.stopPropagation()">Edit</a>
-            <button class="lr-btn lrb-del" onclick="event.stopPropagation();deleteListing('${l.id}',this)">✕</button>
+            <button class="lr-btn lrb-del" onclick="event.stopPropagation();openDeleteListingModal('${l.id}')">✕</button>
           </div>
         </div>
       </a>`;
@@ -1455,14 +1473,40 @@ async function doConfirmTrade() {
   } catch(e) { showToast('⚠️','Error confirming trade.'); }
 }
 
-async function deleteListing(id, btn) {
-  if (!confirm('Delete this listing?')) return;
+/* ═══ DELETE LISTING FIX ═══
+   Previously fired an immediate native confirm() + delete on tap, with
+   nothing preventing a second tap during the delete+refetch round trip from
+   landing on whatever listing had shifted into that same screen position.
+   Native confirm() is also flagged elsewhere in this codebase as unreliable
+   on mobile Safari. Now: tapping ✕ opens a real modal and locks in the
+   specific listing id at that moment (pendingDeleteListingId) rather than
+   relying on the button still being in the same DOM position later. The
+   whole listings panel is visually + functionally locked (pointer-events
+   disabled, dimmed) for the actual delete request, so nothing can be
+   tapped — correctly or incorrectly — until it's fully done and re-rendered. ═══ */
+let pendingDeleteListingId = null;
+function openDeleteListingModal(id) {
+  pendingDeleteListingId = id;
+  openModal('deleteListingModal');
+}
+async function confirmDeleteListing() {
+  const id = pendingDeleteListingId;
+  if (!id) return;
+  closeModal('deleteListingModal');
+  const panel = document.getElementById('listingsPanel');
+  if (panel) { panel.style.pointerEvents = 'none'; panel.style.opacity = '0.5'; }
   try {
-    const { error } = await sb.from('listings').delete().eq('id',id).eq('user_id',currentUser.id);
+    const { error } = await sb.from('listings').delete().eq('id', id).eq('user_id', currentUser.id);
     if (error) throw error;
-    showToast('🗑️','Listing deleted.');
-    loadListings();
-  } catch(e) { console.error(e); showToast('⚠️','Error deleting listing.'); }
+    showToast('🗑️', 'Listing deleted.');
+    await loadListings();
+  } catch(e) {
+    console.error(e);
+    showToast('⚠️', 'Error deleting listing.');
+  } finally {
+    pendingDeleteListingId = null;
+    if (panel) { panel.style.pointerEvents = ''; panel.style.opacity = ''; }
+  }
 }
 
 async function doSignOut() { await sb.auth.signOut(); window.location.href='alltrades-auth.html'; }
