@@ -1361,8 +1361,23 @@ const BANNED_KEYWORDS = {
 
 function screenContent(title, desc) {
   const text = `${title} ${desc}`.toLowerCase();
+  /* ═══ WORD-BOUNDARY FIX — the previous plain text.includes(kw) check
+     matched keywords as SUBSTRINGS, not whole words — so "gun" incorrectly
+     matched inside "gundam" (a mecha/anime franchise, not a firearm),
+     and the same bug would hit "rum" inside "album"/"forum"/"drum", "ammo"
+     inside "ammonia", etc. Using \b word-boundary regex instead means each
+     keyword only matches as a standalone word or exact phrase, not as a
+     coincidental substring of an unrelated word.
+     TRADEOFF, flagged rather than silently changed: a plural like "beers"
+     no longer matches the keyword "beer" (no boundary between "beer" and
+     the trailing "s"). If that turns out to matter in practice, the fix is
+     just adding the specific plural/variant as its own keyword entry, not
+     reverting to substring matching. ═══ */
   for (const [cat, keywords] of Object.entries(BANNED_KEYWORDS)) {
-    const found = keywords.filter(kw => text.includes(kw));
+    const found = keywords.filter(kw => {
+      const escaped = kw.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      return new RegExp(`\\b${escaped}\\b`, 'i').test(text);
+    });
     if (found.length > 0) return { blocked: true, category: cat, matched: found };
   }
   return { blocked: false };
