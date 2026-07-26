@@ -108,7 +108,6 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);height
 .sys-msg{text-align:center;font-size:11px;color:var(--muted);background:var(--surface);border:1px solid var(--border);border-radius:99px;padding:5px 14px;width:fit-content;margin:0 auto;}
 .sys-msg.warn{background:#fef2f2;border-color:#fecaca;color:#991b1b;}
 .sys-msg.success{background:#f0fdf4;border-color:#bbf7d0;color:#14532d;}
-/* NEW OFFER BANNER — shown when an offer is declined */
 .new-offer-banner{display:none;background:linear-gradient(90deg,#1e3a8a,#1d4ed8);padding:10px 16px;align-items:center;gap:12px;flex-shrink:0;}
 .new-offer-banner.show{display:flex;}
 .nob-text{flex:1;font-size:12px;color:#93c5fd;line-height:1.4;}
@@ -187,7 +186,6 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);height
 .mbtn.outline:hover{border-color:#999;color:var(--text);}
 .toast{position:fixed;bottom:20px;right:20px;background:var(--navy);color:#e2e8f0;border:1px solid #1e3a5f;border-left:4px solid var(--green);border-radius:8px;padding:10px 15px;font-size:13px;z-index:9999;display:flex;align-items:center;gap:8px;max-width:280px;box-shadow:0 8px 26px rgba(0,0,0,.25);transform:translateX(120%);transition:transform .3s ease;}
 .toast.show{transform:translateX(0);}
-/* REPORT MODE */
 .report-mode-banner{display:none;background:linear-gradient(90deg,#7f1d1d,#991b1b);padding:9px 16px;align-items:center;gap:10px;flex-shrink:0;}
 .report-mode-banner.active{display:flex;}
 .rmb-text{flex:1;font-size:12px;color:#fca5a5;font-family:'Barlow Condensed',sans-serif;font-weight:700;letter-spacing:.3px;}
@@ -208,27 +206,15 @@ body.report-mode .msg-wrap:hover .bubble{opacity:.85;}
 .typing-dot:nth-child(3){animation-delay:.4s;}
 @keyframes typingPulse{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-4px)}}
 @media(max-width:900px){.right-panel{display:none;}}
-/* ═══ MOBILE CLEANUP START — narrower icon-only sidebar and trimmed input
-   area. The AI help widget has been removed from this page entirely (see
-   below) rather than repositioned, since it's redundant with the in-context
-   "Report a Problem" button and repeatedly collided with the send button. ═══ */
 @media(max-width:640px){
   .sidebar{width:72px;}
   .th-info,.th-right{display:none;}
   .th-av{margin:0 auto;}
-  /* The +New button and search bar don't fit — and aren't usable — in a
-     72px icon-only rail, so hide them rather than render them broken. */
   .sb-new-btn,.sb-search{display:none;}
   .sb-title-row{justify-content:center;}
-  /* Trim non-functional toolbar icons (photo/location/emoji are all "coming soon"
-     placeholders) and the safety banner so the input area isn't so crowded. */
   .input-toolbar .tool-btn{display:none;}
   .safety-remind{padding:6px 9px;font-size:10px;}
   .input-area{padding:8px 10px;}
-  /* The "← Dashboard" button was cramped into a 54px-tall bar alongside the
-     logo and full user chip, making it small and hard to tap accurately.
-     Give the bar more height and the button a bigger, easier tap target;
-     drop the username text so there's room for the button to breathe. */
   .nav{height:62px;padding:0 14px;}
   .nav-btn.ghost{padding:10px 16px;font-size:.95rem;}
   .u-name{display:none;}
@@ -240,7 +226,6 @@ body.report-mode .msg-wrap:hover .bubble{opacity:.85;}
   .msgs-area{padding:12px;}
   .msg-wrap{max-width:85%;}
 }
-/* ═══ MOBILE CLEANUP END ═══ */
 @media(prefers-color-scheme:dark){
   :root{--text:#f1f5f9;--muted:#94a3b8;--light:#64748b;--border:rgba(255,255,255,.1);--bg:#0f172a;--white:#1e293b;--surface:#162032;}
   body{background:#0f172a !important;color:#f1f5f9 !important;}
@@ -252,7 +237,6 @@ body.report-mode .msg-wrap:hover .bubble{opacity:.85;}
   .thread.active{background:rgba(26,86,219,.15) !important;}
 }
 </style>
-
 <!-- CONTENT SCREENING ENGINE -->
 <script>
 const TradezyScan = (() => {
@@ -281,9 +265,18 @@ const TradezyScan = (() => {
       if (pattern.test(text)) { results.push({category:'BYPASS',severity:'MEDIUM',action:'BLOCK_MESSAGE',matched:text.match(pattern)?.[0]||'pattern'}); break; }
     }
     const textLower = text.toLowerCase();
+    /* ═══ WORD-BOUNDARY FIX — matches the same fix applied to
+       alltrades-post.html's screenContent(). Previously textLower.includes(kw)
+       matched keywords as SUBSTRINGS, so "gun" incorrectly matched inside
+       "gundam" (and the same bug would hit "rum" inside "album"/"forum", etc.)
+       in chat messages, same as it did in listings. Now uses \b word-boundary
+       regex so keywords only match as standalone words/phrases. ═══ */
     for (const [cat, cfg] of Object.entries(BANNED)) {
       if (cat === 'BYPASS') continue;
-      const found = (cfg.keywords||[]).filter(kw => textLower.includes(kw));
+      const found = (cfg.keywords||[]).filter(kw => {
+        const escaped = kw.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        return new RegExp(`\\b${escaped}\\b`, 'i').test(textLower);
+      });
       if (found.length) results.push({category:cat,severity:cfg.severity,action:cfg.action,matched:found});
     }
     return { flagged:results.length>0, violations:results, canSend:results.filter(r=>['CRITICAL','HIGH','MEDIUM'].includes(r.severity)).length===0 };
@@ -294,7 +287,6 @@ const TradezyScan = (() => {
 </script>
 </head>
 <body>
-
 <div class="nav">
   <a href="alltrades.html" style="text-decoration:none"><div class="logo"><span class="a">Trade</span><span class="t">zy</span><span class="d">.</span></div></a>
   <div class="nav-right">
@@ -305,7 +297,6 @@ const TradezyScan = (() => {
     </div>
   </div>
 </div>
-
 <div class="chat-layout">
   <div class="sidebar">
     <div class="sb-head">
@@ -326,7 +317,6 @@ const TradezyScan = (() => {
       <div class="empty-threads"><div class="ei">💬</div><p>Loading conversations…</p></div>
     </div>
   </div>
-
   <div class="chat-panel" id="chatPanel">
     <div class="chat-empty" id="chatEmpty">
       <div class="cei">💬</div>
@@ -343,15 +333,11 @@ const TradezyScan = (() => {
         <button class="ch-btn danger" id="reportModeBtn" onclick="toggleReportMode()">⚑ Report a Problem</button>
       </div>
     </div>
-
-    <!-- Report mode banner -->
     <div class="report-mode-banner" id="reportModeBanner">
       <span style="font-size:1rem">⚑</span>
       <span class="rmb-text">Tap the flag on the message you want to report — then we'll take it from there</span>
       <button class="rmb-cancel" onclick="toggleReportMode()">✕ Cancel</button>
     </div>
-
-    <!-- NEW OFFER BANNER — shown when offer is declined -->
     <div class="new-offer-banner" id="newOfferBanner">
       <div class="nob-text">
         <strong>Offer Declined</strong>
@@ -360,7 +346,6 @@ const TradezyScan = (() => {
       <button class="nob-btn" id="newOfferBtn" onclick="goMakeNewOffer()">🔄 Make a New Offer</button>
       <span class="nob-dismiss" onclick="document.getElementById('newOfferBanner').classList.remove('show')" title="Dismiss">✕</span>
     </div>
-
     <div class="trade-context" id="tradeContextBar" style="display:none">
       <span class="tc-icon">🔄</span>
       <div class="tc-text" id="tradeContextText"><strong>Active trade</strong></div>
@@ -403,7 +388,6 @@ const TradezyScan = (() => {
       </div>
     </div>
   </div>
-
   <div class="right-panel">
     <div class="rp-head">
       <div class="rp-title" id="rpTitle">🔄 Trade Details</div>
@@ -420,8 +404,6 @@ const TradezyScan = (() => {
     </div>
   </div>
 </div>
-
-<!-- REPORT MODAL -->
 <div class="modal-overlay" id="reportModal">
   <div class="modal">
     <div class="mhd" style="background:linear-gradient(135deg,#7f1d1d,#991b1b)">
@@ -445,15 +427,12 @@ const TradezyScan = (() => {
     </div>
   </div>
 </div>
-
 <div class="toast" id="toastEl"><span id="toastIc">✅</span><span id="toastTx">Done!</span></div>
-
 <script>
 const sb = window.supabase.createClient(
   'https://equvwaspcoeetfsexqki.supabase.co',
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVxdXZ3YXNwY29lZXRmc2V4cWtpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgyNzc2MjQsImV4cCI6MjA5Mzg1MzYyNH0.TP6Kk3pzHW1PYMUu5D9Vu2lJrazIEagzu5csYhqkrfI'
 );
-
 let currentUser = null;
 let currentUserProfile = null;
 let threads = [];
@@ -462,9 +441,7 @@ let activeListingId = null;
 let realtimeSub = null;
 let allThreadsFilter = 'all';
 let scanTimer = null;
-
 const AV_COLORS = ['#1a56db','#16a34a','#ea580c','#f59e0b','#7c3aed','#0891b2','#be185d'];
-
 (async () => {
   const { data: { session } } = await sb.auth.getSession();
   if (!session) { window.location.href = 'alltrades-auth.html'; return; }
@@ -476,7 +453,6 @@ const AV_COLORS = ['#1a56db','#16a34a','#ea580c','#f59e0b','#7c3aed','#0891b2','
   const openListing = params.get('listing');
   if (openUser) openThread(openUser, openListing || null);
 })();
-
 async function loadUserProfile() {
   try {
     const { data } = await sb.from('users').select('display_name').eq('id', currentUser.id).single();
@@ -487,7 +463,6 @@ async function loadUserProfile() {
     document.getElementById('navName').textContent = name;
   } catch(e) { document.getElementById('navName').textContent = 'Me'; }
 }
-
 async function loadThreads() {
   try {
     const { data: msgs } = await sb.from('messages').select('*')
@@ -521,7 +496,6 @@ async function loadThreads() {
     document.getElementById('threadList').innerHTML = `<div class="empty-threads"><div class="ei">⚠️</div><p>Could not load messages.</p></div>`;
   }
 }
-
 function renderThreadList(filter = '') {
   const list = document.getElementById('threadList');
   let visible = threads;
@@ -543,10 +517,8 @@ function renderThreadList(filter = '') {
     list.appendChild(div);
   });
 }
-
 async function openThread(otherId, listingId) {
   activeOtherId = otherId; activeListingId = listingId || null;
-  // Hide new offer banner when switching threads
   document.getElementById('newOfferBanner').classList.remove('show');
   renderThreadList();
   document.getElementById('chatEmpty').style.display = 'none';
@@ -570,8 +542,6 @@ async function openThread(otherId, listingId) {
   subscribeToMessages(otherId);
   if (thread) { thread.unreadCount = 0; renderThreadList(); }
 }
-
-// Check if the most recent offer on this listing was declined — show New Offer banner if so
 async function checkForDeclinedOffer(otherId, listingId) {
   if (!listingId) return;
   try {
@@ -581,16 +551,13 @@ async function checkForDeclinedOffer(otherId, listingId) {
       .order('created_at', { ascending: false })
       .limit(5);
     if (!offers?.length) return;
-    // Find the most recent offer involving current user
     const myOffer = offers.find(o => o.offerer_id === currentUser.id && o.status === 'declined');
     if (myOffer) {
-      // My offer was declined — show the banner
       document.getElementById('newOfferBtn').dataset.listingId = listingId;
       document.getElementById('newOfferBanner').classList.add('show');
     }
-  } catch(e) { /* silently fail */ }
+  } catch(e) { }
 }
-
 function goMakeNewOffer() {
   const listingId = document.getElementById('newOfferBtn').dataset.listingId || activeListingId;
   if (listingId) {
@@ -599,7 +566,6 @@ function goMakeNewOffer() {
     showToast('📦', 'Could not find listing. Check your dashboard for details.');
   }
 }
-
 async function loadListingContext(listingId) {
   try {
     const { data: listing } = await sb.from('listings').select('id,title,estimated_value,category').eq('id', listingId).single();
@@ -614,9 +580,7 @@ async function loadListingContext(listingId) {
     renderRightPanel(listing, trades?.[0]);
   } catch(e) { document.getElementById('tradeContextBar').style.display = 'none'; renderRightPanelDefault(); }
 }
-
 const CAT_EMOJI = {'Food & Water':'🥫','Garden':'🌱','Electronics':'⚡','Tools':'🔧','Sports':'🚲','Music':'🎵','Gaming':'🎮','Clothing':'👗','Books':'📚','Trading Cards':'🃏','Other':'📦'};
-
 function renderRightPanel(listing, trade) {
   const emoji = CAT_EMOJI[listing.category] || '📦';
   const val = listing.estimated_value ? Number(listing.estimated_value) : 0;
@@ -642,7 +606,6 @@ function renderRightPanel(listing, trade) {
       <button class="rp-btn red" onclick="openModal('reportModal')">⚑ Report a Problem</button>
     </div>`;
 }
-
 function renderRightPanelDefault() {
   document.getElementById('rpTitle').textContent = '🛡️ Safety';
   document.getElementById('rpSub').textContent = 'Trade safely';
@@ -655,7 +618,6 @@ function renderRightPanelDefault() {
       <div class="safety-tip"><span class="st-icon">⚑</span><span>If something feels wrong, <strong>report it</strong> immediately.</span></div>
     </div>`;
 }
-
 async function loadMessages(otherId) {
   const area = document.getElementById('msgsArea');
   area.innerHTML = '';
@@ -675,14 +637,12 @@ async function loadMessages(otherId) {
     area.scrollTop = area.scrollHeight;
   } catch(e) { area.innerHTML = `<div class="sys-msg warn">Could not load messages.</div>`; }
 }
-
 async function markAsRead(otherId) {
   try {
     await sb.from('messages').update({ read_at: new Date().toISOString() })
       .eq('sender_id', otherId).eq('receiver_id', currentUser.id).is('read_at', null);
   } catch(e) {}
 }
-
 function subscribeToMessages(otherId) {
   if (realtimeSub) { sb.removeChannel(realtimeSub); realtimeSub = null; }
   realtimeSub = sb.channel(`messages-${currentUser.id}`)
@@ -701,7 +661,6 @@ function subscribeToMessages(otherId) {
       }
     }).subscribe();
 }
-
 function makeBubble(m) {
   const isMine = m.sender_id === currentUser.id;
   const thread = threads.find(t => t.otherId === (isMine ? m.receiver_id : m.sender_id));
@@ -724,10 +683,8 @@ function makeBubble(m) {
     <button class="msg-flag" title="Report this message" onclick="flagMessage(this)">⚑</button>`;
   return wrap;
 }
-
 function makeDateDiv(label) { const d = document.createElement('div'); d.className='date-div'; d.innerHTML=`<span>${label}</span>`; return d; }
 function makeSysMsg(text, success=false) { const d = document.createElement('div'); d.className=`sys-msg${success?' success':''}`; d.textContent=text; return d; }
-
 async function sendMessage() {
   if (!activeOtherId) return;
   const input = document.getElementById('msgInput');
@@ -767,7 +724,6 @@ async function sendMessage() {
   } catch(e) { showToast('⚠️', 'Failed to send message. Please try again.'); }
   finally { btn.disabled = !document.getElementById('msgInput').value.trim(); }
 }
-
 function onType(el) {
   const val = el.value, len = val.length;
   const charWarn = document.getElementById('charWarn');
@@ -787,20 +743,15 @@ function onType(el) {
     }, 600);
   } else { document.getElementById('scanIndicator').classList.remove('show'); }
 }
-
 function handleKey(e) {
   if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); if (!document.getElementById('sendBtn').disabled) sendMessage(); }
 }
-
 function viewActiveListing() {
   if (activeListingId) window.location.href = `alltrades-item.html?id=${activeListingId}`;
   else showToast('📦', 'No listing linked to this conversation.');
 }
-
-/* ── REPORT MODE ── */
 let reportingMessageContent = '';
 let reportingMessageSender  = '';
-
 function toggleReportMode() {
   const active = document.body.classList.toggle('report-mode');
   document.getElementById('reportModeBanner').classList.toggle('active', active);
@@ -817,7 +768,6 @@ function toggleReportMode() {
     reportingMessageSender  = '';
   }
 }
-
 function flagMessage(flagBtn) {
   const wrap = flagBtn.closest('.msg-wrap');
   reportingMessageContent = wrap.dataset.msgContent || '';
@@ -827,15 +777,12 @@ function flagMessage(flagBtn) {
   toggleReportMode();
   openModal('reportModal');
 }
-
-/* ── REPORT SUBMIT ── */
 function selectReport(el) {
   document.querySelectorAll('#reportOptions label').forEach(l => { l.style.borderColor='var(--border)'; l.style.background=''; });
   el.style.borderColor = 'var(--red)';
   el.style.background  = '#fef2f2';
   el.querySelector('input').checked = true;
 }
-
 async function submitReport() {
   const selected = document.querySelector('#reportOptions input[type="radio"]:checked');
   if (!selected) { showToast('⚠️', 'Please select a reason for your report.'); return; }
@@ -867,7 +814,6 @@ async function submitReport() {
     btn.disabled = false; btn.textContent = '⚑ Submit Report';
   }
 }
-
 function escHtml(str) { return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 function timeAgo(ts) {
   if (!ts) return '';
