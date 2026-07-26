@@ -264,7 +264,7 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
 
 <div class="topbar">
   <div class="logo" onclick="window.location.href='alltrades.html'"><span class="all">Trade</span><span class="trades">zy</span><span class="dot">.</span></div>
-  <div class="topbar-center">📦 Post a Listing</div>
+  <div class="topbar-center" id="topbarTitle">📦 Post a Listing</div>
   <div class="topbar-right">
     <span class="topbar-link" onclick="window.location.href='alltrades-dashboard.html'">← Dashboard</span>
     <span class="topbar-link" onclick="window.location.href='alltrades.html'">✕ Cancel</span>
@@ -778,12 +778,65 @@ function shipItIsLive() { return new Date() >= SHIP_IT_LIVE_DATE; }
     if (tip) tip.style.display = 'none';
   }
   /* SHIP-IT DATE GATE END */
+  /* ═══ EDIT LISTING FIX START ═══
+     alltrades-post.html previously had zero code reading the ?id= URL param
+     that alltrades-dashboard.html's "Edit" button already links to
+     (alltrades-post.html?id=LISTING_ID) — meaning "Edit" silently opened a
+     totally blank new-listing form instead of editing anything. This is why
+     editing forced a full photo re-upload and got blocked by the 3-photo
+     minimum: the form had no idea a listing already existed, let alone what
+     its photos were. Fetches the existing row (scoped to the current user
+     via .eq('user_id', ...) as a client-side safety check in addition to
+     RLS), and prefills the core fields — including photos, which resolves
+     the reported bug directly since the grid will already show >=3 photos.
+     KNOWN LIMITATION: TCG/Sports-specific sub-fields (set, card #, grade,
+     foil, graded toggle) are stored concatenated into the description text
+     at publish time, not as separate columns, so they aren't reverse-parsed
+     back into their own inputs here — those specific sub-fields start blank
+     in edit mode even though the top-level category and base description
+     text do prefill correctly. Flagging rather than guessing at a fragile
+     text-parsing solution. ═══ */
+  const urlParams = new URLSearchParams(window.location.search);
+  const editId = urlParams.get('id');
+  if (editId) {
+    const { data: existing, error: fetchErr } = await sb.from('listings')
+      .select('*').eq('id', editId).eq('user_id', currentUser.id).single();
+    if (fetchErr || !existing) {
+      toast('⚠️', "Couldn't load that listing for editing — it may not exist or isn't yours.", true);
+    } else {
+      editListingId = existing.id;
+      document.getElementById('fTitle').value = existing.title || '';
+      document.getElementById('fDesc').value = existing.description || '';
+      document.getElementById('fVal').value = existing.estimated_value || '';
+      document.getElementById('fQty').value = existing.quantity || 1;
+      document.getElementById('fWants').value = existing.wants || '';
+      document.getElementById('fMeetup').value = existing.meetup_style || '';
+      document.getElementById('fAvail').value = existing.availability || '';
+      document.getElementById('fArea').value = existing.area_note || '';
+      document.getElementById('fMinCash').value = existing.min_cash_offer || '';
+      cond = existing.condition || cond;
+      tags = existing.tags || [];
+      photos = (existing.photos || []).slice();
+      const matchingPill = Array.from(document.querySelectorAll('#catPills .cat-pill'))
+        .find(p => p.getAttribute('onclick')?.includes(`'${existing.category}'`));
+      if (matchingPill) pickCat(matchingPill, existing.category);
+      else cat = existing.category || cat;
+      const pubBtnEl = document.getElementById('publishBtn');
+      if (pubBtnEl) pubBtnEl.textContent = '💾 Update Listing';
+      const topbarTitleEl = document.getElementById('topbarTitle');
+      if (topbarTitleEl) topbarTitleEl.textContent = '✏️ Edit Listing';
+      toast('✏️', `Editing "${existing.title}"`);
+    }
+  }
+  /* ═══ EDIT LISTING FIX END ═══ */
+
   renderGrid();
   updateProg(1);
   livePreview();
 })();
 
 let step = 1;
+let editListingId = null;
 let photos = [];
 let tags = [];
 let cat = 'Food & Water';
@@ -1374,8 +1427,7 @@ async function publish(btn) {
     /* SHIP-IT DATE GATE START — delete this line, use `ship_it: shipIt` directly, after July 31, 2026 */
     const finalShipIt = shipIt && shipItIsLive();
     /* SHIP-IT DATE GATE END */
-    const { data, error } = await sb.from('listings').insert({
-      user_id:         currentUser.id,
+    const listingPayload = {
       title,
       description:     fullDesc,
       condition:       condValue,
@@ -1390,19 +1442,24 @@ async function publish(btn) {
       area_note:       area || null,
       min_cash_offer:  minCash || null,
       photos:          photos.length > 0 ? photos : null,
-      status:          'active',
       ship_it:         finalShipIt,
       location_city:   sellerCity,
       location_state:  sellerState
-    }).select().single();
+    };
+    /* ═══ EDIT LISTING FIX: update existing row instead of always inserting
+       a new one, when this page was opened via ?id= for an existing listing
+       the user owns. ═══ */
+    const { data, error } = editListingId
+      ? await sb.from('listings').update(listingPayload).eq('id', editListingId).eq('user_id', currentUser.id).select().single()
+      : await sb.from('listings').insert({ ...listingPayload, user_id: currentUser.id, status: 'active' }).select().single();
     if (error) throw error;
     document.getElementById('pFill').style.width = '100%';
-    document.getElementById('pLabel').textContent = 'Published! 🎉';
+    document.getElementById('pLabel').textContent = editListingId ? 'Updated! 🎉' : 'Published! 🎉';
     ['pill1','pill2','pill3','pill4'].forEach(id => { document.getElementById(id).className = 'step-pill done'; });
     document.getElementById('reviewRows').style.display = 'none';
     document.getElementById('reviewBtns').style.display = 'none';
     document.getElementById('head4Icon').textContent = '🎉';
-    document.getElementById('head4Title').textContent = 'Listing Live!';
+    document.getElementById('head4Title').textContent = editListingId ? 'Listing Updated!' : 'Listing Live!';
     document.getElementById('head4Sub').textContent = finalShipIt
       ? 'Visible to local + nationwide Ship-It traders right now.'
       : 'Visible to local traders right now.';
@@ -1411,10 +1468,10 @@ async function publish(btn) {
       : 'Your listing is now visible to local traders. You\'ll be notified when someone makes an offer.';
     document.getElementById('successWrap').classList.add('show');
     document.getElementById('sucTitle').textContent = title;
-    document.getElementById('sucMeta').textContent = `Just listed in ${categoryValue} · 0 offers${finalShipIt?' · 🚚 Ship-It':''}`;
+    document.getElementById('sucMeta').textContent = `${editListingId ? 'Updated' : 'Just listed'} in ${categoryValue} · 0 offers${finalShipIt?' · 🚚 Ship-It':''}`;
     if (photos[0]) document.getElementById('sucImg').innerHTML = `<img src="${photos[0]}" style="width:56px;height:56px;object-fit:cover;border-radius:8px">`;
-    toast('🚀', `"${title}" is now live!`);
-    if (typeof gtag !== 'undefined') gtag('event', 'listing_published', { event_category: 'listings', event_label: categoryValue });
+    toast('🚀', editListingId ? `"${title}" updated!` : `"${title}" is now live!`);
+    if (typeof gtag !== 'undefined') gtag('event', editListingId ? 'listing_updated' : 'listing_published', { event_category: 'listings', event_label: categoryValue });
   } catch(e) {
     console.error(e);
     toast('⚠️', 'Error publishing listing. Please try again.');
@@ -1425,6 +1482,9 @@ async function publish(btn) {
 
 function resetAll() {
   photos = []; tags = []; cat = 'Food & Water'; cond = 'Like New'; step = 1;
+  editListingId = null;
+  const topbarTitleEl = document.getElementById('topbarTitle');
+  if (topbarTitleEl) topbarTitleEl.textContent = '📦 Post a Listing';
   tcgCond = 'Mint'; tcgPref = 'Trade Only'; tcgSubcat = 'Pokémon';
   scSubcat = 'Baseball'; scCond = 'Mint'; tcgGraded = false; scGraded = false; foilOn = false;
   prefs = {trade:true, tc:true, cash:false, bundle:false};
