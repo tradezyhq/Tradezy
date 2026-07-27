@@ -1438,6 +1438,27 @@ window.banUserFromAI = async function(userId, name, reason) {
     aiBot(`🚫 Done — ${name} has been banned and all their listings paused.`);
   } catch(e) { showToast('⚠️','Error: '+e.message); }
 };
+const SEND_EMAIL_WORKER = 'https://tradezy-send-email.throbbing-lake-08ed.workers.dev';
+function storefrontEmailShell(title, bodyHtml) {
+  return `<div style="font-family:Arial,Helvetica,sans-serif;max-width:480px;margin:0 auto;padding:32px 24px;background:#f1f5f9;">
+    <div style="text-align:center;margin-bottom:24px;">
+      <span style="font-size:28px;font-weight:900;"><span style="color:#0a1628;">Trade</span><span style="color:#2563eb;">zy</span><span style="color:#f59e0b;">.</span></span>
+    </div>
+    <div style="background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:28px;">
+      <h2 style="margin:0 0 12px;color:#0a1628;font-size:20px;text-align:center;">${title}</h2>
+      ${bodyHtml}
+    </div>
+  </div>`;
+}
+async function sendStorefrontEmail(to, subject, html) {
+  try {
+    await fetch(SEND_EMAIL_WORKER, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ to, subject, html }),
+    });
+  } catch(e) { console.error('Email send failed (non-fatal):', e); }
+}
 window.approveStorefrontRequest = async function(requestId, userId, email, ein) {
   try {
     /* ═══ SILENT-FAILURE FIX ═══
@@ -1460,6 +1481,13 @@ window.approveStorefrontRequest = async function(requestId, userId, email, ein) 
       sender_id: currentUser.id, receiver_id: userId,
       content: `🏪 Great news — your Verified Storefront request has been approved! You're now locked in at a 3% fee on every trade, and the badge is live on your profile.`
     });
+    // And by email
+    await sendStorefrontEmail(email, "You're a Verified Storefront on Tradezy 🏪", storefrontEmailShell(
+      'Request Approved 🎉',
+      `<p style="color:#475569;font-size:14px;line-height:1.6;margin:0 0 16px;">Good news — your Verified Storefront request has been approved.</p>
+       <p style="color:#475569;font-size:14px;line-height:1.6;margin:0 0 16px;">You're now locked in at a <strong>3% lifetime fee</strong> on every trade, and the Verified Storefront badge is live on your profile and listings right now.</p>
+       <p style="color:#94a3b8;font-size:12px;margin-top:20px;">Questions? Just reply to this email or reach us at hello@tradezyhq.com.</p>`
+    ));
     showToast('🏪',`${email} approved as Verified Storefront.`);
     loadStorefrontRequests(); loadStats();
   } catch(e) { showToast('⚠️','Error approving request: '+e.message); }
@@ -1474,6 +1502,12 @@ window.denyStorefrontRequest = async function(requestId, userId, email) {
       sender_id: currentUser.id, receiver_id: userId,
       content: `Thanks for your interest in Verified Storefront status. We weren't able to approve this request right now — reply here or email hello@tradezyhq.com if you'd like to discuss further.`
     });
+    // And by email
+    await sendStorefrontEmail(email, 'Update on your Tradezy Storefront request', storefrontEmailShell(
+      'Storefront Request Update',
+      `<p style="color:#475569;font-size:14px;line-height:1.6;margin:0 0 16px;">Thanks for your interest in Verified Storefront status on Tradezy.</p>
+       <p style="color:#475569;font-size:14px;line-height:1.6;margin:0 0 16px;">We weren't able to approve this request right now. If you'd like to discuss further or provide more information, just reply to this email or reach us at hello@tradezyhq.com — happy to take another look.</p>`
+    ));
     showToast('✕','Request denied.');
     loadStorefrontRequests();
   } catch(e) { showToast('⚠️','Error: '+e.message); }
