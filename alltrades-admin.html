@@ -311,6 +311,7 @@ body{font-family:'Lato',sans-serif;background:var(--navy);color:var(--text);min-
     <div class="sb-sec">
       <div class="sb-lbl">Safety</div>
       <div class="ni" id="nav-disputes" onclick="switchView('disputes')"><span class="ni-ic">⚖️</span>Disputes <span class="ni-b red" id="disputeBadge" style="display:none">0</span></div>
+      <div class="ni" id="nav-storefront" onclick="switchView('storefront')"><span class="ni-ic">🏪</span>Storefront Requests <span class="ni-b red" id="storefrontBadge" style="display:none">0</span></div>
       <div class="ni" id="nav-messages" onclick="switchView('messages')"><span class="ni-ic">💬</span>Messages</div>
       <div class="ni" id="nav-banned" onclick="switchView('banned')"><span class="ni-ic">🚫</span>Banned Users</div>
     </div>
@@ -413,6 +414,12 @@ body{font-family:'Lato',sans-serif;background:var(--navy);color:var(--text);min-
       <div class="sec-hdr"><div class="sec-title">⚖️ Open Disputes</div></div>
       <div class="ib blue"><span>ℹ️</span><div>All open disputes filed by users. Response targets: Critical 8hr, High 16hr, Medium 24hr, Low 48hr.</div></div>
       <div id="disputesPanel"><div class="loading">Loading disputes…</div></div>
+    </div>
+    <!-- STOREFRONT REQUESTS -->
+    <div id="view-storefront" style="display:none">
+      <div class="sec-hdr"><div class="sec-title">🏪 Storefront Requests</div></div>
+      <div class="ib blue"><span>ℹ️</span><div>Manual review only — EIN is collected but not verified against IRS records, so use judgment. Approving grants a lifetime 3% fee rate + Verified Storefront badge.</div></div>
+      <div id="storefrontPanel"><div class="loading">Loading requests…</div></div>
     </div>
     <!-- MESSAGES -->
     <div id="view-messages" style="display:none">
@@ -657,7 +664,7 @@ async function loadStats() {
     const [
       {count:userCount},{count:listingCount},{count:tradeCount},
       {count:disputeCount},{count:bannedCount},{count:offerCount},
-      {count:msgCount},{count:ratingCount}
+      {count:msgCount},{count:ratingCount},{count:storefrontPendingCount}
     ] = await Promise.all([
       sb.from('users').select('*',{count:'exact',head:true}),
       sb.from('listings').select('*',{count:'exact',head:true}).eq('status','active'),
@@ -666,7 +673,8 @@ async function loadStats() {
       sb.from('users').select('*',{count:'exact',head:true}).eq('is_banned',true),
       sb.from('offers').select('*',{count:'exact',head:true}),
       sb.from('messages').select('*',{count:'exact',head:true}),
-      sb.from('ratings').select('*',{count:'exact',head:true})
+      sb.from('ratings').select('*',{count:'exact',head:true}),
+      sb.from('storefront_requests').select('*',{count:'exact',head:true}).eq('status','pending')
     ]);
     ['statUsers','statListings','statTrades','statDisputes','statBanned','statOffers','statMessages','statRatings'].forEach((id,i)=>{
       document.getElementById(id).textContent=[userCount,listingCount,tradeCount,disputeCount,bannedCount,offerCount,msgCount,ratingCount][i]||0;
@@ -684,6 +692,11 @@ async function loadStats() {
       document.getElementById('disputeBadge').textContent=disputeCount;
       document.getElementById('disputeBadge').style.display='inline';
       addAlert('red','⚖️',`<strong>${disputeCount} open dispute${disputeCount>1?'s':''}</strong> need your attention.`,'Review Now',"switchView('disputes')");
+    }
+    if(storefrontPendingCount>0){
+      document.getElementById('storefrontBadge').textContent=storefrontPendingCount;
+      document.getElementById('storefrontBadge').style.display='inline';
+      addAlert('gold','🏪',`<strong>${storefrontPendingCount} storefront request${storefrontPendingCount>1?'s':''}</strong> awaiting review.`,'Review Now',"switchView('storefront')");
     }
   } catch(e){console.error('Stats error:',e);}
 }
@@ -1138,6 +1151,19 @@ async function loadDisputes() {
   }catch(e){document.getElementById('disputesPanel').innerHTML='<div class="empty">Could not load disputes.</div>';}
 }
 
+async function loadStorefrontRequests() {
+  try {
+    const {data:reqs}=await sb.from('storefront_requests').select('*').eq('status','pending').order('submitted_at',{ascending:false}).limit(50);
+    const panel=document.getElementById('storefrontPanel');
+    if(!reqs?.length){panel.innerHTML='<div class="ib green" style="margin:0"><span>✅</span><div>No pending storefront requests.</div></div>';return;}
+    panel.innerHTML=reqs.map(r=>{
+      const einNote = r.ein ? `EIN: ${r.ein}` : `<span style="color:var(--gold-l)">No EIN provided</span>`;
+      const notesNote = r.notes ? `<div style="font-size:12px;color:var(--muted);margin-top:6px;font-style:italic">"${r.notes}"</div>` : '';
+      return `<div class="dq-item"><div class="dq-hdr"><div class="dq-id">🏪 ${r.business_name||'Unnamed business'} · ${timeAgo(r.submitted_at)}</div><div class="dq-sev sev-md">PENDING</div></div><div class="dq-issue">${r.email} — ${einNote}${notesNote}</div><div class="dq-acts"><button class="dqa dqa-ok" onclick="approveStorefrontRequest('${r.id}','${r.user_id}','${r.email}','${(r.ein||'').replace(/'/g,"\\'")}")">✓ Approve — 3% Rate</button><button class="dqa dqa-esc" onclick="denyStorefrontRequest('${r.id}')">✕ Deny</button></div></div>`;
+    }).join('');
+  }catch(e){document.getElementById('storefrontPanel').innerHTML='<div class="empty">Could not load requests.</div>';}
+}
+
 /* Lets admin override an AI auto-resolution the AI got wrong (e.g. safety issue wrongly closed) */
 async function reopenDispute(disputeId) {
   if (!confirm('Reopen this dispute for manual review? This overrides the AI\'s auto-resolution.')) return;
@@ -1332,6 +1358,7 @@ function switchView(v) {
   if(v==='trades') loadAllTrades();
   if(v==='listings') loadAllListings();
   if(v==='disputes') loadDisputes();
+  if(v==='storefront') loadStorefrontRequests();
   if(v==='banned') loadBannedUsers();
   if(v==='payouts') loadPayouts();
   if(v==='messages') loadMessages();
@@ -1409,6 +1436,25 @@ window.banUserFromAI = async function(userId, name, reason) {
     loadStats(); loadAllUsers(); loadRecentUsers();
     aiHistory.push({role:'user',content:`Confirmed: User ${name} banned for: ${reason}.`});
     aiBot(`🚫 Done — ${name} has been banned and all their listings paused.`);
+  } catch(e) { showToast('⚠️','Error: '+e.message); }
+};
+window.approveStorefrontRequest = async function(requestId, userId, email, ein) {
+  try {
+    await sb.from('storefront_requests').update({status:'approved'}).eq('id',requestId);
+    /* Insert into the allowlist too, so any FUTURE re-signup under this email
+       still auto-applies — matches the same belt-and-suspenders pattern as
+       founding_trader_emails. */
+    await sb.from('storefront_partner_emails').upsert({email:email,business_ein:ein||null,fee_rate:0.03});
+    await sb.from('users').update({fee_rate:0.03,is_storefront_partner:true,business_ein:ein||null}).eq('id',userId);
+    showToast('🏪',`${email} approved as Verified Storefront.`);
+    loadStorefrontRequests(); loadStats();
+  } catch(e) { showToast('⚠️','Error approving request: '+e.message); }
+};
+window.denyStorefrontRequest = async function(requestId) {
+  try {
+    await sb.from('storefront_requests').update({status:'rejected'}).eq('id',requestId);
+    showToast('✕','Request denied.');
+    loadStorefrontRequests();
   } catch(e) { showToast('⚠️','Error: '+e.message); }
 };
 </script>
