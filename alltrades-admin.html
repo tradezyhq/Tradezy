@@ -1159,7 +1159,7 @@ async function loadStorefrontRequests() {
     panel.innerHTML=reqs.map(r=>{
       const einNote = r.ein ? `EIN: ${r.ein}` : `<span style="color:var(--gold-l)">No EIN provided</span>`;
       const notesNote = r.notes ? `<div style="font-size:12px;color:var(--muted);margin-top:6px;font-style:italic">"${r.notes}"</div>` : '';
-      return `<div class="dq-item"><div class="dq-hdr"><div class="dq-id">🏪 ${r.business_name||'Unnamed business'} · ${timeAgo(r.submitted_at)}</div><div class="dq-sev sev-md">PENDING</div></div><div class="dq-issue">${r.email} — ${einNote}${notesNote}</div><div class="dq-acts"><button class="dqa dqa-ok" onclick="approveStorefrontRequest('${r.id}','${r.user_id}','${r.email}','${(r.ein||'').replace(/'/g,"\\'")}")">✓ Approve — 3% Rate</button><button class="dqa dqa-esc" onclick="denyStorefrontRequest('${r.id}')">✕ Deny</button></div></div>`;
+      return `<div class="dq-item"><div class="dq-hdr"><div class="dq-id">🏪 ${r.business_name||'Unnamed business'} · ${timeAgo(r.submitted_at)}</div><div class="dq-sev sev-md">PENDING</div></div><div class="dq-issue">${r.email} — ${einNote}${notesNote}</div><div class="dq-acts"><button class="dqa dqa-ok" onclick="approveStorefrontRequest('${r.id}','${r.user_id}','${r.email}','${(r.ein||'').replace(/'/g,"\\'")}')">✓ Approve — 3% Rate</button><button class="dqa dqa-esc" onclick="denyStorefrontRequest('${r.id}','${r.user_id}','${r.email}')">✕ Deny</button></div></div>`;
     }).join('');
   }catch(e){document.getElementById('storefrontPanel').innerHTML='<div class="empty">Could not load requests.</div>';}
 }
@@ -1440,19 +1440,40 @@ window.banUserFromAI = async function(userId, name, reason) {
 };
 window.approveStorefrontRequest = async function(requestId, userId, email, ein) {
   try {
-    await sb.from('storefront_requests').update({status:'approved'}).eq('id',requestId);
-    /* Insert into the allowlist too, so any FUTURE re-signup under this email
-       still auto-applies — matches the same belt-and-suspenders pattern as
-       founding_trader_emails. */
+    /* ═══ SILENT-FAILURE FIX ═══
+       .update() without RLS permission doesn't throw a JS error — it just
+       affects 0 rows, which meant a blocked update looked identical to a
+       real success (this is exactly what happened before the admin RLS
+       policies existed). Chaining .select() returns the rows actually
+       updated, so we can tell the difference and surface a real error
+       instead of a false "success" toast. ═══ */
+    const { data: updatedReq, error: reqErr } = await sb.from('storefront_requests').update({status:'approved'}).eq('id',requestId).select();
+    if (reqErr) throw reqErr;
+    if (!updatedReq || updatedReq.length === 0) throw new Error('Update blocked — no row was actually changed (check RLS policies).');
+    // Insert into the allowlist too, so any FUTURE re-signup under this email
+    // still auto-applies — matches the same belt-and-suspenders pattern as
+    // founding_trader_emails.
     await sb.from('storefront_partner_emails').upsert({email:email,business_ein:ein||null,fee_rate:0.03});
     await sb.from('users').update({fee_rate:0.03,is_storefront_partner:true,business_ein:ein||null}).eq('id',userId);
+    // Notify the requester in Messages
+    await sb.from('messages').insert({
+      sender_id: currentUser.id, receiver_id: userId,
+      content: `🏪 Great news — your Verified Storefront request has been approved! You're now locked in at a 3% fee on every trade, and the badge is live on your profile.`
+    });
     showToast('🏪',`${email} approved as Verified Storefront.`);
     loadStorefrontRequests(); loadStats();
   } catch(e) { showToast('⚠️','Error approving request: '+e.message); }
 };
-window.denyStorefrontRequest = async function(requestId) {
+window.denyStorefrontRequest = async function(requestId, userId, email) {
   try {
-    await sb.from('storefront_requests').update({status:'rejected'}).eq('id',requestId);
+    const { data: updatedReq, error: reqErr } = await sb.from('storefront_requests').update({status:'rejected'}).eq('id',requestId).select();
+    if (reqErr) throw reqErr;
+    if (!updatedReq || updatedReq.length === 0) throw new Error('Update blocked — no row was actually changed (check RLS policies).');
+    // Notify the requester in Messages
+    await sb.from('messages').insert({
+      sender_id: currentUser.id, receiver_id: userId,
+      content: `Thanks for your interest in Verified Storefront status. We weren't able to approve this request right now — reply here or email hello@tradezyhq.com if you'd like to discuss further.`
+    });
     showToast('✕','Request denied.');
     loadStorefrontRequests();
   } catch(e) { showToast('⚠️','Error: '+e.message); }
