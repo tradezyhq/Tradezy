@@ -287,6 +287,11 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
         <div class="si-info"><div class="si-title">Payment Methods</div><div class="si-meta" id="paymentNavMeta">Zelle, PayPal, Venmo…</div></div>
         <div class="si-badge sib-shipit" id="paymentBadge">🚚 SHIP-IT</div>
       </div>
+      <div class="step-item" id="nav-storefront" onclick="showStep('storefront')">
+        <div class="si-icon-wrap">🏪</div>
+        <div class="si-info"><div class="si-title">Storefront Status</div><div class="si-meta">Optional — for businesses</div></div>
+        <div class="si-badge sib-pending" id="storefrontBadgeNav" style="background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe;">OPTIONAL</div>
+      </div>
       <div class="sl-points">
         <div class="slp-label">Your Trust Score Progress</div>
         <div class="slp-bar-track"><div class="slp-bar-fill" id="progressBar" style="width:20%"></div></div>
@@ -534,7 +539,52 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
         </div>
       </div>
 
-      <!-- BADGE SHOWCASE -->
+      <!-- STOREFRONT REQUEST PANEL — optional, for businesses. This is a
+           REQUEST, not a self-grant: submitting inserts a row into
+           storefront_requests with status='pending'. The actual
+           "Verified Storefront" badge + 3% rate only get applied when
+           Tradezy staff manually approve it in the admin panel — same
+           reasoning as EIN being collected but not verified: this is a
+           legitimacy filter Cody personally reviews, not an automatic gate. -->
+      <div class="step-panel" id="panel-storefront">
+        <div class="sp-head">
+          <div class="sp-head-icon" style="background:#eff6ff;border:1px solid #bfdbfe">🏪</div>
+          <div><div class="sp-head-title">Storefront Status</div><div class="sp-head-sub">For registered businesses — optional</div></div>
+          <div class="sp-reward" style="margin-left:auto"><div class="sp-reward-pts" style="color:var(--blue)">3% RATE</div><div class="sp-reward-label">Instead of standard 5-10%</div></div>
+        </div>
+        <div class="sp-body">
+          <div id="storefrontPendingState" style="display:none">
+            <div style="background:#fffbeb;border:1px solid #fde68a;border-radius:10px;padding:14px 16px;margin-bottom:16px;display:flex;align-items:center;gap:12px;">
+              <span style="font-size:1.5rem;flex-shrink:0;">⏳</span>
+              <div style="flex:1;"><div style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.95rem;color:#92400e;margin-bottom:2px;">Request Pending Review</div><div style="font-size:11px;color:#92400e;">We'll email you once it's reviewed — usually within a few days.</div></div>
+            </div>
+          </div>
+          <div id="storefrontApprovedState" style="display:none">
+            <div style="background:linear-gradient(135deg,var(--blue),var(--blue-l));border-radius:10px;padding:14px 16px;margin-bottom:16px;display:flex;align-items:center;gap:12px;">
+              <span style="font-size:1.5rem;flex-shrink:0;">🏪</span>
+              <div style="flex:1;"><div style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.95rem;color:#fff;margin-bottom:2px;">Verified Storefront</div><div style="font-size:11px;color:#dbeafe;">You're locked in at a 3% fee on every trade.</div></div>
+              <div style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.1rem;color:#fff;">✓</div>
+            </div>
+          </div>
+          <div id="storefrontFormState">
+            <div class="info-box ib-cyan"><span>🏪</span><div><strong>Running a real business?</strong> Request Verified Storefront status for a 3% lifetime rate instead of the standard 5-10%. This is manually reviewed, not automatic.</div></div>
+            <div style="margin-bottom:14px;">
+              <label style="display:block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:6px;">Business Name</label>
+              <input class="plat-handle-input" id="storefrontBizName" type="text" placeholder="e.g. Brave Dragon Distributors">
+            </div>
+            <div style="margin-bottom:14px;">
+              <label style="display:block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:6px;">EIN <span style="font-weight:400;text-transform:none;color:var(--light)">(if you have one — sole proprietors using an SSN can leave blank and explain below)</span></label>
+              <input class="plat-handle-input" id="storefrontEin" type="text" placeholder="e.g. 12-3456789">
+            </div>
+            <div style="margin-bottom:14px;">
+              <label style="display:block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:6px;">Anything else we should know? <span style="font-weight:400;text-transform:none;color:var(--light)">(optional)</span></label>
+              <textarea class="plat-handle-input" id="storefrontNotes" rows="3" style="resize:vertical;" placeholder="e.g. I'm a sole proprietor, no EIN — happy to provide other proof of business."></textarea>
+            </div>
+            <button class="verify-btn vbtn-cyan" id="submitStorefrontBtn" onclick="submitStorefrontRequest()">🏪 Submit Request</button>
+            <div style="font-size:11px;color:var(--light);margin-top:8px;text-align:center;line-height:1.5;">Reviewed manually — this isn't an instant approval. We'll follow up by email.</div>
+          </div>
+        </div>
+      </div>
       <div style="background:var(--white);border:1px solid var(--border);border-radius:14px;overflow:hidden;">
         <div style="padding:14px 18px;border-bottom:1px solid var(--border);">
           <div style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1rem;">🏆 Verification Badges</div>
@@ -652,7 +702,7 @@ function initStripe() {
 async function loadUserData() {
   try {
     const { data, error } = await sb.from('users')
-      .select('display_name, email, trust_score, address_city, address_state, address_zip, address_verified, phone_verified, id_verified, payment_methods')
+      .select('display_name, email, trust_score, address_city, address_state, address_zip, address_verified, phone_verified, id_verified, payment_methods, is_storefront_partner')
       .eq('id', currentUser.id).single();
     if (error) throw error;
     userData = data;
@@ -675,6 +725,29 @@ async function loadUserData() {
     // ── ID ──
     if (data.id_verified) {
       markIdVerified();
+    }
+
+    // ── STOREFRONT ──
+    if (data.is_storefront_partner) {
+      document.getElementById('storefrontFormState').style.display = 'none';
+      document.getElementById('storefrontPendingState').style.display = 'none';
+      document.getElementById('storefrontApprovedState').style.display = 'block';
+      const navSf = document.getElementById('nav-storefront');
+      navSf.querySelector('.si-icon-wrap').textContent = '✅';
+      navSf.querySelector('.si-badge').className = 'si-badge sib-done';
+      navSf.querySelector('.si-badge').textContent = '3% RATE';
+    } else {
+      try {
+        const { data: existingReq } = await sb.from('storefront_requests')
+          .select('status').eq('user_id', currentUser.id)
+          .order('submitted_at', { ascending: false }).limit(1).maybeSingle();
+        if (existingReq?.status === 'pending') {
+          document.getElementById('storefrontFormState').style.display = 'none';
+          document.getElementById('storefrontPendingState').style.display = 'block';
+          const navSf = document.getElementById('nav-storefront');
+          navSf.querySelector('.si-badge').textContent = 'PENDING';
+        }
+      } catch(e) { /* no request yet — form stays visible, nothing to do */ }
     }
 
     // ── ADDRESS ──
@@ -1097,6 +1170,35 @@ function updateTrustDisplay(score) {
 }
 
 /* ── TOAST ── */
+async function submitStorefrontRequest() {
+  const bizName = document.getElementById('storefrontBizName').value.trim();
+  const ein = document.getElementById('storefrontEin').value.trim();
+  const notes = document.getElementById('storefrontNotes').value.trim();
+  if (!bizName) { showToast('⚠️', 'Please enter a business name.', true); return; }
+  const btn = document.getElementById('submitStorefrontBtn');
+  btn.disabled = true; btn.textContent = 'Submitting…';
+  try {
+    const { error } = await sb.from('storefront_requests').insert({
+      user_id: currentUser.id,
+      email: currentUser.email,
+      business_name: bizName,
+      ein: ein || null,
+      notes: notes || null,
+      status: 'pending'
+    });
+    if (error) throw error;
+    document.getElementById('storefrontFormState').style.display = 'none';
+    document.getElementById('storefrontPendingState').style.display = 'block';
+    const navSf = document.getElementById('nav-storefront');
+    navSf.querySelector('.si-badge').textContent = 'PENDING';
+    showToast('🏪', "Request submitted — we'll follow up by email.");
+  } catch(e) {
+    console.error(e);
+    showToast('⚠️', 'Could not submit request. Please try again.', true);
+    btn.disabled = false; btn.textContent = '🏪 Submit Request';
+  }
+}
+
 function showToast(icon,msg,isError=false) {
   document.getElementById('toastIc').textContent=icon; document.getElementById('toastTx').textContent=msg;
   const t=document.getElementById('toastEl'); t.className='toast'+(isError?' error':''); t.classList.add('show');
