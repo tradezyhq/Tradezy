@@ -1215,8 +1215,8 @@ function openTradeHistoryDetail(tradeId) {
 }
 
 
+async function loadListings() {
   try {
-    const { data: listings } = await sb.from('listings').select('id,title,category,condition,estimated_value,status,created_at,photos,view_count').eq('user_id', currentUser.id).order('created_at',{ascending:false}).limit(10);
     const count = listings?.length || 0;
     document.getElementById('listingCount').textContent = count;
     document.getElementById('statListings').textContent = count;
