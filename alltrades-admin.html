@@ -1576,9 +1576,9 @@ window.simulateShipItLabel = async function() {
     if (!updated || updated.length === 0) throw new Error('Update blocked — no row changed (check RLS).');
 
     await sb.from('messages').insert({
-      sender_id: traderId,
+      sender_id: currentUser.id,
       receiver_id: otherId,
-      content: `📦 Shipping label created! Tracking: ${fakeTracking} (USPS TEST_MODE) — track it here: https://tools.usps.com/go/TrackConfirmAction?tLabels=${fakeTracking}`
+      content: `🧪 [Admin test] Simulating a shipping label for Trader ${side.toUpperCase()} — fake tracking: ${fakeTracking} (not a real label, testing only).`
     });
 
     showToast('🧪', `Simulated for Trader ${side.toUpperCase()} — tracking ${fakeTracking}`);
