@@ -216,6 +216,7 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
 .mhd{background:linear-gradient(135deg,var(--navy),#1a3a6b);padding:17px 21px;display:flex;align-items:center;justify-content:space-between;border-radius:14px 14px 0 0;}
 .mhd.shipit-head{background:linear-gradient(135deg,#0c4a6e,#0369a1);}
 .mhd.purple-head{background:linear-gradient(135deg,#4c1d95,#6d28d9);}
+.mhd.red-head{background:linear-gradient(135deg,#7f1d1d,#991b1b);}
 .mhd-ttl{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.05rem;color:#fff;}
 .mhd-close{background:rgba(255,255,255,.1);border:none;color:#94a3b8;width:27px;height:27px;border-radius:50%;cursor:pointer;font-size:.9rem;display:flex;align-items:center;justify-content:center;transition:all .15s;}
 .mhd-close:hover{background:rgba(255,255,255,.2);color:#fff;}
@@ -321,7 +322,7 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
       <div class="sb-label">My Items</div>
       <div class="nav-item" onclick="window.location.href='alltrades-post.html'"><span class="ni-ic">📦</span>My Listings</div>
       <div class="nav-item" onclick="document.getElementById('collectionWidget').scrollIntoView({behavior:'smooth'})"><span class="ni-ic">🃏</span>My Collection<span class="ni-badge" id="sbColBadge" style="display:none;background:var(--purple)">0</span></div>
-      <div class="nav-item" onclick="showToast('📋','Trade history coming soon!')"><span class="ni-ic">📋</span>Trade History</div>
+      <div class="nav-item" onclick="document.getElementById('tradeHistorySection').scrollIntoView({behavior:'smooth'})"><span class="ni-ic">📋</span>Trade History<span class="ni-badge" id="sbHistoryBadge" style="display:none">0</span></div>
     </div>
     <div class="sb-div"></div>
     <div class="sb-sec">
@@ -393,6 +394,10 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
         <div class="msg-panel" id="msgsPanel"><div class="loading">Loading messages…</div></div>
       </div>
     </div>
+    <div class="sec-hdr" id="tradeHistorySection">
+      <div class="sec-ttl">📋 Trade History <span class="sec-cnt" id="historyCount">0</span></div>
+    </div>
+    <div class="listings-panel" id="tradeHistoryPanel"><div class="loading">Loading trade history…</div></div>
     <div class="sec-hdr">
       <div class="sec-ttl">📦 My Listings <span class="sec-cnt gold" id="listingCount">0</span></div>
       <div class="sec-lnk" onclick="window.location.href='alltrades-post.html'">+ Add New →</div>
@@ -551,6 +556,41 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
   </div>
 </div>
 
+<!-- TRADE HISTORY DETAIL MODAL -->
+<div class="modal-overlay" id="tradeHistoryModal">
+  <div class="modal" style="max-width:460px">
+    <div class="mhd" id="thModalHead"><div class="mhd-ttl" id="thModalTitle">📋 Trade Details</div><button class="mhd-close" onclick="closeModal('tradeHistoryModal')">✕</button></div>
+    <div class="mbody">
+      <div style="display:flex;gap:12px;margin-bottom:14px;">
+        <img id="thPhoto" src="" style="width:64px;height:64px;border-radius:8px;object-fit:cover;background:var(--surface);flex-shrink:0;" onerror="this.style.display='none'">
+        <div style="flex:1;min-width:0;">
+          <div style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1rem;color:var(--text);" id="thListingTitle">—</div>
+          <div style="font-size:12px;color:var(--muted);margin-top:2px;" id="thListingMeta">—</div>
+        </div>
+      </div>
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:12px 14px;margin-bottom:12px;">
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:6px;">What You Received</div>
+        <div style="font-size:14px;font-weight:700;color:var(--green);" id="thReceived">—</div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;">
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:10px 12px;">
+          <div style="font-size:10px;font-weight:700;text-transform:uppercase;color:var(--muted);margin-bottom:3px;">Traded With</div>
+          <div style="font-size:13px;font-weight:700;" id="thOtherTrader">—</div>
+        </div>
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:10px 12px;">
+          <div style="font-size:10px;font-weight:700;text-transform:uppercase;color:var(--muted);margin-bottom:3px;">Platform Fee</div>
+          <div style="font-size:13px;font-weight:700;" id="thFee">—</div>
+        </div>
+      </div>
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:10px 12px;margin-bottom:12px;" id="thMeetupBlock">
+        <div style="font-size:10px;font-weight:700;text-transform:uppercase;color:var(--muted);margin-bottom:3px;" id="thMeetupLabel">Meetup</div>
+        <div style="font-size:13px;" id="thMeetupInfo">—</div>
+      </div>
+      <div style="font-size:11px;color:var(--light);text-align:center;" id="thDate">—</div>
+    </div>
+  </div>
+</div>
+
 <!-- COLLECTION VIEW MODAL -->
 <div class="modal-overlay" id="collectionViewModal">
   <div class="modal" style="max-width:560px">
@@ -663,7 +703,7 @@ function shipItIsLive() { return new Date() >= SHIP_IT_LIVE_DATE; }
 
 async function initDashboard() {
   setGreeting();
-  await Promise.all([loadUserProfile(), loadOffers(), loadTrades(), loadListings(), loadMessages(), loadTradeValue(), loadRatings(), loadCollection()]);
+  await Promise.all([loadUserProfile(), loadOffers(), loadTrades(), loadTradeHistory(), loadListings(), loadMessages(), loadTradeValue(), loadRatings(), loadCollection()]);
   subscribeToTradeUpdates();
 }
 
@@ -1063,7 +1103,118 @@ async function loadTrades() {
   } catch(e) { document.getElementById('tradesPanel').innerHTML=`<div class="empty-state"><div class="empty-txt">Could not load trades.</div></div>`; }
 }
 
-async function loadListings() {
+/* ═══ TRADE HISTORY ═══
+   Shows completed and cancelled trades, read-only, with a click-through
+   detail modal. Reuses the same trader_a/trader_b + offer/listing join
+   pattern as loadTrades() above, just filtered to finished trades instead
+   of in-progress ones. Full trade data is cached in tradeHistoryCache so
+   the detail modal doesn't need a second round-trip per click. ═══ */
+let tradeHistoryCache = {};
+let tradeHistoryUserCache = {};
+async function loadTradeHistory() {
+  try {
+    const { data: history, error } = await sb.from('trades')
+      .select('*, listing:listing_id(title,photos,category,estimated_value), offer:offer_id(offer_type,offered_item_title,offered_item_value,cash_amount,is_ship_it)')
+      .or(`trader_a_id.eq.${currentUser.id},trader_b_id.eq.${currentUser.id}`)
+      .in('status', ['completed', 'cancelled'])
+      .order('created_at', { ascending: false })
+      .limit(25);
+    if (error) throw error;
+
+    const panel = document.getElementById('tradeHistoryPanel');
+    document.getElementById('historyCount').textContent = history?.length || 0;
+
+    if (!history?.length) {
+      panel.innerHTML = `<div class="empty-state"><div class="empty-icon">📋</div><div class="empty-txt">No completed or cancelled trades yet.</div></div>`;
+      return;
+    }
+
+    // Batch-fetch the other trader's display name for every row in one query
+    const otherIds = [...new Set(history.map(t => t.trader_a_id === currentUser.id ? t.trader_b_id : t.trader_a_id))];
+    const { data: otherUsers } = await sb.from('users').select('id,display_name').in('id', otherIds);
+    tradeHistoryUserCache = {};
+    (otherUsers || []).forEach(u => { tradeHistoryUserCache[u.id] = u.display_name || 'Trader'; });
+
+    tradeHistoryCache = {};
+    history.forEach(t => { tradeHistoryCache[t.id] = t; });
+
+    panel.innerHTML = history.map(t => {
+      const isCompleted = t.status === 'completed';
+      const otherId = t.trader_a_id === currentUser.id ? t.trader_b_id : t.trader_a_id;
+      const otherName = tradeHistoryUserCache[otherId] || 'Trader';
+      const photo = t.listing?.photos?.[0] || '';
+      const receivedLine = describeWhatReceived(t);
+      const dateLabel = new Date(t.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+      const statusChip = isCompleted
+        ? `<span style="background:#dcfce7;color:#15803d;font-size:10px;font-weight:800;padding:2px 8px;border-radius:4px;">✅ COMPLETED</span>`
+        : `<span style="background:#fee2e2;color:#991b1b;font-size:10px;font-weight:800;padding:2px 8px;border-radius:4px;">✕ CANCELLED</span>`;
+      return `<div class="lr" style="cursor:pointer" onclick="openTradeHistoryDetail('${t.id}')">
+        <div class="lr-thumb">${photo ? `<img src="${photo}" alt="${t.listing?.title||''}" loading="lazy">` : '📦'}</div>
+        <div class="lr-info"><div class="lr-ttl">${t.listing?.title || 'Listing'}</div><div class="lr-meta"><span>with ${otherName}</span><span>·</span><span>${dateLabel}</span></div></div>
+        <div class="lr-rt">
+          <div class="lr-val" style="color:${isCompleted?'var(--green)':'var(--muted)'}">${receivedLine}</div>
+          ${statusChip}
+        </div>
+      </div>`;
+    }).join('');
+  } catch(e) {
+    console.error('loadTradeHistory failed:', e);
+    document.getElementById('tradeHistoryPanel').innerHTML = `<div class="empty-state"><div class="empty-txt">Could not load trade history.</div></div>`;
+  }
+}
+
+// Builds a short "what you got" summary — reused for both the list row and the detail modal
+function describeWhatReceived(t) {
+  const offerType = t.offer?.offer_type;
+  const cashAmt = Number(t.cash_amount || t.offer?.cash_amount || 0);
+  const itemTitle = t.offer?.offered_item_title;
+  const itemVal = Number(t.offer?.offered_item_value || 0);
+  if (offerType === 'cash' || (!itemTitle && cashAmt > 0)) return `$${cashAmt.toFixed(0)} cash`;
+  if (itemTitle && cashAmt > 0) return `${itemTitle} + $${cashAmt.toFixed(0)}`;
+  if (itemTitle) return itemTitle;
+  if (t.total_value) return `~$${Number(t.total_value).toFixed(0)} value`;
+  return 'Item trade';
+}
+
+function openTradeHistoryDetail(tradeId) {
+  const t = tradeHistoryCache[tradeId];
+  if (!t) return;
+  const isCompleted = t.status === 'completed';
+  const isShipIt = t.offer?.is_ship_it === true;
+  const otherId = t.trader_a_id === currentUser.id ? t.trader_b_id : t.trader_a_id;
+  const myFee = t.trader_a_id === currentUser.id ? t.fee_a : t.fee_b;
+
+  document.getElementById('thModalTitle').textContent = isCompleted ? '✅ Completed Trade' : '✕ Cancelled Trade';
+  document.getElementById('thModalHead').className = isCompleted ? 'mhd' : 'mhd red-head';
+  document.getElementById('thPhoto').src = t.listing?.photos?.[0] || '';
+  document.getElementById('thListingTitle').textContent = t.listing?.title || 'Listing';
+  document.getElementById('thListingMeta').textContent = `${t.listing?.category || ''}${t.listing?.estimated_value ? ' · Est. $' + Number(t.listing.estimated_value).toFixed(0) : ''}`;
+  document.getElementById('thReceived').textContent = describeWhatReceived(t);
+  document.getElementById('thOtherTrader').textContent = tradeHistoryUserCache[otherId] || 'Trader';
+  document.getElementById('thFee').textContent = isCompleted ? `$${Number(myFee || 0).toFixed(2)}` : 'Refunded';
+
+  const meetupBlock = document.getElementById('thMeetupBlock');
+  if (isShipIt) {
+    document.getElementById('thMeetupLabel').textContent = '🚚 Ship-It Tracking';
+    const myTracking = t.trader_a_id === currentUser.id ? t.tracking_number_a : t.tracking_number_b;
+    const theirTracking = t.trader_a_id === currentUser.id ? t.tracking_number_b : t.tracking_number_a;
+    document.getElementById('thMeetupInfo').innerHTML = (myTracking || theirTracking)
+      ? `${myTracking ? 'Yours: ' + myTracking : ''}${myTracking && theirTracking ? '<br>' : ''}${theirTracking ? 'Theirs: ' + theirTracking : ''}`
+      : 'No tracking recorded.';
+    meetupBlock.style.display = 'block';
+  } else if (t.meetup_location || t.meetup_date) {
+    document.getElementById('thMeetupLabel').textContent = '📍 Meetup';
+    document.getElementById('thMeetupInfo').textContent = `${t.meetup_location || 'Location not set'}${t.meetup_date ? ' · ' + new Date(t.meetup_date).toLocaleDateString() : ''}`;
+    meetupBlock.style.display = 'block';
+  } else {
+    meetupBlock.style.display = 'none';
+  }
+
+  document.getElementById('thDate').textContent = `Trade started ${new Date(t.created_at).toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'})}`;
+  openModal('tradeHistoryModal');
+}
+
+
   try {
     const { data: listings } = await sb.from('listings').select('id,title,category,condition,estimated_value,status,created_at,photos,view_count').eq('user_id', currentUser.id).order('created_at',{ascending:false}).limit(10);
     const count = listings?.length || 0;
