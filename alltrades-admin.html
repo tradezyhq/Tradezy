@@ -402,6 +402,34 @@ body{font-family:'Lato',sans-serif;background:var(--navy);color:var(--text);min-
     <!-- TRADES -->
     <div id="view-trades" style="display:none">
       <div class="sec-hdr"><div class="sec-title">🔄 All Trades</div></div>
+      <!-- ═══ SHIP-IT LABEL TEST SIMULATOR ═══
+           Admin-only tool for testing the Ship-It flow without spending real
+           money. This page's Stripe integration uses the LIVE publishable
+           key with no test-mode toggle — going through the real
+           alltrades-shipit.html flow with a real card charges real money
+           for the label markup, regardless of whether EasyPost itself is
+           still on its test key. This bypasses both Stripe and EasyPost
+           entirely: writes an obviously-fake tracking number straight to
+           the trade and fires the same auto-message a real label purchase
+           would, so we can validate buyer/seller access gating, the
+           tracking message, and the persistent dashboard display — without
+           touching either live payment/shipping API.
+           Remove this card once Ship-It testing is done — it's dev
+           scaffolding, not a permanent admin feature. ═══ -->
+      <div class="ib gold" style="margin-bottom:16px;">
+        <span>🧪</span>
+        <div>
+          <strong>Ship-It Label Test Simulator</strong> — writes a fake tracking number directly, no Stripe charge, no real EasyPost label. Use for testing only.
+          <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;align-items:center;">
+            <input type="text" id="testTradeId" placeholder="Trade ID" style="flex:1;min-width:220px;padding:8px 10px;border-radius:6px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-size:13px;">
+            <select id="testTradeSide" style="padding:8px 10px;border-radius:6px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-size:13px;">
+              <option value="a">Trader A (seller)</option>
+              <option value="b">Trader B (buyer)</option>
+            </select>
+            <button class="dqa dqa-ok" id="simulateLabelBtn" onclick="simulateShipItLabel()">🧪 Simulate Label Created</button>
+          </div>
+        </div>
+      </div>
       <div class="panel" id="allTradesPanel"><div class="loading">Loading trades…</div></div>
     </div>
     <!-- LISTINGS -->
@@ -1511,6 +1539,54 @@ window.denyStorefrontRequest = async function(requestId, userId, email) {
     showToast('✕','Request denied.');
     loadStorefrontRequests();
   } catch(e) { showToast('⚠️','Error: '+e.message); }
+};
+
+/* ═══ SHIP-IT LABEL TEST SIMULATOR ═══
+   Writes a fake tracking number straight to the trade and fires the same
+   auto-message a real label purchase does — skips Stripe and EasyPost
+   entirely, so testing costs nothing and touches no live API. The
+   message is sent FROM the simulated trader's own account (not the admin's),
+   since we're standing in for what that trader's real action would look
+   like to the other party. Remove this whole function + its UI card once
+   Ship-It testing is done. ═══ */
+window.simulateShipItLabel = async function() {
+  const tradeId = document.getElementById('testTradeId').value.trim();
+  const side = document.getElementById('testTradeSide').value;
+  if (!tradeId) { showToast('⚠️','Enter a trade ID first.'); return; }
+  const btn = document.getElementById('simulateLabelBtn');
+  btn.disabled = true; btn.textContent = '⏳ Simulating…';
+  try {
+    const { data: trade, error } = await sb.from('trades').select('*').eq('id', tradeId).single();
+    if (error || !trade) throw new Error('Trade not found — check the ID.');
+    const isA = side === 'a';
+    const traderId = isA ? trade.trader_a_id : trade.trader_b_id;
+    const otherId = isA ? trade.trader_b_id : trade.trader_a_id;
+    const trackingField = isA ? 'tracking_number_a' : 'tracking_number_b';
+    const labelField = isA ? 'label_url_a' : 'label_url_b';
+    const labelCostField = isA ? 'label_cost_a' : 'label_cost_b';
+    const fakeTracking = 'TEST' + Date.now().toString().slice(-9);
+
+    const { data: updated, error: updErr } = await sb.from('trades').update({
+      [trackingField]: fakeTracking,
+      [labelField]: null,
+      [labelCostField]: 0,
+      ship_it_mode: true,
+    }).eq('id', tradeId).select();
+    if (updErr) throw updErr;
+    if (!updated || updated.length === 0) throw new Error('Update blocked — no row changed (check RLS).');
+
+    await sb.from('messages').insert({
+      sender_id: traderId,
+      receiver_id: otherId,
+      content: `📦 Shipping label created! Tracking: ${fakeTracking} (USPS TEST_MODE) — track it here: https://tools.usps.com/go/TrackConfirmAction?tLabels=${fakeTracking}`
+    });
+
+    showToast('🧪', `Simulated for Trader ${side.toUpperCase()} — tracking ${fakeTracking}`);
+  } catch(e) {
+    showToast('⚠️', e.message || 'Simulation failed.');
+  } finally {
+    btn.disabled = false; btn.textContent = '🧪 Simulate Label Created';
+  }
 };
 </script>
 </body>
