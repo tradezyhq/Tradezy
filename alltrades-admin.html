@@ -1575,11 +1575,13 @@ window.simulateShipItLabel = async function() {
     if (updErr) throw updErr;
     if (!updated || updated.length === 0) throw new Error('Update blocked — no row changed (check RLS).');
 
-    await sb.from('messages').insert({
+    const { data: msgInserted, error: msgErr } = await sb.from('messages').insert({
       sender_id: currentUser.id,
       receiver_id: otherId,
       content: `🧪 [Admin test] Simulating a shipping label for Trader ${side.toUpperCase()} — fake tracking: ${fakeTracking} (not a real label, testing only).`
-    });
+    }).select();
+    if (msgErr) throw new Error('Tracking saved, but message failed: ' + msgErr.message);
+    if (!msgInserted || msgInserted.length === 0) throw new Error('Tracking saved, but message was blocked (check messages RLS for admin sender).');
 
     showToast('🧪', `Simulated for Trader ${side.toUpperCase()} — tracking ${fakeTracking}`);
   } catch(e) {
