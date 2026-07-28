@@ -729,39 +729,8 @@ async function buyLabel() {
     const data = await res.json();
     if (data.error) throw new Error(data.error);
 
-    // Step 4: Save tracking to Supabase
-    const isTraderA = tradeData.trader_a_id === currentUser.id;
-    const trackingField = isTraderA ? 'tracking_number_a' : 'tracking_number_b';
-    const labelField = isTraderA ? 'label_url_a' : 'label_url_b';
-    const labelCostField = isTraderA ? 'label_cost_a' : 'label_cost_b';
-
-    await sb.from('trades').update({
-      [trackingField]: data.tracking_number,
-      [labelField]: data.label_pdf || data.label_url,
-      [labelCostField]: selectedRate.markedUp,
-      ship_it_mode: true,
-    }).eq('id', tradeData.id);
-
-    /* ═══ AUTO-MESSAGE: TRACKING NUMBER ═══
-       Fires for whichever trader creates a label — works for both Trader A
-       and Trader B now that this page is no longer seller-only. Posts a
-       normal message (not a special type) so it renders in the existing
-       thread with zero changes needed to alltrades-messages.html. ═══ */
-    const otherTraderId = isTraderA ? tradeData.trader_b_id : tradeData.trader_a_id;
-    const carrierLabel = `${data.carrier || 'USPS'} ${(data.service||'').replace(/_/g,' ')}`.trim();
-    try {
-      await sb.from('messages').insert({
-        sender_id: currentUser.id,
-        receiver_id: otherTraderId,
-        content: `📦 Shipping label created! Tracking: ${data.tracking_number} (${carrierLabel}) — track it here: https://tools.usps.com/go/TrackConfirmAction?tLabels=${data.tracking_number}`
-      });
-    } catch (msgErr) {
-      // Non-fatal: label was still purchased successfully even if the message failed to post
-      console.error('Failed to post tracking message:', msgErr);
-    }
-
-    // Step 5: Show success
-    showSuccess(data);
+    // Step 4-5: Save tracking, notify, show success
+    await finalizeLabelPurchase(data);
     if (typeof gtag !== 'undefined') gtag('event', 'label_purchased', { event_category: 'shipit', value: selectedRate.markedUp });
 
   } catch(e) {
@@ -770,6 +739,36 @@ async function buyLabel() {
     btn.textContent = '🖨️ Pay & Get Label';
     btn.disabled = false;
   }
+}
+
+/* ═══ SHARED FINALIZE STEP — used by both the real Stripe/EasyPost path
+   above and the no-cost test-mode path below, so the two can never drift
+   out of sync with each other. ═══ */
+async function finalizeLabelPurchase(data) {
+  const isTraderA = tradeData.trader_a_id === currentUser.id;
+  const trackingField = isTraderA ? 'tracking_number_a' : 'tracking_number_b';
+  const labelField = isTraderA ? 'label_url_a' : 'label_url_b';
+  const labelCostField = isTraderA ? 'label_cost_a' : 'label_cost_b';
+
+  await sb.from('trades').update({
+    [trackingField]: data.tracking_number,
+    [labelField]: data.label_pdf || data.label_url,
+    [labelCostField]: selectedRate ? selectedRate.markedUp : 0,
+    ship_it_mode: true,
+  }).eq('id', tradeData.id);
+
+  const otherTraderId = isTraderA ? tradeData.trader_b_id : tradeData.trader_a_id;
+  const carrierLabel = `${data.carrier || 'USPS'} ${(data.service||'').replace(/_/g,' ')}`.trim();
+  try {
+    await sb.from('messages').insert({
+      sender_id: currentUser.id,
+      receiver_id: otherTraderId,
+      content: `📦 Shipping label created! Tracking: ${data.tracking_number} (${carrierLabel}) — track it here: https://tools.usps.com/go/TrackConfirmAction?tLabels=${data.tracking_number}`
+    });
+  } catch (msgErr) {
+    console.error('Failed to post tracking message:', msgErr);
+  }
+  showSuccess(data);
 }
 
 function showSuccess(data) {
