@@ -941,7 +941,7 @@ async function submitOffer(){
       offered_item_value:shipItCashOnly?shipitCash:(offerType!=='cash'?itemVal:cashOnly),
       offered_condition:(offerType!=='cash'&&!shipItCashOnly)?itemCond:null,
       offered_photos:photoUrls.length>0?photoUrls:null,
-      cash_amount:shipItCashOnly?0:(isShipIt?shipitCash:offerType==='tc'?cashAdd:offerType==='cash'?cashOnly:0),
+      cash_amount:isShipIt?shipitCash:offerType==='tc'?cashAdd:offerType==='cash'?cashOnly:0,
       payment_method:resolvedPayMethod,
       message:msg||null,
     });
