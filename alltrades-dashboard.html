@@ -1363,11 +1363,17 @@ async function acceptOffer(id, isShipIt) {
     const buyerRate = buyerRow?.fee_rate != null ? Number(buyerRow.fee_rate) : defaultRate;
 
     // Total trade value: pure cash offers use the cash amount directly; item-based
-    // offers (with or without a cash top-up) use the listing's value plus any cash add-on.
+    // offers use whichever value is actually populated — the listing's own
+    // estimated_value if the seller set one, otherwise the offered item's stated
+    // value (many TCG listings posted purely for trading have no listing price
+    // at all, which previously silently collapsed total_value to 0/"Value TBD") —
+    // plus any cash add-on either way.
     const cashAmount = Number(offer.cash_amount) || 0;
+    const listingVal = Number(listing?.estimated_value) || 0;
+    const offeredVal = Number(offer.offered_item_value) || 0;
     const totalValue = offer.offer_type === 'cash'
       ? cashAmount
-      : (Number(listing?.estimated_value) || 0) + cashAmount;
+      : (listingVal || offeredVal) + cashAmount;
 
     const feeA = +(totalValue * sellerRate).toFixed(2);
     const feeB = +(totalValue * buyerRate).toFixed(2);
