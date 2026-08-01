@@ -199,7 +199,15 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
 .toast{position:fixed;bottom:20px;right:20px;background:var(--navy);color:#e2e8f0;border:1px solid #1e3a5f;border-left:4px solid var(--green);border-radius:8px;padding:10px 16px;font-size:13px;z-index:9999;display:flex;align-items:center;gap:9px;max-width:290px;box-shadow:0 8px 26px rgba(0,0,0,.25);transform:translateX(120%);transition:transform .3s ease;}
 .toast.show{transform:translateX(0);}
 .toast.error{border-left-color:var(--red);}
-@media(max-width:800px){.steps-layout{grid-template-columns:1fr;}.step-list{position:static;}.hero{grid-template-columns:1fr;}.trust-score-wrap{display:none;}.badge-showcase{grid-template-columns:1fr;}.field-row{grid-template-columns:1fr;}.pay-platforms-grid{grid-template-columns:repeat(2,1fr);}.vsc-criteria-grid{grid-template-columns:1fr;}.otp-wrap{gap:6px;}.otp-digit{width:40px;height:48px;font-size:1.2rem;}}
+@media(max-width:800px){.steps-layout{grid-template-columns:1fr;}.step-list{position:static;}.hero{grid-template-columns:1fr;}.trust-score-wrap{display:none;}.badge-showcase{grid-template-columns:1fr;}.field-row{grid-template-columns:1fr;}.pay-platforms-grid{grid-template-columns:repeat(2,1fr);}.vsc-criteria-grid{grid-template-columns:1fr;}.otp-wrap{gap:6px;}.otp-digit{width:40px;height:48px;font-size:1.2rem;}
+  /* ═══ MOBILE NAV FIX — the back link and name/avatar chip had no
+     responsive spacing at all on phone widths, sitting close enough to
+     make a mis-tap between them plausible. ═══ */
+  .nav{padding:0 12px;}
+  .nav-btn{padding:6px 10px;font-size:.8rem;}
+  .user-chip{gap:5px;}
+  .u-name{max-width:80px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:.82rem;}
+}
 @media(prefers-color-scheme:dark){
   :root{--text:#f1f5f9;--muted:#94a3b8;--border:rgba(255,255,255,.1);--bg:#0f172a;--white:#1e293b;--surface:#162032;}
   body{background:#0f172a !important;color:#f1f5f9 !important;}
@@ -637,7 +645,7 @@ const IDENTITY_FN = 'https://equvwaspcoeetfsexqki.supabase.co/functions/v1/creat
 
 let currentUser = null, userData = null, trustScore = 20;
 let stripe = null, cardElement = null;
-let verifiedPhone = null;
+let verifiedPhone = sessionStorage.getItem('tz_verified_phone') || null;
 
 const PLATFORMS = ['Zelle','PayPal','Venmo','Apple Pay','Google Pay','Cash App'];
 const PLAT_ICONS = { Zelle:'💙', PayPal:'🅿️', Venmo:'💜', 'Apple Pay':'🍎', 'Google Pay':'🔵', 'Cash App':'💚' };
@@ -656,6 +664,15 @@ const PLAT_ICONS = { Zelle:'💙', PayPal:'🅿️', Venmo:'💜', 'Apple Pay':'
 
   await loadUserData();
   initStripe();
+
+  // If a code was already sent before this page reloaded, restore the OTP
+  // entry screen instead of leaving the user back on the phone-number form
+  // with no visible sign anything had happened.
+  if (verifiedPhone && document.getElementById('otpFormState')) {
+    document.getElementById('phoneFormState').style.display = 'none';
+    document.getElementById('otpFormState').style.display = 'block';
+    document.getElementById('otpSentMsg').textContent = `Code sent to ${verifiedPhone}. Check your messages.`;
+  }
 })();
 
 async function handleIdentityReturn() {
@@ -924,6 +941,7 @@ async function sendOtp() {
     const data = await res.json();
     if (data.success) {
       verifiedPhone = phone;
+      sessionStorage.setItem('tz_verified_phone', phone);
       document.getElementById('phoneFormState').style.display = 'none';
       document.getElementById('otpFormState').style.display = 'block';
       document.getElementById('otpSentMsg').textContent = `Code sent to ${raw}. Check your messages.`;
@@ -959,6 +977,8 @@ async function resendOtp() {
 function backToPhone() {
   document.getElementById('otpFormState').style.display = 'none';
   document.getElementById('phoneFormState').style.display = 'block';
+  verifiedPhone = null;
+  sessionStorage.removeItem('tz_verified_phone');
   clearOtp();
 }
 
@@ -997,7 +1017,15 @@ function getOtpCode() {
 
 async function verifyOtp() {
   const code = getOtpCode();
-  if (!verifiedPhone || code.length < 6) return;
+  if (code.length < 6) return;
+  if (!verifiedPhone) {
+    // Previously this silently did nothing at all — no toast, no error,
+    // just a dead button. Now it tells the user what actually happened and
+    // sends them back to request a fresh code instead of leaving them stuck.
+    showToast('⚠️', 'Your session for this code expired. Please request a new code.', true);
+    backToPhone();
+    return;
+  }
   const btn = document.getElementById('verifyOtpBtn');
   btn.textContent = '⏳ Verifying…'; btn.disabled = true;
   try {
@@ -1021,6 +1049,7 @@ async function verifyOtp() {
       userData = { ...userData, phone_verified: true };
       updateVerifyStatusCard(userData);
       markPhoneVerified();
+      sessionStorage.removeItem('tz_verified_phone');
       showToast('📱', 'Phone verified! +20 trust points earned.');
       if (typeof gtag !== 'undefined') gtag('event','phone_verified',{event_category:'verification'});
     } else {
