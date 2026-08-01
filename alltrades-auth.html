@@ -1139,6 +1139,39 @@ body { font-family:'Lato',sans-serif; background:var(--bg); color:var(--text); m
 
     </div><!-- /panelSignup -->
 
+    <!-- ══ EMAIL VERIFICATION (OTP CODE) ══ -->
+    <!-- ═══ OTP CONFIRMATION FIX START — replaces reliance on a clickable
+         confirmation link, which Supabase's own docs confirm can be silently
+         consumed by email security scanners (Microsoft Defender Safe Links,
+         corporate scanners, etc.) before the real user ever clicks it. A
+         typed 6-digit code can't be "pre-clicked" by an automated scanner,
+         so this is a structural fix, not a retry. Reachable both right after
+         signup and from doSignIn() when a correct password hits an
+         unconfirmed email. ═══ -->
+    <div class="form-panel" id="panelVerify">
+      <div class="form-title">Check Your Email 📧</div>
+      <div class="form-sub">We sent a 6-digit code to <strong id="verifyEmailDisplay"></strong>. Enter it below to verify your account.</div>
+
+      <div class="field">
+        <label>Verification Code</label>
+        <input type="text" id="otpCode" placeholder="123456" maxlength="6" inputmode="numeric" autocomplete="one-time-code" oninput="clearErr(this)">
+        <div class="field-error" id="otpCodeErr">Please enter the 6-digit code.</div>
+      </div>
+
+      <button class="btn-submit gold" id="verifyBtn" onclick="verifyEmailOtp()">Verify &amp; Continue →</button>
+
+      <div class="switch-link" style="margin-top:14px">
+        Didn't get a code? <a onclick="resendOtpCode()" id="resendLink">Resend code</a>
+      </div>
+      <div id="resendMsg" style="font-size:12px;color:var(--green);margin-top:8px;display:none;text-align:center">✓ New code sent! Check your email.</div>
+
+      <div class="switch-link" style="margin-top:8px">
+        <a onclick="backFromVerify()">← Back to sign in</a>
+      </div>
+    </div>
+    <!-- ═══ OTP CONFIRMATION FIX END ═══ -->
+
+
     <div class="trust-row" id="trustBadges">
       <div class="trust-item"><span class="trust-icon">🔒</span> SSL Encrypted</div>
       <div class="trust-item"><span class="trust-icon">🚫</span> No Spam Ever</div>
@@ -1384,7 +1417,7 @@ async function doCreateAccount() {
        showed "success" with no profile row ever created. Profile creation
        now happens via a database trigger (handle_new_user) reading the
        metadata passed above, server-side, immune to that timing issue. ═══ */
-    showSuccess();
+    showVerifyScreen(email);
     /* ═══ GHOST ACCOUNT FIX END ═══ */
   } catch(e) {
     alert('Error: ' + e.message);
@@ -1393,13 +1426,106 @@ async function doCreateAccount() {
   }
 }
 
+/* ═══ OTP CONFIRMATION FIX START ═══ */
+let pendingVerifyEmail = '';
+
+function showVerifyScreen(email) {
+  pendingVerifyEmail = email;
+  document.getElementById('panelSignin').classList.remove('active');
+  document.getElementById('panelSignup').classList.remove('active');
+  document.getElementById('panelVerify').classList.add('active');
+  document.getElementById('verifyEmailDisplay').textContent = email;
+  document.getElementById('trustBadges').style.display = 'none';
+  document.getElementById('otpCode').value = '';
+  document.getElementById('otpCodeErr').style.display = 'none';
+  document.getElementById('resendMsg').style.display = 'none';
+  const btn = document.getElementById('verifyBtn');
+  btn.textContent = 'Verify & Continue →';
+  btn.disabled = false;
+}
+
+function backFromVerify() {
+  document.getElementById('panelVerify').classList.remove('active');
+  document.getElementById('trustBadges').style.display = '';
+  switchTab('signin');
+}
+
+async function verifyEmailOtp() {
+  const codeInput = document.getElementById('otpCode');
+  const code = codeInput.value.trim();
+  const errEl = document.getElementById('otpCodeErr');
+  errEl.style.display = 'none';
+
+  if (!/^\d{6}$/.test(code)) {
+    errEl.textContent = 'Please enter the 6-digit code.';
+    showErr('otpCodeErr', codeInput);
+    return;
+  }
+
+  const btn = document.getElementById('verifyBtn');
+  btn.textContent = 'Verifying...';
+  btn.disabled = true;
+
+  try {
+    const { data, error } = await supabase.auth.verifyOtp({
+      email: pendingVerifyEmail,
+      token: code,
+      type: 'signup'
+    });
+    if (error) {
+      errEl.textContent = error.message || 'Invalid or expired code. Please try again or resend.';
+      showErr('otpCodeErr', codeInput);
+      btn.textContent = 'Verify & Continue →';
+      btn.disabled = false;
+      return;
+    }
+    // Real session now exists — show the existing success screen.
+    document.getElementById('panelVerify').classList.remove('active');
+    document.getElementById('panelSignup').classList.add('active');
+    showSuccess();
+  } catch(e) {
+    errEl.textContent = 'Error: ' + e.message;
+    showErr('otpCodeErr', codeInput);
+    btn.textContent = 'Verify & Continue →';
+    btn.disabled = false;
+  }
+}
+
+async function resendOtpCode() {
+  const link = document.getElementById('resendLink');
+  link.textContent = 'Sending...';
+  try {
+    const { error } = await supabase.auth.resend({ type: 'signup', email: pendingVerifyEmail });
+    if (error) {
+      alert('Could not resend code: ' + error.message);
+    } else {
+      document.getElementById('resendMsg').style.display = 'block';
+    }
+  } catch(e) {
+    alert('Error: ' + e.message);
+  }
+  link.textContent = 'Resend code';
+}
+/* ═══ OTP CONFIRMATION FIX END ═══ */
+
 async function doSignIn() {
   const email    = document.getElementById('signinEmail').value.trim();
   const password = document.getElementById('signinPw').value;
   if (!email || !password) { alert('Please enter email and password.'); return; }
   try {
     const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-    if (error) { alert('Sign in error: ' + error.message); return; }
+    if (error) {
+      /* ═══ OTP CONFIRMATION FIX — a correct password against an unconfirmed
+         email is a very recoverable situation. Instead of a dead-end alert,
+         send a fresh code and route straight to the verify screen. ═══ */
+      if (error.message === 'Email not confirmed') {
+        try { await supabase.auth.resend({ type: 'signup', email }); } catch(e) {}
+        showVerifyScreen(email);
+        return;
+      }
+      alert('Sign in error: ' + error.message);
+      return;
+    }
     await redirectAfterAuth(data.user.id);
   } catch(e) { alert('Error: ' + e.message); }
 }
