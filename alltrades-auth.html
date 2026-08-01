@@ -1150,12 +1150,12 @@ body { font-family:'Lato',sans-serif; background:var(--bg); color:var(--text); m
          unconfirmed email. ═══ -->
     <div class="form-panel" id="panelVerify">
       <div class="form-title">Check Your Email 📧</div>
-      <div class="form-sub">We sent a 6-digit code to <strong id="verifyEmailDisplay"></strong>. Enter it below to verify your account.</div>
+      <div class="form-sub">We sent a verification code to <strong id="verifyEmailDisplay"></strong>. Enter it below to verify your account.</div>
 
       <div class="field">
         <label>Verification Code</label>
-        <input type="text" id="otpCode" placeholder="123456" maxlength="6" inputmode="numeric" autocomplete="one-time-code" oninput="clearErr(this)">
-        <div class="field-error" id="otpCodeErr">Please enter the 6-digit code.</div>
+        <input type="text" id="otpCode" placeholder="Enter your code" maxlength="10" inputmode="numeric" autocomplete="one-time-code" oninput="clearErr(this)">
+        <div class="field-error" id="otpCodeErr">Please enter the code from your email.</div>
       </div>
 
       <button class="btn-submit gold" id="verifyBtn" onclick="verifyEmailOtp()">Verify &amp; Continue →</button>
@@ -1456,8 +1456,12 @@ async function verifyEmailOtp() {
   const errEl = document.getElementById('otpCodeErr');
   errEl.style.display = 'none';
 
-  if (!/^\d{6}$/.test(code)) {
-    errEl.textContent = 'Please enter the 6-digit code.';
+  /* OTP length is a per-project Supabase setting (GOTRUE_MAILER_OTP_LENGTH,
+     configurable 6-10 digits) — don't hardcode an exact length here, just
+     check it's plausibly a numeric code and let verifyOtp() be the real
+     authority on whether it's correct. */
+  if (!/^\d{6,10}$/.test(code)) {
+    errEl.textContent = 'Please enter the code from your email.';
     showErr('otpCodeErr', codeInput);
     return;
   }
