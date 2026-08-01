@@ -523,23 +523,9 @@ function getTradeCap(score) {
 function capLabel(cap) { return cap === Infinity ? 'Unlimited' : '$' + cap; }
 /* ═══ TRUST-TIER TRADE VALUE CAP END ═══ */
 
-/* ═══ SHIP-IT DATE GATE START — delete this whole block after July 31, 2026 ═══ */
-const SHIP_IT_LIVE_DATE = new Date('2026-07-31T00:00:00');
-function shipItIsLive() { return new Date() >= SHIP_IT_LIVE_DATE; }
 function trySetShipIt() {
-  if (!shipItIsLive()) { showToast('🚚', 'Ship-It launches July 31, 2026.'); return; }
   setOfferType('shipit');
 }
-function applyShipItTabGate() {
-  if (shipItIsLive()) return;
-  const tab = document.getElementById('tab-shipit');
-  if (tab) {
-    tab.style.opacity = '0.5';
-    const label = tab.querySelector('.otab-label');
-    if (label) label.textContent = 'Ship-It (7/31)';
-  }
-}
-/* ═══ SHIP-IT DATE GATE END ═══ */
 
 (async()=>{
   const{data:{session}}=await sb.auth.getSession();
@@ -547,7 +533,6 @@ function applyShipItTabGate() {
   currentUser=session.user;
   const{data:ud}=await sb.from('users').select('id_verified,trust_score,address_state').eq('id',currentUser.id).single();
   currentUserData=ud;
-  applyShipItTabGate(); /* SHIP-IT DATE GATE — delete this line after July 31, 2026 */
   loadListing();
 })();
 function getListingId(){return new URLSearchParams(window.location.search).get('id');}
@@ -595,9 +580,7 @@ function applyLocalTradeGate(listingData) {
     notice.id = 'crossStateNotice';
     notice.className = 'info-box ib-blue';
     notice.style.marginTop = '8px';
-    notice.innerHTML = shipItIsLive()
-      ? `<span>🚚</span><div>This seller is in <strong>${theirState}</strong> — outside your area for local trades, which require an in-person meetup. Use <strong>Ship-It</strong> below to trade with them instead.</div>`
-      : `<span>🚚</span><div>This seller is in <strong>${theirState}</strong> — outside your area for local trades, which require an in-person meetup. Ship-It (state-to-state trading) launches July 31, 2026.</div>`;
+    notice.innerHTML = `<span>🚚</span><div>This seller is in <strong>${theirState}</strong> — outside your area for local trades, which require an in-person meetup. Use <strong>Ship-It</strong> below to trade with them instead.</div>`;
     container.insertAdjacentElement('afterend', notice);
   }
   // If it's a cash-only listing (no ship-it possible), the trade is simply not
@@ -709,8 +692,7 @@ function renderListing(l){
     isEss?'<span class="ibadge ess">ESSENTIAL</span>':'',
     isTCG?'<span class="ibadge tcg">🃏 TCG</span>':'',
     hasCash?'<span class="ibadge cash">💵 CASH OK</span>':'',
-    /* SHIP-IT DATE GATE — delete this ternary, restore to unconditional badge, after July 31, 2026 */
-    shipItIsLive()?'<span class="ibadge shipit">🚚 SHIP-IT</span>':''
+    '<span class="ibadge shipit">🚚 SHIP-IT</span>'
   ].join('');
   const wrap=document.getElementById('mainImgWrap');
   if(l.photos?.length>0){
@@ -725,9 +707,7 @@ function renderListing(l){
   document.getElementById('metaCondition').innerHTML=`<span>✨</span> ${l.condition||'Condition not specified'}`;
   document.getElementById('metaTime').innerHTML=`<span>⏰</span> ${timeAgo(l.created_at)}`;
   const vc=document.getElementById('metaViews');vc.innerHTML=`<span>👁</span> ${(l.view_count||0)+1} views`;vc.style.display='flex';
-  /* SHIP-IT DATE GATE START — restore to unconditional display='flex' after July 31, 2026 */
-  if (shipItIsLive()) document.getElementById('metaShipIt').style.display='flex';
-  /* SHIP-IT DATE GATE END */
+  document.getElementById('metaShipIt').style.display='flex';
   if(l.quantity>1){document.getElementById('metaQty').innerHTML=`<span>📦</span> Qty: ${l.quantity}`;document.getElementById('metaQty').style.display='flex';}
   document.getElementById('itemValue').textContent=l.estimated_value?`$${Number(l.estimated_value).toFixed(0)}`:'—';
   document.getElementById('itemDesc').textContent=l.description||'No description provided.';
@@ -881,9 +861,6 @@ async function submitOffer(){
   if(!listing)return;
   const isShipIt=offerType==='shipit';
   const shipItCashOnly=isShipIt&&!!document.getElementById('shipitCashOnlyToggle')?.checked;
-  /* SHIP-IT DATE GATE START — delete this if-block after July 31, 2026 */
-  if (isShipIt && !shipItIsLive()) { showToast('🚚','Ship-It launches July 31, 2026.'); return; }
-  /* SHIP-IT DATE GATE END */
   /* ═══ LOCAL-TRADE AREA GATE — hard block, in case tabs were disabled but
      bypassed via the console or a stale page state. ═══ */
   if (!isShipIt && crossStateBlocked) {
