@@ -398,7 +398,7 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
               <label>Phone Number <span style="color:var(--red)">*</span></label>
               <input type="tel" id="phoneInput" placeholder="+1 (203) 555-0100" oninput="checkPhoneInput()" autocomplete="tel" maxlength="15">
             </div>
-            <button class="verify-btn vbtn-blue" id="sendOtpBtn" onclick="sendOtp()" disabled>📱 Send Verification Code</button>
+            <button class="verify-btn vbtn-blue" id="sendOtpBtn" onclick="sendOtp()">📱 Send Verification Code</button>
           </div>
           <!-- ENTER CODE STATE -->
           <div id="otpFormState" style="display:none">
@@ -917,9 +917,17 @@ function showStep(step) {
 }
 
 /* ── PHONE OTP ── */
+/* ═══ AUTOFILL CLICK-DEATH FIX — a disabled <button disabled> cannot fire
+   onclick at all in real browsers. iOS Safari's phone-number autofill is
+   documented to sometimes set an input's value without firing a real
+   'input' event, which meant this button could get stuck permanently
+   disabled — silently, with the tap producing zero network activity and
+   zero errors. The button is no longer ever hard-disabled; this just
+   dims it as a visual hint, and sendOtp() itself does the real
+   validation at click time with actual user-facing feedback. ═══ */
 function checkPhoneInput() {
   const val = document.getElementById('phoneInput').value.trim();
-  document.getElementById('sendOtpBtn').disabled = val.length < 10;
+  document.getElementById('sendOtpBtn').style.opacity = val.length < 10 ? '0.6' : '1';
 }
 
 function formatPhone(raw) {
@@ -929,6 +937,10 @@ function formatPhone(raw) {
 
 async function sendOtp() {
   const raw = document.getElementById('phoneInput').value.trim();
+  if (raw.replace(/\D/g,'').length < 10) {
+    showToast('⚠️', 'Please enter a valid 10-digit phone number.', true);
+    return;
+  }
   const phone = formatPhone(raw);
   const btn = document.getElementById('sendOtpBtn');
   btn.textContent = '⏳ Sending…'; btn.disabled = true;
