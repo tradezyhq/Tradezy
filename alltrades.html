@@ -262,7 +262,7 @@ footer{background:var(--navy);color:#64748b;padding:36px 20px 20px;margin-top:20
          preview of what Ship-It unlocks July 31, kept clearly separate and
          below the actionable local feed. ═══ -->
     <div class="row-section" id="popularSection">
-      <div class="row-header"><div class="row-title"><span class="row-title-icon">🔥</span> <span id="popularTitle">Popular Right Now</span> <span style="background:#e0f2fe;color:#0369a1;border:1px solid #7dd3fc;border-radius:4px;font-size:10px;font-weight:800;padding:2px 8px;margin-left:8px;vertical-align:middle">🚚 Ship-It Coming July 31</span></div></div>
+      <div class="row-header"><div class="row-title"><span class="row-title-icon">🔥</span> <span id="popularTitle">Popular Right Now</span> <span style="background:#e0f2fe;color:#0369a1;border:1px solid #7dd3fc;border-radius:4px;font-size:10px;font-weight:800;padding:2px 8px;margin-left:8px;vertical-align:middle">🚚 Ships Nationwide</span></div></div>
       <div class="row-scroll" id="popularRow">
         <div class="skel-card" style="min-width:160px"><div class="skel-photo skeleton"></div><div class="skel-body"><div class="skel-line w80 skeleton"></div><div class="skel-line w50 skeleton"></div></div></div>
         <div class="skel-card" style="min-width:160px"><div class="skel-photo skeleton"></div><div class="skel-body"><div class="skel-line w80 skeleton"></div><div class="skel-line w50 skeleton"></div></div></div>
@@ -332,11 +332,6 @@ let searchTimer  = null;
 let currentUser  = null;
 let userState    = null;
 let userCity     = null;   // NEW — for "Near You" city comparison
-
-/* ═══ SHIP-IT DATE GATE START — delete this whole block after July 31, 2026 ═══ */
-const SHIP_IT_LIVE_DATE = new Date('2026-07-31T00:00:00');
-function shipItIsLive() { return new Date() >= SHIP_IT_LIVE_DATE; }
-/* ═══ SHIP-IT DATE GATE END ═══ */
 
 (async function init() {
   const launch = new Date('2026-07-17T00:00:00-04:00');
@@ -603,10 +598,7 @@ function buildLocationPill(l) {
   const lState = (l.location_state || '').trim();
 
   if (!lCity && !lState) {
-    /* SHIP-IT DATE GATE — swap message, remove ternary after July 31, 2026 */
-    return shipItIsLive()
-      ? `<div class="lc-location lc-loc-shipit">🚚 Ships Nationwide</div>`
-      : `<div class="lc-location lc-loc-shipit">🚚 Shipping Coming July 31</div>`;
+    return `<div class="lc-location lc-loc-shipit">🚚 Ships Nationwide</div>`;
   }
 
   if (currentUser && userCity && userState) {
@@ -621,10 +613,7 @@ function buildLocationPill(l) {
       return `<div class="lc-location lc-loc-state">📍 ${lState}</div>`;
     }
     // Different state — show State-to-State
-    /* SHIP-IT DATE GATE — swap message, remove ternary after July 31, 2026 */
-    return shipItIsLive()
-      ? `<div class="lc-location lc-loc-shipit">🚚 ${lState || 'Nationwide'}</div>`
-      : `<div class="lc-location lc-loc-shipit">🚚 Shipping Coming July 31</div>`;
+    return `<div class="lc-location lc-loc-shipit">🚚 ${lState || 'Nationwide'}</div>`;
   }
 
   // Logged out — show city/state if available
@@ -634,10 +623,7 @@ function buildLocationPill(l) {
   if (lState) {
     return `<div class="lc-location lc-loc-city">📍 ${lState}</div>`;
   }
-  /* SHIP-IT DATE GATE — swap message, remove ternary after July 31, 2026 */
-  return shipItIsLive()
-    ? `<div class="lc-location lc-loc-shipit">🚚 Ships Nationwide</div>`
-    : `<div class="lc-location lc-loc-shipit">🚚 Shipping Coming July 31</div>`;
+  return `<div class="lc-location lc-loc-shipit">🚚 Ships Nationwide</div>`;
 }
 
 function buildCardHTML(l) {
@@ -827,10 +813,10 @@ function showToast(icon,msg,isError=false) {
 ABOUT TRADEZY:
 - Free local trading platform where users list items and trade with verified neighbors
 - Platform fee: 5% per party on completed trades (Founding Traders pay 3% lifetime)
-- Ship-It trades (state-to-state): 10% fee, fully verified users only, launching July 31 2026
+- Ship-It trades (state-to-state): 10% fee, fully verified users only, live nationwide
 - Every listing supports both local meetup AND Ship-It trading
 - Phase 1 launch: July 17 2026 — Connecticut and Ohio statewide
-- Phase 2: July 31 2026 — Nationwide
+- Phase 2: July 31 2026 — Nationwide (complete)
 
 HOW TRADING WORKS:
 1. Post a listing with photos, condition, what you want in return
@@ -854,7 +840,7 @@ FEES EXPLAINED:
 - Founding Traders: 3% lifetime (signed up before July 17 launch)
 - Listing is always free
 
-SHIP-IT TRADES (July 31+):
+SHIP-IT TRADES (live nationwide):
 - Available on ALL listings — buyers choose local or Ship-It when making an offer
 - State-to-state trading for fully ID-verified users only
 - 10% fee per party at trade acceptance
