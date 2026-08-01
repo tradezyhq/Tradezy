@@ -301,7 +301,7 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
       <div class="ti" onclick="showToast('🔔','No new notifications!')">🔔<span class="badge" id="notifBadge" style="display:none">0</span></div>
       <div class="ti" onclick="openModal('msgModal')">💬<span class="badge" id="msgBadge" style="display:none">0</span></div>
     </div>
-    <div class="user-chip" onclick="doSignOut()">
+    <div class="user-chip" onclick="openProfileModal()">
       <div class="user-av" id="userAv">?</div>
       <div class="user-name" id="userName">Loading…</div>
     </div>
@@ -459,6 +459,35 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
 </div>
 
 <!-- CANCEL TRADE MODAL -->
+<!-- EDIT PROFILE MODAL — the top-right name/avatar chip previously had
+     onclick="doSignOut()" directly on it, so clicking your own name signed
+     you out with no warning and no way to actually edit anything. This is
+     the first real profile-editing surface in the app; Sign Out is still
+     available here for convenience since it's no longer on the chip. -->
+<div class="modal-overlay" id="editProfileModal">
+  <div class="modal">
+    <div class="mhd"><div class="mhd-ttl">👤 Edit Profile</div><button class="mhd-close" onclick="closeModal('editProfileModal')">✕</button></div>
+    <div class="mbody">
+      <div style="display:flex;gap:10px;margin-bottom:14px">
+        <div style="flex:1">
+          <label style="display:block;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px">First Name</label>
+          <input type="text" id="editFirstName" style="width:100%;padding:9px 12px;border:1px solid var(--border);border-radius:7px;font-family:'Lato',sans-serif;font-size:14px">
+        </div>
+        <div style="flex:1">
+          <label style="display:block;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px">Last Name</label>
+          <input type="text" id="editLastName" style="width:100%;padding:9px 12px;border:1px solid var(--border);border-radius:7px;font-family:'Lato',sans-serif;font-size:14px">
+        </div>
+      </div>
+      <div id="editProfileErr" style="display:none;font-size:12px;color:var(--red);margin-bottom:10px"></div>
+      <button class="mbtn" id="saveProfileBtn" style="background:var(--blue);color:#fff" onclick="saveProfile()">💾 Save Changes</button>
+      <button class="mbtn outline" onclick="closeModal('editProfileModal')" style="margin-top:8px">Cancel</button>
+      <div style="text-align:center;margin-top:16px;padding-top:14px;border-top:1px solid var(--border)">
+        <a onclick="doSignOut()" style="font-size:12px;color:var(--muted);cursor:pointer">🚪 Sign Out</a>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="modal-overlay" id="cancelTradeModal">
   <div class="modal">
     <div class="mhd" style="background:linear-gradient(135deg,#7f1d1d,#991b1b)"><div class="mhd-ttl">⚠️ Cancel This Trade?</div><button class="mhd-close" onclick="closeModal('cancelTradeModal')">✕</button></div>
@@ -1695,6 +1724,59 @@ function timeAgo(ts) {
   if(m<1)return'just now'; if(m<60)return m+'m ago';
   const h=Math.floor(m/60); if(h<24)return h+'h ago'; return Math.floor(h/24)+'d ago';
 }
+/* ═══ EDIT PROFILE FIX START ═══ */
+function openProfileModal() {
+  const fullName = (currentUserData?.display_name || '').trim();
+  const parts = fullName.split(/\s+/);
+  document.getElementById('editFirstName').value = parts[0] || '';
+  document.getElementById('editLastName').value = parts.slice(1).join(' ') || '';
+  document.getElementById('editProfileErr').style.display = 'none';
+  openModal('editProfileModal');
+}
+
+async function saveProfile() {
+  const first = document.getElementById('editFirstName').value.trim();
+  const last = document.getElementById('editLastName').value.trim();
+  const errEl = document.getElementById('editProfileErr');
+  errEl.style.display = 'none';
+
+  if (!first) {
+    errEl.textContent = 'First name is required.';
+    errEl.style.display = 'block';
+    return;
+  }
+
+  const newName = (first + ' ' + last).trim();
+  const btn = document.getElementById('saveProfileBtn');
+  btn.textContent = 'Saving...';
+  btn.disabled = true;
+
+  try {
+    // Chain .select() and check the returned row — RLS can silently allow a
+    // 0-row-affected update with no thrown error, which would otherwise look
+    // like a successful save while nothing actually changed.
+    const { data, error } = await sb.from('users').update({ display_name: newName }).eq('id', currentUser.id).select();
+    if (error || !data || data.length === 0) {
+      errEl.textContent = error?.message || 'Could not save — please try again.';
+      errEl.style.display = 'block';
+      btn.textContent = '💾 Save Changes';
+      btn.disabled = false;
+      return;
+    }
+    currentUserData.display_name = newName;
+    document.getElementById('userName').textContent = newName;
+    const wbName = document.getElementById('wbName');
+    if (wbName) wbName.textContent = newName;
+    closeModal('editProfileModal');
+  } catch(e) {
+    errEl.textContent = 'Error: ' + e.message;
+    errEl.style.display = 'block';
+  }
+  btn.textContent = '💾 Save Changes';
+  btn.disabled = false;
+}
+/* ═══ EDIT PROFILE FIX END ═══ */
+
 function openModal(id){document.getElementById(id).classList.add('open');}
 function closeModal(id){document.getElementById(id).classList.remove('open');}
 document.querySelectorAll('.modal-overlay').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('open');}));
