@@ -1171,6 +1171,59 @@ body { font-family:'Lato',sans-serif; background:var(--bg); color:var(--text); m
     </div>
     <!-- ═══ OTP CONFIRMATION FIX END ═══ -->
 
+    <!-- ══ PASSWORD RESET (OTP CODE) ══ -->
+    <!-- ═══ PASSWORD RESET FIX START — "Forgot your password?" previously
+         just showed an alert saying "coming soon" and did nothing. Anyone
+         who genuinely forgot their password had no way back into their
+         account at all. Uses the same code-based approach as signup
+         confirmation, for the same reason: Supabase's password recovery
+         link shares the same scanner-consumption vulnerability as the
+         signup confirmation link. ═══ -->
+    <div class="form-panel" id="panelForgotEmail">
+      <div class="form-title">Reset Your Password 🔑</div>
+      <div class="form-sub">Enter your account email and we'll send you a code to reset your password.</div>
+      <div class="field">
+        <label>Email Address</label>
+        <input type="email" id="forgotEmail" placeholder="you@email.com" oninput="clearErr(this)">
+        <div class="field-error" id="forgotEmailErr">Please enter a valid email.</div>
+      </div>
+      <button class="btn-submit gold" id="sendResetBtn" onclick="sendResetCode()">Send Reset Code →</button>
+      <div class="switch-link" style="margin-top:14px"><a onclick="backFromForgot()">← Back to sign in</a></div>
+    </div>
+
+    <div class="form-panel" id="panelForgotCode">
+      <div class="form-title">Check Your Email 📧</div>
+      <div class="form-sub">We sent a code to <strong id="forgotEmailDisplay"></strong>. Enter it below to continue.</div>
+      <div class="field">
+        <label>Reset Code</label>
+        <input type="text" id="resetOtpCode" placeholder="Enter your code" maxlength="10" inputmode="numeric" autocomplete="one-time-code" oninput="clearErr(this)">
+        <div class="field-error" id="resetOtpCodeErr">Please enter the code from your email.</div>
+      </div>
+      <button class="btn-submit gold" id="verifyResetBtn" onclick="verifyResetCode()">Verify Code →</button>
+      <div class="switch-link" style="margin-top:14px">
+        Didn't get a code? <a onclick="resendResetCode()" id="resendResetLink">Resend code</a>
+      </div>
+      <div id="resendResetMsg" style="font-size:12px;color:var(--green);margin-top:8px;display:none;text-align:center">✓ New code sent! Check your email.</div>
+      <div class="switch-link" style="margin-top:8px"><a onclick="backFromForgot()">← Back to sign in</a></div>
+    </div>
+
+    <div class="form-panel" id="panelNewPassword">
+      <div class="form-title">Set a New Password 🔒</div>
+      <div class="form-sub">Choose a new password for your account.</div>
+      <div class="field">
+        <label>New Password</label>
+        <input type="password" id="newPw1" placeholder="At least 8 characters" oninput="clearErr(this)">
+        <div class="field-error" id="newPw1Err">Password must be at least 8 characters.</div>
+      </div>
+      <div class="field">
+        <label>Confirm New Password</label>
+        <input type="password" id="newPw2" placeholder="Repeat your new password" oninput="clearErr(this)">
+        <div class="field-error" id="newPw2Err">Passwords don't match.</div>
+      </div>
+      <button class="btn-submit gold" id="submitNewPwBtn" onclick="submitNewPassword()">Save New Password →</button>
+    </div>
+    <!-- ═══ PASSWORD RESET FIX END ═══ -->
+
 
     <div class="trust-row" id="trustBadges">
       <div class="trust-item"><span class="trust-icon">🔒</span> SSL Encrypted</div>
@@ -1346,7 +1399,12 @@ function goToPost() {
 }
 
 function showForgot() {
-  alert('Password reset coming soon. Email hello@tradezyhq.com for help.');
+  document.getElementById('panelSignin').classList.remove('active');
+  document.getElementById('panelSignup').classList.remove('active');
+  document.getElementById('panelForgotEmail').classList.add('active');
+  document.getElementById('trustBadges').style.display = 'none';
+  document.getElementById('forgotEmail').value = document.getElementById('signinEmail').value.trim();
+  document.getElementById('forgotEmailErr').style.display = 'none';
 }
 
 async function redirectAfterAuth(userId) {
@@ -1511,6 +1569,132 @@ async function resendOtpCode() {
   link.textContent = 'Resend code';
 }
 /* ═══ OTP CONFIRMATION FIX END ═══ */
+
+/* ═══ PASSWORD RESET FIX START ═══ */
+let pendingResetEmail = '';
+
+function backFromForgot() {
+  document.getElementById('panelForgotEmail').classList.remove('active');
+  document.getElementById('panelForgotCode').classList.remove('active');
+  document.getElementById('panelNewPassword').classList.remove('active');
+  document.getElementById('trustBadges').style.display = '';
+  switchTab('signin');
+}
+
+async function sendResetCode() {
+  const email = document.getElementById('forgotEmail').value.trim();
+  const emailInput = document.getElementById('forgotEmail');
+  if (!isValidEmail(email)) {
+    showErr('forgotEmailErr', emailInput);
+    return;
+  }
+  pendingResetEmail = email;
+  const btn = document.getElementById('sendResetBtn');
+  btn.textContent = 'Sending...';
+  btn.disabled = true;
+  try {
+    // Deliberately don't reveal whether the email exists in our system —
+    // Supabase returns the same success response either way, which is the
+    // correct behavior for not leaking which emails are registered.
+    await supabase.auth.resetPasswordForEmail(email);
+    document.getElementById('panelForgotEmail').classList.remove('active');
+    document.getElementById('panelForgotCode').classList.add('active');
+    document.getElementById('forgotEmailDisplay').textContent = email;
+    document.getElementById('resetOtpCode').value = '';
+    document.getElementById('resetOtpCodeErr').style.display = 'none';
+    document.getElementById('resendResetMsg').style.display = 'none';
+  } catch(e) {
+    alert('Error: ' + e.message);
+  }
+  btn.textContent = 'Send Reset Code →';
+  btn.disabled = false;
+}
+
+async function resendResetCode() {
+  const link = document.getElementById('resendResetLink');
+  link.textContent = 'Sending...';
+  try {
+    await supabase.auth.resetPasswordForEmail(pendingResetEmail);
+    document.getElementById('resendResetMsg').style.display = 'block';
+  } catch(e) {
+    alert('Could not resend code: ' + e.message);
+  }
+  link.textContent = 'Resend code';
+}
+
+async function verifyResetCode() {
+  const codeInput = document.getElementById('resetOtpCode');
+  const code = codeInput.value.trim();
+  const errEl = document.getElementById('resetOtpCodeErr');
+  errEl.style.display = 'none';
+
+  if (!/^\d{6,10}$/.test(code)) {
+    errEl.textContent = 'Please enter the code from your email.';
+    showErr('resetOtpCodeErr', codeInput);
+    return;
+  }
+
+  const btn = document.getElementById('verifyResetBtn');
+  btn.textContent = 'Verifying...';
+  btn.disabled = true;
+
+  try {
+    const { data, error } = await supabase.auth.verifyOtp({
+      email: pendingResetEmail,
+      token: code,
+      type: 'recovery'
+    });
+    if (error) {
+      errEl.textContent = error.message || 'Invalid or expired code. Please try again or resend.';
+      showErr('resetOtpCodeErr', codeInput);
+      btn.textContent = 'Verify Code →';
+      btn.disabled = false;
+      return;
+    }
+    // A real recovery session now exists — move to setting a new password.
+    document.getElementById('panelForgotCode').classList.remove('active');
+    document.getElementById('panelNewPassword').classList.add('active');
+    document.getElementById('newPw1').value = '';
+    document.getElementById('newPw2').value = '';
+  } catch(e) {
+    errEl.textContent = 'Error: ' + e.message;
+    showErr('resetOtpCodeErr', codeInput);
+    btn.textContent = 'Verify Code →';
+    btn.disabled = false;
+  }
+}
+
+async function submitNewPassword() {
+  const pw1 = document.getElementById('newPw1').value;
+  const pw2 = document.getElementById('newPw2').value;
+  const pw1Input = document.getElementById('newPw1');
+  const pw2Input = document.getElementById('newPw2');
+
+  if (pw1.length < 8) { showErr('newPw1Err', pw1Input); return; }
+  if (pw1 !== pw2) { showErr('newPw2Err', pw2Input); return; }
+
+  const btn = document.getElementById('submitNewPwBtn');
+  btn.textContent = 'Saving...';
+  btn.disabled = true;
+
+  try {
+    const { data, error } = await supabase.auth.updateUser({ password: pw1 });
+    if (error) {
+      alert('Could not update password: ' + error.message);
+      btn.textContent = 'Save New Password →';
+      btn.disabled = false;
+      return;
+    }
+    // updateUser succeeded on a real recovery session — the user is
+    // already signed in at this point, so send them straight in.
+    await redirectAfterAuth(data.user.id);
+  } catch(e) {
+    alert('Error: ' + e.message);
+    btn.textContent = 'Save New Password →';
+    btn.disabled = false;
+  }
+}
+/* ═══ PASSWORD RESET FIX END ═══ */
 
 async function doSignIn() {
   const email    = document.getElementById('signinEmail').value.trim();
