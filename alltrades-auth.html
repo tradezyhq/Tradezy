@@ -1815,6 +1815,15 @@ function sendErrorToAI() {
 .tz-bubble{padding:9px 12px;border-radius:12px;font-size:13px;line-height:1.5;}
 .tz-msg.bot .tz-bubble{background:#f1f5f9;color:#1a1a2e;border-radius:4px 12px 12px 12px;}
 .tz-msg.user .tz-bubble{background:linear-gradient(135deg,#1a56db,#2563eb);color:#fff;border-radius:12px 4px 12px 12px;}
+/* Chat bubbles are always light gray regardless of the page's own theme,
+   but the site's dark-mode CSS has an unscoped "strong{color:#e2e8f0
+   !important}" rule that doesn't know that — making bold text (from
+   markdown ** in AI replies) nearly invisible against these bubbles for
+   any visitor with dark mode on. This wins over that rule since it's
+   more specific, regardless of source order or dark-mode state. */
+.tz-msg.bot .tz-bubble strong{color:#0a1628 !important;}
+.tz-msg.user .tz-bubble strong{color:#fff !important;}
+.tz-msg.bot .tz-bubble li{color:#1a1a2e;}
 .tz-msg-time{font-size:10px;color:#94a3b8;padding:0 4px;}
 .tz-msg.user .tz-msg-time{text-align:right;}
 .tz-typing{display:flex;align-items:center;gap:4px;padding:9px 12px;background:#f1f5f9;border-radius:4px 12px 12px 12px;width:fit-content;}
