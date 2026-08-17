@@ -1463,7 +1463,7 @@ async function doCreateAccount() {
       } }
     });
     if (error) {
-      alert('Sign up error: ' + error.message);
+      showErrorPopup('Sign up error: ' + error.message);
       btn.textContent = 'Create My Account 🚀';
       btn.disabled = false;
       return;
@@ -1478,7 +1478,7 @@ async function doCreateAccount() {
     showVerifyScreen(email);
     /* ═══ GHOST ACCOUNT FIX END ═══ */
   } catch(e) {
-    alert('Error: ' + e.message);
+    showErrorPopup('Error: ' + e.message);
     btn.textContent = 'Create My Account 🚀';
     btn.disabled = false;
   }
@@ -1559,12 +1559,12 @@ async function resendOtpCode() {
   try {
     const { error } = await supabase.auth.resend({ type: 'signup', email: pendingVerifyEmail });
     if (error) {
-      alert('Could not resend code: ' + error.message);
+      showErrorPopup('Could not resend code: ' + error.message);
     } else {
       document.getElementById('resendMsg').style.display = 'block';
     }
   } catch(e) {
-    alert('Error: ' + e.message);
+    showErrorPopup('Error: ' + e.message);
   }
   link.textContent = 'Resend code';
 }
@@ -1604,7 +1604,7 @@ async function sendResetCode() {
     document.getElementById('resetOtpCodeErr').style.display = 'none';
     document.getElementById('resendResetMsg').style.display = 'none';
   } catch(e) {
-    alert('Error: ' + e.message);
+    showErrorPopup('Error: ' + e.message);
   }
   btn.textContent = 'Send Reset Code →';
   btn.disabled = false;
@@ -1617,7 +1617,7 @@ async function resendResetCode() {
     await supabase.auth.resetPasswordForEmail(pendingResetEmail);
     document.getElementById('resendResetMsg').style.display = 'block';
   } catch(e) {
-    alert('Could not resend code: ' + e.message);
+    showErrorPopup('Could not resend code: ' + e.message);
   }
   link.textContent = 'Resend code';
 }
@@ -1680,7 +1680,7 @@ async function submitNewPassword() {
   try {
     const { data, error } = await supabase.auth.updateUser({ password: pw1 });
     if (error) {
-      alert('Could not update password: ' + error.message);
+      showErrorPopup('Could not update password: ' + error.message);
       btn.textContent = 'Save New Password →';
       btn.disabled = false;
       return;
@@ -1689,7 +1689,7 @@ async function submitNewPassword() {
     // already signed in at this point, so send them straight in.
     await redirectAfterAuth(data.user.id);
   } catch(e) {
-    alert('Error: ' + e.message);
+    showErrorPopup('Error: ' + e.message);
     btn.textContent = 'Save New Password →';
     btn.disabled = false;
   }
@@ -1711,13 +1711,81 @@ async function doSignIn() {
         showVerifyScreen(email);
         return;
       }
-      alert('Sign in error: ' + error.message);
+      showErrorPopup('Sign in error: ' + error.message);
       return;
     }
     await redirectAfterAuth(data.user.id);
-  } catch(e) { alert('Error: ' + e.message); }
+  } catch(e) { showErrorPopup('Error: ' + e.message); }
 }
 </script>
+<!-- ═══ SIGNUP ERROR POPUP START — shows the exact raw error text instead
+     of a vague failure, with a one-click path into the AI Help widget so
+     the user can get help without having to describe what happened from
+     memory. ═══ -->
+<style>
+#errorPopupOverlay{display:none;position:fixed;inset:0;background:rgba(10,22,40,.6);z-index:10000;align-items:center;justify-content:center;padding:20px;}
+#errorPopupOverlay.open{display:flex;}
+.error-popup-box{background:#fff;border-radius:14px;max-width:420px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.25);overflow:hidden;}
+.error-popup-head{background:linear-gradient(135deg,var(--navy),var(--navy2));padding:16px 18px;display:flex;align-items:center;justify-content:space-between;}
+.error-popup-title{font-family:'Barlow Condensed',sans-serif;font-weight:800;color:#fff;font-size:1.05rem;}
+.error-popup-close{background:rgba(255,255,255,.12);border:none;color:#cbd5e1;width:26px;height:26px;border-radius:50%;cursor:pointer;}
+.error-popup-body{padding:18px;}
+.error-popup-hint{font-size:12.5px;color:#475569;margin-bottom:12px;line-height:1.5;}
+.error-popup-text{background:#fef2f2;border:1px solid #fecaca;border-radius:8px;padding:12px;font-family:'Courier New',monospace;font-size:12px;color:#b91c1c;word-break:break-word;max-height:150px;overflow-y:auto;margin-bottom:12px;}
+.error-popup-btn{width:100%;border:none;border-radius:8px;padding:11px;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.9rem;cursor:pointer;margin-bottom:8px;}
+.error-popup-copy{background:#eff6ff;color:var(--blue);border:1px solid #bfdbfe;}
+.error-popup-ai{background:linear-gradient(135deg,#1a56db,#2563eb);color:#fff;}
+.error-popup-copied{display:none;text-align:center;font-size:12px;color:#16a34a;font-weight:700;margin-top:4px;}
+</style>
+<div id="errorPopupOverlay">
+  <div class="error-popup-box">
+    <div class="error-popup-head">
+      <div class="error-popup-title">⚠️ Something Went Wrong</div>
+      <button class="error-popup-close" onclick="closeErrorPopup()">✕</button>
+    </div>
+    <div class="error-popup-body">
+      <div class="error-popup-hint">Here's exactly what happened. Save this and send it to our AI Help chat below — that's the fastest way to get this sorted out.</div>
+      <div class="error-popup-text" id="errorPopupText"></div>
+      <button class="error-popup-btn error-popup-copy" onclick="copyErrorText()">📋 Copy Error</button>
+      <button class="error-popup-btn error-popup-ai" onclick="sendErrorToAI()">🤖 Ask AI Help About This →</button>
+      <div class="error-popup-copied" id="errorPopupCopied">✓ Copied to clipboard!</div>
+    </div>
+  </div>
+</div>
+<script>
+let tzLastErrorText = '';
+function showErrorPopup(msg) {
+  tzLastErrorText = String(msg || 'An unknown error occurred.');
+  document.getElementById('errorPopupText').textContent = tzLastErrorText;
+  document.getElementById('errorPopupCopied').style.display = 'none';
+  document.getElementById('errorPopupOverlay').classList.add('open');
+}
+function closeErrorPopup() {
+  document.getElementById('errorPopupOverlay').classList.remove('open');
+}
+function copyErrorText() {
+  navigator.clipboard.writeText(tzLastErrorText).then(() => {
+    document.getElementById('errorPopupCopied').style.display = 'block';
+  }).catch(() => {
+    document.getElementById('errorPopupCopied').textContent = 'Press and hold the text above to copy it manually.';
+    document.getElementById('errorPopupCopied').style.display = 'block';
+  });
+}
+function sendErrorToAI() {
+  closeErrorPopup();
+  const panel = document.getElementById('tz-chat-panel');
+  if (panel && !panel.classList.contains('open')) { window.tzToggle(); }
+  setTimeout(() => {
+    const input = document.getElementById('tzInput');
+    if (input) {
+      input.value = "I got this error and need help: " + tzLastErrorText;
+      window.tzSend();
+    }
+  }, 250);
+}
+</script>
+<!-- ═══ SIGNUP ERROR POPUP END ═══ -->
+
 <!-- TRADEZY HELP WIDGET START — paste before </body> on every page -->
 <style>
 /* ── TRADEZY HELP WIDGET STYLES ── */
@@ -1806,9 +1874,10 @@ async function doSignIn() {
 ABOUT TRADEZY:
 - Free local trading platform where users list items and trade with verified neighbors
 - Platform fee: 5% per party on completed trades (Founding Traders pay 3% lifetime)
-- Ship-It trades (state-to-state): 10% fee, fully verified users only, launching July 31 2026
+- Ship-It trades (state-to-state): 10% fee, fully verified users only, live nationwide
+- Every listing supports both local meetup AND Ship-It trading
 - Phase 1 launch: July 17 2026 — Connecticut and Ohio statewide
-- Phase 2: July 31 2026 — Nationwide
+- Phase 2: July 31 2026 — Nationwide (complete)
  
 HOW TRADING WORKS:
 1. Post a listing with photos, condition, what you want in return
@@ -1832,7 +1901,8 @@ FEES EXPLAINED:
 - Founding Traders: 3% lifetime (signed up before July 17 launch)
 - Listing is always free
  
-SHIP-IT TRADES (July 31+):
+SHIP-IT TRADES (live nationwide):
+- Available on ALL listings — buyers choose local or Ship-It when making an offer
 - State-to-state trading for fully ID-verified users only
 - 10% fee per party at trade acceptance
 - Payment via Zelle, PayPal, Venmo, Apple Pay, Google Pay, or Cash App (peer-to-peer, Tradezy never holds funds)
@@ -1854,14 +1924,26 @@ DISPUTE RESOLUTION:
 - Email disputes@tradezyhq.com
 - SLA: CRITICAL issues 4hrs, HIGH 24hrs, MEDIUM 48hrs, LOW 72hrs
  
+═══ SIGN-UP / SIGN-IN TROUBLESHOOTING — this widget is on the auth page specifically, so most conversations here are about someone stuck trying to create an account, log in, verify their email, or reset a password. Try these FIRST before considering escalation:
+- No confirmation/reset code arriving: ask them to check spam/junk, and if they use Outlook/Hotmail/Live specifically, mention that Microsoft's filtering is sometimes slower or stricter for newer senders — it's usually not lost, just delayed or filtered. Suggest the "Resend code" option on the page.
+- "Email not confirmed" when signing in: they need to enter the code sent at signup, not just their password — point them to check their email for that original code, or use Resend.
+- Code not accepted: confirm they're entering ALL the digits with no spaces, and that they're using the MOST RECENT code if they requested more than one (older codes stop working once a new one is sent).
+- Password reset stuck: walk them through the 3 steps — request code by email, enter the code, then set a new password. Confirm which step they're actually stuck on before assuming.
+
 ESCALATION RULES — escalate to human immediately if:
 - User reports fraud, scam, or didn't receive item
 - User mentions safety concern, threat, or harassment
 - User is clearly distressed or frustrated after multiple exchanges
 - User explicitly requests a human agent
 - Issue involves account ban or suspension
- 
+- You've tried reasonable troubleshooting on a sign-up/sign-in issue and it's still not resolved
+
 ESCALATION: When escalating, provide support@tradezyhq.com for general issues or disputes@tradezyhq.com for trade disputes. Summarize the issue briefly.
+
+═══ AUTOMATIC EMAIL ESCALATION — in addition to giving the user a support email to write to themselves, this specific widget can automatically send Cody an email on the user's behalf so they don't have to do anything extra. Use this ONLY when escalation is genuinely warranted per the rules above AND you have a way to reach the user back (their account email, or a phone number/other contact they've given you in this conversation).
+When escalating this way: write your normal helpful reply to the user first, telling them you're flagging this for the Tradezy team and someone will follow up. Then, as the VERY LAST thing in your response and on its own line, include a machine-readable block in exactly this format (the user will never see this part, it gets stripped out automatically):
+[ESCALATE_EMAIL]{"issue":"one or two sentence summary of the problem","contact":"best email or phone to reach them, use their account email if you have no better option"}[/ESCALATE_EMAIL]
+Only include this block when you are actually escalating — do not include it in ordinary helpful replies.
  
 TONE: Warm, clear, concise. Never give legal or financial advice. Never make up information — if unsure, direct to support@tradezyhq.com. Keep responses short and scannable — use bullet points for multi-step answers.`;
  
@@ -1946,10 +2028,30 @@ TONE: Warm, clear, concise. Never give legal or financial advice. Never make up 
       });
  
       const data = await response.json();
-      const reply = data.content?.[0]?.text || "I'm having trouble responding right now. Please email support@tradezyhq.com.";
+      let reply = data.content?.[0]?.text || "I'm having trouble responding right now. Please email support@tradezyhq.com.";
  
       // Remove typing indicator
       document.getElementById(typingId)?.remove();
+ 
+      /* ═══ AUTO-EMAIL ESCALATION — detect the [ESCALATE_EMAIL] block the
+         system prompt instructs Claude to append when it can't resolve an
+         issue itself. Strip it from what the user sees (it's a signal for
+         this code, not part of the reply), and if found, fire an email to
+         Cody with the issue, a way to reach the user back, and enough
+         context (their account email if known, browser, timestamp) to
+         actually investigate without going back and forth. ═══ */
+      const escMatch = reply.match(/\[ESCALATE_EMAIL\]([\s\S]*?)\[\/ESCALATE_EMAIL\]/);
+      let autoEscalated = false;
+      if (escMatch) {
+        reply = reply.replace(/\[ESCALATE_EMAIL\][\s\S]*?\[\/ESCALATE_EMAIL\]/, '').trim();
+        try {
+          const escData = JSON.parse(escMatch[1]);
+          await tzSendEscalationEmail(escData.issue, escData.contact);
+          autoEscalated = true;
+        } catch(err) {
+          console.error('Escalation email parse/send failed:', err.message);
+        }
+      }
  
       // Add to history
       history.push({ role: 'assistant', content: reply });
@@ -1961,6 +2063,9 @@ TONE: Warm, clear, concise. Never give legal or financial advice. Never make up 
  
       // Render response
       tzBotMessage(reply, null, shouldEscalate);
+      if (autoEscalated) {
+        tzBotMessage("✅ I've sent this over to the Tradezy team with the details of what's happening — they'll follow up with you directly.");
+      }
  
     } catch(e) {
       document.getElementById(typingId)?.remove();
@@ -1969,6 +2074,71 @@ TONE: Warm, clear, concise. Never give legal or financial advice. Never make up 
  
     isLoading = false;
     document.getElementById('tzSendBtn').disabled = false;
+  }
+ 
+  /* ═══ AUTO-EMAIL ESCALATION — sends Cody a real email with the issue,
+     the user's contact info, and enough context to investigate without
+     asking them to repeat themselves. tradezy-send-email is a generic
+     {to, subject, html} relay to Resend — it doesn't route by path or
+     build any content itself, so the email HTML gets built here and
+     posted straight to its root URL. ═══ */
+  async function tzSendEscalationEmail(issue, contact) {
+    const knownEmail = getKnownUserEmail();
+    const finalIssue = issue || 'User needs help with sign-up/sign-in, no summary given.';
+    const finalContact = contact || knownEmail || 'Not provided';
+    const transcript = history.map(m => `${m.role}: ${m.content}`).join('\n\n');
+    const html = `
+      <div style="font-family:Arial,sans-serif;max-width:560px;margin:0 auto;">
+        <div style="background:#0a1628;padding:20px;border-radius:12px 12px 0 0;">
+          <span style="font-size:20px;font-weight:900;color:#fff;">Trade<span style="color:#2563eb;">zy</span> <span style="color:#f59e0b;">·</span> Auth Widget Escalation</span>
+        </div>
+        <div style="background:#fff;border:1px solid #e2e8f0;border-top:none;border-radius:0 0 12px 12px;padding:24px;">
+          <p style="color:#0a1628;font-size:15px;font-weight:800;margin:0 0 4px;">Issue Summary</p>
+          <p style="color:#334155;font-size:14px;line-height:1.6;margin:0 0 18px;">${escHtml(finalIssue)}</p>
+          <p style="color:#0a1628;font-size:15px;font-weight:800;margin:0 0 4px;">Contact</p>
+          <p style="color:#334155;font-size:14px;margin:0 0 18px;">
+            Best contact: <strong>${escHtml(finalContact)}</strong><br>
+            Account email: ${escHtml(knownEmail || 'Unknown')}
+          </p>
+          <p style="color:#0a1628;font-size:15px;font-weight:800;margin:0 0 4px;">Context</p>
+          <p style="color:#64748b;font-size:12px;line-height:1.6;margin:0 0 18px;">
+            Page: ${escHtml(window.location.href)}<br>
+            Browser: ${escHtml(navigator.userAgent)}<br>
+            Time: ${escHtml(new Date().toISOString())}
+          </p>
+          <p style="color:#0a1628;font-size:15px;font-weight:800;margin:0 0 4px;">Full Conversation</p>
+          <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px;font-size:12px;color:#334155;white-space:pre-wrap;font-family:'Courier New',monospace;">${escHtml(transcript || 'No transcript available')}</div>
+        </div>
+      </div>
+    `;
+    try {
+      const res = await fetch('https://tradezy-send-email.throbbing-lake-08ed.workers.dev', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          to: 'admin@tradezyhq.com',
+          subject: `⚠️ Auth Help Needed: ${finalIssue.slice(0, 60)}${finalIssue.length > 60 ? '…' : ''}`,
+          html
+        })
+      });
+      if (!res.ok) {
+        const errBody = await res.json().catch(() => ({}));
+        console.error('tradezy-send-email rejected escalation:', res.status, JSON.stringify(errBody));
+      }
+    } catch(err) {
+      console.error('Failed to send escalation email:', err.message);
+    }
+  }
+ 
+  // Checks whichever auth form field currently has a value, across all
+  // the panels this page can show (sign in, sign up, forgot password).
+  function getKnownUserEmail() {
+    const ids = ['signinEmail', 'email', 'forgotEmail'];
+    for (const id of ids) {
+      const el = document.getElementById(id);
+      if (el && el.value && el.value.trim()) return el.value.trim();
+    }
+    return null;
   }
  
   // ── RENDER BOT MESSAGE ──
