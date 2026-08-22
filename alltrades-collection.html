@@ -218,10 +218,10 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);}
 
   <div class="page">
 
-    <!-- EBAY COMING SOON NOTICE -->
+    <!-- MARKET PRICING NOTICE -->
     <div class="ebay-notice">
       <span style="font-size:1.2rem">📈</span>
-      <div><strong>Market Pricing Coming Soon</strong> — We're adding eBay last-sold data to every item so you can see real market values at a glance. Stay tuned.</div>
+      <div><strong>Real Market Values Coming Soon</strong> — We're adding live pricing data to every item so collectors can see real trading value at a glance. Stay tuned.</div>
     </div>
 
     <!-- TABS -->
@@ -327,6 +327,7 @@ let ownerUserId = null;
 let allCards = [];
 let allSealed = [];
 let currentTab = 'cards';
+let fullCollectionListingId = null;
 
 const GAME_EMOJI = {
   'Pokémon':'⚡','MTG':'🧙','One Piece':'🏴‍☠️','Yu-Gi-Oh':'👁️',
@@ -374,13 +375,13 @@ async function loadOwner() {
 
 async function loadCollection() {
   try {
-    const { data, error } = await sb
-      .from('collections')
-      .select('*')
-      .eq('user_id', ownerUserId)
-      .order('created_at', { ascending: false });
+    const [{ data, error }, { data: collectionListing }] = await Promise.all([
+      sb.from('collections').select('*').eq('user_id', ownerUserId).order('created_at', { ascending: false }),
+      sb.from('listings').select('id').eq('user_id', ownerUserId).eq('listing_type', 'collection').limit(1).maybeSingle()
+    ]);
 
     if (error) throw error;
+    fullCollectionListingId = collectionListing?.id || null;
 
     allCards = (data || []).filter(i => !i.sealed);
     allSealed = (data || []).filter(i => i.sealed);
@@ -400,6 +401,7 @@ async function loadCollection() {
 
     renderCards(allCards);
     renderSealed(allSealed);
+    renderFullCollectionOffer();
 
     document.getElementById('loadingState').style.display = 'none';
     document.getElementById('pageContent').style.display = 'block';
@@ -407,6 +409,24 @@ async function loadCollection() {
     console.error(e);
     showNotFound();
   }
+}
+
+function renderFullCollectionOffer() {
+  const existing = document.getElementById('fullCollectionOffer');
+  if (existing) existing.remove();
+  // Only show this if the owner has actually created a bundled
+  // "list entire collection" listing — otherwise there's nothing for
+  // an offer to attach to yet.
+  if (!fullCollectionListingId) return;
+  const el = document.createElement('div');
+  el.id = 'fullCollectionOffer';
+  el.style.cssText = 'margin-top:28px;padding:24px;background:linear-gradient(135deg,#0a1628,#1a2f5e);border-radius:14px;text-align:center;';
+  el.innerHTML = `
+    <div style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.3rem;color:#fff;margin-bottom:6px;">Interested in the whole collection?</div>
+    <div style="font-size:13px;color:#93c5fd;margin-bottom:16px;">Make one offer covering everything in this collector's vault.</div>
+    <button class="btn-msg" onclick="window.location.href='alltrades-item.html?id=${fullCollectionListingId}'">🤝 Make Offer on Full Collection</button>
+  `;
+  document.querySelector('.page').appendChild(el);
 }
 
 function renderCards(items) {
@@ -652,10 +672,10 @@ function showToast(icon, msg) {
 ABOUT TRADEZY:
 - Free local trading platform where users list items and trade with verified neighbors
 - Platform fee: 5% per party on completed trades (Founding Traders pay 3% lifetime)
-- Ship-It trades (state-to-state): 10% fee, fully verified users only, launching July 31 2026
+- Ship-It trades (state-to-state): 10% fee, fully verified users only, live nationwide
 - Every listing supports both local meetup AND Ship-It trading
 - Phase 1 launch: July 17 2026 — Connecticut and Ohio statewide
-- Phase 2: July 31 2026 — Nationwide
+- Phase 2: July 31 2026 — Nationwide (complete)
 
 HOW TRADING WORKS:
 1. Post a listing with photos, condition, what you want in return
@@ -679,7 +699,7 @@ FEES EXPLAINED:
 - Founding Traders: 3% lifetime (signed up before July 17 launch)
 - Listing is always free
 
-SHIP-IT TRADES (July 31+):
+SHIP-IT TRADES (live nationwide):
 - Available on ALL listings — buyers choose local or Ship-It when making an offer
 - State-to-state trading for fully ID-verified users only
 - 10% fee per party at trade acceptance
