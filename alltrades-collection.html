@@ -59,6 +59,34 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);}
 
 /* TABS */
 .tab-bar{display:flex;gap:0;border-bottom:2px solid var(--border);margin-bottom:24px;}
+
+/* Owner-only category boxes */
+.category-boxes-row{display:flex;gap:14px;margin-bottom:24px;flex-wrap:wrap;}
+.category-box{position:relative;flex:1;min-width:140px;background:var(--surface);border:2px solid var(--border);border-radius:12px;padding:18px 14px;text-align:center;cursor:pointer;transition:all .15s;}
+.category-box:hover{border-color:var(--gold);transform:translateY(-2px);}
+.category-box-icon{font-size:1.8rem;margin-bottom:6px;}
+.category-box-label{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1rem;color:var(--text);}
+.category-dropdown{display:none;position:absolute;top:100%;left:0;right:0;margin-top:6px;background:var(--white);border:1px solid var(--border);border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.12);z-index:20;overflow:hidden;text-align:left;}
+.category-dropdown.open{display:block;}
+.category-dropdown div{padding:10px 14px;font-size:13px;font-weight:600;color:var(--text);cursor:pointer;transition:background .1s;}
+.category-dropdown div:hover{background:var(--bg);}
+.category-detail-header{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:20px;padding:14px 16px;background:var(--surface);border-radius:12px;border:1px solid var(--border);}
+.category-back-btn{background:none;border:none;color:var(--muted);font-weight:700;cursor:pointer;font-size:13px;padding:6px 8px;}
+.category-back-btn:hover{color:var(--gold);}
+.category-detail-title{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.2rem;color:var(--text);flex:1;}
+.category-detail-value{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.1rem;color:var(--gold);}
+.category-add-btn{background:var(--gold);color:var(--navy);border:none;border-radius:8px;padding:9px 16px;font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:13px;cursor:pointer;}
+.category-add-btn:hover{background:var(--gold-l);}
+
+/* Value trend graphs */
+.value-trend-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px 18px;margin-bottom:20px;}
+.value-trend-header{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:12px;}
+.value-trend-title{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.05rem;color:var(--text);}
+.value-toggle-row{display:flex;gap:6px;}
+.value-toggle-btn{background:var(--white);border:1.5px solid var(--border);color:var(--muted);border-radius:6px;padding:5px 11px;font-size:12px;font-weight:700;cursor:pointer;}
+.value-toggle-btn.active{background:var(--gold);color:var(--navy);border-color:var(--gold);}
+.value-trend-canvas-wrap{position:relative;height:180px;}
+.value-trend-empty{text-align:center;padding:30px 10px;color:var(--muted);font-size:13px;}
 .tab-btn{padding:12px 24px;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1rem;cursor:pointer;border:none;background:transparent;color:var(--muted);border-bottom:3px solid transparent;margin-bottom:-2px;transition:all .15s;display:flex;align-items:center;gap:7px;letter-spacing:.3px;}
 .tab-btn:hover{color:var(--text);}
 .tab-btn.active{color:var(--blue);border-bottom-color:var(--blue);}
@@ -143,6 +171,22 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);}
 
 /* LIGHTBOX */
 .lightbox{display:none;position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:900;align-items:center;justify-content:center;}
+
+/* Add Item modal */
+.add-item-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:910;align-items:center;justify-content:center;padding:20px;}
+.add-item-overlay.open{display:flex;}
+.add-item-box{background:var(--white);border-radius:16px;max-width:480px;width:100%;max-height:88vh;overflow-y:auto;padding:24px;}
+.add-item-box h3{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.3rem;color:var(--text);margin-bottom:4px;}
+.add-item-box .subtext{font-size:12px;color:var(--muted);margin-bottom:18px;}
+.add-item-field{margin-bottom:12px;}
+.add-item-field label{display:block;font-size:12px;font-weight:700;color:var(--muted);margin-bottom:4px;}
+.add-item-field input,.add-item-field select,.add-item-field textarea{width:100%;padding:9px 11px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;color:var(--text);background:var(--white);font-family:inherit;}
+.add-item-row{display:flex;gap:10px;}
+.add-item-row .add-item-field{flex:1;}
+.add-item-actions{display:flex;gap:10px;margin-top:18px;}
+.add-item-cancel{flex:1;padding:11px;background:var(--surface);border:1.5px solid var(--border);border-radius:8px;font-weight:700;font-size:13px;cursor:pointer;color:var(--muted);}
+.add-item-submit{flex:2;padding:11px;background:var(--gold);border:none;border-radius:8px;font-weight:900;font-size:13px;cursor:pointer;color:var(--navy);}
+.add-item-submit:disabled{opacity:.6;cursor:not-allowed;}
 .lightbox.open{display:flex;}
 .lightbox img{max-width:90vw;max-height:88vh;border-radius:10px;object-fit:contain;}
 .lightbox-close{position:absolute;top:16px;right:20px;background:rgba(255,255,255,.12);border:none;color:#fff;font-size:1.4rem;width:38px;height:38px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;}
@@ -162,9 +206,20 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);}
   .filter-select,.search-wrap input{background:#162032 !important;border-color:rgba(255,255,255,.12) !important;color:#f1f5f9 !important;}
   .card-item,.sealed-item{background:#1e293b !important;border-color:rgba(255,255,255,.08) !important;}
   .tab-bar{border-color:rgba(255,255,255,.1);}
+  .category-box{background:#1e293b;border-color:rgba(255,255,255,.08);}
+  .category-dropdown{background:#1e293b;border-color:rgba(255,255,255,.08);}
+  .category-dropdown div:hover{background:#0f172a;}
+  .category-detail-header{background:#1e293b;border-color:rgba(255,255,255,.08);}
+  .add-item-box{background:#1e293b;}
+  .add-item-field input,.add-item-field select,.add-item-field textarea{background:#0f172a;border-color:rgba(255,255,255,.1);color:#f1f5f9;}
+  .add-item-cancel{background:#0f172a;border-color:rgba(255,255,255,.1);}
   .ebay-notice{background:rgba(251,191,36,.08) !important;border-color:rgba(251,191,36,.2) !important;color:#fbbf24 !important;}
+  .value-trend-card{background:#1e293b;border-color:rgba(255,255,255,.08);}
+  .value-toggle-btn{background:#0f172a;border-color:rgba(255,255,255,.1);color:#94a3b8;}
+  .value-toggle-btn.active{background:var(--gold);color:var(--navy);}
 }
 </style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
 </head>
 <body>
 
@@ -217,6 +272,69 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);}
   </div>
 
   <div class="page">
+
+    <!-- OWNER CATEGORY BOXES — only shown when the logged-in viewer owns this collection -->
+    <div id="ownerCategorySection" style="display:none">
+
+      <div class="value-trend-card" id="overallTrendCard">
+        <div class="value-trend-header">
+          <div class="value-trend-title">📈 Overall Collection Value</div>
+          <div class="value-toggle-row" id="overallToggleRow"></div>
+        </div>
+        <div class="value-trend-canvas-wrap"><canvas id="overallTrendCanvas"></canvas></div>
+      </div>
+
+      <div class="category-boxes-row" id="categoryBoxesRow">
+        <div class="category-box" onclick="toggleCategoryDropdown('tcg')">
+          <div class="category-box-icon">🃏</div>
+          <div class="category-box-label">TCG</div>
+          <div class="category-dropdown" id="dropdown-tcg">
+            <div onclick="event.stopPropagation();selectSubcategory('cards','Pokémon')">⚡ Pokémon</div>
+            <div onclick="event.stopPropagation();selectSubcategory('cards','MTG')">🧙 MTG</div>
+            <div onclick="event.stopPropagation();selectSubcategory('cards','One Piece')">🏴‍☠️ One Piece</div>
+            <div onclick="event.stopPropagation();selectSubcategory('cards','Yu-Gi-Oh')">👁️ Yu-Gi-Oh</div>
+            <div onclick="event.stopPropagation();selectSubcategory('cards','Lorcana')">🕯️ Lorcana</div>
+            <div onclick="event.stopPropagation();selectSubcategory('cards','Flesh and Blood')">⚔️ Flesh and Blood</div>
+          </div>
+        </div>
+        <div class="category-box" onclick="toggleCategoryDropdown('sports')">
+          <div class="category-box-icon">⚾</div>
+          <div class="category-box-label">Sports</div>
+          <div class="category-dropdown" id="dropdown-sports">
+            <div onclick="event.stopPropagation();selectSubcategory('cards','Baseball')">⚾ Baseball</div>
+            <div onclick="event.stopPropagation();selectSubcategory('cards','Basketball')">🏀 Basketball</div>
+            <div onclick="event.stopPropagation();selectSubcategory('cards','Football')">🏈 Football</div>
+            <div onclick="event.stopPropagation();selectSubcategory('cards','Hockey')">🏒 Hockey</div>
+            <div onclick="event.stopPropagation();selectSubcategory('cards','Soccer')">⚽ Soccer</div>
+          </div>
+        </div>
+        <div class="category-box" onclick="toggleCategoryDropdown('sealed')">
+          <div class="category-box-icon">📦</div>
+          <div class="category-box-label">Sealed</div>
+          <div class="category-dropdown" id="dropdown-sealed">
+            <div onclick="event.stopPropagation();selectSubcategory('sealed','Booster Box')">📦 Booster Box</div>
+            <div onclick="event.stopPropagation();selectSubcategory('sealed','Elite Trainer Box')">🎁 Elite Trainer Box</div>
+            <div onclick="event.stopPropagation();selectSubcategory('sealed','Booster Bundle')">🎴 Booster Bundle</div>
+            <div onclick="event.stopPropagation();selectSubcategory('sealed','Loose Packs')">📋 Loose Packs</div>
+          </div>
+        </div>
+      </div>
+
+      <div id="categoryDetailHeader" class="category-detail-header" style="display:none">
+        <button class="category-back-btn" onclick="closeCategoryDetail()">← Back to categories</button>
+        <div class="category-detail-title" id="categoryDetailTitle"></div>
+        <div class="category-detail-value" id="categoryDetailValue"></div>
+        <button class="category-add-btn" onclick="openAddItemModal()">+ Add Item</button>
+      </div>
+
+      <div class="value-trend-card" id="categoryTrendCard" style="display:none">
+        <div class="value-trend-header">
+          <div class="value-trend-title" id="categoryTrendTitle">📈 Value Trend</div>
+          <div class="value-toggle-row" id="categoryToggleRow"></div>
+        </div>
+        <div class="value-trend-canvas-wrap"><canvas id="categoryTrendCanvas"></canvas></div>
+      </div>
+    </div>
 
     <!-- MARKET PRICING NOTICE -->
     <div class="ebay-notice">
@@ -315,6 +433,65 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);}
   <img id="lightboxImg" src="" alt="collection photo" onclick="event.stopPropagation()">
 </div>
 
+<div class="add-item-overlay" id="addItemOverlay" onclick="if(event.target===this)closeAddItemModal()">
+  <div class="add-item-box">
+    <h3>Add to <span id="addItemCatLabel"></span></h3>
+    <div class="subtext">Fill in what you can — a photo and a rough value are enough to get started.</div>
+
+    <div class="add-item-field">
+      <label>Title</label>
+      <input type="text" id="aiTitle" placeholder="e.g. Charizard VMAX">
+    </div>
+
+    <div class="add-item-row">
+      <div class="add-item-field" id="aiSetField">
+        <label>Set</label>
+        <input type="text" id="aiSet" placeholder="e.g. Darkness Ablaze">
+      </div>
+      <div class="add-item-field" id="aiNumberField">
+        <label>Card #</label>
+        <input type="text" id="aiNumber" placeholder="e.g. 20/189">
+      </div>
+    </div>
+
+    <div class="add-item-row">
+      <div class="add-item-field">
+        <label>Condition</label>
+        <select id="aiCondition">
+          <option value="">Not specified</option>
+        </select>
+      </div>
+      <div class="add-item-field">
+        <label>Quantity</label>
+        <input type="number" id="aiQuantity" value="1" min="1">
+      </div>
+    </div>
+
+    <div class="add-item-row">
+      <div class="add-item-field">
+        <label>Estimated Value ($)</label>
+        <input type="number" id="aiValue" placeholder="0.00" min="0" step="0.01">
+      </div>
+      <div class="add-item-field">
+        <label>Photo</label>
+        <input type="file" id="aiPhoto" accept="image/*" onchange="handlePhotoSelected()">
+      </div>
+    </div>
+
+    <div id="scanStatus" style="display:none;margin-bottom:12px;padding:10px 12px;border-radius:8px;font-size:12px;line-height:1.5;"></div>
+
+    <div class="add-item-field">
+      <label>Notes</label>
+      <textarea id="aiNotes" rows="2" placeholder="Optional"></textarea>
+    </div>
+
+    <div class="add-item-actions">
+      <button class="add-item-cancel" onclick="closeAddItemModal()">Cancel</button>
+      <button class="add-item-submit" id="aiSubmitBtn" onclick="submitAddItem()">Add to Vault</button>
+    </div>
+  </div>
+</div>
+
 <div class="toast" id="toastEl"><span id="toastIc">✅</span><span id="toastTx">Done!</span></div>
 
 <script>
@@ -324,10 +501,13 @@ const sb = window.supabase.createClient(
 );
 
 let ownerUserId = null;
+let currentUserId = null;
+let isOwner = false;
 let allCards = [];
 let allSealed = [];
 let currentTab = 'cards';
 let fullCollectionListingId = null;
+let activeCategoryContext = null; // { tab: 'cards'|'sealed', subcat: string }
 
 const GAME_EMOJI = {
   'Pokémon':'⚡','MTG':'🧙','One Piece':'🏴‍☠️','Yu-Gi-Oh':'👁️',
@@ -342,7 +522,31 @@ const SEALED_EMOJI = {
   const params = new URLSearchParams(window.location.search);
   ownerUserId = params.get('user');
   if (!ownerUserId) { showNotFound(); return; }
+
+  // This page previously had no concept of who was logged in — it only
+  // knew whose collection to display. Owner-only controls (the category
+  // boxes, Add Item) need a real session check to know if the viewer
+  // IS the owner, not just someone else looking at a shared link.
+  try {
+    const { data: { session } } = await sb.auth.getSession();
+    currentUserId = session?.user?.id || null;
+    isOwner = !!currentUserId && currentUserId === ownerUserId;
+  } catch(e) {
+    console.error('Session check failed:', e.message);
+    isOwner = false;
+  }
+
   await Promise.all([loadOwner(), loadCollection()]);
+
+  if (isOwner) {
+    document.getElementById('ownerCategorySection').style.display = 'block';
+    initOverallTrend();
+  }
+
+  // Close any open category dropdown when clicking elsewhere on the page
+  document.addEventListener('click', () => {
+    document.querySelectorAll('.category-dropdown.open').forEach(d => d.classList.remove('open'));
+  });
 })();
 
 async function loadOwner() {
@@ -569,6 +773,391 @@ function switchTab(tab) {
   document.getElementById('sealedTab').style.display = tab === 'sealed' ? 'block' : 'none';
   document.getElementById('tabCards').classList.toggle('active', tab === 'cards');
   document.getElementById('tabSealed').classList.toggle('active', tab === 'sealed');
+}
+
+function toggleCategoryDropdown(cat) {
+  const dropdown = document.getElementById(`dropdown-${cat}`);
+  const wasOpen = dropdown.classList.contains('open');
+  document.querySelectorAll('.category-dropdown.open').forEach(d => d.classList.remove('open'));
+  if (!wasOpen) dropdown.classList.add('open');
+}
+
+const TREND_PERIODS = [{label:'1M',days:30},{label:'3M',days:90},{label:'6M',days:180},{label:'12M',days:365}];
+let overallChart = null;
+let categoryChart = null;
+
+function buildToggleButtons(containerId, onSelect, defaultDays) {
+  const container = document.getElementById(containerId);
+  container.innerHTML = TREND_PERIODS.map(p =>
+    `<button class="value-toggle-btn${p.days === defaultDays ? ' active' : ''}" data-days="${p.days}">${p.label}</button>`
+  ).join('');
+  container.querySelectorAll('.value-toggle-btn').forEach(btn => {
+    btn.onclick = () => {
+      container.querySelectorAll('.value-toggle-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      onSelect(parseInt(btn.dataset.days));
+    };
+  });
+}
+
+// RLS only allows the owner to select their own snapshot rows — this is
+// only ever called in owner mode, matching that restriction rather than
+// fighting it.
+async function fetchValueSnapshots(category, subcategory, days) {
+  const since = new Date();
+  since.setDate(since.getDate() - days);
+  const sinceStr = since.toISOString().split('T')[0];
+  const { data, error } = await sb
+    .from('collection_value_snapshots')
+    .select('snapshot_date, total_value')
+    .eq('user_id', ownerUserId)
+    .eq('category', category)
+    .eq('subcategory', subcategory)
+    .gte('snapshot_date', sinceStr)
+    .order('snapshot_date', { ascending: true });
+  if (error) { console.error('Snapshot fetch failed:', error.message); return []; }
+  return data || [];
+}
+
+function renderTrendChart(canvasId, existingChart, snapshots) {
+  const canvas = document.getElementById(canvasId);
+  const wrap = canvas.parentElement;
+  if (existingChart) existingChart.destroy();
+
+  // New collections (or ones added before the snapshot job existed)
+  // won't have history yet — show something honest, not a blank chart
+  // or an error.
+  const existingEmpty = wrap.querySelector('.value-trend-empty');
+  if (existingEmpty) existingEmpty.remove();
+  if (!snapshots.length) {
+    canvas.style.display = 'none';
+    const empty = document.createElement('div');
+    empty.className = 'value-trend-empty';
+    empty.textContent = '📊 Not enough history yet — check back after a few days of tracking.';
+    wrap.appendChild(empty);
+    return null;
+  }
+  canvas.style.display = 'block';
+
+  const labels = snapshots.map(s => new Date(s.snapshot_date + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' }));
+  const values = snapshots.map(s => Number(s.total_value));
+  const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+  return new Chart(canvas.getContext('2d'), {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [{
+        data: values,
+        borderColor: '#f59e0b',
+        backgroundColor: 'rgba(245,158,11,.12)',
+        fill: true,
+        tension: 0.3,
+        pointRadius: values.length > 20 ? 0 : 3,
+        pointBackgroundColor: '#f59e0b',
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: { label: (ctx) => `$${ctx.parsed.y.toFixed(0)}` } }
+      },
+      scales: {
+        x: { grid: { display: false }, ticks: { color: isDark ? '#94a3b8' : '#475569', maxRotation: 0, autoSkip: true, maxTicksLimit: 6 } },
+        y: { grid: { color: isDark ? 'rgba(255,255,255,.06)' : '#e2e8f0' }, ticks: { color: isDark ? '#94a3b8' : '#475569', callback: (v) => `$${v}` } }
+      }
+    }
+  });
+}
+
+async function loadOverallTrend(days) {
+  const snapshots = await fetchValueSnapshots('ALL', 'ALL', days);
+  overallChart = renderTrendChart('overallTrendCanvas', overallChart, snapshots);
+}
+
+function initOverallTrend() {
+  buildToggleButtons('overallToggleRow', loadOverallTrend, 90);
+  loadOverallTrend(90);
+}
+
+async function loadCategoryTrend(category, subcategory, days) {
+  const snapshots = await fetchValueSnapshots(category, subcategory, days);
+  categoryChart = renderTrendChart('categoryTrendCanvas', categoryChart, snapshots);
+}
+
+// category/subcategory here must match exactly what the snapshot job
+// writes: cards use category='tcg_or_sports' (matching what
+// submitAddItem stores), sealed items use category='sealed' with
+// subcategory set to the sealed_type instead of a game name.
+function initCategoryTrend(tab, subcat) {
+  const category = tab === 'sealed' ? 'sealed' : 'tcg_or_sports';
+  document.getElementById('categoryTrendTitle').textContent = `📈 ${subcat} Value Trend`;
+  document.getElementById('categoryTrendCard').style.display = 'block';
+  buildToggleButtons('categoryToggleRow', (days) => loadCategoryTrend(category, subcat, days), 90);
+  loadCategoryTrend(category, subcat, 90);
+}
+
+function selectSubcategory(tab, subcat) {
+  activeCategoryContext = { tab, subcat };
+
+  // Switch to the right tab and filter it down to just this subcategory,
+  // reusing the existing tab/filter logic rather than duplicating it.
+  switchTab(tab);
+  if (tab === 'cards') {
+    document.getElementById('cardsCategory').value = subcat;
+    filterCards();
+  } else {
+    document.getElementById('sealedType').value = subcat;
+    filterSealed();
+  }
+
+  const emoji = tab === 'cards' ? (GAME_EMOJI[subcat] || '🃏') : (SEALED_EMOJI[subcat] || '📦');
+  const items = (tab === 'cards' ? allCards : allSealed).filter(i =>
+    tab === 'cards' ? (i.subcategory === subcat || i.category === subcat) : i.sealed_type === subcat
+  );
+  const categoryValue = items.reduce((s, i) => s + (Number(i.estimated_value) || 0), 0);
+
+  document.getElementById('categoryDetailTitle').textContent = `${emoji} ${subcat}`;
+  document.getElementById('categoryDetailValue').textContent = categoryValue > 0 ? `$${categoryValue.toFixed(0)} total` : '';
+  document.getElementById('categoryBoxesRow').style.display = 'none';
+  document.getElementById('overallTrendCard').style.display = 'none';
+  document.getElementById('categoryDetailHeader').style.display = 'flex';
+  initCategoryTrend(tab, subcat);
+}
+
+function closeCategoryDetail() {
+  activeCategoryContext = null;
+  document.getElementById('categoryBoxesRow').style.display = 'flex';
+  document.getElementById('overallTrendCard').style.display = 'block';
+  document.getElementById('categoryDetailHeader').style.display = 'none';
+  document.getElementById('categoryTrendCard').style.display = 'none';
+  document.getElementById('cardsCategory').value = '';
+  document.getElementById('sealedType').value = '';
+  filterCards();
+  filterSealed();
+}
+
+const CARD_CONDITIONS = ['Poor', 'Good', 'Near Mint', 'Mint-ish'];
+const SEALED_CONDITIONS = ['Sealed - Mint', 'Sealed - Shelf Wear', 'Opened or Reseal Concerns', 'Damaged Packaging'];
+let lastScanResult = null;
+
+function openAddItemModal() {
+  if (!activeCategoryContext) return;
+  const { tab, subcat } = activeCategoryContext;
+  document.getElementById('addItemCatLabel').textContent = subcat;
+  document.getElementById('aiTitle').value = '';
+  document.getElementById('aiSet').value = '';
+  document.getElementById('aiNumber').value = '';
+  document.getElementById('aiQuantity').value = '1';
+  document.getElementById('aiValue').value = '';
+  document.getElementById('aiPhoto').value = '';
+  document.getElementById('aiNotes').value = '';
+  lastScanResult = null;
+
+  const conditionOptions = tab === 'sealed' ? SEALED_CONDITIONS : CARD_CONDITIONS;
+  document.getElementById('aiCondition').innerHTML = `<option value="">Not specified</option>` +
+    conditionOptions.map(c => `<option>${c}</option>`).join('');
+
+  const scanStatus = document.getElementById('scanStatus');
+  scanStatus.style.display = 'none';
+  scanStatus.innerHTML = '';
+
+  // Card number doesn't apply to sealed product
+  document.getElementById('aiNumberField').style.display = tab === 'sealed' ? 'none' : 'block';
+  document.getElementById('addItemOverlay').classList.add('open');
+}
+
+function blobToBase64(blob) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result.split(',')[1]);
+    reader.onerror = () => reject(new Error('Could not read image'));
+    reader.readAsDataURL(blob);
+  });
+}
+
+async function handlePhotoSelected() {
+  const fileInput = document.getElementById('aiPhoto');
+  const file = fileInput.files && fileInput.files[0];
+  const scanStatus = document.getElementById('scanStatus');
+  lastScanResult = null;
+
+  if (!file) {
+    scanStatus.style.display = 'none';
+    return;
+  }
+
+  scanStatus.style.display = 'block';
+  scanStatus.style.background = 'var(--surface)';
+  scanStatus.style.color = 'var(--muted)';
+  scanStatus.textContent = '🔍 Analyzing photo…';
+
+  try {
+    // Same compression step used for the actual upload — this is what
+    // normalizes an iPhone HEIC-labeled-as-.jpg into a real JPEG before
+    // it's ever sent anywhere, scan included.
+    const compressed = await compressImage(file);
+    const base64 = await blobToBase64(compressed);
+
+    const res = await fetch('https://tradezy-card-scan.throbbing-lake-08ed.workers.dev/scan', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ image_base64: base64, media_type: 'image/jpeg' })
+    });
+    const data = await res.json();
+
+    if (!res.ok || data.error) throw new Error(data.error || 'Scan failed');
+
+    // Honest fallback: the scan couldn't confidently tell what this is.
+    // No error, no blocked upload — just proceed as a plain photo, same
+    // as if scanning was never attempted.
+    if (!data.identified || data.item_type === 'unrecognized') {
+      scanStatus.style.background = 'var(--surface)';
+      scanStatus.style.color = 'var(--muted)';
+      scanStatus.textContent = "🤷 Couldn't confidently identify this one — no problem, just fill in the details below.";
+      return;
+    }
+
+    lastScanResult = data;
+    const { tab, subcat } = activeCategoryContext;
+
+    // Only fill fields that are still empty — never clobber something
+    // the user already typed before the scan came back.
+    const titleEl = document.getElementById('aiTitle');
+    const setEl = document.getElementById('aiSet');
+    const numberEl = document.getElementById('aiNumber');
+    const conditionEl = document.getElementById('aiCondition');
+    if (!titleEl.value && data.name) titleEl.value = data.name;
+    if (!setEl.value && data.set) setEl.value = data.set;
+    if (data.item_type === 'card' && !numberEl.value && data.number) numberEl.value = data.number;
+    if (!conditionEl.value && data.condition_bucket) {
+      const opt = Array.from(conditionEl.options).find(o => o.value === data.condition_bucket);
+      if (opt) conditionEl.value = data.condition_bucket;
+    }
+
+    // Flag, don't silently override, if what was scanned doesn't match
+    // the category the user explicitly picked before opening this modal.
+    const expectedType = tab === 'sealed' ? 'sealed' : 'card';
+    const mismatch = data.item_type !== expectedType;
+
+    let summary = `✅ Identified as <strong>${data.name || 'this item'}</strong>`;
+    if (data.item_type === 'card' && data.centering) {
+      summary += ` · Centering ${data.centering.left_right} L-R, ${data.centering.top_bottom} T-B`;
+    }
+    if (data.visible_issues && data.visible_issues.length) {
+      summary += ` · Flagged: ${data.visible_issues.join(', ')}`;
+    }
+    if (mismatch) {
+      summary += `<br>⚠️ This looks like ${data.item_type === 'sealed' ? 'sealed product' : 'a card'}, but you're adding to a ${expectedType === 'sealed' ? 'sealed' : 'card'} category — double check before saving.`;
+    }
+    summary += `<br><span style="opacity:.75">${data.disclaimer || ''}</span>`;
+
+    scanStatus.style.background = mismatch ? '#fef3c7' : 'var(--surface)';
+    scanStatus.style.color = mismatch ? '#92400e' : 'var(--muted)';
+    scanStatus.innerHTML = summary;
+  } catch(e) {
+    console.error('Scan failed:', e.message);
+    // Any failure — network, timeout, bad response — falls back to
+    // plain manual entry rather than blocking the upload.
+    scanStatus.style.background = 'var(--surface)';
+    scanStatus.style.color = 'var(--muted)';
+    scanStatus.textContent = "🤷 Couldn't reach the scan just now — no problem, just fill in the details below.";
+  }
+}
+
+function closeAddItemModal() {
+  document.getElementById('addItemOverlay').classList.remove('open');
+}
+
+// Normalizes any photo format the browser can decode into a real JPEG by
+// redrawing it through a canvas — this is what actually fixes the
+// iPhone-HEIC-labeled-as-.jpg problem, since the re-encode happens
+// regardless of what the original file's bytes or extension claim to be.
+function compressImage(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const img = new Image();
+      img.onload = () => {
+        const maxDim = 1400;
+        let { width, height } = img;
+        if (width > maxDim || height > maxDim) {
+          if (width > height) { height = Math.round(height * maxDim / width); width = maxDim; }
+          else { width = Math.round(width * maxDim / height); height = maxDim; }
+        }
+        const canvas = document.createElement('canvas');
+        canvas.width = width;
+        canvas.height = height;
+        canvas.getContext('2d').drawImage(img, 0, 0, width, height);
+        canvas.toBlob(blob => blob ? resolve(blob) : reject(new Error('Could not process image')), 'image/jpeg', 0.8);
+      };
+      img.onerror = () => reject(new Error('Could not read image'));
+      img.src = e.target.result;
+    };
+    reader.onerror = () => reject(new Error('Could not read file'));
+    reader.readAsDataURL(file);
+  });
+}
+
+async function submitAddItem() {
+  if (!activeCategoryContext || !isOwner) return;
+  const { tab, subcat } = activeCategoryContext;
+  const title = document.getElementById('aiTitle').value.trim();
+  if (!title) { showToast('❌', 'Please enter a title'); return; }
+
+  const btn = document.getElementById('aiSubmitBtn');
+  btn.disabled = true;
+  btn.textContent = 'Adding…';
+
+  try {
+    let photoUrl = null;
+    const fileInput = document.getElementById('aiPhoto');
+    if (fileInput.files && fileInput.files[0]) {
+      const compressed = await compressImage(fileInput.files[0]);
+      const path = `${ownerUserId}/${Date.now()}.jpg`;
+      const { error: uploadErr } = await sb.storage.from('listing-photos-v2').upload(path, compressed, { contentType: 'image/jpeg' });
+      if (uploadErr) throw uploadErr;
+      const { data: urlData } = sb.storage.from('listing-photos-v2').getPublicUrl(path);
+      photoUrl = urlData?.publicUrl || null;
+    }
+
+    const row = {
+      user_id: ownerUserId,
+      title,
+      category: tab === 'sealed' ? 'sealed' : 'tcg_or_sports',
+      subcategory: tab === 'cards' ? subcat : null,
+      set_name: document.getElementById('aiSet').value.trim() || null,
+      card_number: tab === 'sealed' ? null : (document.getElementById('aiNumber').value.trim() || null),
+      condition: document.getElementById('aiCondition').value || null,
+      estimated_value: parseFloat(document.getElementById('aiValue').value) || null,
+      quantity: parseInt(document.getElementById('aiQuantity').value) || 1,
+      notes: document.getElementById('aiNotes').value.trim() || null,
+      sealed: tab === 'sealed',
+      sealed_type: tab === 'sealed' ? subcat : null,
+      photos: photoUrl ? [photoUrl] : [],
+      ai_item_type: lastScanResult?.item_type || null,
+      ai_condition_bucket: lastScanResult?.condition_bucket || null,
+      ai_centering: lastScanResult?.centering || null,
+      ai_visible_issues: lastScanResult?.visible_issues || [],
+    };
+
+    const { error: insertErr, data: inserted } = await sb.from('collections').insert(row).select();
+    if (insertErr) throw insertErr;
+    if (!inserted || !inserted.length) throw new Error('Item did not save — please try again.');
+
+    closeAddItemModal();
+    showToast('✅', 'Added to your vault!');
+    await loadCollection();
+    selectSubcategory(tab, subcat); // re-enter the same category view with updated totals
+  } catch(e) {
+    console.error(e);
+    showToast('❌', e.message || 'Could not add item');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Add to Vault';
+  }
 }
 
 function messageSeller() {
