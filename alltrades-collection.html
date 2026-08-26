@@ -548,8 +548,13 @@ const SEALED_EMOJI = {
     initOverallTrend();
   }
 
-  // Close any open category dropdown when clicking elsewhere on the page
-  document.addEventListener('click', () => {
+  // Close any open category dropdown when clicking elsewhere on the page —
+  // but NOT when the click originated inside a category box itself. Click
+  // events bubble up to document, so without this check, the box's own
+  // onclick (which opens the dropdown) and this listener (which closes it)
+  // both fired on the very same click, undoing the open state instantly.
+  document.addEventListener('click', (e) => {
+    if (e.target.closest('.category-box')) return;
     document.querySelectorAll('.category-dropdown.open').forEach(d => d.classList.remove('open'));
   });
 })();
