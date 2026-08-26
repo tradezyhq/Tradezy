@@ -77,6 +77,10 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);}
 .category-detail-value{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.1rem;color:var(--gold);}
 .category-add-btn{background:var(--gold);color:var(--navy);border:none;border-radius:8px;padding:9px 16px;font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:13px;cursor:pointer;}
 .category-add-btn:hover{background:var(--gold-l);}
+.sell-item-btn{display:block;width:100%;margin-top:8px;padding:7px;background:var(--green,#16a34a);color:#fff;border:none;border-radius:6px;font-weight:700;font-size:12px;cursor:pointer;}
+.sell-item-btn:hover{opacity:.9;}
+.sell-category-btn{background:var(--green,#16a34a);color:#fff;border:none;border-radius:8px;padding:9px 16px;font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:13px;cursor:pointer;}
+.sell-category-btn:hover{opacity:.9;}
 
 /* Value trend graphs */
 .value-trend-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px 18px;margin-bottom:20px;}
@@ -324,6 +328,7 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);}
         <button class="category-back-btn" onclick="closeCategoryDetail()">← Back to categories</button>
         <div class="category-detail-title" id="categoryDetailTitle"></div>
         <div class="category-detail-value" id="categoryDetailValue"></div>
+        <button class="sell-category-btn" onclick="sellCategoryBundle()">💰 Sell All</button>
         <button class="category-add-btn" onclick="openAddItemModal()">+ Add Item</button>
       </div>
 
@@ -668,7 +673,7 @@ function renderCards(items) {
 
     const listingLink = item.listed && item.listing_id
       ? `<a class="view-listing-link" href="alltrades-item.html?id=${item.listing_id}">🔗 View Listing →</a>`
-      : '';
+      : (isOwner ? `<button class="sell-item-btn" onclick="sellIndividualItem('${item.id}')">💰 Sell This</button>` : '');
 
     return `<div class="card-item">
       <div class="card-img-wrap">
@@ -712,7 +717,7 @@ function renderSealed(items) {
 
     const listingLink = item.listed && item.listing_id
       ? `<a class="view-listing-link" href="alltrades-item.html?id=${item.listing_id}">🔗 View Listing →</a>`
-      : '';
+      : (isOwner ? `<button class="sell-item-btn" onclick="sellIndividualItem('${item.id}')">💰 Sell This</button>` : '');
 
     return `<div class="sealed-item">
       <div class="sealed-img-wrap">
@@ -925,6 +930,21 @@ function selectSubcategory(tab, subcat) {
   document.getElementById('overallTrendCard').style.display = 'none';
   document.getElementById('categoryDetailHeader').style.display = 'flex';
   initCategoryTrend(tab, subcat);
+}
+
+function sellIndividualItem(itemId) {
+  window.location.href = `alltrades-post.html?fromVault=${itemId}`;
+}
+
+function sellCategoryBundle() {
+  if (!activeCategoryContext) return;
+  const { tab, subcat } = activeCategoryContext;
+  // Matches the exact category/subcategory convention already used by
+  // the snapshot job and Add Item — cards store category='tcg_or_sports',
+  // sealed items store category='sealed' with subcategory set to the
+  // sealed_type instead of a game name.
+  const category = tab === 'sealed' ? 'sealed' : 'tcg_or_sports';
+  window.location.href = `alltrades-post.html?fromVaultBulk=${encodeURIComponent(category)}&subcat=${encodeURIComponent(subcat)}&owner=${ownerUserId}`;
 }
 
 function closeCategoryDetail() {
