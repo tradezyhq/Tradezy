@@ -86,6 +86,8 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
 .cat-pill.tcg.active{background:#f5f3ff;border-color:#7c3aed;}
 .cat-pill.sports-c{border-color:#f97316;color:#ea580c;}
 .cat-pill.sports-c.active{background:#fff7ed;border-color:#ea580c;}
+.cat-pill.sealed{border-color:#5eead4;color:#0d9488;}
+.cat-pill.sealed.active{background:#f0fdfa;border-color:#0d9488;}
 .cond-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;}
 .cond-btn{border:1.5px solid var(--border);border-radius:8px;padding:8px 4px;text-align:center;cursor:pointer;transition:all .15s;font-size:11px;font-weight:700;color:var(--text-light);}
 .cond-btn:hover,.cond-btn.active{border-color:var(--blue);color:var(--blue);background:#eff6ff;}
@@ -145,6 +147,14 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
 .sc-cond-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:12px;}
 .sc-cond-btn{border:1.5px solid #f97316;border-radius:8px;padding:7px 4px;text-align:center;cursor:pointer;transition:all .15s;font-size:11px;font-weight:700;color:#ea580c;background:#fff;}
 .sc-cond-btn:hover,.sc-cond-btn.active{background:#ea580c;color:#fff;border-color:#ea580c;}
+.sp-section{display:none;background:#f0fdfa;border:1.5px solid #5eead4;border-radius:10px;padding:16px;margin-top:12px;}
+.sp-section.show{display:block;}
+.sp-header{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:.95rem;color:#0d9488;margin-bottom:12px;display:flex;align-items:center;gap:7px;}
+.sp-cond-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:6px;margin-bottom:12px;}
+.sp-cond-btn{border:1.5px solid #5eead4;border-radius:8px;padding:7px 4px;text-align:center;cursor:pointer;transition:all .15s;font-size:11px;font-weight:700;color:#0d9488;background:#fff;}
+.sp-cond-btn:hover,.sp-cond-btn.active{background:#0d9488;color:#fff;border-color:#0d9488;}
+.subcat-pill.sealed{border-color:#5eead4;color:#0d9488;}
+.subcat-pill.sealed:hover,.subcat-pill.sealed.active{background:#0d9488;color:#fff;border-color:#0d9488;}
 .subcat-section{margin-top:10px;}
 .subcat-label{font-size:11px;font-weight:700;color:#7c3aed;text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:7px;}
 .subcat-label.sports{color:#ea580c;}
@@ -346,6 +356,7 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
             <div class="cat-pill" onclick="pickCat(this,'Art')">🎨 Art</div>
             <div class="cat-pill tcg" onclick="pickCat(this,'Trading Cards')">🃏 Trading Cards</div>
             <div class="cat-pill sports-c" onclick="pickCat(this,'Sports Cards')">⚾ Sports Cards</div>
+            <div class="cat-pill sealed" onclick="pickCat(this,'Sealed Product')">📦 Sealed Product</div>
             <div class="cat-pill" onclick="pickCat(this,'Other')">📦 Other</div>
           </div>
           <div class="field-error" id="eCat">Please select a category.</div>
@@ -473,6 +484,33 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);min-he
                 <label style="font-size:11px;font-weight:700;color:#ea580c;text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:5px">Grade</label>
                 <input type="text" id="scGrade" placeholder="e.g. 9, 9.5, 10" style="border-color:#f97316">
               </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SEALED PRODUCT FIELDS -->
+        <div class="sp-section" id="spSection">
+          <div class="sp-header">📦 Sealed Product Details</div>
+          <div class="subcat-section" style="margin-bottom:12px;">
+            <span class="subcat-label" style="color:#0d9488">Product Type *</span>
+            <div class="subcat-pills" id="spSubcatPills">
+              <div class="subcat-pill sealed active" onclick="pickSpSubcat(this,'Booster Box')">📦 Booster Box</div>
+              <div class="subcat-pill sealed" onclick="pickSpSubcat(this,'Elite Trainer Box')">🎁 Elite Trainer Box</div>
+              <div class="subcat-pill sealed" onclick="pickSpSubcat(this,'Booster Bundle')">🎴 Booster Bundle</div>
+              <div class="subcat-pill sealed" onclick="pickSpSubcat(this,'Loose Packs')">📋 Loose Packs</div>
+            </div>
+          </div>
+          <div class="field">
+            <label style="font-size:11px;font-weight:700;color:#0d9488;text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:5px">Set / Product Name</label>
+            <input type="text" id="spSet" placeholder="e.g. Scarlet &amp; Violet: 151" style="border-color:#5eead4">
+          </div>
+          <div class="field">
+            <label style="font-size:11px;font-weight:700;color:#0d9488;text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:6px">Packaging Condition *</label>
+            <div class="sp-cond-grid">
+              <div class="sp-cond-btn active" onclick="pickSpCond(this,'Sealed - Mint')">✨ Sealed - Mint</div>
+              <div class="sp-cond-btn" onclick="pickSpCond(this,'Sealed - Shelf Wear')">📦 Sealed - Shelf Wear</div>
+              <div class="sp-cond-btn" onclick="pickSpCond(this,'Opened or Reseal Concerns')">⚠️ Opened / Reseal Concerns</div>
+              <div class="sp-cond-btn" onclick="pickSpCond(this,'Damaged Packaging')">💔 Damaged Packaging</div>
             </div>
           </div>
         </div>
@@ -789,11 +827,12 @@ function shipItIsLive() { return new Date() >= SHIP_IT_LIVE_DATE; }
      via .eq('user_id', ...) as a client-side safety check in addition to
      RLS), and prefills the core fields — including photos, which resolves
      the reported bug directly since the grid will already show >=3 photos.
-     KNOWN LIMITATION: TCG/Sports-specific sub-fields (set, card #, grade,
-     foil, graded toggle) are stored concatenated into the description text
-     at publish time, not as separate columns, so they aren't reverse-parsed
-     back into their own inputs here — those specific sub-fields start blank
-     in edit mode even though the top-level category and base description
+     KNOWN LIMITATION: TCG/Sports/Sealed-Product-specific sub-fields (set,
+     card #, grade, foil, graded toggle, sealed_type, packaging condition)
+     are stored concatenated into the description text at publish time,
+     not as separate columns, so they aren't reverse-parsed back into
+     their own inputs here — those specific sub-fields start blank in
+     edit mode even though the top-level category and base description
      text do prefill correctly. Flagging rather than guessing at a fragile
      text-parsing solution. ═══ */
   const urlParams = new URLSearchParams(window.location.search);
@@ -846,6 +885,8 @@ let tcgPref = 'Trade Only';
 let tcgSubcat = 'Pokémon';
 let scSubcat = 'Baseball';
 let scCond = 'Mint';
+let spSubcat = 'Booster Box';
+let spCond = 'Sealed - Mint';
 let tcgGraded = false;
 let scGraded = false;
 let foilOn = false;
@@ -1046,9 +1087,11 @@ function pickCat(el, c) {
   livePreview();
   const isTCG = c === 'Trading Cards';
   const isSC  = c === 'Sports Cards';
+  const isSP  = c === 'Sealed Product';
   document.getElementById('tcgSection').classList.toggle('show', isTCG);
   document.getElementById('scSection').classList.toggle('show', isSC);
-  document.getElementById('condSection').style.display = (isTCG || isSC) ? 'none' : 'block';
+  document.getElementById('spSection').classList.toggle('show', isSP);
+  document.getElementById('condSection').style.display = (isTCG || isSC || isSP) ? 'none' : 'block';
 }
 
 function pickTcgSubcat(el, sub) {
@@ -1067,6 +1110,18 @@ function pickScCond(el, c) {
   document.querySelectorAll('.sc-cond-btn').forEach(b => b.classList.remove('active'));
   el.classList.add('active');
   scCond = c;
+}
+
+function pickSpSubcat(el, sub) {
+  document.querySelectorAll('#spSubcatPills .subcat-pill').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  spSubcat = sub;
+}
+
+function pickSpCond(el, c) {
+  document.querySelectorAll('.sp-cond-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  spCond = c;
 }
 
 function pickGraded(val) {
@@ -1288,6 +1343,7 @@ function validate(s) {
 function buildCategoryValue() {
   if (cat === 'Trading Cards') return `TCG - ${tcgSubcat}`;
   if (cat === 'Sports Cards')  return `Sports Cards - ${scSubcat}`;
+  if (cat === 'Sealed Product') return `Sealed Product - ${spSubcat}`;
   return cat;
 }
 
@@ -1414,6 +1470,7 @@ async function publish(btn) {
   try {
     const isTCG = cat === 'Trading Cards';
     const isSC  = cat === 'Sports Cards';
+    const isSP  = cat === 'Sealed Product';
     const val   = parseFloat(document.getElementById('fVal').value) || 0;
     const qty   = parseInt(document.getElementById('fQty').value) || 1;
     const wants = document.getElementById('fWants').value.trim();
@@ -1438,7 +1495,11 @@ async function publish(btn) {
       const gradeInfo = scGraded ? ` | ${document.getElementById('scGrader').value} ${document.getElementById('scGrade').value}` : ' | Raw/Ungraded';
       fullDesc += `\n\n[Sports Card] Sport: ${scSubcat}${player?' | Player: '+player:''}${year?' | Year/Set: '+year:''} | Condition: ${scCond}${gradeInfo}`;
     }
-    const condValue = isTCG ? tcgCond : isSC ? scCond : cond;
+    if (isSP) {
+      const spSet = document.getElementById('spSet').value;
+      fullDesc += `\n\n[Sealed Product] Type: ${spSubcat}${spSet?' | Set: '+spSet:''} | Condition: ${spCond}`;
+    }
+    const condValue = isTCG ? tcgCond : isSC ? scCond : isSP ? spCond : cond;
     /* SHIP-IT DATE GATE START — delete this line, use `ship_it: shipIt` directly, after July 31, 2026 */
     const finalShipIt = shipIt && shipItIsLive();
     /* SHIP-IT DATE GATE END */
