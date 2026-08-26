@@ -753,6 +753,23 @@ const sb = window.supabase.createClient(
 );
 
 let currentUser = null;
+let fromVaultItemId = null;
+let vaultBulkContext = null; // { category, subcat, itemIds } when publishing a bundled category listing
+const TCG_GAMES = ['Pokémon','MTG','One Piece','Yu-Gi-Oh','Lorcana','Flesh and Blood'];
+const SPORTS_TYPES = ['Baseball','Basketball','Football','Hockey','Soccer'];
+
+// The Vault's card conditions (Poor/Good/Near Mint/Mint-ish) use a
+// coarser, different vocabulary than this form's TCG/Sports condition
+// buttons (Mint/Near Mint/Lightly Played/Moderately Played/Heavily
+// Played/Damaged) — this is a best-effort mapping, not an exact
+// translation. It only sets the pre-selected default; the seller can
+// still change it before publishing. Sealed conditions match exactly
+// already (both use the same "Sealed - Mint" style language), so no
+// mapping is needed there.
+function mapVaultConditionToPost(vaultCond) {
+  const map = { 'Mint-ish': 'Mint', 'Near Mint': 'Near Mint', 'Good': 'Lightly Played', 'Poor': 'Damaged' };
+  return map[vaultCond] || 'Near Mint';
+}
 let fullyVerified = false;
 let shipIt = false;
 let trustScore = 20;
@@ -868,6 +885,126 @@ function shipItIsLive() { return new Date() >= SHIP_IT_LIVE_DATE; }
     }
   }
   /* ═══ EDIT LISTING FIX END ═══ */
+
+  /* ═══ VAULT-TO-LISTING PREFILL START — two entry points from
+     alltrades-collection.html: ?fromVault=<collections.id> for selling one
+     specific item, or ?fromVaultBulk=<category>&subcat=<subcat>&owner=<id>
+     for bundling an entire category into one listing. Unlike the
+     ?id= edit-listing path above (which reads from `listings`, where
+     TCG/Sports/Sealed details are flattened into description text and
+     can't be reverse-parsed), this reads from `collections`, which still
+     has everything in real structured columns — so the TCG/Sports/Sealed
+     sub-fields CAN be prefilled correctly here. ═══ */
+  const fromVaultId = urlParams.get('fromVault');
+  if (fromVaultId) {
+    const { data: vaultItem, error: vaultErr } = await sb.from('collections')
+      .select('*').eq('id', fromVaultId).eq('user_id', currentUser.id).single();
+    if (vaultErr || !vaultItem) {
+      toast('⚠️', "Couldn't load that item from your vault — it may not exist or isn't yours.", true);
+    } else {
+      fromVaultItemId = vaultItem.id;
+      document.getElementById('fTitle').value = vaultItem.title || '';
+      document.getElementById('fDesc').value = vaultItem.notes || '';
+      document.getElementById('fVal').value = vaultItem.estimated_value || '';
+      document.getElementById('fQty').value = vaultItem.quantity || 1;
+      photos = (vaultItem.photos || []).slice();
+
+      if (vaultItem.sealed) {
+        const spPill = Array.from(document.querySelectorAll('#catPills .cat-pill')).find(p => p.getAttribute('onclick')?.includes(`'Sealed Product'`));
+        if (spPill) pickCat(spPill, 'Sealed Product');
+        const subPill = Array.from(document.querySelectorAll('#spSubcatPills .subcat-pill')).find(p => p.getAttribute('onclick')?.includes(`'${vaultItem.sealed_type}'`));
+        if (subPill) pickSpSubcat(subPill, vaultItem.sealed_type);
+        document.getElementById('spSet').value = vaultItem.set_name || '';
+        const condBtn = Array.from(document.querySelectorAll('.sp-cond-btn')).find(b => b.getAttribute('onclick')?.includes(`'${vaultItem.condition}'`));
+        if (condBtn) pickSpCond(condBtn, vaultItem.condition);
+      } else if (TCG_GAMES.includes(vaultItem.subcategory)) {
+        const tcgPill = Array.from(document.querySelectorAll('#catPills .cat-pill')).find(p => p.getAttribute('onclick')?.includes(`'Trading Cards'`));
+        if (tcgPill) pickCat(tcgPill, 'Trading Cards');
+        const subPill = Array.from(document.querySelectorAll('#tcgSubcatPills .subcat-pill')).find(p => p.getAttribute('onclick')?.includes(`'${vaultItem.subcategory}'`));
+        if (subPill) pickTcgSubcat(subPill, vaultItem.subcategory);
+        document.getElementById('tcgSet').value = vaultItem.set_name || '';
+        document.getElementById('tcgCardNum').value = vaultItem.card_number || '';
+        const mappedCond = mapVaultConditionToPost(vaultItem.condition);
+        const condBtn = Array.from(document.querySelectorAll('.tcg-cond-btn')).find(b => b.getAttribute('onclick')?.includes(`'${mappedCond}'`));
+        if (condBtn) pickTcgCond(condBtn, mappedCond);
+        if (vaultItem.graded) {
+          pickTcgGraded(true);
+          if (vaultItem.grader) document.getElementById('tcgGrader').value = vaultItem.grader;
+          document.getElementById('tcgGrade').value = vaultItem.grade || '';
+        }
+        if (vaultItem.foil) toggleFoil();
+      } else if (SPORTS_TYPES.includes(vaultItem.subcategory)) {
+        const scPill = Array.from(document.querySelectorAll('#catPills .cat-pill')).find(p => p.getAttribute('onclick')?.includes(`'Sports Cards'`));
+        if (scPill) pickCat(scPill, 'Sports Cards');
+        const subPill = Array.from(document.querySelectorAll('#scSubcatPills .subcat-pill')).find(p => p.getAttribute('onclick')?.includes(`'${vaultItem.subcategory}'`));
+        if (subPill) pickScSubcat(subPill, vaultItem.subcategory);
+        // The Vault has no separate player-name field, only title/set_name
+        // — Year/Set is the closest honest mapping. Player Name is left
+        // blank rather than guessed from the title text.
+        document.getElementById('scYear').value = vaultItem.set_name || '';
+        const mappedCond = mapVaultConditionToPost(vaultItem.condition);
+        const condBtn = Array.from(document.querySelectorAll('.sc-cond-btn')).find(b => b.getAttribute('onclick')?.includes(`'${mappedCond}'`));
+        if (condBtn) pickScCond(condBtn, mappedCond);
+        if (vaultItem.graded) {
+          pickGraded(true);
+          if (vaultItem.grader) document.getElementById('scGrader').value = vaultItem.grader;
+          document.getElementById('scGrade').value = vaultItem.grade || '';
+        }
+      }
+
+      renderGrid();
+      livePreview();
+      toast('📦', `Loaded "${vaultItem.title}" from your vault`);
+    }
+  }
+
+  const bulkCategory = urlParams.get('fromVaultBulk');
+  const bulkSubcat = urlParams.get('subcat');
+  const bulkOwner = urlParams.get('owner');
+  if (bulkCategory && bulkSubcat && bulkOwner) {
+    let bulkQuery = sb.from('collections').select('*').eq('user_id', bulkOwner);
+    bulkQuery = bulkCategory === 'sealed'
+      ? bulkQuery.eq('sealed', true).eq('sealed_type', bulkSubcat)
+      : bulkQuery.eq('sealed', false).eq('subcategory', bulkSubcat);
+    const { data: bulkItems, error: bulkErr } = await bulkQuery;
+
+    if (bulkErr || !bulkItems || !bulkItems.length) {
+      toast('⚠️', "Couldn't load that category from your vault.", true);
+    } else {
+      vaultBulkContext = { category: bulkCategory, subcat: bulkSubcat, itemIds: bulkItems.map(i => i.id) };
+      const totalVal = bulkItems.reduce((s, i) => s + (Number(i.estimated_value) || 0), 0);
+      const itemList = bulkItems.map(i => i.title).slice(0, 15).join(', ') + (bulkItems.length > 15 ? `, +${bulkItems.length - 15} more` : '');
+
+      document.getElementById('fTitle').value = `${bulkSubcat} Collection — ${bulkItems.length} item${bulkItems.length !== 1 ? 's' : ''}`;
+      document.getElementById('fDesc').value = `This bundle includes ${bulkItems.length} item${bulkItems.length !== 1 ? 's' : ''}: ${itemList}`;
+      document.getElementById('fVal').value = totalVal || '';
+      document.getElementById('fQty').value = 1;
+      const firstPhoto = bulkItems.find(i => i.photos?.length)?.photos?.[0];
+      photos = firstPhoto ? [firstPhoto] : [];
+
+      if (bulkCategory === 'sealed') {
+        const spPill = Array.from(document.querySelectorAll('#catPills .cat-pill')).find(p => p.getAttribute('onclick')?.includes(`'Sealed Product'`));
+        if (spPill) pickCat(spPill, 'Sealed Product');
+        const subPill = Array.from(document.querySelectorAll('#spSubcatPills .subcat-pill')).find(p => p.getAttribute('onclick')?.includes(`'${bulkSubcat}'`));
+        if (subPill) pickSpSubcat(subPill, bulkSubcat);
+      } else if (TCG_GAMES.includes(bulkSubcat)) {
+        const tcgPill = Array.from(document.querySelectorAll('#catPills .cat-pill')).find(p => p.getAttribute('onclick')?.includes(`'Trading Cards'`));
+        if (tcgPill) pickCat(tcgPill, 'Trading Cards');
+        const subPill = Array.from(document.querySelectorAll('#tcgSubcatPills .subcat-pill')).find(p => p.getAttribute('onclick')?.includes(`'${bulkSubcat}'`));
+        if (subPill) pickTcgSubcat(subPill, bulkSubcat);
+      } else if (SPORTS_TYPES.includes(bulkSubcat)) {
+        const scPill = Array.from(document.querySelectorAll('#catPills .cat-pill')).find(p => p.getAttribute('onclick')?.includes(`'Sports Cards'`));
+        if (scPill) pickCat(scPill, 'Sports Cards');
+        const subPill = Array.from(document.querySelectorAll('#scSubcatPills .subcat-pill')).find(p => p.getAttribute('onclick')?.includes(`'${bulkSubcat}'`));
+        if (subPill) pickScSubcat(subPill, bulkSubcat);
+      }
+
+      renderGrid();
+      livePreview();
+      toast('📦', `Bundled ${bulkItems.length} items from your ${bulkSubcat} collection`);
+    }
+  }
+  /* ═══ VAULT-TO-LISTING PREFILL END ═══ */
 
   renderGrid();
   updateProg(1);
@@ -1520,7 +1657,12 @@ async function publish(btn) {
       photos:          photos.length > 0 ? photos : null,
       ship_it:         finalShipIt,
       location_city:   sellerCity,
-      location_state:  sellerState
+      location_state:  sellerState,
+      // Bundled "sell entire category" listings from the Vault get
+      // listing_type='collection' so alltrades-collection.html's
+      // "Make Offer on Full Collection" button can find and link to them.
+      // Everything else defaults to 'single' at the database level.
+      ...(vaultBulkContext ? { listing_type: 'collection' } : {})
     };
     /* ═══ EDIT LISTING FIX: update existing row instead of always inserting
        a new one, when this page was opened via ?id= for an existing listing
@@ -1529,6 +1671,18 @@ async function publish(btn) {
       ? await sb.from('listings').update(listingPayload).eq('id', editListingId).eq('user_id', currentUser.id).select().single()
       : await sb.from('listings').insert({ ...listingPayload, user_id: currentUser.id, status: 'active' }).select().single();
     if (error) throw error;
+
+    // Mark the Vault item(s) this listing came from as listed, so they
+    // show the "✅ Listed" badge and a link back to this listing on the
+    // Vault page instead of quietly staying in an out-of-date state.
+    if (!editListingId && data) {
+      if (fromVaultItemId) {
+        await sb.from('collections').update({ listed: true, listing_id: data.id }).eq('id', fromVaultItemId);
+      } else if (vaultBulkContext) {
+        await sb.from('collections').update({ listed: true, listing_id: data.id }).in('id', vaultBulkContext.itemIds);
+      }
+    }
+
     document.getElementById('pFill').style.width = '100%';
     document.getElementById('pLabel').textContent = editListingId ? 'Updated! 🎉' : 'Published! 🎉';
     ['pill1','pill2','pill3','pill4'].forEach(id => { document.getElementById(id).className = 'step-pill done'; });
