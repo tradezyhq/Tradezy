@@ -62,7 +62,8 @@ body{font-family:'Lato',sans-serif;background:var(--bg);color:var(--text);}
 
 /* Owner-only category boxes */
 .category-boxes-row{display:flex;gap:14px;margin-bottom:24px;flex-wrap:wrap;}
-.category-box{position:relative;flex:1;min-width:140px;background:var(--surface);border:2px solid var(--border);border-radius:12px;padding:18px 14px;text-align:center;cursor:pointer;transition:all .15s;}
+.category-box{position:relative;z-index:1;flex:1;min-width:140px;background:var(--surface);border:2px solid var(--border);border-radius:12px;padding:18px 14px;text-align:center;cursor:pointer;transition:all .15s;}
+.category-box.dropdown-active{z-index:50;}
 .category-box:hover{border-color:var(--gold);transform:translateY(-2px);}
 .category-box-icon{font-size:1.8rem;margin-bottom:6px;}
 .category-box-label{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1rem;color:var(--text);}
@@ -556,6 +557,7 @@ const SEALED_EMOJI = {
   document.addEventListener('click', (e) => {
     if (e.target.closest('.category-box')) return;
     document.querySelectorAll('.category-dropdown.open').forEach(d => d.classList.remove('open'));
+    document.querySelectorAll('.category-box.dropdown-active').forEach(b => b.classList.remove('dropdown-active'));
   });
 })();
 
@@ -787,9 +789,14 @@ function switchTab(tab) {
 
 function toggleCategoryDropdown(cat) {
   const dropdown = document.getElementById(`dropdown-${cat}`);
+  const box = dropdown.closest('.category-box');
   const wasOpen = dropdown.classList.contains('open');
   document.querySelectorAll('.category-dropdown.open').forEach(d => d.classList.remove('open'));
-  if (!wasOpen) dropdown.classList.add('open');
+  document.querySelectorAll('.category-box.dropdown-active').forEach(b => b.classList.remove('dropdown-active'));
+  if (!wasOpen) {
+    dropdown.classList.add('open');
+    box.classList.add('dropdown-active');
+  }
 }
 
 const TREND_PERIODS = [{label:'1M',days:30},{label:'3M',days:90},{label:'6M',days:180},{label:'12M',days:365}];
